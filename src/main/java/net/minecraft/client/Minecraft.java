@@ -238,7 +238,9 @@ import net.minecraft.world.storage.WorldInfo;
 public class Minecraft implements IThreadListener, ISnooperInfo
 {   
     private FzUserData fzUserData;
-    
+
+    //CECI EST UN TEST
+
     private static final Logger LOGGER = LogManager.getLogger();
     private static final ResourceLocation LOCATION_MOJANG_PNG = new ResourceLocation("textures/gui/title/mojang.png");
     public static final ResourceLocation FONT_LOCATION = new ResourceLocation("font/font.ttf");
