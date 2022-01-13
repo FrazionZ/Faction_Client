@@ -1,0 +1,51 @@
+plugins {
+    id 'java'
+}
+
+group 'net.minecraft'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+compileJava.options.encoding = 'UTF-8'
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+dependencies {
+    implementation fileTree('libraries')
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+processResources {
+    exclude('src/main/java/Start.java')
+}
+
+task runclient(type: JavaExec) {
+    group = "MCP"
+    description = "Runs the client"
+    classpath sourceSets.main.runtimeClasspath
+    if (System.getProperty("os.name").toLowerCase().contains("mac")) {
+        jvmArgs '-XstartOnFirstThread'
+    }
+    args '--gameDir', '.'
+    args '--version', '1.12.2'
+    args '--assetsDir', 'assets'
+    args '--assetIndex', "1.12.2"
+    args '--username', "RacconFlow"
+    args '--accessToken', 'BBCo0g6koSJIbqkaTg7W'
+    args '--uuid', 'c4f74368-5706-35ab-ab82-d73809f34f32'
+    main 'net.minecraft.client.main.Main'
+    workingDir 'run'
+    systemProperty "java.library.path", file("libraries/1.12-natives")
+}
+
+sourceSets { main { java { exclude 'Start.java' } }  }
