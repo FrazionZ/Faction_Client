@@ -1,0 +1,19 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "XXX",
+    "XIX",
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "item": "minecraft:nether_string"
+    },
+     "I":{
+      "item" : "minecraft:onyx_block"
+    }
+  },
+  "result": {
+    "item": "minecraft:renforced_string"
+  }
+}

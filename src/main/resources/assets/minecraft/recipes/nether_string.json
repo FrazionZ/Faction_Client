@@ -1,0 +1,22 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "X#X",
+    "#I#",
+    "X#X"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:blaze_rod"
+    },
+    "X": {
+      "item": "minecraft:bauxite"
+    },
+     "I":{
+      "item" : "minecraft:string"
+    }
+  },
+  "result": {
+    "item": "minecraft:nether_string"
+  }
+}

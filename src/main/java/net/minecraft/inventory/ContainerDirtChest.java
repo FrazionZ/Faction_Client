@@ -1,0 +1,99 @@
+package net.minecraft.inventory;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+
+public class ContainerDirtChest extends Container
+{
+    private final IInventory lowerChestInventory;
+    private final int numRows;
+
+    public ContainerDirtChest(IInventory playerInventory, IInventory chestInventory, EntityPlayer player)
+    {
+        this.lowerChestInventory = chestInventory;
+        this.numRows = chestInventory.getSizeInventory() / 9;
+        chestInventory.openInventory(player);
+        int i = 0;
+
+        for (int k = 0; k < 1; ++k)
+        {
+            this.addSlotToContainer(new Slot(chestInventory, k , 8 + 4 * 18, 29));
+        }
+
+        for (int l = 0; l < 3; ++l)
+        {
+            for (int j1 = 0; j1 < 9; ++j1)
+            {
+                this.addSlotToContainer(new Slot(playerInventory, j1 + l * 9 + 9, 8 + j1 * 18, 74 + l * 18 + i));
+            }
+        }
+
+        for (int i1 = 0; i1 < 9; ++i1)
+        {
+            this.addSlotToContainer(new Slot(playerInventory, i1, 8 + i1 * 18, 132 + i));
+        }
+    }
+
+    /**
+     * Determines whether supplied player can use this container
+     */
+    public boolean canInteractWith(EntityPlayer playerIn)
+    {
+        return this.lowerChestInventory.isUsableByPlayer(playerIn);
+    }
+
+    /**
+     * Take a stack from the specified inventory slot.
+     */
+    public ItemStack transferStackInSlot(EntityPlayer playerIn, int index)
+    {
+        ItemStack itemstack = ItemStack.field_190927_a;
+        Slot slot = this.inventorySlots.get(index);
+
+        if (slot != null && slot.getHasStack())
+        {
+            ItemStack itemstack1 = slot.getStack();
+            itemstack = itemstack1.copy();
+
+            if (index < this.lowerChestInventory.getSizeInventory())
+            {
+                if (!this.mergeItemStack(itemstack1, this.lowerChestInventory.getSizeInventory(), this.inventorySlots.size(), true))
+                {
+                    return ItemStack.field_190927_a;
+                }
+            }
+            else if (!this.mergeItemStack(itemstack1, 0, this.lowerChestInventory.getSizeInventory(), false))
+            {
+                return ItemStack.field_190927_a;
+            }
+
+            if (itemstack1.func_190926_b())
+            {
+                slot.putStack(ItemStack.field_190927_a);
+            }
+            else
+            {
+                slot.onSlotChanged();
+            }
+        }
+
+        return itemstack;
+    }
+
+    /**
+     * Called when the container is closed.
+     */
+    public void onContainerClosed(EntityPlayer playerIn)
+    {
+        super.onContainerClosed(playerIn);
+        this.lowerChestInventory.closeInventory(playerIn);
+    }
+
+    /**
+     * Return this chest container's lower chest inventory.
+     */
+    public IInventory getLowerChestInventory()
+    {
+        return this.lowerChestInventory;
+    }
+}

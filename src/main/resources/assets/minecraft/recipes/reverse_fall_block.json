@@ -1,0 +1,21 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "XYX",
+    "YYY",
+    "XYX"
+  ],
+  "key": {
+    "Y": {
+      "item": "minecraft:slime"
+    },
+     "X":{
+      "item" : "minecraft:dye",
+      "data" : 11
+    }
+  },
+  "result": {
+    "item": "minecraft:reverse_fall_block",
+    "count": 2
+  }
+}

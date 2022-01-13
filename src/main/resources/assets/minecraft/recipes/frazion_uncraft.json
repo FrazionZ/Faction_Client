@@ -1,0 +1,15 @@
+{
+  "type": "crafting_shaped",
+	"pattern" : [
+	 "Z"
+    ],
+    "key": {
+       "Z": {
+        "item" : "minecraft:frazion"
+        } 
+    },
+    "result": {
+      "item": "minecraft:frazion_powder",
+      "count": 9
+    }
+}

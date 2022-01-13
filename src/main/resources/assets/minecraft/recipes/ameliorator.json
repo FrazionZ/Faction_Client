@@ -1,0 +1,25 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "i#i",
+    " I ",
+    "XXX"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:crafting_table"
+    },
+    "X": {
+      "item": "minecraft:onyx_block"
+    },
+    "I":{
+      "item": "minecraft:frazion_block"
+    },
+    "i":{
+      "item": "minecraft:blaze_rod"
+    }
+  },
+  "result": {
+    "item": "minecraft:ameliorator"
+  }
+}

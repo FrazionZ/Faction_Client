@@ -1,0 +1,22 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "X#X",
+    "#I#",
+    "X#X"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:bauxite"
+    },
+    "X": {
+      "item": "minecraft:bauxite_block"
+    },
+    "I":{
+      "item" : "minecraft:furnace"
+    }
+  },
+  "result": {
+    "item": "minecraft:bauxite_furnace"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "X"
+  ],
+  "key": {
+    "X": {
+      "item": "minecraft:compact_cobblestone_x2"
+    }
+  },
+  "result": {
+    "item": "minecraft:compact_cobblestone_x1",
+    "count": 9
+  }
+}

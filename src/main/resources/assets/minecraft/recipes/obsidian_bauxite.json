@@ -1,0 +1,20 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "XXX",
+    "XZX",
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "item": "minecraft:obsidian"
+    },
+    "Z": {
+      "item": "minecraft:bauxite"
+    }
+  },
+  "result": {
+    "item": "minecraft:obsidian_bauxite",
+    "count": 4
+  }
+}

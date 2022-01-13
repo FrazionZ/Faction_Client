@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "axis=y":    { "model": "crimson_log" },
+        "axis=z":     { "model": "crimson_log", "x": 90 },
+        "axis=x":     { "model": "crimson_log", "x": 90, "y": 90 },
+        "axis=none":   { "model": "crimson_log" }
+    }
+}

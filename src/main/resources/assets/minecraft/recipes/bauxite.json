@@ -1,0 +1,15 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "X"
+  ],
+  "key": {
+    "X": {
+      "item": "minecraft:bauxite_block"
+    }
+  },
+  "result": {
+    "item": "minecraft:bauxite",
+    "count": 9
+  }
+}

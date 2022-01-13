@@ -1,0 +1,9 @@
+{
+    "parent": "block/netherrack_nylium_parent",
+    "textures": {
+        "particle": "blocks/netherrack",
+        "bottom": "blocks/netherrack",
+        "top": "blocks/netherrack_nylium_top",
+        "side": "blocks/netherrack_nylium_side"
+    }
+}

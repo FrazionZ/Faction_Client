@@ -1,0 +1,22 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "X#X",
+    "#I#",
+    "X#X"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:onyx"
+    },
+    "X": {
+      "item": "minecraft:onyx_block"
+    },
+    "I":{
+      "item" : "minecraft:furnace"
+    }
+  },
+  "result": {
+    "item": "minecraft:onyx_furnace"
+  }
+}

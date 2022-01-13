@@ -1,0 +1,10 @@
+{
+    "variants": {
+        "normal": [
+            { "model": "netherrack_nylium" },
+            { "model": "netherrack_nylium", "y": 90 },
+            { "model": "netherrack_nylium", "y": 180 },
+            { "model": "netherrack_nylium", "y": 270 }
+        ]
+    }
+}

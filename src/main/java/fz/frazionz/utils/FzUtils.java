@@ -1,0 +1,38 @@
+package fz.frazionz.utils;
+
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.*;
+import java.net.URL;
+
+public class FzUtils {
+
+    public static File getLauncherDir()
+    {
+        String os = System.getProperty("os.name").toLowerCase();
+        if (os.contains("win"))
+            return new File(System.getProperty("user.home") + "\\AppData\\Roaming\\.FrazionzLauncher\\Launcher");
+        else if (os.contains("mac"))
+            return new File(System.getProperty("user.home") + "/Library/Application Support/FrazionzLauncher/Launcher");
+        else
+            return new File(System.getProperty("user.home") + "/.FrazionzLauncher/Launcher");
+    }
+
+    public static BufferedImage getDynamicTextureFromUrl(String url) throws IOException {
+        InputStream in = new URL(url).openStream();
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        byte[] buf = new byte[1024];
+        int n = 0;
+        while (-1 != (n = in.read(buf))) {
+            out.write(buf, 0, n);
+        }
+        out.close();
+        in.close();
+        byte[] byteArray = out.toByteArray();
+        ByteArrayInputStream inByte = new ByteArrayInputStream(byteArray);
+        BufferedImage read = ImageIO.read(inByte);
+        return read;
+    }
+
+
+}

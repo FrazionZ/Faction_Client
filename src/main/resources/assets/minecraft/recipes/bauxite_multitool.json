@@ -1,0 +1,25 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "iI#",
+    " X ",
+    " X "
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:bauxite_pickaxe"
+    },
+    "X": {
+      "item": "minecraft:stick"
+    },
+    "I":{
+      "item": "minecraft:bauxite_shovel"
+    },
+    "i":{
+      "item": "minecraft:bauxite_axe"
+    }
+  },
+  "result": {
+    "item": "minecraft:bauxite_multitool"
+  }
+}

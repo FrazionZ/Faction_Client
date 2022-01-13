@@ -1,0 +1,22 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "OFO",
+    "O O",
+    "XXX"
+  ],
+  "key": {
+    "O": {
+      "item": "minecraft:onyx_block"
+    },
+    "X": {
+      "item": "minecraft:compact_cobblestone_x3"
+    },
+     "F":{
+      "item": "minecraft:frazion_powder"
+    }
+  },
+  "result": {
+    "item": "minecraft:trophy_forge"
+  }
+}

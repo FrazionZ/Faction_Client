@@ -1,0 +1,15 @@
+{
+  "type": "crafting_shaped",
+	"pattern" : [
+	 "Z"
+    ],
+      "key": {
+       "Z": {
+        "item" : "minecraft:frazion_block"
+        } 
+    },
+    "result": {
+      "item": "minecraft:frazion",
+      "count": 9
+    }
+}

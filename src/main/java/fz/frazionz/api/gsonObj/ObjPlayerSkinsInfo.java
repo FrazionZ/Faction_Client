@@ -1,0 +1,49 @@
+package fz.frazionz.api.gsonObj;
+
+import org.apache.commons.lang3.StringUtils;
+
+public class ObjPlayerSkinsInfo {
+
+	private boolean exist;
+	private String name;
+	private boolean skinexist;
+	private boolean capexist;
+	private String typeskin;
+	
+	public String getName() {
+		return name;
+	}
+	
+	public SkinType getSkinType() {
+		return SkinType.valueOf(StringUtils.upperCase(this.typeskin));
+	}
+	
+	public boolean isSlim() {
+		return (getSkinType() == SkinType.ALEX) ? true : false;
+	}
+	
+	public boolean isSkinExist() {
+		return skinexist;
+	}
+	
+	public boolean isCapeExist() {
+		return capexist;
+	}
+	
+	public enum SkinType
+	{
+		STEVE("default"),
+		ALEX("slim");
+		
+		String tps;
+		
+		SkinType(String tps){
+			this.tps = tps;
+		}
+		
+		public String getTps() {
+			return this.tps;
+		}
+	}
+	
+}

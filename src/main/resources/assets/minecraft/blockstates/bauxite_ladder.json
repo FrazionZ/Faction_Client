@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "facing=north": { "model": "bauxite_ladder" },
+        "facing=east":  { "model": "bauxite_ladder", "y": 90 },
+        "facing=south": { "model": "bauxite_ladder", "y": 180 },
+        "facing=west":  { "model": "bauxite_ladder", "y": 270 }
+    }
+}

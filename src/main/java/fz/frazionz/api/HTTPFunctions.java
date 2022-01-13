@@ -1,0 +1,175 @@
+package fz.frazionz.api;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import fz.frazionz.api.gsonObj.*;
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+
+import com.google.gson.Gson;
+
+import net.minecraft.client.Minecraft;
+
+public class HTTPFunctions {
+
+	private static final Gson gson = new Gson();
+	
+	public static boolean isAPIUp()
+	{
+		HTTPReply reply = HTTPUtils.sendGet(HTTPEndpoints.BASE);
+		return reply.getStatusCode() == 200;
+	}
+	
+	public static List<ShopType> getAllShopTypes()
+	{
+		List<ShopType> lst = new ArrayList<>();
+		
+		HTTPReply reply = HTTPUtils.sendGet(HTTPEndpoints.SHOP_TYPE_LIST);
+			
+		if(reply.getStatusCode() == 200)
+		{
+			ShopType[] objs = gson.fromJson(reply.getBody(), ShopType[].class);
+			for(ShopType type : objs) {
+				if(type.isActive())
+					lst.add(type);
+			}
+		}
+		return lst;
+	}
+	
+	public static List<ShopItem> getAllShopItems()
+	{
+		List<ShopItem> lst = new ArrayList<>();
+		
+		HTTPReply reply = HTTPUtils.sendGet(HTTPEndpoints.SHOP_ITEM_LIST);
+			
+		if(reply.getStatusCode() == 200)
+		{
+			ShopItem[] objs = gson.fromJson(reply.getBody(), ShopItem[].class);
+			for(ShopItem item : objs) {
+				if(item.isActive())
+					lst.add(item);
+			}
+		}
+		return lst;
+	}
+	
+	public static List<BoutiqueType> getAllBoutiqueTypes()
+	{
+		List<BoutiqueType> lst = new ArrayList<>();
+		
+		HTTPReply reply = HTTPUtils.sendGet(HTTPEndpoints.BOUTIQUE_TYPE_LIST);
+			
+		if(reply.getStatusCode() == 200)
+		{
+			BoutiqueType[] objs = gson.fromJson(reply.getBody(), BoutiqueType[].class);
+			for(BoutiqueType type : objs) {
+				if(type.isActive())
+					lst.add(type);
+			}
+		}
+		return lst;
+	}
+	
+	public static List<BoutiqueItem> getAllBoutiqueItems()
+	{
+		List<BoutiqueItem> lst = new ArrayList<>();
+		
+		HTTPReply reply = HTTPUtils.sendGet(HTTPEndpoints.BOUTIQUE_ITEM_LIST);
+			
+		if(reply.getStatusCode() == 200)
+		{
+			BoutiqueItem[] objs = gson.fromJson(reply.getBody(), BoutiqueItem[].class);
+			for(BoutiqueItem item : objs) {
+				if(item.isActive())
+					lst.add(item);
+			}
+		}
+		return lst;
+	}
+
+	public static List<SuccessType> getAllSucessTypes()
+	{
+		List<SuccessType> lst = new ArrayList<>();
+
+		HTTPReply reply = HTTPUtils.sendGet(HTTPEndpoints.SUCCESS_TYPES_LIST);
+
+		if(reply.getStatusCode() == 200)
+		{
+			SuccessType[] objs = gson.fromJson(reply.getBody(), SuccessType[].class);
+			lst.addAll(Arrays.asList(objs));
+		}
+		return lst;
+	}
+
+	public static List<SuccessObj> getAllSuccessItemsPlayer(String idType)
+	{
+		List<SuccessObj> lst = new ArrayList<>();
+
+		HTTPReply reply = HTTPUtils.sendGet(HTTPEndpoints.SUCCESS_OBJ_LIST+idType+"/"+Minecraft.getMinecraft().getSession().getPlayerID());
+
+		if(reply.getStatusCode() == 200)
+		{
+			System.out.println(reply.getBody());
+			SuccessObj[] objs = gson.fromJson(reply.getBody(), SuccessObj[].class);
+			lst.addAll(Arrays.asList(objs));
+		}
+		return lst;
+	}
+	
+	
+	/*public static double getPlayerMoney() {
+		Minecraft mc = Minecraft.getMinecraft();
+		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		params.add(new BasicNameValuePair("name", mc.getSession().getUsername()));
+		
+		HTTPReply reply = HTTPUtils.sendGet(HTTPEndpoints.PLAYER_MONEY, params);
+		
+		if(reply.getStatusCode() == 200)
+		{
+			ObjPlayerMoney obj = gson.fromJson(reply.getBody(), ObjPlayerMoney.class);
+			return obj.getMoney();
+		}
+		return 0;
+	}
+	
+	public static List getPlayerStats()
+	{
+		List lst = null;
+		
+		Minecraft mc = Minecraft.getMinecraft();
+		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		params.add(new BasicNameValuePair("name", mc.getSession().getUsername()));
+		
+		HTTPReply reply = HTTPUtils.sendGet(HTTPEndpoints.PLAYER_STATS, params);
+		
+		if(reply.getStatusCode() == 200 || reply.getStatusCode() == 304)
+		{
+			ObjPlayerStats[] obj = gson.fromJson(reply.getBody(), ObjPlayerStats[].class);
+			lst = Arrays.asList(obj[0].getPlayerName(), obj[0].getPoints(), obj[0].getKills(), obj[0].getDeaths(), obj[0].getFactionId(), obj[0].getMoney());
+			return lst;
+		}
+		
+		return lst;
+	}*/
+	
+	public static ObjPlayerSkinsInfo getPlayerSkinInfo(String username)
+	{
+		Minecraft mc = Minecraft.getMinecraft();
+		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		params.add(new BasicNameValuePair("username", username));
+		
+		HTTPReply reply = HTTPUtils.sendGet(HTTPEndpoints.PLAYER_SKIN_INFO, params);
+		
+		if(reply.getStatusCode() == 200 || reply.getStatusCode() == 304)
+		{
+			ObjPlayerSkinsInfo obj = gson.fromJson(reply.getBody(), ObjPlayerSkinsInfo.class);
+			return obj;
+		}
+		
+		return null;
+	}
+	
+}

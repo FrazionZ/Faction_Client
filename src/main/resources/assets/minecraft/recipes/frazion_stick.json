@@ -1,0 +1,17 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "XSX"
+  ],
+  "key": {
+    "X": {
+      "item": "minecraft:frazion_powder"
+    },
+    "S": {
+      "item": "minecraft:onyx_stick"
+    }
+  },
+  "result": {
+    "item": "minecraft:frazion_stick"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "XXX",
+    "XXX",
+    "XXX"
+  ],
+  "key": {
+    "X": [
+       {
+         "item": "minecraft:sand",
+         "data": 0
+       },
+       {
+         "item": "minecraft:sand",
+         "data": 1
+       }
+    ]
+  },
+  "result": {
+    "item": "minecraft:renforced_sand"
+  }
+}

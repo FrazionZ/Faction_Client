@@ -1,0 +1,23 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    " Y ",
+    "XZX",
+    " Z "
+  ],
+  "key": {
+    "Z": {
+      "item": "minecraft:tnt"
+    },
+    "Y": {
+      "item": "minecraft:nether_string"
+    },
+     "X":{
+      "item" : "minecraft:loot_powder"
+    }
+  },
+  "result": {
+    "item": "minecraft:dynamite",
+    "count": 4
+  }
+}

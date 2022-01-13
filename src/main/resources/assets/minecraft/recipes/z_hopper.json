@@ -1,0 +1,22 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "YCY",
+    "YHY",
+    " Y "
+  ],
+  "key": {
+    "Y": {
+      "item": "minecraft:yellite_block"
+    },
+    "H": {
+      "item": "minecraft:hopper"
+    },
+     "C":{
+      "item": "minecraft:cosmic_powder"
+    }
+  },
+  "result": {
+    "item": "minecraft:z_hopper"
+  }
+}

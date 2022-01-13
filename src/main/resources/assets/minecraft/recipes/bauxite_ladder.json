@@ -1,0 +1,17 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "X X",
+    "XXX",
+    "X X"     
+  ],
+  "key": {
+    "X": {
+      "item": "minecraft:bauxite_stick"
+    }
+  },
+  "result": {
+    "item": "minecraft:bauxite_ladder",
+    "count": 16
+  }
+}

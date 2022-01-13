@@ -1,0 +1,12 @@
+{
+    "variants": {
+        "facing=south,half=lower": { "model": "trophy_forge_bottom" },
+        "facing=west,half=lower": { "model": "trophy_forge_bottom", "y": 90 },
+        "facing=north,half=lower": { "model": "trophy_forge_bottom", "y": 180 },
+        "facing=east,half=lower": { "model": "trophy_forge_bottom", "y": 270 },
+        "facing=south,half=upper": { "model": "trophy_forge_top" },
+        "facing=west,half=upper": { "model": "trophy_forge_top", "y": 90 },
+        "facing=north,half=upper": { "model": "trophy_forge_top", "y": 180 },
+        "facing=east,half=upper": { "model": "trophy_forge_top", "y": 270 }
+    }
+}

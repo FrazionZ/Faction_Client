@@ -1,0 +1,16 @@
+{
+  "type": "crafting_shaped",
+  "pattern" : [
+	 "XXX",
+     "XXX",
+     "XXX"
+    ],
+      "key": {
+       "X": {
+        "item" : "minecraft:onyx"
+        } 
+    },
+    "result": {
+      "item": "minecraft:onyx_block"
+    }
+}

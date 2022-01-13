@@ -1,0 +1,24 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "X#X",
+    "#I#",
+    "X#X"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:bauxite"
+    },
+    "X": {
+      "item": "minecraft:bauxite_block"
+    },
+    "I":{
+      "item" : "minecraft:golden_apple",
+      "data": 0
+    }
+  },
+  "result": {
+    "item": "minecraft:bauxite_apple",
+    "data": 0
+  }
+}
