@@ -3,6 +3,14 @@
 build/
 .idea/
 .gradle/
+run/hud/
+run/logs/
+run/resourcepacks/
+run/shaderpacks/
+run/saves/
+run/options.txt
+run/optionsof.txt
+build.gradle
 
 # Compiled class file
 *.class
