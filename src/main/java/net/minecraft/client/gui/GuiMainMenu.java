@@ -250,8 +250,6 @@ public class GuiMainMenu extends GuiScreen
             this.openGLWarningX2 = this.openGLWarningX1 + k;
             this.openGLWarningY2 = this.openGLWarningY1 + 24;
         }
-
-        mc.getGuiToast().func_192988_a(new SuccessToast(SPacketToast.Icon.MOBS, new TextComponentString("test"), new TextComponentString("test")));
     }
 
     /**
