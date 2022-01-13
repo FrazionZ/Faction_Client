@@ -3,6 +3,8 @@
 build/
 .idea/
 .gradle/
+run/assets/frazionz/
+run/assets/skins/
 run/hud/
 run/logs/
 run/resourcepacks/
