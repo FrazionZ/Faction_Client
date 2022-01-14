@@ -313,7 +313,7 @@ public class GuiMainMenu extends GuiScreen
        switch(button.id)
        {
 	       case 1:
-		    	//this.mc.displayGuiScreen(new GuiConnecting(this, mc, "localhost", 25566));
+		    	//this.mc.displayGuiScreen(new GuiConnecting(this, mc, "localhost", 25565));
 		    	this.mc.displayGuiScreen(new GuiConnecting(this, mc, "185.157.246.85", 25587));
 		       	break;
 	       case 2:

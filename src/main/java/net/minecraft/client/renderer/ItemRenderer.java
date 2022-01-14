@@ -166,14 +166,14 @@ public class ItemRenderer
         GlStateManager.rotate(f * -41.0F, 0.0F, 0.0F, 1.0F);
         GlStateManager.translate(f * 0.3F, -1.1F, 0.45F);
 
-        if (p_187455_1_ == EnumHandSide.RIGHT)
+        /*if (p_187455_1_ == EnumHandSide.RIGHT)
         {
             renderplayer.renderRightArm(this.mc.player);
         }
         else
         {
             renderplayer.renderLeftArm(this.mc.player);
-        }
+        }*/
 
         GlStateManager.popMatrix();
     }

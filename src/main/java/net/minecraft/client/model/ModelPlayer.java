@@ -44,7 +44,7 @@ public class ModelPlayer extends ModelBiped
         {
             this.bipedLeftArm = new ModelRenderer(this, 32, 48);
             this.bipedLeftArm.addBox(-1.0F, -2.0F, -2.0F, 4, 12, 4, modelSize);
-            this.bipedLeftArm.setRotationPoint(5.0F, 2.0F, 0.0F);
+            this.bipedLeftArm.setRotationPoint(5.0F, 2.0F, 60.0F);
             this.bipedLeftArmwear = new ModelRenderer(this, 48, 48);
             this.bipedLeftArmwear.addBox(-1.0F, -2.0F, -2.0F, 4, 12, 4, modelSize + 0.25F);
             this.bipedLeftArmwear.setRotationPoint(5.0F, 2.0F, 0.0F);
@@ -92,7 +92,6 @@ public class ModelPlayer extends ModelBiped
             {
                 GlStateManager.translate(0.0F, 0.2F, 0.0F);
             }
-
             this.bipedLeftLegwear.render(scale);
             this.bipedRightLegwear.render(scale);
             this.bipedLeftArmwear.render(scale);

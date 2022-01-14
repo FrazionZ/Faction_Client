@@ -15,7 +15,6 @@ import com.google.common.primitives.Floats;
 import com.google.common.util.concurrent.Futures;
 
 import fz.frazionz.inventory.ContainerTrophyForge;
-import fz.frazionz.tileentity.TileEntityTrophyForge;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 import net.minecraft.advancements.Advancement;

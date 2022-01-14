@@ -2,11 +2,16 @@ package net.minecraft.client.entity;
 
 import com.mojang.authlib.GameProfile;
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
+import optifine.SkinUtils;
+
+import java.util.UUID;
 
 public class EntityOtherPlayerMP extends AbstractClientPlayer
 {
@@ -164,4 +169,13 @@ public class EntityOtherPlayerMP extends AbstractClientPlayer
     {
         return new BlockPos(this.posX + 0.5D, this.posY + 0.5D, this.posZ + 0.5D);
     }
+
+    /*public void receiveUpdateSkin(Minecraft mc, UUID uuid) {
+        EntityPlayer entityPlayer = null;
+        for(EntityPlayer entityPlayerMPObj : mc.world.playerEntities)
+            if(entityPlayerMPObj.getGameProfile().getId().equals(uuid))
+                entityPlayer = entityPlayerMPObj;
+        EntityOtherPlayerMP test = new EntityOtherPlayerMP(mc.world, entityPlayer.getGameProfile());
+        SkinUtils.downloadSkin(test, true);
+    }*/
 }

@@ -3,7 +3,13 @@ package net.minecraft.client.gui;
 import java.awt.Color;
 import java.io.IOException;
 import java.util.Random;
+import java.util.UUID;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.multiplayer.PlayerControllerMP;
+import net.minecraft.entity.player.EntityPlayerMP;
+import optifine.SkinUtils;
 import org.lwjgl.opengl.GL11;
 
 import fz.frazionz.api.HTTPFunctions;
@@ -93,7 +99,7 @@ public class GuiIngameMenu extends GuiScreen
     {
     	int x = this.width/16;
     	int y = (this.height / 20);
-    	    	
+		//SkinUtils.downloadSkin(this);
         this.buttonList.add(new GuiRoundedButton(0, x, y, width, height, "RETOUR", false, this.mc.fontrenderer, 1));
         this.buttonList.add(new GuiRoundedButton(1, x, y + h, width, height, "OPTIONS", false, this.mc.fontrenderer, 1));
         this.buttonList.add(new GuiRoundedButton(2, x, y + (h * 2), width, height, "SUCCES", false, this.mc.fontrenderer,1));

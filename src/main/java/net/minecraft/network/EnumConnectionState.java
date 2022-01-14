@@ -4,6 +4,7 @@ import java.util.Map;
 
 import javax.annotation.Nullable;
 
+import fz.frazionz.packets.server.SPacketUpdateSkin;
 import fz.frazionz.packets.server.*;
 import org.apache.logging.log4j.LogManager;
 
@@ -266,6 +267,7 @@ public enum EnumConnectionState
             this.registerPacket(EnumPacketDirection.SERVERBOUND, CPacketShopTrade.class);
             this.registerPacket(EnumPacketDirection.CLIENTBOUND, SPacketUpdateInformation.class);
             this.registerPacket(EnumPacketDirection.CLIENTBOUND, SPacketToast.class);
+            this.registerPacket(EnumPacketDirection.CLIENTBOUND, SPacketUpdateSkin.class);
         }
     },
     STATUS(1)

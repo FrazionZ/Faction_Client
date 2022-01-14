@@ -1,6 +1,7 @@
 package net.minecraft.network.play;
 
 import fz.frazionz.packets.server.SPacketToast;
+import fz.frazionz.packets.server.SPacketUpdateSkin;
 import net.minecraft.network.INetHandler;
 import net.minecraft.network.play.server.SPacketAdvancementInfo;
 import net.minecraft.network.play.server.SPacketAnimation;
@@ -395,6 +396,8 @@ public interface INetHandlerPlayClient extends INetHandler
     void func_194022_a(SPacketSelectAdvancementsTab p_194022_1_);
 
     void func_194307_a(SPacketPlaceGhostRecipe p_194307_1_);
-    
+
+    void handleUpdateSkin(SPacketUpdateSkin handler);
+
     //void handleOpenGuiBoutique(SPacketOpenGuiBoutique packetIn);
 }

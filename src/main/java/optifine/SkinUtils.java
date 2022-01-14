@@ -26,36 +26,40 @@ import net.minecraft.util.ResourceLocation;
 
 public class SkinUtils
 {
-    public static void downloadSkin(AbstractClientPlayer p_downloadSkin_0_)
+    public static void downloadSkin(AbstractClientPlayer p_downloadSkin_0_, boolean reload)
     {
         String s = p_downloadSkin_0_.getNameClear();
 
+        File cacheFile = new File(Minecraft.getMinecraft().mcDataDir, "assets/frazionz/skins/" + StringUtils.lowerCase(s));
         if (s != null && !s.isEmpty())
         {
             String s1 = "https://frazionz.net/tx_minecraft/api/skin/" + s + "/";
             ResourceLocation resourcelocation = new ResourceLocation("frazionz/skins/" + s);
             TextureManager texturemanager = Minecraft.getMinecraft().getTextureManager();
-            ITextureObject itextureobject = texturemanager.getTexture(resourcelocation);
+            if(!reload){
+                ITextureObject itextureobject = texturemanager.getTexture(resourcelocation);
 
-            if (itextureobject != null && itextureobject instanceof ThreadDownloadImageData)
-            {
-                ThreadDownloadImageData threaddownloadimagedata = (ThreadDownloadImageData)itextureobject;
-
-                if (threaddownloadimagedata.imageFound != null)
+                if (itextureobject != null && itextureobject instanceof ThreadDownloadImageData)
                 {
-                    if (threaddownloadimagedata.imageFound.booleanValue())
+                    ThreadDownloadImageData threaddownloadimagedata = (ThreadDownloadImageData)itextureobject;
+
+                    if (threaddownloadimagedata.imageFound != null)
                     {
-                        p_downloadSkin_0_.setLocationOfSkin(resourcelocation);
+                        if (threaddownloadimagedata.imageFound.booleanValue())
+                        {
+                            p_downloadSkin_0_.setLocationOfSkin(resourcelocation);
+                        }
+                        return;
                     }
-                    return;
                 }
+            }else{
+                SkinImageBuffer Skinimagebuffer = new SkinImageBuffer(p_downloadSkin_0_, resourcelocation);
+                ThreadDownloadImageData threaddownloadimagedata1 = new ThreadDownloadImageData(null, s1, (ResourceLocation)null, Skinimagebuffer);
+                threaddownloadimagedata1.pipeline = true;
+                texturemanager.loadTexture(resourcelocation, threaddownloadimagedata1);
+                p_downloadSkin_0_.setLocationOfSkin(resourcelocation);
             }
-            
-            File cacheFile = new File(Minecraft.getMinecraft().mcDataDir, "assets/frazionz/skins/" + StringUtils.lowerCase(s));
-            SkinImageBuffer Skinimagebuffer = new SkinImageBuffer(p_downloadSkin_0_, resourcelocation);
-            ThreadDownloadImageData threaddownloadimagedata1 = new ThreadDownloadImageData(null, s1, (ResourceLocation)null, Skinimagebuffer);
-            threaddownloadimagedata1.pipeline = true;
-            texturemanager.loadTexture(resourcelocation, threaddownloadimagedata1);
+
         }
     }
 
@@ -80,12 +84,16 @@ public class SkinUtils
     public static ResourceLocation loadSkin(GameProfile profile) {
     	
     	String s = StringUtils.lowerCase(profile.getName());
+        File cacheFile = new File(Minecraft.getMinecraft().mcDataDir, "assets/frazionz/skins/" + StringUtils.lowerCase(s));
+        if(cacheFile.exists())
+            cacheFile.delete();
     	ResourceLocation resourcelocation = new ResourceLocation("frazionz/skins/" + s);
         TextureManager texturemanager = Minecraft.getMinecraft().getTextureManager();
         ITextureObject itextureobject = texturemanager.getTexture(resourcelocation);
 
         if (itextureobject != null && itextureobject instanceof ThreadDownloadImageData)
         {
+            System.out.println("test1");
             ThreadDownloadImageData threaddownloadimagedata = (ThreadDownloadImageData)itextureobject;
 
             if (threaddownloadimagedata.imageFound != null){
@@ -98,8 +106,8 @@ public class SkinUtils
             	return resourcelocation;
             }
         }else {
+            System.out.println("test2");
         	String urlDl = "https://frazionz.net/tx_minecraft/api/skin/" + s;
-        	File cacheFile = new File(Minecraft.getMinecraft().mcDataDir, "assets/frazionz/skins/" + StringUtils.lowerCase(s));
         	ThreadDownloadImageData threaddownloadimagedata1 = new ThreadDownloadImageData(cacheFile, urlDl, (ResourceLocation)null, null);
             threaddownloadimagedata1.pipeline = true;
             texturemanager.loadTexture(resourcelocation, threaddownloadimagedata1);

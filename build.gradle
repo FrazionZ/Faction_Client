@@ -38,7 +38,7 @@ task runclient(type: JavaExec) {
     args '--assetsDir', 'assets'
     args '--assetIndex', "1.12.2"
     args '--username', "RacconFlow"
-    args '--accessToken', 'Jv6ItZNPVg0qeK14L4Zb'
+    args '--accessToken', 'VIL7WtV5Ze0Y7hj5bJc0'
     args '--uuid', 'c4f74368-5706-35ab-ab82-d73809f34f32'
     main 'net.minecraft.client.main.Main'
     workingDir 'run'

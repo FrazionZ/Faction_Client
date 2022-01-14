@@ -21,8 +21,10 @@ import javax.annotation.Nullable;
 import fz.frazionz.gui.toasts.FzToast;
 import fz.frazionz.gui.toasts.SuccessToast;
 import fz.frazionz.packets.server.SPacketToast;
+import fz.frazionz.packets.server.SPacketUpdateSkin;
 import net.minecraft.client.gui.toasts.IToast;
 import net.minecraft.util.text.TextComponentString;
+import optifine.SkinUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -2358,6 +2360,16 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
                 guirecipebook.func_193951_a(p_194307_1_.func_194311_a(), container.inventorySlots);
             }
         }
+    }
+
+    @Override
+    public void handleUpdateSkin(SPacketUpdateSkin handler) {
+        EntityPlayer entityPlayer = null;
+        for(EntityPlayer entityPlayerMPObj : mc.world.playerEntities)
+            if(entityPlayerMPObj.getGameProfile().getId().equals(handler.getUuid()))
+                entityPlayer = entityPlayerMPObj;
+        EntityOtherPlayerMP eopm = new EntityOtherPlayerMP(mc.world, entityPlayer.getGameProfile());
+        SkinUtils.downloadSkin(eopm, true);
     }
 
     /**

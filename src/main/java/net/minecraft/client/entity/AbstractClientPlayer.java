@@ -67,7 +67,7 @@ public abstract class AbstractClientPlayer extends EntityPlayer
         }catch(Exception e) {
         }
         try{
-            SkinUtils.downloadSkin(this);
+            SkinUtils.downloadSkin(this, true);
         }catch(Exception e) {
         }
         

@@ -1,6 +1,5 @@
 package net.minecraft.client.multiplayer;
 
-import fz.frazionz.item.ItemWeaponEffects;
 import io.netty.buffer.Unpooled;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCommandBlock;
@@ -10,11 +9,13 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
+import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.AbstractHorse;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.ClickType;
 import net.minecraft.item.ItemBlock;
@@ -46,6 +47,9 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.GameType;
 import net.minecraft.world.World;
+
+import java.util.Objects;
+import java.util.UUID;
 
 public class PlayerControllerMP
 {
@@ -598,6 +602,14 @@ public class PlayerControllerMP
     {
         this.connection.sendPacket(new CPacketTrophyForge(windowID));
     }
+
+    /*public void sendUpdateSkin(UUID uuid)
+    {
+        for(EntityPlayer entityPlayer : this.mc.world.playerEntities){
+            EntityOtherPlayerMP entityOtherPlayerMP = new EntityOtherPlayerMP(entityPlayer.world, entityPlayer.getGameProfile());
+            entityOtherPlayerMP.receiveUpdateSkin(this.mc, uuid);
+        }
+    }*/
 
     /**
      * Used in PlayerControllerMP to update the server with an ItemStack in a slot.

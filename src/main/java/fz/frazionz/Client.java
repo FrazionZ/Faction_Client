@@ -18,6 +18,7 @@ import net.minecraft.client.Minecraft;
 public class Client {
 
 	private static final Client INSTANCE = new Client();
+
 	public static final Client getInstance() {
 		return INSTANCE;
 	}
@@ -36,6 +37,7 @@ public class Client {
 		ShopAPIDataStocker.loadAPIData();
 		SuccessAPIDataStocker.loadAPIData();
 		PlayerDataStocker.loadProfilItems();
+
 	}
 	
 	
