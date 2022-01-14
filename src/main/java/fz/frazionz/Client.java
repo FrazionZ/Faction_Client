@@ -1,6 +1,7 @@
 package fz.frazionz;
 
 import fz.frazionz.api.HTTPFunctions;
+import fz.frazionz.api.data.PlayerDataStocker;
 import fz.frazionz.api.data.ShopAPIDataStocker;
 import fz.frazionz.api.data.SuccessAPIDataStocker;
 import fz.frazionz.api.gsonObj.BoutiqueType;
@@ -34,6 +35,7 @@ public class Client {
 
 		ShopAPIDataStocker.loadAPIData();
 		SuccessAPIDataStocker.loadAPIData();
+		PlayerDataStocker.loadProfilItems();
 	}
 	
 	

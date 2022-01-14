@@ -8,9 +8,16 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
+import fz.frazionz.api.data.PlayerDataStocker;
+import fz.frazionz.api.gsonObj.ProfilItem;
+import fz.frazionz.gui.GuiButtonImage;
+import fz.frazionz.gui.GuiDropdown;
+import fz.frazionz.gui.GuiShopItemsList;
+import fz.frazionz.gui.toasts.FzToast;
 import fz.frazionz.gui.toasts.SuccessToast;
 import fz.frazionz.packets.server.SPacketToast;
 import fz.frazionz.utils.FzUtils;
+import net.minecraft.util.Session;
 import net.minecraft.util.text.TextComponentString;
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
@@ -106,6 +113,7 @@ public class GuiMainMenu extends GuiScreen
     private static final ResourceLocation BACKGROUND_TEXTURE  = new ResourceLocation("textures/gui/title/background/fz_background.png");
     private static final ResourceLocation MINECRAFT_TITLE_TEXTURES = new ResourceLocation("textures/gui/title/background/fz_logo.png");
     private static final ResourceLocation field_194400_H = new ResourceLocation("textures/gui/title/background/fz_logo.png");
+    private static final ResourceLocation INTERFACE_BACKGROUND_FZ = new ResourceLocation("textures/gui/frazionz/interface_background.png");
     private static DynamicTexture AVATAR_HEAD;
 
     private float i = 0;
@@ -131,6 +139,15 @@ public class GuiMainMenu extends GuiScreen
     private GuiButton modButton;
     private GuiScreen modUpdateNotification;
     private RunSixtyTimesEverySec scroller;
+    private int xInfosUser;
+    private GuiDropdown dropdownUserAccount;
+    private String connectedAt;
+	private GuiButtonImage leftSwitchAccountButton;
+	private GuiButtonImage rightSwitchAccountButton;
+	private GuiRoundedButton loginSwitchAccountButton;
+    private ProfilItem currentProfileItem;
+    private int positionProfil;
+    private boolean showAccount = false;
 
     public GuiMainMenu()
     {
@@ -141,6 +158,9 @@ public class GuiMainMenu extends GuiScreen
         }
         this.updateCounter = RANDOM.nextFloat();
         this.openGLWarning1 = "";
+
+
+        PlayerDataStocker.loadProfilItems();
 
         if (!GLContext.getCapabilities().OpenGL20 && !OpenGlHelper.areShadersSupported())
         {
@@ -232,6 +252,11 @@ public class GuiMainMenu extends GuiScreen
             e.printStackTrace();
         }
 
+
+
+        positionProfil = 0;
+        currentProfileItem = PlayerDataStocker.getPlayer(positionProfil);
+
         Client.getInstance().getDiscordRP().update("Menu Principal", "www.frazionz.net");
         this.viewportTexture = new DynamicTexture(256, 256);
         this.backgroundTexture = this.mc.getTextureManager().getDynamicTextureLocation("background", this.viewportTexture);
@@ -240,6 +265,10 @@ public class GuiMainMenu extends GuiScreen
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date());
         this.addAllButtons(width, height, h);
+
+        connectedAt = this.mc.getSession().getUsername();
+        xInfosUser = this.width - this.fontRendererObj.getStringWidth(connectedAt);
+        dropdownUserAccount = new GuiDropdown(this.mc, xInfosUser - 42, 35, this.width -10, 100);
 
         synchronized (this.threadLock)
         {
@@ -264,6 +293,16 @@ public class GuiMainMenu extends GuiScreen
         this.buttonList.add(new GuiRoundedButton(2, x, y + h, width, height, "SOLO", false, this.mc.fontrenderer, 1));
         this.buttonList.add(new GuiRoundedButton(3, x, y + (h * 2), width, height, "OPTIONS", false, this.mc.fontrenderer, 1));
         this.buttonList.add(new GuiRoundedButton(4, x, this.height - height - y, width, height, "QUITTER", true, this.mc.fontrenderer, 1));
+
+        leftSwitchAccountButton = new GuiButtonImage(6, "", this.width - 166, 9, 25, 25, 350, 311, true, INTERFACE_BACKGROUND_FZ);
+        rightSwitchAccountButton = new GuiButtonImage(7, "", this.width - 29, 9, 25, 25, 325, 311, true, INTERFACE_BACKGROUND_FZ);
+        loginSwitchAccountButton = new GuiRoundedButton(8, this.width - 125, 35, 80, height, "Se connecter", false, this.mc.fontrenderer, 1);
+        leftSwitchAccountButton.visible = false;
+        rightSwitchAccountButton.visible = false; //(PlayerDataStocker.profilItems.size() >= 2);
+        loginSwitchAccountButton.visible = false;
+        this.buttonList.add(leftSwitchAccountButton);
+        this.buttonList.add(rightSwitchAccountButton);
+        this.buttonList.add(loginSwitchAccountButton);
     }
     
     /**
@@ -286,7 +325,40 @@ public class GuiMainMenu extends GuiScreen
 	       case 4:
 	    	   this.mc.shutdown();
 	    	   break;
+           case 6:
+               positionProfil--;
+               changeProfile(PlayerDataStocker.getPlayer(positionProfil));
+               rightSwitchAccountButton.visible = true;
+               if(positionProfil == 0)
+                   leftSwitchAccountButton.visible = false;
+               break;
+           case 7:
+               positionProfil++;
+               changeProfile(PlayerDataStocker.getPlayer(positionProfil));
+               leftSwitchAccountButton.visible = true;
+               if(positionProfil + 1 == PlayerDataStocker.profilItems.size())
+                   rightSwitchAccountButton.visible = false;
+               break;
+           case 8:
+               Session session = new Session(currentProfileItem.getUsername(), currentProfileItem.getUuid(), currentProfileItem.getToken(), "legacy", false);
+               this.mc.setSession(session);
+               loginSwitchAccountButton.visible = false;
+               PlayerDataStocker.loadProfilItems();
+               toggleChangeAccount();
+               this.mc.getGuiToast().func_192988_a(new FzToast(SPacketToast.Type.NORMAL, SPacketToast.Icon.LOGO, new TextComponentString("INFORMATION"), new TextComponentString("Bonjour "+currentProfileItem.getUsername()+" !")));
+               break;
        }    	
+    }
+
+    public void changeProfile(ProfilItem profilItem){
+        currentProfileItem = profilItem;
+        connectedAt = currentProfileItem.getUsername();
+        try {
+            AVATAR_HEAD = new DynamicTexture(this.getDynamicTextureFromUrl(new File(FzUtils.getLauncherDir(), "avatars/"+currentProfileItem.getUuid()+".png")));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        loginSwitchAccountButton.visible = !currentProfileItem.getUuid().equalsIgnoreCase(this.mc.getSession().getPlayerID());
     }
 
     public void confirmClicked(boolean result, int id)
@@ -396,14 +468,16 @@ public class GuiMainMenu extends GuiScreen
         String info = "FrazionZ n'est pas affilié à Mojang";
         this.drawString(this.fontRendererObj, info, this.width - this.fontRendererObj.getStringWidth(info) - 1, this.height - 10, -1);
 
-        String connectedAt = this.mc.getSession().getUsername();
-        int xInfosUser = this.width - this.fontRendererObj.getStringWidth(connectedAt);
-        this.drawRect(xInfosUser - 42, 10, this.width -10, 35, 0x72000000);
-        this.drawString(this.fontRendererObj, connectedAt, xInfosUser - 16, 18, -1);
+        this.field_193978_M = this.fontRendererObj.getStringWidth("Copyright Mojang AB. Do not distribute!");
+        this.drawGradientRoundedButton(this.width - 130, 12, this.width - 40, 32, this.FIRST_GRADIENT_COLOR, this.SECOND_GRADIENT_COLOR);
+
+        this.drawString(this.fontRendererObj, connectedAt, this.width - 110, 18, -1);
+
+        this.dropdownUserAccount.drawDropdown(this.mc, partialTicks);
 
         if(AVATAR_HEAD != null){
             GL11.glBindTexture(GL11.GL_TEXTURE_2D, AVATAR_HEAD.getGlTextureId());
-            drawModalRectWithCustomSizedTexture(xInfosUser - 38, 14, 0.0F, 0.0F, 16, 16, 16, 16);
+            drawModalRectWithCustomSizedTexture(width - 130, 14, 0.0F, 0.0F, 16, 16, 16, 16);
         }
 
         if (mouseX > this.width - this.fontRendererObj.getStringWidth(info) - 1 && mouseX < this.width - this.fontRendererObj.getStringWidth(info) - 1 + this.field_193978_M && mouseY > this.height - 10 && mouseY < this.height && Mouse.isInsideWindow())
@@ -422,6 +496,8 @@ public class GuiMainMenu extends GuiScreen
         
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
+
+
 
     /**
      * Called when the mouse is clicked. Args : mouseX, mouseY, clickedButton
@@ -448,6 +524,26 @@ public class GuiMainMenu extends GuiScreen
         if (mouseX > this.field_193979_N && mouseX < this.field_193979_N + this.field_193978_M && mouseY > this.height - 10 && mouseY < this.height)
         {
             this.mc.displayGuiScreen(new GuiWinGame(false, Runnables.doNothing()));
+        }
+
+        if (mouseX > this.width - 130 && mouseX < this.width - 40 && mouseY > 12 && mouseY < 32){
+            loginSwitchAccountButton.playPressSound(this.mc.getSoundHandler());
+            toggleChangeAccount();
+        }
+    }
+
+    public void toggleChangeAccount(){
+        showAccount = !showAccount;
+        if(showAccount){
+            leftSwitchAccountButton.visible =  (positionProfil != 0);
+            rightSwitchAccountButton.visible = (PlayerDataStocker.profilItems.size() >= 2) && (positionProfil + 1 != PlayerDataStocker.profilItems.size());
+            loginSwitchAccountButton.visible = !currentProfileItem.getUuid().equalsIgnoreCase(this.mc.getSession().getPlayerID());
+        }else{
+            positionProfil = 0;
+            changeProfile(PlayerDataStocker.getPlayer(this.mc.getSession().getPlayerID()));
+            leftSwitchAccountButton.visible = false;
+            rightSwitchAccountButton.visible = false;
+            loginSwitchAccountButton.visible = false;
         }
     }
 
