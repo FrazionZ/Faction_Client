@@ -114,7 +114,7 @@ public class GuiMainMenu extends GuiScreen
     private static final ResourceLocation MINECRAFT_TITLE_TEXTURES = new ResourceLocation("textures/gui/title/background/fz_logo.png");
     private static final ResourceLocation field_194400_H = new ResourceLocation("textures/gui/title/background/fz_logo.png");
     private static final ResourceLocation INTERFACE_BACKGROUND_FZ = new ResourceLocation("textures/gui/frazionz/interface_background.png");
-    private static DynamicTexture AVATAR_HEAD;
+    //private static DynamicTexture AVATAR_HEAD;
 
     private float i = 0;
     private boolean boolI = false;
@@ -142,12 +142,12 @@ public class GuiMainMenu extends GuiScreen
     private int xInfosUser;
     private GuiDropdown dropdownUserAccount;
     private String connectedAt;
-	private GuiButtonImage leftSwitchAccountButton;
+    /*private GuiButtonImage leftSwitchAccountButton;
 	private GuiButtonImage rightSwitchAccountButton;
 	private GuiRoundedButton loginSwitchAccountButton;
     private ProfilItem currentProfileItem;
     private int positionProfil;
-    private boolean showAccount = false;
+    private boolean showAccount = false;*/
 
     public GuiMainMenu()
     {
@@ -246,7 +246,7 @@ public class GuiMainMenu extends GuiScreen
     		this.mc.fontrendererTitle = new fz.frazionz.gui.renderer.fonts.FontRenderer(this.mc.FONT_LOCATION, (float) (height*1.5));
     	}
 
-        try {
+        /*try {
             AVATAR_HEAD = new DynamicTexture(this.getDynamicTextureFromUrl(new File(FzUtils.getLauncherDir(), "avatars/"+this.mc.getSession().getPlayerID()+".png")));
         } catch (IOException e) {
             e.printStackTrace();
@@ -255,7 +255,7 @@ public class GuiMainMenu extends GuiScreen
 
 
         positionProfil = 0;
-        currentProfileItem = PlayerDataStocker.getPlayer(positionProfil);
+        currentProfileItem = PlayerDataStocker.getPlayer(positionProfil);*/
 
         Client.getInstance().getDiscordRP().update("Menu Principal", "www.frazionz.net");
         this.viewportTexture = new DynamicTexture(256, 256);
@@ -266,9 +266,9 @@ public class GuiMainMenu extends GuiScreen
         calendar.setTime(new Date());
         this.addAllButtons(width, height, h);
 
-        connectedAt = this.mc.getSession().getUsername();
+        /*connectedAt = this.mc.getSession().getUsername();
         xInfosUser = this.width - this.fontRendererObj.getStringWidth(connectedAt);
-        dropdownUserAccount = new GuiDropdown(this.mc, xInfosUser - 42, 35, this.width -10, 100);
+        dropdownUserAccount = new GuiDropdown(this.mc, xInfosUser - 42, 35, this.width -10, 100);*/
 
         synchronized (this.threadLock)
         {
@@ -294,7 +294,7 @@ public class GuiMainMenu extends GuiScreen
         this.buttonList.add(new GuiRoundedButton(3, x, y + (h * 2), width, height, "OPTIONS", false, this.mc.fontrenderer, 1));
         this.buttonList.add(new GuiRoundedButton(4, x, this.height - height - y, width, height, "QUITTER", true, this.mc.fontrenderer, 1));
 
-        leftSwitchAccountButton = new GuiButtonImage(6, "", this.width - 166, 9, 25, 25, 350, 311, true, INTERFACE_BACKGROUND_FZ);
+        /*leftSwitchAccountButton = new GuiButtonImage(6, "", this.width - 166, 9, 25, 25, 350, 311, true, INTERFACE_BACKGROUND_FZ);
         rightSwitchAccountButton = new GuiButtonImage(7, "", this.width - 29, 9, 25, 25, 325, 311, true, INTERFACE_BACKGROUND_FZ);
         loginSwitchAccountButton = new GuiRoundedButton(8, this.width - 125, 35, 80, height, "Se connecter", false, this.mc.fontrenderer, 1);
         leftSwitchAccountButton.visible = false;
@@ -302,7 +302,7 @@ public class GuiMainMenu extends GuiScreen
         loginSwitchAccountButton.visible = false;
         this.buttonList.add(leftSwitchAccountButton);
         this.buttonList.add(rightSwitchAccountButton);
-        this.buttonList.add(loginSwitchAccountButton);
+        this.buttonList.add(loginSwitchAccountButton);*/
     }
     
     /**
@@ -325,7 +325,7 @@ public class GuiMainMenu extends GuiScreen
 	       case 4:
 	    	   this.mc.shutdown();
 	    	   break;
-           case 6:
+           /*case 6:
                positionProfil--;
                changeProfile(PlayerDataStocker.getPlayer(positionProfil));
                rightSwitchAccountButton.visible = true;
@@ -346,11 +346,11 @@ public class GuiMainMenu extends GuiScreen
                PlayerDataStocker.loadProfilItems();
                toggleChangeAccount();
                this.mc.getGuiToast().func_192988_a(new FzToast(SPacketToast.Type.NORMAL, SPacketToast.Icon.LOGO, new TextComponentString("INFORMATION"), new TextComponentString("Bonjour "+currentProfileItem.getUsername()+" !")));
-               break;
+               break;*/
        }    	
     }
 
-    public void changeProfile(ProfilItem profilItem){
+    /*public void changeProfile(ProfilItem profilItem){
         currentProfileItem = profilItem;
         connectedAt = currentProfileItem.getUsername();
         try {
@@ -359,7 +359,7 @@ public class GuiMainMenu extends GuiScreen
             e.printStackTrace();
         }
         loginSwitchAccountButton.visible = !currentProfileItem.getUuid().equalsIgnoreCase(this.mc.getSession().getPlayerID());
-    }
+    }*/
 
     public void confirmClicked(boolean result, int id)
     {
@@ -469,16 +469,16 @@ public class GuiMainMenu extends GuiScreen
         this.drawString(this.fontRendererObj, info, this.width - this.fontRendererObj.getStringWidth(info) - 1, this.height - 10, -1);
 
         this.field_193978_M = this.fontRendererObj.getStringWidth("Copyright Mojang AB. Do not distribute!");
-        this.drawGradientRoundedButton(this.width - 130, 12, this.width - 40, 32, this.FIRST_GRADIENT_COLOR, this.SECOND_GRADIENT_COLOR);
+        //this.drawGradientRoundedButton(this.width - 130, 12, this.width - 40, 32, this.FIRST_GRADIENT_COLOR, this.SECOND_GRADIENT_COLOR);
 
-        this.drawString(this.fontRendererObj, connectedAt, this.width - 110, 18, -1);
+        //this.drawString(this.fontRendererObj, connectedAt, this.width - 110, 18, -1);
 
-        this.dropdownUserAccount.drawDropdown(this.mc, partialTicks);
+        //this.dropdownUserAccount.drawDropdown(this.mc, partialTicks);
 
-        if(AVATAR_HEAD != null){
+        /*if(AVATAR_HEAD != null){
             GL11.glBindTexture(GL11.GL_TEXTURE_2D, AVATAR_HEAD.getGlTextureId());
             drawModalRectWithCustomSizedTexture(width - 130, 14, 0.0F, 0.0F, 16, 16, 16, 16);
-        }
+        }*/
 
         if (mouseX > this.width - this.fontRendererObj.getStringWidth(info) - 1 && mouseX < this.width - this.fontRendererObj.getStringWidth(info) - 1 + this.field_193978_M && mouseY > this.height - 10 && mouseY < this.height && Mouse.isInsideWindow())
         {
@@ -526,13 +526,13 @@ public class GuiMainMenu extends GuiScreen
             this.mc.displayGuiScreen(new GuiWinGame(false, Runnables.doNothing()));
         }
 
-        if (mouseX > this.width - 130 && mouseX < this.width - 40 && mouseY > 12 && mouseY < 32){
+        /*if (mouseX > this.width - 130 && mouseX < this.width - 40 && mouseY > 12 && mouseY < 32){
             loginSwitchAccountButton.playPressSound(this.mc.getSoundHandler());
             toggleChangeAccount();
-        }
+        }*/
     }
 
-    public void toggleChangeAccount(){
+   /* public void toggleChangeAccount(){
         showAccount = !showAccount;
         if(showAccount){
             leftSwitchAccountButton.visible =  (positionProfil != 0);
@@ -545,7 +545,7 @@ public class GuiMainMenu extends GuiScreen
             rightSwitchAccountButton.visible = false;
             loginSwitchAccountButton.visible = false;
         }
-    }
+    }*/
 
     /**
      * Called when the screen is unloaded. Used to disable keyboard repeat events
