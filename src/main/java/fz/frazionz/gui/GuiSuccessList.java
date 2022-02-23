@@ -34,6 +34,7 @@ public class GuiSuccessList extends GuiListExtended
         {
         	this.listEntries[i++] = new GuiSuccessList.SuccessEntry(item);
         }
+
     }
 
     protected int getSize()

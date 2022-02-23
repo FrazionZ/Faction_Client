@@ -30,8 +30,8 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
+import javax.swing.*;
 
-import fz.frazionz.gui.success.GuiSuccessType;
 import org.apache.commons.io.Charsets;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.Validate;
@@ -41,12 +41,7 @@ import org.lwjgl.LWJGLException;
 import org.lwjgl.Sys;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.ContextCapabilities;
-import org.lwjgl.opengl.Display;
-import org.lwjgl.opengl.DisplayMode;
-import org.lwjgl.opengl.GLContext;
-import org.lwjgl.opengl.OpenGLException;
-import org.lwjgl.opengl.PixelFormat;
+import org.lwjgl.opengl.*;
 import org.lwjgl.util.glu.GLU;
 
 import com.google.common.collect.Lists;
@@ -2564,7 +2559,8 @@ public class Minecraft implements IThreadListener, ISnooperInfo
         {
         	if(this.currentScreen == null) {
                 //this.displayGuiScreen(new GuiScreenAdvancements(this.player.connection.func_191982_f()));
-                this.displayGuiScreen(new GuiSuccessType(this.currentScreen, this));
+                //this.displayGuiScreen(new GuiSuccessType(this.currentScreen, this));
+                Sys.openURL("https://google.fr");
             }
         	else if(this.currentScreen instanceof GuiInventory) {       		
         	}

@@ -45,11 +45,9 @@ public class FzToast implements IToast {
         if (this.field_193663_g) {
             this.field_193663_g = false;
         }
-        p_193653_1_.setxAnimate(220.0F);
-        p_193653_1_.sethAnimate(35);
         p_193653_1_.func_192989_b().getTextureManager().bindTexture(toastFZ);
         GlStateManager.color(1.0F, 1.0F, 1.0F);
-        p_193653_1_.drawTexturedModalRect(0, 0, 0, 0, 220, 35);
+        p_193653_1_.drawTexturedModalRect(0, 0, 0, 0, 160, 32);
         p_193653_1_.func_192989_b().getTextureManager().bindTexture(logoFZ);
         GuiToast.drawModalRectWithCustomSizedTexture(this.icon.getxToast(), this.icon.getyToast(), 0.0F, 0.0F, this.icon.getW(), this.icon.getH(), this.icon.getW(), this.icon.getH());
         if (this.typeToast == SPacketToast.Type.SUCCESS) {
@@ -69,9 +67,9 @@ public class FzToast implements IToast {
             }
         } else if (this.typeToast == SPacketToast.Type.NORMAL) {
             p_193653_1_.func_192989_b();
-            Minecraft.fontRendererObj.drawScaleString(this.title, 50.0F, 8.0F, 1.2000000476837158D, Color.ORANGE);
+            Minecraft.fontRendererObj.drawScaleString(this.title, 40.0F, 8.0F, 1.2000000476837158D, Color.ORANGE);
             p_193653_1_.func_192989_b();
-            Minecraft.fontRendererObj.drawScaleString(this.subtitle, 50.0F, 20.0F, 0.8999999761581421D, Color.WHITE);
+            Minecraft.fontRendererObj.drawScaleString(this.subtitle, 40.0F, 20.0F, 0.8999999761581421D, Color.WHITE);
         }
         return (p_193653_2_ >= 5000L) ? IToast.Visibility.HIDE : IToast.Visibility.SHOW;
     }

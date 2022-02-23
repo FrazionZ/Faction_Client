@@ -130,7 +130,7 @@ public class GuiTextField extends Gui
     /**
      * Adds the given text after the cursor, or replaces the currently selected text if there is a selection.
      */
-    public void writeText(String textToWrite)
+    public void writeText(String textToWrite, boolean updateText)
     {
         String s = "";
         String s1 = ChatAllowedCharacters.filterAllowedCharacters(textToWrite);
@@ -163,7 +163,8 @@ public class GuiTextField extends Gui
 
         if (this.validator.apply(s))
         {
-            this.text = s;
+            if(updateText)
+                this.text = s;
             this.moveCursorBy(i - this.selectionEnd + l);
             this.func_190516_a(this.id, this.text);
         }
@@ -187,7 +188,7 @@ public class GuiTextField extends Gui
         {
             if (this.selectionEnd != this.cursorPosition)
             {
-                this.writeText("");
+                this.writeText("", true);
             }
             else
             {
@@ -206,7 +207,7 @@ public class GuiTextField extends Gui
         {
             if (this.selectionEnd != this.cursorPosition)
             {
-                this.writeText("");
+                this.writeText("", true);
             }
             else
             {
@@ -344,7 +345,7 @@ public class GuiTextField extends Gui
     /**
      * Call this method from your GuiScreen to process the keys into the textbox
      */
-    public boolean textboxKeyTyped(char typedChar, int keyCode)
+    public boolean textboxKeyTyped(char typedChar, int keyCode, boolean updateText)
     {
         if (!this.isFocused)
         {
@@ -365,7 +366,7 @@ public class GuiTextField extends Gui
         {
             if (this.isEnabled)
             {
-                this.writeText(GuiScreen.getClipboardString());
+                this.writeText(GuiScreen.getClipboardString(), true);
             }
 
             return true;
@@ -376,7 +377,7 @@ public class GuiTextField extends Gui
 
             if (this.isEnabled)
             {
-                this.writeText("");
+                this.writeText("", true);
             }
 
             return true;
@@ -490,7 +491,7 @@ public class GuiTextField extends Gui
                     {
                         if (this.isEnabled)
                         {
-                            this.writeText(Character.toString(typedChar));
+                            this.writeText(Character.toString(typedChar), updateText);
                         }
 
                         return true;

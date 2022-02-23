@@ -124,7 +124,7 @@ public class GuiRepair extends GuiContainer implements IContainerListener
      */
     protected void keyTyped(char typedChar, int keyCode) throws IOException
     {
-        if (this.nameField.textboxKeyTyped(typedChar, keyCode))
+        if (this.nameField.textboxKeyTyped(typedChar, keyCode, true))
         {
             this.renameItem();
         }

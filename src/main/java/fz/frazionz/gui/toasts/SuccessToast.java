@@ -43,18 +43,16 @@ public class SuccessToast implements IToast {
             this.field_193662_f = p_193653_2_;
             this.field_193663_g = false;
         }
-        fzGuiToast.setxAnimate(220.0F);
-        fzGuiToast.sethAnimate(42);
         fzGuiToast.func_192989_b().getTextureManager().bindTexture(toastFZ);
         GlStateManager.color(1.0F, 1.0F, 1.0F);
-        fzGuiToast.drawTexturedModalRect(0, 0, 0, 35, 220, 42);
+        fzGuiToast.drawTexturedModalRect(0, 0, 0, 32, 160, 32);
         if (this.icon != null) {
             fzGuiToast.func_192989_b().getTextureManager().bindTexture(toastFZ);
             GlStateManager.color(1.0F, 1.0F, 1.0F);
             fzGuiToast.drawTexturedModalRect(this.icon.getxToast(), this.icon.getyToast(), this.icon.getxTexture(), this.icon.getyTexture(), this.icon.getW(), this.icon.getH());
         } else {
             fzGuiToast.func_192989_b().getTextureManager().bindTexture(logoFZ);
-            GuiToast.drawModalRectWithCustomSizedTexture(190, 5, 0.0F, 0.0F, 24, 24, 24.0F, 24.0F);
+            GuiToast.drawModalRectWithCustomSizedTexture(132, 5, 0.0F, 0.0F, 24, 24, 24.0F, 24.0F);
         }
         String titleSuccess = "Succès Obtenu !";
 
@@ -63,14 +61,14 @@ public class SuccessToast implements IToast {
             if(keyBinding.getKeyDescription().equalsIgnoreCase("key.advancements"))
                 keySuccess = GameSettings.getKeyDisplayString(keyBinding.getKeyCode());
         String touchToShowSuccess = "Appuyez sur ("+keySuccess+") pour afficher";
-        Minecraft.fontRendererObj.drawScaleString(touchToShowSuccess, 4, 36, 0.7D, Color.WHITE);
-        Minecraft.fontRendererObj.drawScaleString(titleSuccess, 10.0F, 8.0F, 1.2D, Color.ORANGE);
+        Minecraft.fontRendererObj.drawScaleString(touchToShowSuccess, 4, 26, 0.7D, Color.WHITE);
+        Minecraft.fontRendererObj.drawScaleString(titleSuccess, 6.0F, 4.0F, 1.2D, Color.ORANGE);
         if (p_193653_2_ < 2000L) {
             fzGuiToast.func_192989_b();
-            Minecraft.fontRendererObj.drawScaleString(this.title, 10.0F, 20.0F, 0.8D, Color.WHITE);
+            Minecraft.fontRendererObj.drawScaleString(this.title, 6.0F, 14.0F, 0.8D, Color.WHITE);
         } else {
             fzGuiToast.func_192989_b();
-            Minecraft.fontRendererObj.drawScaleString(this.subtitle, 10.0F, 20.0F, 0.8D, Color.WHITE);
+            Minecraft.fontRendererObj.drawScaleString(this.subtitle, 6.0F, 14.0F, 0.8D, Color.WHITE);
         }
         return (p_193653_2_ >= 5000L) ? IToast.Visibility.HIDE : IToast.Visibility.SHOW;
     }

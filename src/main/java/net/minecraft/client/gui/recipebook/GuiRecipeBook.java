@@ -408,7 +408,7 @@ public class GuiRecipeBook extends Gui implements IRecipeUpdateListener
                 {
                     this.field_193962_q.setFocused(true);
                 }
-                else if (this.field_193962_q.textboxKeyTyped(p_191859_1_, p_191859_2_))
+                else if (this.field_193962_q.textboxKeyTyped(p_191859_1_, p_191859_2_, true))
                 {
                     String s1 = this.field_193962_q.getText().toLowerCase(Locale.ROOT);
                     this.func_193716_a(s1);

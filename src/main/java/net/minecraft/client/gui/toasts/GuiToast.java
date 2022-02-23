@@ -27,10 +27,6 @@ public class GuiToast extends Gui
         this.xAnimate = xAnimate;
     }
 
-    public void sethAnimate(int hAnimate) {
-        this.hAnimate = hAnimate;
-    }
-
     public GuiToast(Minecraft p_i47388_1_)
     {
         this.field_191790_f = p_i47388_1_;

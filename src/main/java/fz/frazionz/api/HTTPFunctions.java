@@ -104,6 +104,19 @@ public class HTTPFunctions {
 		return lst;
 	}
 
+	public static String getServerData(String ip, String port)
+	{
+
+		HTTPReply reply = HTTPUtils.sendGet(HTTPEndpoints.API_MOJANG_GET_ONLINE_PLAYERS+"/"+ip+"/"+port+"/json");
+		ServerData objs = null;
+		if(reply.getStatusCode() == 200)
+		{
+			objs = gson.fromJson(reply.getBody(), ServerData.class);
+		}
+		assert objs != null;
+		return objs.getOnline();
+	}
+
 	public static List<SuccessObj> getAllSuccessItemsPlayer(String idType)
 	{
 		List<SuccessObj> lst = new ArrayList<>();

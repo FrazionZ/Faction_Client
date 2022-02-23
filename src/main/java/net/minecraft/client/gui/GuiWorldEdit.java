@@ -94,7 +94,7 @@ public class GuiWorldEdit extends GuiScreen
      */
     protected void keyTyped(char typedChar, int keyCode) throws IOException
     {
-        this.nameEdit.textboxKeyTyped(typedChar, keyCode);
+        this.nameEdit.textboxKeyTyped(typedChar, keyCode, true);
         (this.buttonList.get(2)).enabled = !this.nameEdit.getText().trim().isEmpty();
 
         if (keyCode == 28 || keyCode == 156)

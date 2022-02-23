@@ -24,6 +24,7 @@ public class AdvancementToast implements IToast
 
     public IToast.Visibility func_193653_a(GuiToast p_193653_1_, long p_193653_2_)
     {
+
         p_193653_1_.func_192989_b().getTextureManager().bindTexture(field_193654_a);
         GlStateManager.color(1.0F, 1.0F, 1.0F);
         DisplayInfo displayinfo = this.field_193679_c.func_192068_c();

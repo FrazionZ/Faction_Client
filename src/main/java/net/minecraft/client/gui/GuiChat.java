@@ -2,9 +2,12 @@ package net.minecraft.client.gui;
 
 import java.io.IOException;
 import javax.annotation.Nullable;
+
+import fz.frazionz.utils.FzUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.toasts.IToast;
 import net.minecraft.client.gui.toasts.SystemToast;
+import net.minecraft.util.ChatAllowedCharacters;
 import net.minecraft.util.ITabCompleter;
 import net.minecraft.util.TabCompleter;
 import net.minecraft.util.math.BlockPos;
@@ -38,6 +41,10 @@ public class GuiChat extends GuiScreen implements ITabCompleter
      * is the text that appears when you press the chat key and the input box appears pre-filled
      */
     private String defaultInputFieldText = "";
+    private GuiButton guiButtonShowPassword;
+
+    private String showPasswordBtn = "AFF. LE MOT DE PASSE";
+    private String hidePasswordBtn = "CACHER LE MOT DE PASSE";
 
     public GuiChat()
     {
@@ -64,6 +71,9 @@ public class GuiChat extends GuiScreen implements ITabCompleter
         this.inputField.setCanLoseFocus(false);
         this.tabCompleter = new GuiChat.ChatTabCompleter(this.inputField);
         // C DROLE CA MERCI FLO this.mc.func_193033_an().func_192988_a(new SystemToast(SystemToast.Type.NARRATOR_TOGGLE, new TextComponentString("OK MEK"), new TextComponentString("BRUH")));
+        guiButtonShowPassword = new GuiButton(10, 8, this.height - 37, 135, 20, showPasswordBtn);
+        guiButtonShowPassword.visible = false;
+        this.buttonList.add(guiButtonShowPassword);
     }
 
     /**
@@ -87,10 +97,13 @@ public class GuiChat extends GuiScreen implements ITabCompleter
      * Fired when a key is typed (except F11 which toggles full screen). This is the equivalent of
      * KeyListener.keyTyped(KeyEvent e). Args : character (character on the key), keyCode (lwjgl Keyboard key code)
      */
+
+    private String pwordLogin = "";
+    private boolean showPassword = false;
+
     protected void keyTyped(char typedChar, int keyCode) throws IOException
     {
         this.tabCompleter.resetRequested();
-
         if (keyCode == 15)
         {
             this.tabCompleter.complete();
@@ -124,7 +137,26 @@ public class GuiChat extends GuiScreen implements ITabCompleter
             }
             else
             {
-                this.inputField.textboxKeyTyped(typedChar, keyCode);
+                if(this.inputField.getText().startsWith("/login ") || this.inputField.getText().startsWith("/register ")) {
+                    guiButtonShowPassword.visible = true;
+                    if(this.showPassword)
+                        this.inputField.textboxKeyTyped(typedChar, keyCode, true);
+                    else
+                        this.inputField.textboxKeyTyped((keyCode == 57) ? " ".charAt(0) : "*".charAt(0), keyCode, true);
+                    if(keyCode == 211 || keyCode == 14) {
+                        if (pwordLogin.length() > 0) {
+                            pwordLogin = FzUtils.removeLastChar(pwordLogin);
+                        }
+                    }else{
+                        if(ChatAllowedCharacters.isAllowedCharacter(typedChar))
+                            pwordLogin += Character.toString(typedChar);
+                    }
+                }else {
+                    this.inputField.textboxKeyTyped(typedChar, keyCode, true);
+                }
+
+                if(pwordLogin.length() <= 0)
+                    guiButtonShowPassword.visible = false;
             }
         }
         else
@@ -133,10 +165,30 @@ public class GuiChat extends GuiScreen implements ITabCompleter
 
             if (!s.isEmpty())
             {
-                this.sendChatMessage(s);
+                if(this.inputField.getText().startsWith("/login ") || this.inputField.getText().startsWith("/register "))
+                    this.sendChatMessage(this.inputField.getText().split(" ")[0]+" "+pwordLogin);
+                else
+                    this.sendChatMessage(s);
             }
 
             this.mc.displayGuiScreen((GuiScreen)null);
+        }
+    }
+
+    protected void actionPerformed(GuiButton button, int mouseButton) throws IOException
+    {
+        if(button.id == 10){
+            this.inputField.setText(this.inputField.getText().split(" ")[0]+" ");
+            this.showPassword = !this.showPassword;
+            if(this.showPassword){
+                guiButtonShowPassword.displayString = hidePasswordBtn;
+                for(char ch : pwordLogin.toCharArray())
+                    this.inputField.textboxKeyTyped(ch, 57, true);
+            }else{
+                guiButtonShowPassword.displayString = showPasswordBtn;
+                for(char ch : pwordLogin.toCharArray())
+                    this.inputField.textboxKeyTyped((String.valueOf(ch).equalsIgnoreCase(" ")) ? " ".charAt(0) : "*".charAt(0), 57, true);
+            }
         }
     }
 
@@ -199,7 +251,7 @@ public class GuiChat extends GuiScreen implements ITabCompleter
         }
         else
         {
-            this.inputField.writeText(newChatText);
+            this.inputField.writeText(newChatText, true);
         }
     }
 

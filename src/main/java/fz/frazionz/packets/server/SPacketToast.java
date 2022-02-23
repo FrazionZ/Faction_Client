@@ -74,7 +74,7 @@ public class SPacketToast implements Packet<INetHandlerPlayClient> {
 
     public enum Icon {
         LOGO(6, 5, 0, 0, 24, 24),
-        MOBS(190, 8, 0, 77, 24, 18);
+        MOBS(132, 8, 0, 64, 24, 18);
 
         private final int xToast;
 

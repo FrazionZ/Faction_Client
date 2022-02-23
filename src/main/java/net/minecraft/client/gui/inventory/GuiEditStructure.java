@@ -526,52 +526,52 @@ public class GuiEditStructure extends GuiScreen
     {
         if (this.nameEdit.getVisible() && isValidCharacterForName(typedChar, keyCode))
         {
-            this.nameEdit.textboxKeyTyped(typedChar, keyCode);
+            this.nameEdit.textboxKeyTyped(typedChar, keyCode, true);
         }
 
         if (this.posXEdit.getVisible())
         {
-            this.posXEdit.textboxKeyTyped(typedChar, keyCode);
+            this.posXEdit.textboxKeyTyped(typedChar, keyCode, true);
         }
 
         if (this.posYEdit.getVisible())
         {
-            this.posYEdit.textboxKeyTyped(typedChar, keyCode);
+            this.posYEdit.textboxKeyTyped(typedChar, keyCode, true);
         }
 
         if (this.posZEdit.getVisible())
         {
-            this.posZEdit.textboxKeyTyped(typedChar, keyCode);
+            this.posZEdit.textboxKeyTyped(typedChar, keyCode, true);
         }
 
         if (this.sizeXEdit.getVisible())
         {
-            this.sizeXEdit.textboxKeyTyped(typedChar, keyCode);
+            this.sizeXEdit.textboxKeyTyped(typedChar, keyCode, true);
         }
 
         if (this.sizeYEdit.getVisible())
         {
-            this.sizeYEdit.textboxKeyTyped(typedChar, keyCode);
+            this.sizeYEdit.textboxKeyTyped(typedChar, keyCode, true);
         }
 
         if (this.sizeZEdit.getVisible())
         {
-            this.sizeZEdit.textboxKeyTyped(typedChar, keyCode);
+            this.sizeZEdit.textboxKeyTyped(typedChar, keyCode, true);
         }
 
         if (this.integrityEdit.getVisible())
         {
-            this.integrityEdit.textboxKeyTyped(typedChar, keyCode);
+            this.integrityEdit.textboxKeyTyped(typedChar, keyCode, true);
         }
 
         if (this.seedEdit.getVisible())
         {
-            this.seedEdit.textboxKeyTyped(typedChar, keyCode);
+            this.seedEdit.textboxKeyTyped(typedChar, keyCode, true);
         }
 
         if (this.dataEdit.getVisible())
         {
-            this.dataEdit.textboxKeyTyped(typedChar, keyCode);
+            this.dataEdit.textboxKeyTyped(typedChar, keyCode, true);
         }
 
         if (keyCode == 15)

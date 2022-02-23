@@ -1,11 +1,8 @@
 package fz.frazionz;
 
-import fz.frazionz.api.HTTPFunctions;
 import fz.frazionz.api.data.PlayerDataStocker;
 import fz.frazionz.api.data.ShopAPIDataStocker;
 import fz.frazionz.api.data.SuccessAPIDataStocker;
-import fz.frazionz.api.gsonObj.BoutiqueType;
-import fz.frazionz.api.gsonObj.ShopType;
 import fz.frazionz.discord.DiscordRP;
 import fz.frazionz.event.EventManager;
 import fz.frazionz.event.EventTarget;
@@ -18,6 +15,7 @@ import net.minecraft.client.Minecraft;
 public class Client {
 
 	private static final Client INSTANCE = new Client();
+
 
 	public static final Client getInstance() {
 		return INSTANCE;
@@ -61,5 +59,5 @@ public class Client {
 			hudManager.openConfigScreen();			
 		}
 	}
-	
+
 }

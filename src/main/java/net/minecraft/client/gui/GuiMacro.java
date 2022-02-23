@@ -134,7 +134,7 @@ public class GuiMacro extends GuiScreen
     protected void keyTyped(char typedChar, int keyCode) throws IOException
     {
     	for(GuiTextField macroField : this.macroFields) {
-    		macroField.textboxKeyTyped(typedChar, keyCode);
+    		macroField.textboxKeyTyped(typedChar, keyCode, true);
     	}
 
         if (keyCode == 1)

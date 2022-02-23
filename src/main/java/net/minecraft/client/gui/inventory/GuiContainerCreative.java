@@ -356,7 +356,7 @@ public class GuiContainerCreative extends InventoryEffectRenderer
 
             if (!this.checkHotbarKeys(keyCode))
             {
-                if (this.searchField.textboxKeyTyped(typedChar, keyCode))
+                if (this.searchField.textboxKeyTyped(typedChar, keyCode, true))
                 {
                     this.updateCreativeSearch();
                 }

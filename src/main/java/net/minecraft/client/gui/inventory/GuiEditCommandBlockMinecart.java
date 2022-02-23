@@ -133,8 +133,8 @@ public class GuiEditCommandBlockMinecart extends GuiScreen implements ITabComple
             this.tabCompleter.resetDidComplete();
         }
 
-        this.commandField.textboxKeyTyped(typedChar, keyCode);
-        this.previousEdit.textboxKeyTyped(typedChar, keyCode);
+        this.commandField.textboxKeyTyped(typedChar, keyCode, true);
+        this.previousEdit.textboxKeyTyped(typedChar, keyCode, true);
         this.doneButton.enabled = !this.commandField.getText().trim().isEmpty();
 
         if (keyCode != 28 && keyCode != 156)

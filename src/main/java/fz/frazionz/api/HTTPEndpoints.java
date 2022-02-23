@@ -15,4 +15,6 @@ public class HTTPEndpoints {
 	public static final String SUCCESS_TYPES_LIST = WEBSITE_API_BASE + "success/types";
 	public static final String SUCCESS_OBJ_LIST = WEBSITE_API_BASE + "success/player/";
 
+	public static final String API_MOJANG_GET_ONLINE_PLAYERS = "https://minecraft-api.com/api/ping/online/";
+
 }

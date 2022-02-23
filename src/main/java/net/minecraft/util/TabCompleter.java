@@ -57,7 +57,7 @@ public abstract class TabCompleter
             this.textField.deleteFromCursor(i - this.textField.getCursorPosition());
         }
 
-        this.textField.writeText(this.completions.get(this.completionIdx++));
+        this.textField.writeText(this.completions.get(this.completionIdx++), true);
     }
 
     private void requestCompletions(String prefix)
@@ -97,7 +97,7 @@ public abstract class TabCompleter
             {
                 this.textField.deleteFromCursor(0);
                 this.textField.deleteFromCursor(this.textField.getNthWordFromPosWS(-1, this.textField.getCursorPosition(), false) - this.textField.getCursorPosition());
-                this.textField.writeText(s2);
+                this.textField.writeText(s2, true);
             }
             else if (!this.completions.isEmpty())
             {

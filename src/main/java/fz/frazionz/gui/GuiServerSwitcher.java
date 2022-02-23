@@ -1,15 +1,17 @@
 package fz.frazionz.gui;
 
 import java.io.IOException;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.*;
 
+import fz.frazionz.api.HTTPFunctions;
 import fz.frazionz.packets.client.CPacketServerSwitch;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.util.ResourceLocation;
 
 public class GuiServerSwitcher extends GuiScreen {
@@ -23,7 +25,9 @@ public class GuiServerSwitcher extends GuiScreen {
 	private final int ySize = 210;
 	private int guiLeft;
 	private int guiTop;
-	
+	private String factionCountPlayer = "-";
+	private String minageCountPlayer = "-";
+
 	public GuiServerSwitcher(GuiScreen lastScreen, Minecraft mc) {
 		this.lastScreen = lastScreen;
 		this.mc = mc;
@@ -32,11 +36,29 @@ public class GuiServerSwitcher extends GuiScreen {
 	public void initGui() {
 		guiLeft = (this.width - this.xSize) / 2;
 		guiTop = (this.height - this.ySize) / 2;
-		// Faction
-		this.buttonList.add(new SwitcherButton(0, (this.width / 2) - 103, (this.height / 2) - 59, 85, 142, 0, 352, this.SERVER_SWITCHER_RESOURCE));
-		// Minage
-		this.buttonList.add(new SwitcherButton(1, (this.width / 2) + 23, (this.height / 2) - 59, 85, 142, 0, 210, this.SERVER_SWITCHER_RESOURCE));
-		
+
+		String ip = "185.157.246.85";
+
+		SwitcherButton faction = new SwitcherButton(0, (this.width / 2) - 103, (this.height / 2) - 59, 85, 142, 0, 352, this.SERVER_SWITCHER_RESOURCE, factionCountPlayer, this.fontRendererObj);
+		SwitcherButton minage  = new SwitcherButton(1, (this.width / 2) + 23, (this.height / 2) - 59, 85, 142, 0, 210, this.SERVER_SWITCHER_RESOURCE, minageCountPlayer, this.fontRendererObj);
+		this.buttonList.add(faction);
+		this.buttonList.add(minage);
+
+		Timer timer = new Timer();
+		timer.scheduleAtFixedRate(new TimerTask() {
+			@Override
+			public void run() {
+				Executors.newCachedThreadPool().submit(new Runnable() {
+					@Override
+					public void run() {
+						faction.setServerCount(HTTPFunctions.getServerData(ip, "25566"));
+						minage.setServerCount(HTTPFunctions.getServerData(ip, "25565"));
+					}
+				});
+			}
+
+		}, 0, 2500);
+
 		super.initGui();
 	}
 	
@@ -87,8 +109,10 @@ public class GuiServerSwitcher extends GuiScreen {
 	    private final ResourceLocation resourceLocation;
 	    private final int textureX;
 	    private final int textureY;
+	    private final FontRenderer fontRenderer;
+		private String serverCount;
 
-	    public SwitcherButton(int buttonId, int x, int y, int widthIn, int heightIn, int textureX, int textureY, ResourceLocation resourceLocation)
+	    public SwitcherButton(int buttonId, int x, int y, int widthIn, int heightIn, int textureX, int textureY, ResourceLocation resourceLocation, String serverCount, FontRenderer fontRenderer)
 	    {
 	        super(buttonId, x, y, widthIn, heightIn, "");
 	        this.width = widthIn;
@@ -96,10 +120,15 @@ public class GuiServerSwitcher extends GuiScreen {
 	        this.textureX = textureX;
 	        this.textureY = textureY;
 	        this.resourceLocation = resourceLocation;
+			this.fontRenderer = fontRenderer;
+			this.serverCount = serverCount;
 	    }
-	    
-	    
-	    public void func_191745_a(Minecraft mc, int mouseX, int mouseY, float p_191745_4_)
+
+		public void setServerCount(String serverCount) {
+			this.serverCount = serverCount;
+		}
+
+		public void func_191745_a(Minecraft mc, int mouseX, int mouseY, float p_191745_4_)
 	    {
 	        if (this.visible)
 	        {	    
@@ -113,12 +142,14 @@ public class GuiServerSwitcher extends GuiScreen {
 	            int i = this.textureX;
 	            int j = this.textureY;
 	            
-	            if (this.hovered)
-	            {
+	            if (this.hovered) {
 	            	i += 85;
 	            }
 	            
 	            this.drawModalRectWithCustomSizedTexture(this.xPosition, this.yPosition, i, j, this.width, this.height,  512.0F, 512.0F);
+				this.drawString(fontRenderer, ((serverCount.equalsIgnoreCase("-")) ? "Recherche.." : serverCount+" Joueur(s)"), this.xPosition+12, this.yPosition + this.height - 17, -1);
+
+
 	            this.mouseDragged(mc, mouseX, mouseY);
 	        }
 	    }

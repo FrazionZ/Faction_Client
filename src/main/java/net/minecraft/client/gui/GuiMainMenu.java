@@ -17,6 +17,7 @@ import fz.frazionz.gui.toasts.FzToast;
 import fz.frazionz.gui.toasts.SuccessToast;
 import fz.frazionz.packets.server.SPacketToast;
 import fz.frazionz.utils.FzUtils;
+import net.minecraft.client.gui.toasts.SystemToast;
 import net.minecraft.util.Session;
 import net.minecraft.util.text.TextComponentString;
 import org.apache.commons.io.IOUtils;

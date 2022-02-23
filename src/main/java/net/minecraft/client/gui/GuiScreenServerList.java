@@ -77,7 +77,7 @@ public class GuiScreenServerList extends GuiScreen
      */
     protected void keyTyped(char typedChar, int keyCode) throws IOException
     {
-        if (this.ipEdit.textboxKeyTyped(typedChar, keyCode))
+        if (this.ipEdit.textboxKeyTyped(typedChar, keyCode, true))
         {
             (this.buttonList.get(0)).enabled = !this.ipEdit.getText().isEmpty() && this.ipEdit.getText().split(":").length > 0;
         }

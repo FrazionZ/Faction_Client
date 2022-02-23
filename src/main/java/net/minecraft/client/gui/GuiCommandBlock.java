@@ -183,8 +183,8 @@ public class GuiCommandBlock extends GuiScreen implements ITabCompleter
             this.tabCompleter.resetDidComplete();
         }
 
-        this.commandTextField.textboxKeyTyped(typedChar, keyCode);
-        this.previousOutputTextField.textboxKeyTyped(typedChar, keyCode);
+        this.commandTextField.textboxKeyTyped(typedChar, keyCode, true);
+        this.previousOutputTextField.textboxKeyTyped(typedChar, keyCode, true);
 
         if (keyCode != 28 && keyCode != 156)
         {
