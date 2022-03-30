@@ -93,7 +93,7 @@ public class GuiFlatPresets extends GuiScreen
      */
     protected void keyTyped(char typedChar, int keyCode) throws IOException
     {
-        if (!this.export.textboxKeyTyped(typedChar, keyCode, true))
+        if (!this.export.textboxKeyTyped(typedChar, keyCode))
         {
             super.keyTyped(typedChar, keyCode);
         }

@@ -17,8 +17,8 @@ import org.lwjgl.input.Keyboard;
 public class GuiCommandBlock extends GuiScreen implements ITabCompleter
 {
     /** Text field containing the command block's command. */
-    private GuiTextField commandTextField;
-    private GuiTextField previousOutputTextField;
+    private GuiChatTextField commandTextField;
+    private GuiChatTextField previousOutputTextField;
     private final TileEntityCommandBlock commandBlock;
 
     /** "Done" button for the GUI. */
@@ -62,10 +62,10 @@ public class GuiCommandBlock extends GuiScreen implements ITabCompleter
         this.modeBtn = this.addButton(new GuiButton(5, this.width / 2 - 50 - 100 - 4, 165, 100, 20, I18n.format("advMode.mode.sequence")));
         this.conditionalBtn = this.addButton(new GuiButton(6, this.width / 2 - 50, 165, 100, 20, I18n.format("advMode.mode.unconditional")));
         this.autoExecBtn = this.addButton(new GuiButton(7, this.width / 2 + 50 + 4, 165, 100, 20, I18n.format("advMode.mode.redstoneTriggered")));
-        this.commandTextField = new GuiTextField(2, this.fontRendererObj, this.width / 2 - 150, 50, 300, 20);
+        this.commandTextField = new GuiChatTextField(2, this.fontRendererObj, this.width / 2 - 150, 50, 300, 20);
         this.commandTextField.setMaxStringLength(32500);
         this.commandTextField.setFocused(true);
-        this.previousOutputTextField = new GuiTextField(3, this.fontRendererObj, this.width / 2 - 150, 135, 276, 20);
+        this.previousOutputTextField = new GuiChatTextField(3, this.fontRendererObj, this.width / 2 - 150, 135, 276, 20);
         this.previousOutputTextField.setMaxStringLength(32500);
         this.previousOutputTextField.setEnabled(false);
         this.previousOutputTextField.setText("-");

@@ -34,7 +34,7 @@ public class RealmsEditBox
 
     public void keyPressed(char p_keyPressed_1_, int p_keyPressed_2_)
     {
-        this.editBox.textboxKeyTyped(p_keyPressed_1_, p_keyPressed_2_, true);
+        this.editBox.textboxKeyTyped(p_keyPressed_1_, p_keyPressed_2_);
     }
 
     public boolean isFocused()

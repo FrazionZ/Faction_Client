@@ -35,7 +35,7 @@ public class IntIdentityHashBiMap<K> implements IObjectIntIterable<K>
         return (K)(idIn >= 0 && idIn < this.byId.length ? this.byId[idIn] : null);
     }
 
-    private int getValue(int p_186805_1_)
+    public int getValue(int p_186805_1_)
     {
         return p_186805_1_ == -1 ? -1 : this.intKeys[p_186805_1_];
     }
@@ -187,4 +187,5 @@ public class IntIdentityHashBiMap<K> implements IObjectIntIterable<K>
     {
         return this.mapSize;
     }
+
 }

@@ -1,11 +1,14 @@
 package fz.frazionz.gui;
 
 import java.io.IOException;
+import java.util.concurrent.Executors;
 
+import fz.frazionz.Client;
 import fz.frazionz.api.data.ShopAPIDataStocker;
 import fz.frazionz.api.gsonObj.ShopItem;
 import fz.frazionz.data.FzUserData;
 import fz.frazionz.packets.client.CPacketShopTrade;
+import fz.frazionz.utils.FzUtils;
 import fz.frazionz.utils.MathUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
@@ -59,7 +62,14 @@ public class GuiShopItemSelect extends GuiScreen {
 		
 		this.buttonList.add(new GuiButtonImage(6, "", this.width / 2 + 32 + 100, this.guiTop + 75, 25, 25, 275, 311, true, background));
 		this.buttonList.add(new GuiButtonImage(7, "", this.width / 2 + 32, this.guiTop + 75, 25, 25, 300, 311, true, background));
-		
+
+		Executors.newCachedThreadPool().submit(new Runnable() {
+			@Override
+			public void run() {
+				Client.getInstance().updateFProfile();
+			}
+		});
+
 		super.initGui();
 	}
 	
@@ -129,7 +139,14 @@ public class GuiShopItemSelect extends GuiScreen {
         this.fontRendererObj.drawString(itemStack.getDisplayName(), this.width / 2 - this.fontRendererObj.getStringWidth(itemStack.getDisplayName()) / 2, this.guiTop + 12, 16777215, true);
         
         // Draw More Information
-        String s = "\u00A76M\u00A7foney : " + MathUtils.roundAvoid((double) FzUserData.EnumUserData.MONEY.getValue(), 2) + " $";
+		String money = null;
+		if(Client.getInstance().getFactionProfile() != null) {
+			money = Client.getInstance().getFactionProfile().getMoney();
+			if (money == null)
+				money = "N/A";
+		}else
+			money = "N/A";
+		String s = "\u00A76M\u00A7foney : " + FzUtils.conversMoney(money) + " Coins";
         this.fontRendererObj.drawString(s, this.width / 2 - this.fontRendererObj.getStringWidth(s) / 2, this.guiTop + this.ySize - 22, 16777215, true);
         // 92 = (368 / 4) = taille du background gris
         this.fontRendererObj.drawString("Vente", this.width / 2 + 61 + 67/2 - (this.fontRendererObj.getStringWidth("Vente") / 2 ), this.guiTop + 52, 16777215, true);

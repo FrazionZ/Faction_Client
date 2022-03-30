@@ -5,10 +5,8 @@ import com.google.common.primitives.Floats;
 import java.io.IOException;
 import java.util.Random;
 import javax.annotation.Nullable;
-import net.minecraft.client.renderer.BufferBuilder;
+
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.init.Biomes;
 import net.minecraft.util.math.MathHelper;

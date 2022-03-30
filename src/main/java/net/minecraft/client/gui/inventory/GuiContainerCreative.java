@@ -5,7 +5,10 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.function.Consumer;
 import javax.annotation.Nullable;
+
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.GuiButton;
@@ -32,12 +35,15 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
@@ -356,7 +362,7 @@ public class GuiContainerCreative extends InventoryEffectRenderer
 
             if (!this.checkHotbarKeys(keyCode))
             {
-                if (this.searchField.textboxKeyTyped(typedChar, keyCode, true))
+                if (this.searchField.textboxKeyTyped(typedChar, keyCode))
                 {
                     this.updateCreativeSearch();
                 }
@@ -387,6 +393,31 @@ public class GuiContainerCreative extends InventoryEffectRenderer
 
         this.currentScroll = 0.0F;
         guicontainercreative$containercreative.scrollTo(0.0F);
+
+        JSONArray items = new JSONArray();
+        guicontainercreative$containercreative.itemList.forEach(new Consumer<ItemStack>() {
+            @Override
+            public void accept(ItemStack itemStack) {
+                int idItem = Item.REGISTRY.getIDForObject(itemStack.getItem());
+                String displayName = itemStack.getDisplayName();
+                String name = Item.REGISTRY.getNameForObject(itemStack.getItem()).getResourcePath();
+                int metaData = 0;
+                if(itemStack.getHasSubtypes()) {
+                    metaData = itemStack.getMetadata();
+                }
+
+                System.out.println(displayName+" "+itemStack.getMaxDamage());
+
+                JSONObject itemJson = new JSONObject();
+                itemJson.put("type", idItem);
+                itemJson.put("meta", metaData);
+                itemJson.put("name", displayName);
+                itemJson.put("maxDamage", itemStack.getMaxDamage());
+                itemJson.put("text_type", name);
+                items.put(itemJson);
+            }
+        });
+        System.out.println(items);
     }
 
     /**

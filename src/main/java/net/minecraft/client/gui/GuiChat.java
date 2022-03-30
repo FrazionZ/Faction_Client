@@ -5,8 +5,6 @@ import javax.annotation.Nullable;
 
 import fz.frazionz.utils.FzUtils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.toasts.IToast;
-import net.minecraft.client.gui.toasts.SystemToast;
 import net.minecraft.util.ChatAllowedCharacters;
 import net.minecraft.util.ITabCompleter;
 import net.minecraft.util.TabCompleter;
@@ -19,8 +17,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
-
-import com.ibm.icu.util.TimeZone.SystemTimeZoneType;
 
 public class GuiChat extends GuiScreen implements ITabCompleter
 {
@@ -35,7 +31,7 @@ public class GuiChat extends GuiScreen implements ITabCompleter
     private TabCompleter tabCompleter;
 
     /** Chat entry field */
-    protected GuiTextField inputField;
+    protected GuiChatTextField inputField;
 
     /**
      * is the text that appears when you press the chat key and the input box appears pre-filled
@@ -63,7 +59,7 @@ public class GuiChat extends GuiScreen implements ITabCompleter
     {
         Keyboard.enableRepeatEvents(true);
         this.sentHistoryCursor = this.mc.ingameGUI.getChatGUI().getSentMessages().size();
-        this.inputField = new GuiTextField(0, this.fontRendererObj, 4, this.height - 12, this.width - 4, 12);
+        this.inputField = new GuiChatTextField(0, this.fontRendererObj, 4, this.height - 12, this.width - 4, 12);
         this.inputField.setMaxStringLength(256);
         this.inputField.setEnableBackgroundDrawing(false);
         this.inputField.setFocused(true);
@@ -322,7 +318,7 @@ public class GuiChat extends GuiScreen implements ITabCompleter
     {
         private final Minecraft clientInstance = Minecraft.getMinecraft();
 
-        public ChatTabCompleter(GuiTextField p_i46749_1_)
+        public ChatTabCompleter(GuiChatTextField p_i46749_1_)
         {
             super(p_i46749_1_, false);
         }

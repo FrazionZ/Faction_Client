@@ -4,6 +4,7 @@ import io.netty.buffer.Unpooled;
 import java.io.IOException;
 import javax.annotation.Nullable;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiChatTextField;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.resources.I18n;
@@ -18,8 +19,8 @@ import org.lwjgl.input.Keyboard;
 
 public class GuiEditCommandBlockMinecart extends GuiScreen implements ITabCompleter
 {
-    private GuiTextField commandField;
-    private GuiTextField previousEdit;
+    private GuiChatTextField commandField;
+    private GuiChatTextField previousEdit;
     private final CommandBlockBaseLogic commandBlockLogic;
     private GuiButton doneButton;
     private GuiButton cancelButton;
@@ -51,11 +52,11 @@ public class GuiEditCommandBlockMinecart extends GuiScreen implements ITabComple
         this.doneButton = this.addButton(new GuiButton(0, this.width / 2 - 4 - 150, this.height / 4 + 120 + 12, 150, 20, I18n.format("gui.done")));
         this.cancelButton = this.addButton(new GuiButton(1, this.width / 2 + 4, this.height / 4 + 120 + 12, 150, 20, I18n.format("gui.cancel")));
         this.outputButton = this.addButton(new GuiButton(4, this.width / 2 + 150 - 20, 150, 20, 20, "O"));
-        this.commandField = new GuiTextField(2, this.fontRendererObj, this.width / 2 - 150, 50, 300, 20);
+        this.commandField = new GuiChatTextField(2, this.fontRendererObj, this.width / 2 - 150, 50, 300, 20);
         this.commandField.setMaxStringLength(32500);
         this.commandField.setFocused(true);
         this.commandField.setText(this.commandBlockLogic.getCommand());
-        this.previousEdit = new GuiTextField(3, this.fontRendererObj, this.width / 2 - 150, 150, 276, 20);
+        this.previousEdit = new GuiChatTextField(3, this.fontRendererObj, this.width / 2 - 150, 150, 276, 20);
         this.previousEdit.setMaxStringLength(32500);
         this.previousEdit.setEnabled(false);
         this.previousEdit.setText("-");

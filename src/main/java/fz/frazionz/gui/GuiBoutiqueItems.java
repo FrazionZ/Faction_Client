@@ -1,9 +1,12 @@
 package fz.frazionz.gui;
 
 import java.io.IOException;
+import java.util.concurrent.Executors;
 
+import fz.frazionz.Client;
 import fz.frazionz.api.gsonObj.BoutiqueType;
 import fz.frazionz.data.FzUserData;
+import fz.frazionz.utils.FzUtils;
 import fz.frazionz.utils.MathUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
@@ -43,7 +46,14 @@ public class GuiBoutiqueItems extends GuiScreen {
 		
         this.boutiqueTypeList = new GuiBoutiqueItemsList(this, this.type, this.mc, this.guiLeft, this.guiLeft + this.xSize, this.guiTop + 45, this.guiTop + this.ySize - 38, 36, 4);
         this.buttonList.add(new GuiButtonOnlyImage(50, this.guiLeft + 10, this.guiTop + 5, 21, 20, 388, 0, 0, background));
-        
+
+        Executors.newCachedThreadPool().submit(new Runnable() {
+            @Override
+            public void run() {
+                Client.getInstance().updateFProfile();
+            }
+        });
+
 		super.initGui();
 	}
 	
@@ -74,8 +84,15 @@ public class GuiBoutiqueItems extends GuiScreen {
 		this.drawBackgroundImage();
         this.boutiqueTypeList.drawScreen(mouseX, mouseY, partialTicks);
         this.drawTopList();
-        
-        String s = "\u00A76M\u00A7foney : " + MathUtils.roundAvoid((double) FzUserData.EnumUserData.MONEY.getValue(), 2) + " $";
+
+        String money = null;
+        if(Client.getInstance().getFactionProfile() != null) {
+            money = Client.getInstance().getFactionProfile().getMoney();
+            if (money == null)
+                money = "N/A";
+        }else
+            money = "N/A";
+        String s = "\u00A76M\u00A7foney : " + FzUtils.conversMoney(money) + " Coins";
         this.fontRendererObj.drawString(s, this.width / 2 - this.fontRendererObj.getStringWidth(s) / 2, this.guiTop + this.ySize - 22, 16777215, true);
         this.fontRendererObj.drawString(this.type.getTypeName(), this.width / 2 - this.fontRendererObj.getStringWidth(this.type.getTypeName()) / 2, this.guiTop + 12, 16777215, true);
         

@@ -449,12 +449,12 @@ public class GuiCreateWorld extends GuiScreen
     {
         if (this.worldNameField.isFocused() && !this.inMoreWorldOptionsDisplay)
         {
-            this.worldNameField.textboxKeyTyped(typedChar, keyCode, true);
+            this.worldNameField.textboxKeyTyped(typedChar, keyCode);
             this.worldName = this.worldNameField.getText();
         }
         else if (this.worldSeedField.isFocused() && this.inMoreWorldOptionsDisplay)
         {
-            this.worldSeedField.textboxKeyTyped(typedChar, keyCode, true);
+            this.worldSeedField.textboxKeyTyped(typedChar, keyCode);
             this.worldSeed = this.worldSeedField.getText();
         }
 

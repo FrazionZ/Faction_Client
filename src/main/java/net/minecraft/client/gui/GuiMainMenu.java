@@ -1,47 +1,37 @@
 package net.minecraft.client.gui;
 
-import java.awt.image.BufferedImage;
+import java.awt.*;
 import java.io.*;
 import java.net.URI;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
+import java.text.NumberFormat;
+import java.util.*;
+import java.util.function.Consumer;
 
 import fz.frazionz.api.data.PlayerDataStocker;
-import fz.frazionz.api.gsonObj.ProfilItem;
-import fz.frazionz.gui.GuiButtonImage;
 import fz.frazionz.gui.GuiDropdown;
-import fz.frazionz.gui.GuiShopItemsList;
-import fz.frazionz.gui.toasts.FzToast;
-import fz.frazionz.gui.toasts.SuccessToast;
-import fz.frazionz.packets.server.SPacketToast;
 import fz.frazionz.utils.FzUtils;
-import net.minecraft.client.gui.toasts.SystemToast;
-import net.minecraft.util.Session;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.block.Block;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GLContext;
 
-import com.google.common.base.Strings;
-import com.google.common.collect.Lists;
 import com.google.common.util.concurrent.Runnables;
 
 import fz.frazionz.Client;
 import fz.frazionz.forgemods.smoothscrollingeverywhere.RunSixtyTimesEverySec;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.multiplayer.GuiConnecting;
-import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.DynamicTexture;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.resources.IResource;
 import net.minecraft.client.settings.GameSettings;
@@ -49,11 +39,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StringUtils;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.storage.ISaveFormat;
-import optifine.CustomPanorama;
-import optifine.CustomPanoramaProperties;
-import optifine.Reflector;
-
-import javax.imageio.ImageIO;
 
 public class GuiMainMenu extends GuiScreen
 {	
@@ -115,7 +100,7 @@ public class GuiMainMenu extends GuiScreen
     private static final ResourceLocation MINECRAFT_TITLE_TEXTURES = new ResourceLocation("textures/gui/title/background/fz_logo.png");
     private static final ResourceLocation field_194400_H = new ResourceLocation("textures/gui/title/background/fz_logo.png");
     private static final ResourceLocation INTERFACE_BACKGROUND_FZ = new ResourceLocation("textures/gui/frazionz/interface_background.png");
-    //private static DynamicTexture AVATAR_HEAD;
+    private static DynamicTexture AVATAR_HEAD;
 
     private float i = 0;
     private boolean boolI = false;
@@ -236,6 +221,8 @@ public class GuiMainMenu extends GuiScreen
     
     public void initGui()
     {
+        Client.getInstance().updateFProfile();
+
     	int width = this.width/5;
     	int height = this.height / 19;
     	int h = height + height/3;
@@ -247,15 +234,12 @@ public class GuiMainMenu extends GuiScreen
     		this.mc.fontrendererTitle = new fz.frazionz.gui.renderer.fonts.FontRenderer(this.mc.FONT_LOCATION, (float) (height*1.5));
     	}
 
-        /*try {
+        try {
             AVATAR_HEAD = new DynamicTexture(this.getDynamicTextureFromUrl(new File(FzUtils.getLauncherDir(), "avatars/"+this.mc.getSession().getPlayerID()+".png")));
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
-
-        positionProfil = 0;
+        /*positionProfil = 0;
         currentProfileItem = PlayerDataStocker.getPlayer(positionProfil);*/
 
         Client.getInstance().getDiscordRP().update("Menu Principal", "www.frazionz.net");
@@ -267,8 +251,8 @@ public class GuiMainMenu extends GuiScreen
         calendar.setTime(new Date());
         this.addAllButtons(width, height, h);
 
-        /*connectedAt = this.mc.getSession().getUsername();
-        xInfosUser = this.width - this.fontRendererObj.getStringWidth(connectedAt);
+        connectedAt = this.mc.getSession().getUsername();
+        /*xInfosUser = this.width - this.fontRendererObj.getStringWidth(connectedAt);
         dropdownUserAccount = new GuiDropdown(this.mc, xInfosUser - 42, 35, this.width -10, 100);*/
 
         synchronized (this.threadLock)
@@ -280,6 +264,15 @@ public class GuiMainMenu extends GuiScreen
             this.openGLWarningX2 = this.openGLWarningX1 + k;
             this.openGLWarningY2 = this.openGLWarningY1 + 24;
         }
+
+        Item.REGISTRY.iterator().forEachRemaining(new Consumer<Item>() {
+            @Override
+            public void accept(Item item) {
+                ItemStack itemStack = item.func_190903_i();
+                int idItem = Item.REGISTRY.getIDForObject(item);
+                System.out.println(itemStack.getDisplayName()+" "+idItem);
+            }
+        });
     }
 
     /**
@@ -350,17 +343,6 @@ public class GuiMainMenu extends GuiScreen
                break;*/
        }    	
     }
-
-    /*public void changeProfile(ProfilItem profilItem){
-        currentProfileItem = profilItem;
-        connectedAt = currentProfileItem.getUsername();
-        try {
-            AVATAR_HEAD = new DynamicTexture(this.getDynamicTextureFromUrl(new File(FzUtils.getLauncherDir(), "avatars/"+currentProfileItem.getUuid()+".png")));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        loginSwitchAccountButton.visible = !currentProfileItem.getUuid().equalsIgnoreCase(this.mc.getSession().getPlayerID());
-    }*/
 
     public void confirmClicked(boolean result, int id)
     {
@@ -470,16 +452,31 @@ public class GuiMainMenu extends GuiScreen
         this.drawString(this.fontRendererObj, info, this.width - this.fontRendererObj.getStringWidth(info) - 1, this.height - 10, -1);
 
         this.field_193978_M = this.fontRendererObj.getStringWidth("Copyright Mojang AB. Do not distribute!");
-        //this.drawGradientRoundedButton(this.width - 130, 12, this.width - 40, 32, this.FIRST_GRADIENT_COLOR, this.SECOND_GRADIENT_COLOR);
+        this.drawGradientRoundedButton(this.width - 145, 12, this.width - 40, 38, this.FIRST_GRADIENT_COLOR, this.SECOND_GRADIENT_COLOR);
 
-        //this.drawString(this.fontRendererObj, connectedAt, this.width - 110, 18, -1);
+        Locale usa = new Locale("en", "US");
+        Currency dollars = Currency.getInstance(usa);
+        NumberFormat dollarFormat = NumberFormat.getCurrencyInstance(usa);
+
+        String money = null;
+        if(Client.getInstance().getFactionProfile() == null)
+            this.fontRendererObj.drawScaleString(connectedAt, this.width - 125, 20, 1.2, Color.white);
+        else {
+            money = Client.getInstance().getFactionProfile().getMoney();
+            if (money == null)
+                this.fontRendererObj.drawScaleString(connectedAt, this.width - 125, 20, 1.2, Color.white);
+            this.fontRendererObj.drawScaleString(connectedAt, this.width - 120, 17, 1.2, Color.white);
+            this.fontRendererObj.drawScaleString(FzUtils.conversMoney(money)+" Coins", this.width - 120, 28, 0.8, Color.white);
+        }
 
         //this.dropdownUserAccount.drawDropdown(this.mc, partialTicks);
 
-        /*if(AVATAR_HEAD != null){
+        if(AVATAR_HEAD != null){
             GL11.glBindTexture(GL11.GL_TEXTURE_2D, AVATAR_HEAD.getGlTextureId());
-            drawModalRectWithCustomSizedTexture(width - 130, 14, 0.0F, 0.0F, 16, 16, 16, 16);
-        }*/
+            int size = ((money == null) ? 16 : 20);
+            int y = ((money == null) ? 17 : 15);
+            drawModalRectWithCustomSizedTexture(width - 145, y, 0.0F, 0.0F, size, size, size, size);
+        }
 
         if (mouseX > this.width - this.fontRendererObj.getStringWidth(info) - 1 && mouseX < this.width - this.fontRendererObj.getStringWidth(info) - 1 + this.field_193978_M && mouseY > this.height - 10 && mouseY < this.height && Mouse.isInsideWindow())
         {

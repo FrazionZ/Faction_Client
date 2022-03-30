@@ -6,8 +6,6 @@ import it.unimi.dsi.fastutil.objects.ObjectSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
 import javax.annotation.Nullable;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
@@ -408,7 +406,7 @@ public class GuiRecipeBook extends Gui implements IRecipeUpdateListener
                 {
                     this.field_193962_q.setFocused(true);
                 }
-                else if (this.field_193962_q.textboxKeyTyped(p_191859_1_, p_191859_2_, true))
+                else if (this.field_193962_q.textboxKeyTyped(p_191859_1_, p_191859_2_))
                 {
                     String s1 = this.field_193962_q.getText().toLowerCase(Locale.ROOT);
                     this.func_193716_a(s1);

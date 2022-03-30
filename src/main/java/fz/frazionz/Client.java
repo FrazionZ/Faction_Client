@@ -1,5 +1,7 @@
 package fz.frazionz;
 
+import fz.frazionz.api.HTTPFunctions;
+import fz.frazionz.api.data.FactionProfile;
 import fz.frazionz.api.data.PlayerDataStocker;
 import fz.frazionz.api.data.ShopAPIDataStocker;
 import fz.frazionz.api.data.SuccessAPIDataStocker;
@@ -24,6 +26,8 @@ public class Client {
 	private DiscordRP discordRP = new DiscordRP();
 	
 	private HUDManager hudManager;
+
+	private FactionProfile factionProfile;
 	
 	public void init() {
 		FileManager.init();
@@ -33,9 +37,9 @@ public class Client {
 		EventManager.register(this);
 
 		ShopAPIDataStocker.loadAPIData();
-		SuccessAPIDataStocker.loadAPIData();
+		//SuccessAPIDataStocker.loadAPIData();
 		PlayerDataStocker.loadProfilItems();
-
+		//factionProfile = HTTPFunctions.getFactionProfile();
 	}
 	
 	
@@ -60,4 +64,11 @@ public class Client {
 		}
 	}
 
+	public void updateFProfile(){
+		//this.factionProfile = fac;
+	}
+
+	public FactionProfile getFactionProfile() {
+		return factionProfile;
+	}
 }

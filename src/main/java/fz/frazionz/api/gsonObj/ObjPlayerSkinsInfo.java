@@ -6,9 +6,9 @@ public class ObjPlayerSkinsInfo {
 
 	private boolean exist;
 	private String name;
-	private boolean skinexist;
-	private boolean capexist;
-	private String typeskin;
+	private boolean skinexist = true;
+	private boolean capexist = true;
+	private String typeskin = "steve";
 	
 	public String getName() {
 		return name;
@@ -29,7 +29,18 @@ public class ObjPlayerSkinsInfo {
 	public boolean isCapeExist() {
 		return capexist;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "ObjPlayerSkinsInfo{" +
+				"exist=" + exist +
+				", name='" + name + '\'' +
+				", skinexist=" + skinexist +
+				", capexist=" + capexist +
+				", typeskin='" + typeskin + '\'' +
+				'}';
+	}
+
 	public enum SkinType
 	{
 		STEVE("default"),

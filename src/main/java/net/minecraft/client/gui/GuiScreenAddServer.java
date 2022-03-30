@@ -123,8 +123,8 @@ public class GuiScreenAddServer extends GuiScreen
      */
     protected void keyTyped(char typedChar, int keyCode) throws IOException
     {
-        this.serverNameField.textboxKeyTyped(typedChar, keyCode, true);
-        this.serverIPField.textboxKeyTyped(typedChar, keyCode, true);
+        this.serverNameField.textboxKeyTyped(typedChar, keyCode);
+        this.serverIPField.textboxKeyTyped(typedChar, keyCode);
 
         if (keyCode == 15)
         {

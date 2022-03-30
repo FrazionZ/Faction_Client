@@ -1,9 +1,14 @@
 package fz.frazionz.utils;
 
+import fz.frazionz.Client;
+
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.URL;
+import java.text.NumberFormat;
+import java.util.Currency;
+import java.util.Locale;
 
 public class FzUtils {
 
@@ -38,6 +43,15 @@ public class FzUtils {
         return (s == null || s.length() == 0)
                 ? null
                 : (s.substring(0, s.length() - 1));
+    }
+
+    public static String conversMoney(String s){
+        if(s.equalsIgnoreCase("N/A"))
+            return "0.00";
+        Locale usa = new Locale("en", "US");
+        Currency dollars = Currency.getInstance(usa);
+        NumberFormat dollarFormat = NumberFormat.getCurrencyInstance(usa);
+        return dollarFormat.format(Double.parseDouble(s)).replace("$", "");
     }
 
 

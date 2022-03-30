@@ -21,7 +21,7 @@ public class CapeUtils
 
         if (s != null && !s.isEmpty())
         {
-            String s1 = "https://frazionz.net/tx_minecraft/api/cape/" + s + "/";
+            String s1 = "https://frazionz.net/api/capes/" + s + "/";
             ResourceLocation resourcelocation = new ResourceLocation("frazionz/capes/" + s);
             TextureManager texturemanager = Minecraft.getMinecraft().getTextureManager();
             ITextureObject itextureobject = texturemanager.getTexture(resourcelocation);

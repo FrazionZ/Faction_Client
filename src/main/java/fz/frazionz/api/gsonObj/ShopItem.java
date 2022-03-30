@@ -63,4 +63,15 @@ public class ShopItem {
 	    ItemStack itemstack = new ItemStack(item, 1, this.getMinecraftItemData());
 	    return itemstack;
 	}
+
+	public static ItemStack getItemStack(String itemName) {
+		Item item = null;
+		try {
+			item = ShopAPIDataStocker.getItemByText(itemName);
+		} catch (NumberInvalidException e) {
+			e.printStackTrace();
+		}
+		ItemStack itemstack = new ItemStack(item, 1);
+		return itemstack;
+	}
 }

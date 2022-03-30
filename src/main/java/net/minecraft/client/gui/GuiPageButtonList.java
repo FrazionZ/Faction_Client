@@ -313,7 +313,7 @@ public class GuiPageButtonList extends GuiListExtended
                 }
                 else
                 {
-                    guitextfield.textboxKeyTyped(p_178062_1_, p_178062_2_, true);
+                    guitextfield.textboxKeyTyped(p_178062_1_, p_178062_2_);
                 }
             }
             else

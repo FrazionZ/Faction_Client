@@ -124,7 +124,7 @@ public class GuiRepair extends GuiContainer implements IContainerListener
      */
     protected void keyTyped(char typedChar, int keyCode) throws IOException
     {
-        if (this.nameField.textboxKeyTyped(typedChar, keyCode, true))
+        if (this.nameField.textboxKeyTyped(typedChar, keyCode))
         {
             this.renameItem();
         }
@@ -139,8 +139,7 @@ public class GuiRepair extends GuiContainer implements IContainerListener
         String s = this.nameField.getText();
         Slot slot = this.anvil.getSlot(0);
 
-        if (slot != null && slot.getHasStack() && !slot.getStack().hasDisplayName() && s.equals(slot.getStack().getDisplayName()))
-        {
+        if (slot != null && slot.getHasStack() && !slot.getStack().hasDisplayName() && s.equals(slot.getStack().getDisplayName())){
             s = "";
         }
 

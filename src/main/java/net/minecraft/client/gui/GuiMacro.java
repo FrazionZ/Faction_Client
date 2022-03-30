@@ -1,21 +1,15 @@
 package net.minecraft.client.gui;
 
 import java.io.IOException;
-import java.net.IDN;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.lwjgl.input.Keyboard;
 
-import com.google.common.base.Predicate;
-
 import fz.frazionz.data.FzUserData;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.client.settings.GameSettings;
 import net.minecraft.util.ResourceLocation;
-import optifine.TooltipManager;
 
 public class GuiMacro extends GuiScreen
 {
@@ -134,7 +128,7 @@ public class GuiMacro extends GuiScreen
     protected void keyTyped(char typedChar, int keyCode) throws IOException
     {
     	for(GuiTextField macroField : this.macroFields) {
-    		macroField.textboxKeyTyped(typedChar, keyCode, true);
+    		macroField.textboxKeyTyped(typedChar, keyCode);
     	}
 
         if (keyCode == 1)

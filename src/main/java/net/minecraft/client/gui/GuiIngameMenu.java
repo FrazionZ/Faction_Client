@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.Random;
 import java.util.UUID;
 
+import fz.frazionz.gui.GuiJournalistRewards;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.multiplayer.PlayerControllerMP;
@@ -99,12 +100,12 @@ public class GuiIngameMenu extends GuiScreen
     {
     	int x = this.width/16;
     	int y = (this.height / 20);
-		//SkinUtils.downloadSkin(this);
         this.buttonList.add(new GuiRoundedButton(0, x, y, width, height, "RETOUR", false, this.mc.fontrenderer, 1));
         this.buttonList.add(new GuiRoundedButton(1, x, y + h, width, height, "OPTIONS", false, this.mc.fontrenderer, 1));
         this.buttonList.add(new GuiRoundedButton(2, x, y + (h * 2), width, height, "SUCCES", false, this.mc.fontrenderer,1));
         this.buttonList.add(new GuiRoundedButton(3, x, y + (h * 3), width, height, "STATS", false, this.mc.fontrenderer, 1));
         this.buttonList.add(new GuiRoundedButton(4, x, y + (h * 4), width, height, "MODS", false, this.mc.fontrenderer, 1));
+		//this.buttonList.add(new GuiRoundedButton(6, x, y + (h * 5), width, height, "RÉCOMPENSES JOURNALIER", false, this.mc.fontrenderer, 1));
         this.buttonList.add(new GuiRoundedButton(5, x, this.height - height - y, width, height, "QUITTER", true, this.mc.fontrenderer, 1));
     }
     
@@ -122,12 +123,16 @@ public class GuiIngameMenu extends GuiScreen
 	        case 1:
 	        	this.mc.displayGuiScreen(new GuiOptions(this, this.mc.gameSettings));
 	            break;
+
+			case 5:
+				button.enabled = false;
+				this.mc.world.sendQuittingDisconnectingPacket();
+				this.mc.loadWorld((WorldClient)null);
+				this.mc.displayGuiScreen(new GuiMainMenu());
+				break;
 	            
-	        case 5:
-	        	button.enabled = false;
-	            this.mc.world.sendQuittingDisconnectingPacket();
-	            this.mc.loadWorld((WorldClient)null);
-	            this.mc.displayGuiScreen(new GuiMainMenu());
+	        case 6:
+	        	this.mc.displayGuiScreen(new GuiJournalistRewards(this.mc));
 	            break;
 	            
 	        case 4:

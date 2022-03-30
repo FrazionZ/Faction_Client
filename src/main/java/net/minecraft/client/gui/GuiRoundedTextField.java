@@ -1,7 +1,5 @@
 package net.minecraft.client.gui;
 
-import org.lwjgl.input.Keyboard;
-
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import net.minecraft.client.Minecraft;

@@ -67,7 +67,7 @@ public abstract class AbstractClientPlayer extends EntityPlayer
         }catch(Exception e) {
         }
         try{
-            SkinUtils.downloadSkin(this, true);
+            SkinUtils.downloadSkin(this);
         }catch(Exception e) {
         }
         
@@ -196,7 +196,7 @@ public abstract class AbstractClientPlayer extends EntityPlayer
 
         if (itextureobject == null)
         {
-            itextureobject = new ThreadDownloadImageData((File)null, String.format("https://frazionz.net/tx_minecraft/api/skin/" + Minecraft.getMinecraft().getSession().getUsername() + "/", StringUtils.stripControlCodes(username)), DefaultPlayerSkin.getDefaultSkin(getOfflineUUID(username)), new ImageBufferDownload());
+            itextureobject = new ThreadDownloadImageData((File)null, String.format("https://frazionz.net/api/skins/" + Minecraft.getMinecraft().getSession().getUsername() + "/", StringUtils.stripControlCodes(username)), DefaultPlayerSkin.getDefaultSkin(getOfflineUUID(username)), new ImageBufferDownload());
             texturemanager.loadTexture(resourceLocationIn, itextureobject);
         }
 

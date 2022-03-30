@@ -72,7 +72,7 @@ public final class ItemStack
      */
     private NBTTagCompound stackTagCompound;
     private boolean field_190928_g;
-    private int itemDamage;
+    public int itemDamage;
 
     /** Item frame this stack is on, or null if not on an item frame. */
     private EntityItemFrame itemFrame;

@@ -1,15 +1,19 @@
 package fz.frazionz.gui;
 
+import java.awt.*;
 import java.io.IOException;
 import java.util.Map;
+import java.util.concurrent.Executors;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
+import fz.frazionz.Client;
 import fz.frazionz.api.data.ShopAPIDataStocker;
 import fz.frazionz.api.gsonObj.ShopItem;
 import fz.frazionz.api.gsonObj.ShopType;
 import fz.frazionz.data.FzUserData;
+import fz.frazionz.utils.FzUtils;
 import fz.frazionz.utils.MathUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.BuiButtonImageItem;
@@ -59,7 +63,15 @@ public class GuiShopCategory extends GuiScreen {
 		
         this.shopTypeList = new GuiShopCategoryList(this, this.mc, this.guiLeft, this.guiLeft + this.xSize, this.guiTop + 45, this.guiTop + this.ySize - 38, 36, 4);
         this.buttonList.add(new GuiButtonOnlyImage(50, this.guiLeft + 10, this.guiTop + 5, 21, 20, 388, 0, 0, background));
-		super.initGui();
+
+        Executors.newCachedThreadPool().submit(new Runnable() {
+            @Override
+            public void run() {
+                Client.getInstance().updateFProfile();
+            }
+        });
+
+        super.initGui();
 	}
 	
     /**
@@ -89,7 +101,15 @@ public class GuiShopCategory extends GuiScreen {
 		this.drawBackgroundImage();
         this.shopTypeList.drawScreen(mouseX, mouseY, partialTicks);
         this.drawTopList();
-        String s = "\u00A76M\u00A7foney : " + MathUtils.roundAvoid((double) FzUserData.EnumUserData.MONEY.getValue(), 2) + " $";
+
+        String money = null;
+        if(Client.getInstance().getFactionProfile() != null) {
+            money = Client.getInstance().getFactionProfile().getMoney();
+            if (money == null)
+                money = "N/A";
+        }else
+            money = "N/A";
+        String s = "\u00A76M\u00A7foney : " + FzUtils.conversMoney(money) + " Coins";
         this.fontRendererObj.drawString(s, this.width / 2 - this.fontRendererObj.getStringWidth(s) / 2, this.guiTop + this.ySize - 22, 16777215, true);
         
         this.fontRendererObj.drawString("Shop", this.width / 2 - this.fontRendererObj.getStringWidth("Shop") / 2, this.guiTop + 12, 16777215, true);

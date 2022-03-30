@@ -2369,7 +2369,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
             if(entityPlayerMPObj.getGameProfile().getId().equals(handler.getUuid()))
                 entityPlayer = entityPlayerMPObj;
         EntityOtherPlayerMP eopm = new EntityOtherPlayerMP(mc.world, entityPlayer.getGameProfile());
-        SkinUtils.downloadSkin(eopm, true);
+        SkinUtils.downloadSkin(eopm);
     }
 
     /**

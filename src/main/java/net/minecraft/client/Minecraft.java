@@ -32,6 +32,7 @@ import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
+import net.minecraft.client.gui.advancements.GuiScreenAdvancements;
 import org.apache.commons.io.Charsets;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.Validate;
@@ -2558,9 +2559,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo
         while (this.gameSettings.field_194146_ao.isPressed())
         {
         	if(this.currentScreen == null) {
-                //this.displayGuiScreen(new GuiScreenAdvancements(this.player.connection.func_191982_f()));
-                //this.displayGuiScreen(new GuiSuccessType(this.currentScreen, this));
-                Sys.openURL("https://google.fr");
+                this.displayGuiScreen(new GuiScreenAdvancements(this.player.connection.func_191982_f()));
             }
         	else if(this.currentScreen instanceof GuiInventory) {       		
         	}
