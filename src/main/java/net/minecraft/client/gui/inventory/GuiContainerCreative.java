@@ -394,7 +394,7 @@ public class GuiContainerCreative extends InventoryEffectRenderer
         this.currentScroll = 0.0F;
         guicontainercreative$containercreative.scrollTo(0.0F);
 
-        JSONArray items = new JSONArray();
+        /*JSONArray items = new JSONArray();
         guicontainercreative$containercreative.itemList.forEach(new Consumer<ItemStack>() {
             @Override
             public void accept(ItemStack itemStack) {
@@ -417,7 +417,7 @@ public class GuiContainerCreative extends InventoryEffectRenderer
                 items.put(itemJson);
             }
         });
-        System.out.println(items);
+        System.out.println(items);*/
     }
 
     /**

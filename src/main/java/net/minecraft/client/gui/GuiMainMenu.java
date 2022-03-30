@@ -264,15 +264,6 @@ public class GuiMainMenu extends GuiScreen
             this.openGLWarningX2 = this.openGLWarningX1 + k;
             this.openGLWarningY2 = this.openGLWarningY1 + 24;
         }
-
-        Item.REGISTRY.iterator().forEachRemaining(new Consumer<Item>() {
-            @Override
-            public void accept(Item item) {
-                ItemStack itemStack = item.func_190903_i();
-                int idItem = Item.REGISTRY.getIDForObject(item);
-                System.out.println(itemStack.getDisplayName()+" "+idItem);
-            }
-        });
     }
 
     /**
