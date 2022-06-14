@@ -12,7 +12,7 @@ run/shaderpacks/
 run/saves/
 run/options.txt
 run/optionsof.txt
-build.gradle
+gradle.properties
 
 # Compiled class file
 *.class
