@@ -1,38 +1,30 @@
 package net.minecraft.client.renderer.entity;
 
-import java.nio.FloatBuffer;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.lwjgl.opengl.GL11;
-
 import com.google.common.collect.Lists;
-
+import java.nio.FloatBuffer;
+import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.model.ModelBase;
+import net.minecraft.client.model.ModelSpider;
 import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.client.renderer.texture.DynamicTexture;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EnumPlayerModelParts;
-import net.minecraft.init.MobEffects;
-import net.minecraft.potion.PotionEffect;
 import net.minecraft.scoreboard.Team;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.src.Config;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextFormatting;
+import net.optifine.EmissiveTextures;
 import net.optifine.entity.model.CustomEntityModels;
-import optifine.Config;
-import optifine.Reflector;
-import shadersmod.client.Shaders;
+import net.optifine.reflect.Reflector;
+import net.optifine.shaders.Shaders;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public abstract class RenderLivingBase<T extends EntityLivingBase> extends Render<T>
 {
@@ -44,20 +36,24 @@ public abstract class RenderLivingBase<T extends EntityLivingBase> extends Rende
     protected boolean renderMarker;
     public static float NAME_TAG_RANGE = 64.0F;
     public static float NAME_TAG_RANGE_SNEAK = 32.0F;
+    public EntityLivingBase renderEntity;
     public float renderLimbSwing;
     public float renderLimbSwingAmount;
     public float renderAgeInTicks;
     public float renderHeadYaw;
     public float renderHeadPitch;
     public float renderScaleFactor;
+    public float renderPartialTicks;
+    private boolean renderModelPushMatrix;
+    private boolean renderLayersPushMatrix;
     public static final boolean animateModelLiving = Boolean.getBoolean("animate.model.living");
-    private Minecraft mc;
-    	
+
     public RenderLivingBase(RenderManager renderManagerIn, ModelBase modelBaseIn, float shadowSizeIn)
     {
         super(renderManagerIn);
         this.mainModel = modelBaseIn;
         this.shadowSize = shadowSizeIn;
+        this.renderModelPushMatrix = this.mainModel instanceof ModelSpider;
     }
 
     public <V extends EntityLivingBase, U extends LayerRenderer<V>> boolean addLayer(U layer)
@@ -156,7 +152,7 @@ public abstract class RenderLivingBase<T extends EntityLivingBase> extends Rende
                 float f7 = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTicks;
                 this.renderLivingAt(entity, x, y, z);
                 float f8 = this.handleRotationFloat(entity, partialTicks);
-                this.rotateCorpse(entity, f8, f, partialTicks);
+                this.applyRotations(entity, f8, f, partialTicks);
                 float f4 = this.prepareScale(entity, partialTicks);
                 float f5 = 0.0F;
                 float f6 = 0.0F;
@@ -183,12 +179,14 @@ public abstract class RenderLivingBase<T extends EntityLivingBase> extends Rende
 
                 if (CustomEntityModels.isActive())
                 {
+                    this.renderEntity = entity;
                     this.renderLimbSwing = f6;
                     this.renderLimbSwingAmount = f5;
                     this.renderAgeInTicks = f8;
                     this.renderHeadYaw = f2;
                     this.renderHeadPitch = f7;
                     this.renderScaleFactor = f4;
+                    this.renderPartialTicks = partialTicks;
                 }
 
                 if (this.renderOutlines)
@@ -218,7 +216,38 @@ public abstract class RenderLivingBase<T extends EntityLivingBase> extends Rende
                 else
                 {
                     boolean flag = this.setDoRenderBrightness(entity, partialTicks);
+
+                    if (EmissiveTextures.isActive())
+                    {
+                        EmissiveTextures.beginRender();
+                    }
+
+                    if (this.renderModelPushMatrix)
+                    {
+                        GlStateManager.pushMatrix();
+                    }
+
                     this.renderModel(entity, f6, f5, f8, f2, f7, f4);
+
+                    if (this.renderModelPushMatrix)
+                    {
+                        GlStateManager.popMatrix();
+                    }
+
+                    if (EmissiveTextures.isActive())
+                    {
+                        if (EmissiveTextures.hasEmissive())
+                        {
+                            this.renderModelPushMatrix = true;
+                            EmissiveTextures.beginRenderEmissive();
+                            GlStateManager.pushMatrix();
+                            this.renderModel(entity, f6, f5, f8, f2, f7, f4);
+                            GlStateManager.popMatrix();
+                            EmissiveTextures.endRenderEmissive();
+                        }
+
+                        EmissiveTextures.endRender();
+                    }
 
                     if (flag)
                     {
@@ -231,6 +260,11 @@ public abstract class RenderLivingBase<T extends EntityLivingBase> extends Rende
                     {
                         this.renderLayers(entity, f6, f5, partialTicks, f8, f2, f7, f4);
                     }
+                }
+
+                if (CustomEntityModels.isActive())
+                {
+                    this.renderEntity = null;
                 }
 
                 GlStateManager.disableRescaleNormal();
@@ -286,7 +320,7 @@ public abstract class RenderLivingBase<T extends EntityLivingBase> extends Rende
      */
     protected void renderModel(T entitylivingbaseIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor)
     {
-        boolean flag = this.func_193115_c(entitylivingbaseIn);
+        boolean flag = this.isVisible(entitylivingbaseIn);
         boolean flag1 = !flag && !entitylivingbaseIn.isInvisibleToPlayer(Minecraft.getMinecraft().player);
 
         if (flag || flag1)
@@ -310,7 +344,7 @@ public abstract class RenderLivingBase<T extends EntityLivingBase> extends Rende
         }
     }
 
-    protected boolean func_193115_c(T p_193115_1_)
+    protected boolean isVisible(T p_193115_1_)
     {
         return !p_193115_1_.isInvisible() || this.renderOutlines;
     }
@@ -465,9 +499,9 @@ public abstract class RenderLivingBase<T extends EntityLivingBase> extends Rende
         GlStateManager.translate((float)x, (float)y, (float)z);
     }
 
-    protected void rotateCorpse(T entityLiving, float p_77043_2_, float p_77043_3_, float partialTicks)
+    protected void applyRotations(T entityLiving, float ageInTicks, float rotationYaw, float partialTicks)
     {
-        GlStateManager.rotate(180.0F - p_77043_3_, 0.0F, 1.0F, 0.0F);
+        GlStateManager.rotate(180.0F - rotationYaw, 0.0F, 1.0F, 0.0F);
 
         if (entityLiving.deathTime > 0)
         {
@@ -514,7 +548,38 @@ public abstract class RenderLivingBase<T extends EntityLivingBase> extends Rende
         for (LayerRenderer<T> layerrenderer : this.layerRenderers)
         {
             boolean flag = this.setBrightness(entitylivingbaseIn, partialTicks, layerrenderer.shouldCombineTextures());
+
+            if (EmissiveTextures.isActive())
+            {
+                EmissiveTextures.beginRender();
+            }
+
+            if (this.renderLayersPushMatrix)
+            {
+                GlStateManager.pushMatrix();
+            }
+
             layerrenderer.doRenderLayer(entitylivingbaseIn, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch, scaleIn);
+
+            if (this.renderLayersPushMatrix)
+            {
+                GlStateManager.popMatrix();
+            }
+
+            if (EmissiveTextures.isActive())
+            {
+                if (EmissiveTextures.hasEmissive())
+                {
+                    this.renderLayersPushMatrix = true;
+                    EmissiveTextures.beginRenderEmissive();
+                    GlStateManager.pushMatrix();
+                    layerrenderer.doRenderLayer(entitylivingbaseIn, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch, scaleIn);
+                    GlStateManager.popMatrix();
+                    EmissiveTextures.endRenderEmissive();
+                }
+
+                EmissiveTextures.endRender();
+            }
 
             if (flag)
             {
@@ -539,7 +604,6 @@ public abstract class RenderLivingBase<T extends EntityLivingBase> extends Rende
     /**
      * Allows the render to do state modifications necessary before the model is rendered.
      */
-
     protected void preRenderCallback(T entitylivingbaseIn, float partialTickTime)
     {
     }
@@ -548,11 +612,9 @@ public abstract class RenderLivingBase<T extends EntityLivingBase> extends Rende
     {
         if (!Reflector.RenderLivingEvent_Specials_Pre_Constructor.exists() || !Reflector.postForgeBusEvent(Reflector.RenderLivingEvent_Specials_Pre_Constructor, entity, this, x, y, z))
         {
-            EntityPlayerSP entityplayersp = Minecraft.getMinecraft().player;
-
             if (this.canRenderName(entity))
             {
-                double d0 = entity.getDistanceSqToEntity(this.renderManager.renderViewEntity);
+                double d0 = entity.getDistanceSq(this.renderManager.renderViewEntity);
                 float f = entity.isSneaking() ? NAME_TAG_RANGE_SNEAK : NAME_TAG_RANGE;
 
                 if (d0 < (double)(f * f))

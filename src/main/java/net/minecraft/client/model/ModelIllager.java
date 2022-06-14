@@ -71,7 +71,7 @@ public class ModelIllager extends ModelBase
         this.leg1.render(scale);
         AbstractIllager abstractillager = (AbstractIllager)entityIn;
 
-        if (abstractillager.func_193077_p() == AbstractIllager.IllagerArmPose.CROSSED)
+        if (abstractillager.getArmPose() == AbstractIllager.IllagerArmPose.CROSSED)
         {
             this.arms.render(scale);
         }
@@ -98,7 +98,7 @@ public class ModelIllager extends ModelBase
         this.leg1.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 1.4F * limbSwingAmount * 0.5F;
         this.leg0.rotateAngleY = 0.0F;
         this.leg1.rotateAngleY = 0.0F;
-        AbstractIllager.IllagerArmPose abstractillager$illagerarmpose = ((AbstractIllager)entityIn).func_193077_p();
+        AbstractIllager.IllagerArmPose abstractillager$illagerarmpose = ((AbstractIllager)entityIn).getArmPose();
 
         if (abstractillager$illagerarmpose == AbstractIllager.IllagerArmPose.ATTACKING)
         {

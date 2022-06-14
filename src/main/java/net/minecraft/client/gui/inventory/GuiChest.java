@@ -9,12 +9,17 @@ import net.minecraft.util.ResourceLocation;
 public class GuiChest extends GuiContainer
 {
     /** The ResourceLocation containing the chest GUI texture. */
-    private static final ResourceLocation CHEST_GUI_TEXTURE = new ResourceLocation("textures/gui/container/generic_54.png");
+	//private static final ResourceLocation CHEST_GUI_TEXTURE = new ResourceLocation("textures/gui/container/generic_54.png");
+    private static final ResourceLocation CHEST_GUI_TEXTURE = new ResourceLocation("textures/gui/frazionz/container/chest/generic_54.png");
     private final IInventory upperChestInventory;
+
+    /**
+     * The chest's inventory. Number of slots will vary based off of the type of chest.
+     */
     private final IInventory lowerChestInventory;
 
     /**
-     * window height is calculated with these values; the more rows, the heigher
+     * Window height is calculated with these values; the more rows, the higher
      */
     private final int inventoryRows;
 
@@ -37,7 +42,7 @@ public class GuiChest extends GuiContainer
     {
         this.drawDefaultBackground();
         super.drawScreen(mouseX, mouseY, partialTicks);
-        this.func_191948_b(mouseX, mouseY);
+        this.renderHoveredToolTip(mouseX, mouseY);
     }
 
     /**
@@ -45,8 +50,8 @@ public class GuiChest extends GuiContainer
      */
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
     {
-        this.fontRendererObj.drawString(this.lowerChestInventory.getDisplayName().getUnformattedText(), 8, 6, 4210752);
-        this.fontRendererObj.drawString(this.upperChestInventory.getDisplayName().getUnformattedText(), 8, this.ySize - 96 + 2, 4210752);
+        this.fontRenderer.drawString(this.lowerChestInventory.getDisplayName().getUnformattedText(), 8, 6, 4210752);
+        this.fontRenderer.drawString(this.upperChestInventory.getDisplayName().getUnformattedText(), 8, this.ySize - 96 + 2, 4210752);
     }
 
     /**

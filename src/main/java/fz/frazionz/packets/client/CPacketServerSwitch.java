@@ -21,12 +21,12 @@ public class CPacketServerSwitch implements Packet<INetHandlerPlayServer> {
 	}
 	
 	public void writePacketData(PacketBuffer buf) throws IOException {
-		buf.writeUuid(uidP);
+		buf.writeUniqueId(uidP);
 		buf.writeInt(this.serverID);
 	}
 
 	public void readPacketData(PacketBuffer buf) throws IOException {
-		this.uidP = buf.readUuid();
+		this.uidP = buf.readUniqueId();
 		this.serverID = buf.readInt();
 	}
 

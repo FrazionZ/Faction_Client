@@ -3,9 +3,9 @@ package net.minecraft.client.renderer.entity.layers;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderWolf;
 import net.minecraft.entity.passive.EntityWolf;
+import net.minecraft.src.Config;
 import net.minecraft.util.ResourceLocation;
-import optifine.Config;
-import optifine.CustomColors;
+import net.optifine.CustomColors;
 
 public class LayerWolfCollar implements LayerRenderer<EntityWolf>
 {
@@ -22,7 +22,7 @@ public class LayerWolfCollar implements LayerRenderer<EntityWolf>
         if (entitylivingbaseIn.isTamed() && !entitylivingbaseIn.isInvisible())
         {
             this.wolfRenderer.bindTexture(WOLF_COLLAR);
-            float[] afloat = entitylivingbaseIn.getCollarColor().func_193349_f();
+            float[] afloat = entitylivingbaseIn.getCollarColor().getColorComponentValues();
 
             if (Config.isCustomColors())
             {

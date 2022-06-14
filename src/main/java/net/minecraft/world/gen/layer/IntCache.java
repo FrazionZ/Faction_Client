@@ -11,9 +11,9 @@ public class IntCache
     private static final List<int[]> freeLargeArrays = Lists.<int[]>newArrayList();
     private static final List<int[]> inUseLargeArrays = Lists.<int[]>newArrayList();
 
-    public static synchronized int[] getIntCache(int p_76445_0_)
+    public static synchronized int[] getIntCache(int size)
     {
-        if (p_76445_0_ <= 256)
+        if (size <= 256)
         {
             if (freeSmallArrays.isEmpty())
             {
@@ -28,9 +28,9 @@ public class IntCache
                 return aint3;
             }
         }
-        else if (p_76445_0_ > intCacheSize)
+        else if (size > intCacheSize)
         {
-            intCacheSize = p_76445_0_;
+            intCacheSize = size;
             freeLargeArrays.clear();
             inUseLargeArrays.clear();
             int[] aint2 = new int[intCacheSize];
@@ -54,7 +54,6 @@ public class IntCache
     /**
      * Mark all pre-allocated arrays as available for re-use by moving them to the appropriate free lists.
      */
-
     public static synchronized void resetIntCache()
     {
         if (!freeLargeArrays.isEmpty())
@@ -77,7 +76,6 @@ public class IntCache
      * Gets a human-readable string that indicates the sizes of all the cache fields.  Basically a synchronized static
      * toString.
      */
-
     public static synchronized String getCacheSizes()
     {
         return "cache: " + freeLargeArrays.size() + ", tcache: " + freeSmallArrays.size() + ", allocated: " + inUseLargeArrays.size() + ", tallocated: " + inUseSmallArrays.size();

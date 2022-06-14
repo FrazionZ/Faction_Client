@@ -29,8 +29,6 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.src.BlockModelUtils;
-import net.minecraft.src.Reflector;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MapPopulator;
@@ -44,6 +42,8 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.property.IUnlistedProperty;
+import net.optifine.model.BlockModelUtils;
+import net.optifine.reflect.Reflector;
 
 public class BlockStateContainer {
    private static final Pattern field_185921_a = Pattern.compile("^[a-z0-9_]+$");
@@ -65,12 +65,12 @@ public class BlockStateContainer {
       return new BlockStateContainer.StateImplementation(p_createState_1_, p_createState_2_);
    }
 
-   protected BlockStateContainer(Block p_i9_1_, IProperty<?>[] p_i9_2_, ImmutableMap<IUnlistedProperty<?>, Optional<?>> p_i9_3_) {
-      this.field_177627_c = p_i9_1_;
+   protected BlockStateContainer(Block p_i10_1_, IProperty<?>[] p_i10_2_, ImmutableMap<IUnlistedProperty<?>, Optional<?>> p_i10_3_) {
+      this.field_177627_c = p_i10_1_;
       Map<String, IProperty<?>> map = Maps.<String, IProperty<?>>newHashMap();
 
-      for(IProperty<?> iproperty : p_i9_2_) {
-         func_185919_a(p_i9_1_, iproperty);
+      for(IProperty<?> iproperty : p_i10_2_) {
+         func_185919_a(p_i10_1_, iproperty);
          map.put(iproperty.func_177701_a(), iproperty);
       }
 
@@ -80,7 +80,7 @@ public class BlockStateContainer {
 
       for(List<Comparable<?>> list1 : Cartesian.func_179321_a(this.func_177620_e())) {
          Map<IProperty<?>, Comparable<?>> map1 = MapPopulator.<IProperty<?>, Comparable<?>>func_179400_b(this.field_177624_d.values(), list1);
-         BlockStateContainer.StateImplementation blockstatecontainer$stateimplementation = this.createState(p_i9_1_, ImmutableMap.copyOf(map1), p_i9_3_);
+         BlockStateContainer.StateImplementation blockstatecontainer$stateimplementation = this.createState(p_i10_1_, ImmutableMap.copyOf(map1), p_i10_3_);
          map2.put(map1, blockstatecontainer$stateimplementation);
          list.add(blockstatecontainer$stateimplementation);
       }
@@ -194,10 +194,10 @@ public class BlockStateContainer {
          this.field_177237_b = p_i45660_2_;
       }
 
-      protected StateImplementation(Block p_i8_1_, ImmutableMap<IProperty<?>, Comparable<?>> p_i8_2_, ImmutableTable<IProperty<?>, Comparable<?>, IBlockState> p_i8_3_) {
-         this.field_177239_a = p_i8_1_;
-         this.field_177237_b = p_i8_2_;
-         this.field_177238_c = p_i8_3_;
+      protected StateImplementation(Block p_i9_1_, ImmutableMap<IProperty<?>, Comparable<?>> p_i9_2_, ImmutableTable<IProperty<?>, Comparable<?>, IBlockState> p_i9_3_) {
+         this.field_177239_a = p_i9_1_;
+         this.field_177237_b = p_i9_2_;
+         this.field_177238_c = p_i9_3_;
       }
 
       public Collection<IProperty<?>> func_177227_a() {
@@ -447,6 +447,10 @@ public class BlockStateContainer {
 
       public boolean isSideSolid(IBlockAccess p_isSideSolid_1_, BlockPos p_isSideSolid_2_, EnumFacing p_isSideSolid_3_) {
          return Reflector.callBoolean(this.field_177239_a, Reflector.ForgeBlock_isSideSolid, this, p_isSideSolid_1_, p_isSideSolid_2_, p_isSideSolid_3_);
+      }
+
+      public boolean doesSideBlockChestOpening(IBlockAccess p_doesSideBlockChestOpening_1_, BlockPos p_doesSideBlockChestOpening_2_, EnumFacing p_doesSideBlockChestOpening_3_) {
+         return Reflector.callBoolean(this.field_177239_a, Reflector.ForgeBlock_doesSideBlockChestOpening, this, p_doesSideBlockChestOpening_1_, p_doesSideBlockChestOpening_2_, p_doesSideBlockChestOpening_3_);
       }
 
       public boolean doesSideBlockRendering(IBlockAccess p_doesSideBlockRendering_1_, BlockPos p_doesSideBlockRendering_2_, EnumFacing p_doesSideBlockRendering_3_) {

@@ -19,7 +19,7 @@ import net.minecraft.world.World;
 
 public class EntityEnderPearl extends EntityThrowable
 {
-    private EntityLivingBase thrower;
+    private EntityLivingBase perlThrower;
 
     public EntityEnderPearl(World worldIn)
     {
@@ -29,7 +29,7 @@ public class EntityEnderPearl extends EntityThrowable
     public EntityEnderPearl(World worldIn, EntityLivingBase throwerIn)
     {
         super(worldIn, throwerIn);
-        this.thrower = throwerIn;
+        this.perlThrower = throwerIn;
     }
 
     public EntityEnderPearl(World worldIn, double x, double y, double z)
@@ -51,7 +51,7 @@ public class EntityEnderPearl extends EntityThrowable
 
         if (result.entityHit != null)
         {
-            if (result.entityHit == this.thrower)
+            if (result.entityHit == this.perlThrower)
             {
                 return;
             }
@@ -72,7 +72,7 @@ public class EntityEnderPearl extends EntityThrowable
                 {
                     if (entitylivingbase instanceof EntityPlayerMP)
                     {
-                        CriteriaTriggers.field_192124_d.func_192193_a((EntityPlayerMP)entitylivingbase, this.world.getBlockState(blockpos));
+                        CriteriaTriggers.ENTER_BLOCK.trigger((EntityPlayerMP)entitylivingbase, this.world.getBlockState(blockpos));
                     }
 
                     tileentityendgateway.teleportEntity(entitylivingbase);
@@ -103,7 +103,7 @@ public class EntityEnderPearl extends EntityThrowable
                         EntityEndermite entityendermite = new EntityEndermite(this.world);
                         entityendermite.setSpawnedByPlayer(true);
                         entityendermite.setLocationAndAngles(entitylivingbase.posX, entitylivingbase.posY, entitylivingbase.posZ, entitylivingbase.rotationYaw, entitylivingbase.rotationPitch);
-                        this.world.spawnEntityInWorld(entityendermite);
+                        this.world.spawnEntity(entityendermite);
                     }
 
                     if (entitylivingbase.isRiding())
@@ -113,7 +113,7 @@ public class EntityEnderPearl extends EntityThrowable
 
                     entitylivingbase.setPositionAndUpdate(this.prevPosX, this.prevPosY, this.prevPosZ);
                     entitylivingbase.fallDistance = 0.0F;
-                    entitylivingbase.attackEntityFrom(DamageSource.fall, 5.0F);
+                    entitylivingbase.attackEntityFrom(DamageSource.FALL, 5.0F);
                 }
             }
             else if (entitylivingbase != null)

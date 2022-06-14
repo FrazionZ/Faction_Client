@@ -79,13 +79,13 @@ public class EntityAIAttackRanged extends EntityAIBase
     /**
      * Returns whether an in-progress EntityAIBase should continue executing
      */
-    public boolean continueExecuting()
+    public boolean shouldContinueExecuting()
     {
         return this.shouldExecute() || !this.entityHost.getNavigator().noPath();
     }
 
     /**
-     * Resets the task
+     * Reset the task's internal state. Called when this task is interrupted by another one
      */
     public void resetTask()
     {
@@ -95,7 +95,7 @@ public class EntityAIAttackRanged extends EntityAIBase
     }
 
     /**
-     * Updates the task
+     * Keep ticking a continuous task that has already been started
      */
     public void updateTask()
     {
@@ -113,7 +113,7 @@ public class EntityAIAttackRanged extends EntityAIBase
 
         if (d0 <= (double)this.maxAttackDistance && this.seeTime >= 20)
         {
-            this.entityHost.getNavigator().clearPathEntity();
+            this.entityHost.getNavigator().clearPath();
         }
         else
         {

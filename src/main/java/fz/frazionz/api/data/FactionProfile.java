@@ -21,10 +21,6 @@ public class FactionProfile {
         return uuid;
     }
 
-    public void setUuid(UUID uuid) {
-        this.uuid = uuid;
-    }
-
     public String getMoney() {
         return money;
     }

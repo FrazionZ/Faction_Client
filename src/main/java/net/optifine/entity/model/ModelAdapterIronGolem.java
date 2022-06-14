@@ -57,6 +57,11 @@ public class ModelAdapterIronGolem extends ModelAdapter
         }
     }
 
+    public String[] getModelRendererNames()
+    {
+        return new String[] {"head", "body", "right_arm", "left_arm", "left_leg", "right_leg"};
+    }
+
     public IEntityRenderer makeEntityRender(ModelBase modelBase, float shadowSize)
     {
         RenderManager rendermanager = Minecraft.getMinecraft().getRenderManager();

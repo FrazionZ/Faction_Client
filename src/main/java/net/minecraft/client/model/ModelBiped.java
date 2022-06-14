@@ -183,20 +183,20 @@ public class ModelBiped extends ModelBase
 
         switch (this.leftArmPose)
         {
-	        case EMPTY:
-	            this.bipedLeftArm.rotateAngleY = 0.0F;
+            case EMPTY:
+                this.bipedLeftArm.rotateAngleY = 0.0F;
+                break;
+
+            case BLOCK:
+                this.bipedLeftArm.rotateAngleX = this.bipedLeftArm.rotateAngleX * 0.5F - 0.9424779F;
+                this.bipedLeftArm.rotateAngleY = 0.5235988F;
+                break;
+
+            case ITEM:
+                this.bipedLeftArm.rotateAngleX = this.bipedLeftArm.rotateAngleX * 0.5F - ((float)Math.PI / 10F);
+                this.bipedLeftArm.rotateAngleY = 0.0F;
 	            break;
-	
-	        case BLOCK:
-	            this.bipedLeftArm.rotateAngleX = this.bipedLeftArm.rotateAngleX * 0.5F - 0.9424779F;
-	            this.bipedLeftArm.rotateAngleY = 0.5235988F;
-	            break;
-	            
-	        case ITEM:
-	            this.bipedLeftArm.rotateAngleX = this.bipedLeftArm.rotateAngleX * 0.5F - ((float)Math.PI / 10F);
-	            this.bipedLeftArm.rotateAngleY = 0.0F;
-	            break;
-	
+	        	
 	        // PVP_UPDATE
 	        case BLOCK_SWORD:
 	            this.bipedLeftArm.rotateAngleX = this.bipedLeftArm.rotateAngleX * 0.5F - ((float)Math.PI / 10F) * 3.0F;
@@ -206,20 +206,20 @@ public class ModelBiped extends ModelBase
 
         switch (this.rightArmPose)
         {
-	        case EMPTY:
-	            this.bipedRightArm.rotateAngleY = 0.0F;
+            case EMPTY:
+                this.bipedRightArm.rotateAngleY = 0.0F;
+                break;
+
+            case BLOCK:
+                this.bipedRightArm.rotateAngleX = this.bipedRightArm.rotateAngleX * 0.5F - 0.9424779F;
+                this.bipedRightArm.rotateAngleY = -0.5235988F;
+                break;
+
+            case ITEM:
+                this.bipedRightArm.rotateAngleX = this.bipedRightArm.rotateAngleX * 0.5F - ((float)Math.PI / 10F);
+                this.bipedRightArm.rotateAngleY = 0.0F;
 	            break;
-	
-	        case BLOCK:
-	            this.bipedRightArm.rotateAngleX = this.bipedRightArm.rotateAngleX * 0.5F - 0.9424779F;
-	            this.bipedRightArm.rotateAngleY = -0.5235988F;
-	            break;
-	
-	        case ITEM:
-	            this.bipedRightArm.rotateAngleX = this.bipedRightArm.rotateAngleX * 0.5F - ((float)Math.PI / 10F);
-	            this.bipedRightArm.rotateAngleY = 0.0F;
-	            break;
-	          
+		          
 	        // PVP_UPDATE
 	        case BLOCK_SWORD:
 	            this.bipedRightArm.rotateAngleX = this.bipedRightArm.rotateAngleX * 0.5F - ((float)Math.PI / 10F) * 3.0F;
@@ -314,15 +314,15 @@ public class ModelBiped extends ModelBase
         }
     }
 
-    public void setInvisible(boolean invisible)
+    public void setVisible(boolean visible)
     {
-        this.bipedHead.showModel = invisible;
-        this.bipedHeadwear.showModel = invisible;
-        this.bipedBody.showModel = invisible;
-        this.bipedRightArm.showModel = invisible;
-        this.bipedLeftArm.showModel = invisible;
-        this.bipedRightLeg.showModel = invisible;
-        this.bipedLeftLeg.showModel = invisible;
+        this.bipedHead.showModel = visible;
+        this.bipedHeadwear.showModel = visible;
+        this.bipedBody.showModel = visible;
+        this.bipedRightArm.showModel = visible;
+        this.bipedLeftArm.showModel = visible;
+        this.bipedRightLeg.showModel = visible;
+        this.bipedLeftLeg.showModel = visible;
     }
 
     public void postRenderArm(float scale, EnumHandSide side)

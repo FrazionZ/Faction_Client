@@ -7,8 +7,8 @@ import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.entity.RenderLeashKnot;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.EntityLeashKnot;
-import optifine.Config;
-import optifine.Reflector;
+import net.minecraft.src.Config;
+import net.optifine.reflect.Reflector;
 
 public class ModelAdapterLeadKnot extends ModelAdapter
 {
@@ -33,6 +33,11 @@ public class ModelAdapterLeadKnot extends ModelAdapter
             ModelLeashKnot modelleashknot = (ModelLeashKnot)model;
             return modelPart.equals("knot") ? modelleashknot.knotRenderer : null;
         }
+    }
+
+    public String[] getModelRendererNames()
+    {
+        return new String[] {"knot"};
     }
 
     public IEntityRenderer makeEntityRender(ModelBase modelBase, float shadowSize)

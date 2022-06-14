@@ -1,9 +1,11 @@
 package net.minecraft.world.storage.loot.functions;
 
+import java.util.Random;
+
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
-import java.util.Random;
+
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -21,11 +23,11 @@ public class LootingEnchantBonus extends LootFunction
     private final RandomValueRange count;
     private final int limit;
 
-    public LootingEnchantBonus(LootCondition[] p_i47145_1_, RandomValueRange p_i47145_2_, int p_i47145_3_)
+    public LootingEnchantBonus(LootCondition[] conditions, RandomValueRange countIn, int limitIn)
     {
-        super(p_i47145_1_);
-        this.count = p_i47145_2_;
-        this.limit = p_i47145_3_;
+        super(conditions);
+        this.count = countIn;
+        this.limit = limitIn;
     }
 
     public ItemStack apply(ItemStack stack, Random rand, LootContext context)
@@ -41,34 +43,31 @@ public class LootingEnchantBonus extends LootFunction
 
 
                 float f = (float)i * this.count.generateFloat(rand);
-                stack.func_190917_f(Math.round(f));
+                stack.grow(Math.round(f));
 
-                if (this.limit != 0 && stack.func_190916_E() > this.limit)
+                if (this.limit != 0 && stack.getCount() > this.limit)
                 {
-                    stack.func_190920_e(this.limit);
+                    stack.setCount(this.limit);
                 }
         		
         	}
         	
         	else {
-        		
-                int i = EnchantmentHelper.getLootingModifier((EntityLivingBase)entity);
-
-                if (i == 0)
-                {
-                    return stack;
-                }
-
-                float f = (float)i * this.count.generateFloat(rand);
-                stack.func_190917_f(Math.round(f));
-
-                if (this.limit != 0 && stack.func_190916_E() > this.limit)
-                {
-                    stack.func_190920_e(this.limit);
-                }
-        		
+	            int i = EnchantmentHelper.getLootingModifier((EntityLivingBase)entity);
+	
+	            if (i == 0)
+	            {
+	                return stack;
+	            }
+	
+	            float f = (float)i * this.count.generateFloat(rand);
+	            stack.grow(Math.round(f));
+	
+	            if (this.limit != 0 && stack.getCount() > this.limit)
+	            {
+	                stack.setCount(this.limit);
+	            }
         	}
-        	
         }
 
         return stack;

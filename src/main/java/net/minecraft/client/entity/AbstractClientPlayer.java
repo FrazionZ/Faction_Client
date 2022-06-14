@@ -1,17 +1,15 @@
 package net.minecraft.client.entity;
 
 import java.io.File;
-import java.util.List;
 import java.util.concurrent.Executors;
 
 import javax.annotation.Nullable;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.mojang.authlib.GameProfile;
 
 import fz.frazionz.api.HTTPFunctions;
 import fz.frazionz.api.gsonObj.ObjPlayerSkinsInfo;
+import fz.frazionz.utils.SkinUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.network.NetworkPlayerInfo;
 import net.minecraft.client.renderer.ImageBufferDownload;
@@ -21,17 +19,17 @@ import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.resources.DefaultPlayerSkin;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
+import net.minecraft.entity.passive.EntityShoulderRiding;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
+import net.minecraft.item.ItemBow;
+import net.minecraft.src.Config;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StringUtils;
 import net.minecraft.world.GameType;
 import net.minecraft.world.World;
-import optifine.CapeUtils;
-import optifine.Config;
-import optifine.PlayerConfigurations;
-import optifine.Reflector;
-import optifine.SkinUtils;
+import net.optifine.player.CapeUtils;
+import net.optifine.player.PlayerConfigurations;
+import net.optifine.reflect.Reflector;
 
 public abstract class AbstractClientPlayer extends EntityPlayer
 {
@@ -42,7 +40,11 @@ public abstract class AbstractClientPlayer extends EntityPlayer
     private ResourceLocation locationOfCape = null;
     private ResourceLocation locationOfSkin = null;
     private ObjPlayerSkinsInfo playerSkinsInfo = null;
+    private long reloadCapeTimeMs = 0L;
+    private boolean elytraOfCape = false;
     private String nameClear = null;
+    public EntityShoulderRiding entityShoulderLeft;
+    public EntityShoulderRiding entityShoulderRight;
     private static final ResourceLocation TEXTURE_ELYTRA = new ResourceLocation("textures/entity/elytra.png");
 
     public AbstractClientPlayer(World worldIn, GameProfile playerProfile)
@@ -54,7 +56,7 @@ public abstract class AbstractClientPlayer extends EntityPlayer
         {
             this.nameClear = StringUtils.stripControlCodes(this.nameClear);
         }
-        
+
         Executors.newCachedThreadPool().execute(new Runnable() {
 			@Override
 			public void run() {
@@ -70,8 +72,6 @@ public abstract class AbstractClientPlayer extends EntityPlayer
             SkinUtils.downloadSkin(this);
         }catch(Exception e) {
         }
-        
-        
         PlayerConfigurations.getPlayerConfiguration(this);
     }
     
@@ -123,9 +123,8 @@ public abstract class AbstractClientPlayer extends EntityPlayer
     }
 
     /**
-     * Returns true if the player instance has an associated skin.
+     * Returns the ResourceLocation associated with the player's skin
      */
-    
     public ResourceLocation getLocationSkin()
     {
         if (this.locationOfSkin != null)
@@ -139,21 +138,6 @@ public abstract class AbstractClientPlayer extends EntityPlayer
         
         }
     }
-    /*public ResourceLocation getLocationSkin()
-    {
-    	
-        if (this.locationOfSkin != null)
-        {
-            return this.locationOfSkin;
-        }
-        else {
-        	
-            NetworkPlayerInfo networkplayerinfo = this.getPlayerInfo();
-            return networkplayerinfo.getLocationSkin();
-        	
-        }
-    	
-    }*/
 
     @Nullable
     public ResourceLocation getLocationCape()
@@ -162,14 +146,23 @@ public abstract class AbstractClientPlayer extends EntityPlayer
         {
             return null;
         }
-        else if (this.locationOfCape != null)
-        {
-            return this.locationOfCape;
-        }
         else
         {
-            NetworkPlayerInfo networkplayerinfo = this.getPlayerInfo();
-            return networkplayerinfo == null ? null : networkplayerinfo.getLocationCape();
+            if (this.reloadCapeTimeMs != 0L && System.currentTimeMillis() > this.reloadCapeTimeMs)
+            {
+                CapeUtils.reloadCape(this);
+                this.reloadCapeTimeMs = 0L;
+            }
+
+            if (this.locationOfCape != null)
+            {
+                return this.locationOfCape;
+            }
+            else
+            {
+                NetworkPlayerInfo networkplayerinfo = this.getPlayerInfo();
+                return networkplayerinfo == null ? null : networkplayerinfo.getLocationCape();
+            }
         }
     }
 
@@ -208,7 +201,7 @@ public abstract class AbstractClientPlayer extends EntityPlayer
      */
     public static ResourceLocation getLocationSkin(String username)
     {
-        return new ResourceLocation("frazionz/skins/" + StringUtils.stripControlCodes(username));
+        return new ResourceLocation("skins/" + StringUtils.stripControlCodes(username));
     }
 
     public String getSkinType()
@@ -217,8 +210,6 @@ public abstract class AbstractClientPlayer extends EntityPlayer
     		return this.playerSkinsInfo.getSkinType().getTps();
     	else
     		return ObjPlayerSkinsInfo.SkinType.STEVE.getTps();
-        /*NetworkPlayerInfo networkplayerinfo = this.getPlayerInfo();
-        return networkplayerinfo == null ? DefaultPlayerSkin.getSkinType(this.getUniqueID()) : networkplayerinfo.getSkinType();*/
     }
 
     public float getFovModifier()
@@ -238,7 +229,7 @@ public abstract class AbstractClientPlayer extends EntityPlayer
             f = 1.0F;
         }
 
-        if (this.isHandActive() && this.getActiveItemStack().getItem() == Items.BOW)
+        if (this.isHandActive() && this.getActiveItemStack().getItem() instanceof ItemBow)
         {
             int i = this.getItemInUseMaxCount();
             float f1 = (float)i / 20.0F;
@@ -272,16 +263,6 @@ public abstract class AbstractClientPlayer extends EntityPlayer
     {
         this.locationOfCape = p_setLocationOfCape_1_;
     }
-    
-    public ResourceLocation getLocationOfSkin()
-    {
-        return this.locationOfSkin;
-    }
-
-    public void setLocationOfSkin(ResourceLocation p_setLocationOfSkin_1_)
-    {
-        this.locationOfSkin = p_setLocationOfSkin_1_;
-    }
 
     public boolean hasElytraCape()
     {
@@ -293,7 +274,37 @@ public abstract class AbstractClientPlayer extends EntityPlayer
         }
         else
         {
-            return resourcelocation != this.locationOfCape;
+            return resourcelocation == this.locationOfCape ? this.elytraOfCape : true;
         }
+    }
+
+    public void setElytraOfCape(boolean p_setElytraOfCape_1_)
+    {
+        this.elytraOfCape = p_setElytraOfCape_1_;
+    }
+
+    public boolean isElytraOfCape()
+    {
+        return this.elytraOfCape;
+    }
+
+    public long getReloadCapeTimeMs()
+    {
+        return this.reloadCapeTimeMs;
+    }
+
+    public void setReloadCapeTimeMs(long p_setReloadCapeTimeMs_1_)
+    {
+        this.reloadCapeTimeMs = p_setReloadCapeTimeMs_1_;
+    }
+    
+    public ResourceLocation getLocationOfSkin()
+    {
+        return this.locationOfSkin;
+    }
+
+    public void setLocationOfSkin(ResourceLocation p_setLocationOfSkin_1_)
+    {
+        this.locationOfSkin = p_setLocationOfSkin_1_;
     }
 }

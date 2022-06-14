@@ -30,10 +30,6 @@ public class FallbackResourceManager implements IResourceManager
 
     public void addResourcePack(IResourcePack resourcePack)
     {
-    	/*if(resourcePack instanceof AntiCheatResourcePack)
-    	{
-    		LOGGER.info("addResourcePack OKMEK");
-    	}*/
         this.resourcePacks.add(resourcePack);
     }
 
@@ -51,7 +47,7 @@ public class FallbackResourceManager implements IResourceManager
         for (int i = this.resourcePacks.size() - 1; i >= 0; --i)
         {
             IResourcePack iresourcepack1 = this.resourcePacks.get(i);
-            
+
             if (iresourcepack == null && iresourcepack1.resourceExists(resourcelocation))
             {
                 iresourcepack = iresourcepack1;
@@ -65,11 +61,10 @@ public class FallbackResourceManager implements IResourceManager
                 {
                     inputstream = this.getInputStream(resourcelocation, iresourcepack);
                 }
-
                 
                 // ANTI CHEAT //
                 
-                if(iresourcepack1 instanceof AntiCheatResourcePack && !location.getResourcePath().startsWith("models/block/") && !location.getResourcePath().startsWith("blockstates/"))
+                if(iresourcepack1 instanceof AntiCheatResourcePack && !location.getPath().startsWith("models/block/") && !location.getPath().startsWith("blockstates/"))
                 {
                 	
                 }
@@ -91,7 +86,7 @@ public class FallbackResourceManager implements IResourceManager
 
     private void checkResourcePath(ResourceLocation p_188552_1_) throws IOException
     {
-        if (p_188552_1_.getResourcePath().contains(".."))
+        if (p_188552_1_.getPath().contains(".."))
         {
             throw new IOException("Invalid relative path to resource: " + p_188552_1_);
         }
@@ -105,17 +100,9 @@ public class FallbackResourceManager implements IResourceManager
 
         for (IResourcePack iresourcepack : this.resourcePacks)
         {
-        	if(iresourcepack instanceof AntiCheatResourcePack)
-        	{
-        		/*if(location.getResourcePath().startsWith("models/block") || location.getResourcePath().startsWith("blockstates/"))
-        			LOGGER.info("getAllResource  :  " + location.getResourcePath() + "  :  " + location.getResourceDomain() + "  :  " + location.toString());*/
-        	}
-        	
-        	// ANTI CHEAT //
-        	
             if (iresourcepack.resourceExists(location))
             {
-                if(iresourcepack instanceof AntiCheatResourcePack && !location.getResourcePath().startsWith("models/block/") && !location.getResourcePath().startsWith("blockstates/"))
+                if(iresourcepack instanceof AntiCheatResourcePack && !location.getPath().startsWith("models/block/") && !location.getPath().startsWith("blockstates/"))
                 {
                 	
                 }
@@ -138,7 +125,7 @@ public class FallbackResourceManager implements IResourceManager
 
     static ResourceLocation getLocationMcmeta(ResourceLocation location)
     {
-        return new ResourceLocation(location.getResourceDomain(), location.getResourcePath() + ".mcmeta");
+        return new ResourceLocation(location.getNamespace(), location.getPath() + ".mcmeta");
     }
 
     static class InputStreamLeakedResourceLogger extends InputStream

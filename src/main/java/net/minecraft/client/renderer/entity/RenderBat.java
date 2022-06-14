@@ -31,7 +31,7 @@ public class RenderBat extends RenderLiving<EntityBat>
         GlStateManager.scale(0.35F, 0.35F, 0.35F);
     }
 
-    protected void rotateCorpse(EntityBat entityLiving, float p_77043_2_, float p_77043_3_, float partialTicks)
+    protected void applyRotations(EntityBat entityLiving, float ageInTicks, float rotationYaw, float partialTicks)
     {
         if (entityLiving.getIsBatHanging())
         {
@@ -39,9 +39,9 @@ public class RenderBat extends RenderLiving<EntityBat>
         }
         else
         {
-            GlStateManager.translate(0.0F, MathHelper.cos(p_77043_2_ * 0.3F) * 0.1F, 0.0F);
+            GlStateManager.translate(0.0F, MathHelper.cos(ageInTicks * 0.3F) * 0.1F, 0.0F);
         }
 
-        super.rotateCorpse(entityLiving, p_77043_2_, p_77043_3_, partialTicks);
+        super.applyRotations(entityLiving, ageInTicks, rotationYaw, partialTicks);
     }
 }

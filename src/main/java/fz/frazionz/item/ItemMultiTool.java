@@ -99,7 +99,7 @@ public class ItemMultiTool extends ItemTool
     		Blocks.SNOW_LAYER,
     		Blocks.SOUL_SAND,
     		Blocks.GRASS_PATH,
-    		Blocks.field_192444_dS,
+    		Blocks.CONCRETE_POWDER,
     		Blocks.AMELIORATOR,
     		Blocks.WOODEN_SLAB,
     		Blocks.DOUBLE_WOODEN_SLAB,
@@ -359,7 +359,7 @@ public class ItemMultiTool extends ItemTool
         }
     }
 
-    public float getStrVsBlock(ItemStack stack, IBlockState state)
+    public float getDestroySpeed(ItemStack stack, IBlockState state)
     {
         Material material = state.getMaterial();
         
@@ -369,9 +369,9 @@ public class ItemMultiTool extends ItemTool
             if (block == Blocks.OBSIDIAN || block == Blocks.OBSIDIAN_YELLITE || block == Blocks.OBSIDIAN_BAUXITE || block == Blocks.OBSIDIAN_ONYX || block == Blocks.OBSIDIAN_FRAZION)
             	return 90.0F;
             else
-            	return material != Material.IRON && material != Material.ANVIL && material != Material.ROCK ? super.getStrVsBlock(stack, state) : this.efficiencyOnProperMaterial;
+            	return material != Material.IRON && material != Material.ANVIL && material != Material.ROCK ? super.getDestroySpeed(stack, state) : this.efficiency;
         }
-        return material != Material.IRON && material != Material.ANVIL && material != Material.ROCK ? super.getStrVsBlock(stack, state) : this.efficiencyOnProperMaterial;
+        return material != Material.IRON && material != Material.ANVIL && material != Material.ROCK ? super.getDestroySpeed(stack, state) : this.efficiency;
     }
     
     public void addInformation(ItemStack stack, @Nullable World playerIn, List<String> tooltip, ITooltipFlag advanced)

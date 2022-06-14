@@ -7,6 +7,22 @@ import javax.annotation.Nullable;
 
 import com.google.common.collect.Maps;
 
+import fz.frazionz.entity.item.EntityBigXp;
+import fz.frazionz.entity.item.EntityDynamite;
+import fz.frazionz.entity.item.EntityZTNTPrimed;
+import fz.frazionz.entity.monster.EntityDemonGolem;
+import fz.frazionz.entity.monster.EntityDemonZ;
+import fz.frazionz.entity.monster.EntityHerobrine1;
+import fz.frazionz.entity.monster.EntityIllager;
+import fz.frazionz.entity.monster.EntityNetherSpider;
+import fz.frazionz.entity.projectile.EntityDynamiteArrow;
+import fz.frazionz.entity.renderer.RenderDemonGolem;
+import fz.frazionz.entity.renderer.RenderDemonZ;
+import fz.frazionz.entity.renderer.RenderDynamiteArrow;
+import fz.frazionz.entity.renderer.RenderHerobrine1;
+import fz.frazionz.entity.renderer.RenderIllager;
+import fz.frazionz.entity.renderer.RenderNetherSpider;
+import fz.frazionz.entity.renderer.RenderZTNTPrimed;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBed;
 import net.minecraft.block.state.IBlockState;
@@ -33,9 +49,7 @@ import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.item.EntityArmorStand;
-import net.minecraft.entity.item.EntityBigXp;
 import net.minecraft.entity.item.EntityBoat;
-import net.minecraft.entity.item.EntityDynamite;
 import net.minecraft.entity.item.EntityEnderCrystal;
 import net.minecraft.entity.item.EntityEnderEye;
 import net.minecraft.entity.item.EntityEnderPearl;
@@ -50,12 +64,9 @@ import net.minecraft.entity.item.EntityMinecartTNT;
 import net.minecraft.entity.item.EntityPainting;
 import net.minecraft.entity.item.EntityTNTPrimed;
 import net.minecraft.entity.item.EntityXPOrb;
-import net.minecraft.entity.item.EntityZTNTPrimed;
 import net.minecraft.entity.monster.EntityBlaze;
 import net.minecraft.entity.monster.EntityCaveSpider;
 import net.minecraft.entity.monster.EntityCreeper;
-import net.minecraft.entity.monster.EntityDemonGolem;
-import net.minecraft.entity.monster.EntityDemonZ;
 import net.minecraft.entity.monster.EntityElderGuardian;
 import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.monster.EntityEndermite;
@@ -63,13 +74,10 @@ import net.minecraft.entity.monster.EntityEvoker;
 import net.minecraft.entity.monster.EntityGhast;
 import net.minecraft.entity.monster.EntityGiantZombie;
 import net.minecraft.entity.monster.EntityGuardian;
-import net.minecraft.entity.monster.EntityHerobrine1;
 import net.minecraft.entity.monster.EntityHusk;
-import net.minecraft.entity.monster.EntityIllager;
 import net.minecraft.entity.monster.EntityIllusionIllager;
 import net.minecraft.entity.monster.EntityIronGolem;
 import net.minecraft.entity.monster.EntityMagmaCube;
-import net.minecraft.entity.monster.EntityNetherSpider;
 import net.minecraft.entity.monster.EntityPigZombie;
 import net.minecraft.entity.monster.EntityPolarBear;
 import net.minecraft.entity.monster.EntityShulker;
@@ -104,7 +112,6 @@ import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.passive.EntityZombieHorse;
 import net.minecraft.entity.projectile.EntityDragonFireball;
-import net.minecraft.entity.projectile.EntityDynamiteArrow;
 import net.minecraft.entity.projectile.EntityEgg;
 import net.minecraft.entity.projectile.EntityEvokerFangs;
 import net.minecraft.entity.projectile.EntityFishHook;
@@ -126,12 +133,13 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.optifine.entity.model.CustomEntityModels;
-import optifine.PlayerItemsLayer;
-import optifine.Reflector;
+import net.optifine.player.PlayerItemsLayer;
+import net.optifine.reflect.Reflector;
+import net.optifine.shaders.Shaders;
 
 public class RenderManager
 {
-    private final Map<Class, Render> entityRenderMap = Maps.newHashMap();
+	private final Map<Class, Render> entityRenderMap = Maps.newHashMap();
     private final Map<String, RenderPlayer> skinMap = Maps.<String, RenderPlayer>newHashMap();
     private final RenderPlayer playerRenderer;
 
@@ -143,7 +151,7 @@ public class RenderManager
     public TextureManager renderEngine;
 
     /** Reference to the World object. */
-    public World worldObj;
+    public World world;
 
     /** RenderManager's field for the renderViewEntity */
     public Entity renderViewEntity;
@@ -161,7 +169,6 @@ public class RenderManager
 
     /** whether bounding box should be rendered or not */
     private boolean debugBoundingBox;
-    public Entity renderEntity = null;
     public Render renderRender = null;
 
     public RenderManager(TextureManager renderEngineIn, RenderItem itemRendererIn)
@@ -249,6 +256,7 @@ public class RenderManager
         this.entityRenderMap.put(EntityLlama.class, new RenderLlama(this));
         this.entityRenderMap.put(EntityLlamaSpit.class, new RenderLlamaSpit(this));
         this.entityRenderMap.put(EntityLightningBolt.class, new RenderLightningBolt(this));
+        
         this.entityRenderMap.put(EntityZTNTPrimed.class, new RenderZTNTPrimed(this));
         this.entityRenderMap.put(EntityNetherSpider.class, new RenderNetherSpider(this));
         this.entityRenderMap.put(EntityBigXp.class, new RenderSnowball(this, Items.BIG_XP, itemRendererIn));
@@ -258,6 +266,7 @@ public class RenderManager
         this.entityRenderMap.put(EntityHerobrine1.class, new RenderHerobrine1(this));
         this.entityRenderMap.put(EntityDemonZ.class, new RenderDemonZ(this));
         this.entityRenderMap.put(EntityDemonGolem.class, new RenderDemonGolem(this));
+        
         this.playerRenderer = new RenderPlayer(this);
         this.skinMap.put("default", this.playerRenderer);
         this.skinMap.put("slim", new RenderPlayer(this, true));
@@ -306,7 +315,7 @@ public class RenderManager
 
     public void cacheActiveRenderInfo(World worldIn, FontRenderer textRendererIn, Entity livingPlayerIn, Entity pointedEntityIn, GameSettings optionsIn, float partialTicks)
     {
-        this.worldObj = worldIn;
+        this.world = worldIn;
         this.options = optionsIn;
         this.renderViewEntity = livingPlayerIn;
         this.pointedEntity = pointedEntityIn;
@@ -372,9 +381,9 @@ public class RenderManager
         return this.debugBoundingBox;
     }
 
-    public boolean isRenderMultipass(Entity p_188390_1_)
+    public boolean isRenderMultipass(Entity entityIn)
     {
-        return this.getEntityRenderObject(p_188390_1_).isMultipass();
+        return this.getEntityRenderObject(entityIn).isMultipass();
     }
 
     public boolean shouldRender(Entity entityIn, ICamera camera, double camX, double camY, double camZ)
@@ -407,10 +416,10 @@ public class RenderManager
         int k = i / 65536;
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)j, (float)k);
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-        this.doRenderEntity(entityIn, d0 - this.renderPosX, d1 - this.renderPosY, d2 - this.renderPosZ, f, partialTicks, p_188388_3_);
+        this.renderEntity(entityIn, d0 - this.renderPosX, d1 - this.renderPosY, d2 - this.renderPosZ, f, partialTicks, p_188388_3_);
     }
 
-    public void doRenderEntity(Entity entityIn, double x, double y, double z, float yaw, float partialTicks, boolean p_188391_10_)
+    public void renderEntity(Entity entityIn, double x, double y, double z, float yaw, float partialTicks, boolean p_188391_10_)
     {
         Render<Entity> render = null;
 
@@ -426,7 +435,6 @@ public class RenderManager
 
                     if (CustomEntityModels.isActive())
                     {
-                        this.renderEntity = entityIn;
                         this.renderRender = render;
                     }
 
@@ -476,22 +484,22 @@ public class RenderManager
         }
     }
 
-    public void renderMultipass(Entity p_188389_1_, float p_188389_2_)
+    public void renderMultipass(Entity entityIn, float partialTicks)
     {
-        if (p_188389_1_.ticksExisted == 0)
+        if (entityIn.ticksExisted == 0)
         {
-            p_188389_1_.lastTickPosX = p_188389_1_.posX;
-            p_188389_1_.lastTickPosY = p_188389_1_.posY;
-            p_188389_1_.lastTickPosZ = p_188389_1_.posZ;
+            entityIn.lastTickPosX = entityIn.posX;
+            entityIn.lastTickPosY = entityIn.posY;
+            entityIn.lastTickPosZ = entityIn.posZ;
         }
 
-        double d0 = p_188389_1_.lastTickPosX + (p_188389_1_.posX - p_188389_1_.lastTickPosX) * (double)p_188389_2_;
-        double d1 = p_188389_1_.lastTickPosY + (p_188389_1_.posY - p_188389_1_.lastTickPosY) * (double)p_188389_2_;
-        double d2 = p_188389_1_.lastTickPosZ + (p_188389_1_.posZ - p_188389_1_.lastTickPosZ) * (double)p_188389_2_;
-        float f = p_188389_1_.prevRotationYaw + (p_188389_1_.rotationYaw - p_188389_1_.prevRotationYaw) * p_188389_2_;
-        int i = p_188389_1_.getBrightnessForRender();
+        double d0 = entityIn.lastTickPosX + (entityIn.posX - entityIn.lastTickPosX) * (double)partialTicks;
+        double d1 = entityIn.lastTickPosY + (entityIn.posY - entityIn.lastTickPosY) * (double)partialTicks;
+        double d2 = entityIn.lastTickPosZ + (entityIn.posZ - entityIn.lastTickPosZ) * (double)partialTicks;
+        float f = entityIn.prevRotationYaw + (entityIn.rotationYaw - entityIn.prevRotationYaw) * partialTicks;
+        int i = entityIn.getBrightnessForRender();
 
-        if (p_188389_1_.isBurning())
+        if (entityIn.isBurning())
         {
             i = 15728880;
         }
@@ -500,11 +508,11 @@ public class RenderManager
         int k = i / 65536;
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)j, (float)k);
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-        Render<Entity> render = this.<Entity>getEntityRenderObject(p_188389_1_);
+        Render<Entity> render = this.<Entity>getEntityRenderObject(entityIn);
 
         if (render != null && this.renderEngine != null)
         {
-            render.renderMultipass(p_188389_1_, d0 - this.renderPosX, d1 - this.renderPosY, d2 - this.renderPosZ, f, p_188389_2_);
+            render.renderMultipass(entityIn, d0 - this.renderPosX, d1 - this.renderPosY, d2 - this.renderPosZ, f, partialTicks);
         }
     }
 
@@ -513,54 +521,57 @@ public class RenderManager
      */
     private void renderDebugBoundingBox(Entity entityIn, double x, double y, double z, float entityYaw, float partialTicks)
     {
-        GlStateManager.depthMask(false);
-        GlStateManager.disableTexture2D();
-        GlStateManager.disableLighting();
-        GlStateManager.disableCull();
-        GlStateManager.disableBlend();
-        float f = entityIn.width / 2.0F;
-        AxisAlignedBB axisalignedbb = entityIn.getEntityBoundingBox();
-        RenderGlobal.drawBoundingBox(axisalignedbb.minX - entityIn.posX + x, axisalignedbb.minY - entityIn.posY + y, axisalignedbb.minZ - entityIn.posZ + z, axisalignedbb.maxX - entityIn.posX + x, axisalignedbb.maxY - entityIn.posY + y, axisalignedbb.maxZ - entityIn.posZ + z, 1.0F, 1.0F, 1.0F, 1.0F);
-        Entity[] aentity = entityIn.getParts();
-
-        if (aentity != null)
+        if (!Shaders.isShadowPass)
         {
-            for (Entity entity : aentity)
+            GlStateManager.depthMask(false);
+            GlStateManager.disableTexture2D();
+            GlStateManager.disableLighting();
+            GlStateManager.disableCull();
+            GlStateManager.disableBlend();
+            float f = entityIn.width / 2.0F;
+            AxisAlignedBB axisalignedbb = entityIn.getEntityBoundingBox();
+            RenderGlobal.drawBoundingBox(axisalignedbb.minX - entityIn.posX + x, axisalignedbb.minY - entityIn.posY + y, axisalignedbb.minZ - entityIn.posZ + z, axisalignedbb.maxX - entityIn.posX + x, axisalignedbb.maxY - entityIn.posY + y, axisalignedbb.maxZ - entityIn.posZ + z, 1.0F, 1.0F, 1.0F, 1.0F);
+            Entity[] aentity = entityIn.getParts();
+
+            if (aentity != null)
             {
-                double d0 = (entity.posX - entity.prevPosX) * (double)partialTicks;
-                double d1 = (entity.posY - entity.prevPosY) * (double)partialTicks;
-                double d2 = (entity.posZ - entity.prevPosZ) * (double)partialTicks;
-                AxisAlignedBB axisalignedbb1 = entity.getEntityBoundingBox();
-                RenderGlobal.drawBoundingBox(axisalignedbb1.minX - this.renderPosX + d0, axisalignedbb1.minY - this.renderPosY + d1, axisalignedbb1.minZ - this.renderPosZ + d2, axisalignedbb1.maxX - this.renderPosX + d0, axisalignedbb1.maxY - this.renderPosY + d1, axisalignedbb1.maxZ - this.renderPosZ + d2, 0.25F, 1.0F, 0.0F, 1.0F);
+                for (Entity entity : aentity)
+                {
+                    double d0 = (entity.posX - entity.prevPosX) * (double)partialTicks;
+                    double d1 = (entity.posY - entity.prevPosY) * (double)partialTicks;
+                    double d2 = (entity.posZ - entity.prevPosZ) * (double)partialTicks;
+                    AxisAlignedBB axisalignedbb1 = entity.getEntityBoundingBox();
+                    RenderGlobal.drawBoundingBox(axisalignedbb1.minX - this.renderPosX + d0, axisalignedbb1.minY - this.renderPosY + d1, axisalignedbb1.minZ - this.renderPosZ + d2, axisalignedbb1.maxX - this.renderPosX + d0, axisalignedbb1.maxY - this.renderPosY + d1, axisalignedbb1.maxZ - this.renderPosZ + d2, 0.25F, 1.0F, 0.0F, 1.0F);
+                }
             }
-        }
 
-        if (entityIn instanceof EntityLivingBase)
-        {
-            float f1 = 0.01F;
-            RenderGlobal.drawBoundingBox(x - (double)f, y + (double)entityIn.getEyeHeight() - 0.009999999776482582D, z - (double)f, x + (double)f, y + (double)entityIn.getEyeHeight() + 0.009999999776482582D, z + (double)f, 1.0F, 0.0F, 0.0F, 1.0F);
-        }
+            if (entityIn instanceof EntityLivingBase)
+            {
+                float f1 = 0.01F;
+                RenderGlobal.drawBoundingBox(x - (double)f, y + (double)entityIn.getEyeHeight() - 0.009999999776482582D, z - (double)f, x + (double)f, y + (double)entityIn.getEyeHeight() + 0.009999999776482582D, z + (double)f, 1.0F, 0.0F, 0.0F, 1.0F);
+            }
 
-        Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder bufferbuilder = tessellator.getBuffer();
-        Vec3d vec3d = entityIn.getLook(partialTicks);
-        bufferbuilder.begin(3, DefaultVertexFormats.POSITION_COLOR);
-        bufferbuilder.pos(x, y + (double)entityIn.getEyeHeight(), z).color(0, 0, 255, 255).endVertex();
-        bufferbuilder.pos(x + vec3d.xCoord * 2.0D, y + (double)entityIn.getEyeHeight() + vec3d.yCoord * 2.0D, z + vec3d.zCoord * 2.0D).color(0, 0, 255, 255).endVertex();
-        tessellator.draw();
-        GlStateManager.enableTexture2D();
-        GlStateManager.enableLighting();
-        GlStateManager.enableCull();
-        GlStateManager.disableBlend();
-        GlStateManager.depthMask(true);
+            Tessellator tessellator = Tessellator.getInstance();
+            BufferBuilder bufferbuilder = tessellator.getBuffer();
+            Vec3d vec3d = entityIn.getLook(partialTicks);
+            bufferbuilder.begin(3, DefaultVertexFormats.POSITION_COLOR);
+            bufferbuilder.pos(x, y + (double)entityIn.getEyeHeight(), z).color(0, 0, 255, 255).endVertex();
+            bufferbuilder.pos(x + vec3d.x * 2.0D, y + (double)entityIn.getEyeHeight() + vec3d.y * 2.0D, z + vec3d.z * 2.0D).color(0, 0, 255, 255).endVertex();
+            tessellator.draw();
+            GlStateManager.enableTexture2D();
+            GlStateManager.enableLighting();
+            GlStateManager.enableCull();
+            GlStateManager.disableBlend();
+            GlStateManager.depthMask(true);
+        }
     }
 
     /**
      * World sets this RenderManager's worldObj to the world provided
      */
-    public void set(@Nullable World worldIn)
+    public void setWorld(@Nullable World worldIn)
     {
-        this.worldObj = worldIn;
+        this.world = worldIn;
 
         if (worldIn == null)
         {

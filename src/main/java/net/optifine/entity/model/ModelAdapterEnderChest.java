@@ -6,9 +6,9 @@ import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityEnderChestRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.src.Config;
 import net.minecraft.tileentity.TileEntityEnderChest;
-import optifine.Config;
-import optifine.Reflector;
+import net.optifine.reflect.Reflector;
 
 public class ModelAdapterEnderChest extends ModelAdapter
 {
@@ -47,10 +47,15 @@ public class ModelAdapterEnderChest extends ModelAdapter
         }
     }
 
+    public String[] getModelRendererNames()
+    {
+        return new String[] {"lid", "base", "knob"};
+    }
+
     public IEntityRenderer makeEntityRender(ModelBase modelBase, float shadowSize)
     {
         TileEntityRendererDispatcher tileentityrendererdispatcher = TileEntityRendererDispatcher.instance;
-        TileEntitySpecialRenderer tileentityspecialrenderer = tileentityrendererdispatcher.getSpecialRendererByClass(TileEntityEnderChest.class);
+        TileEntitySpecialRenderer tileentityspecialrenderer = tileentityrendererdispatcher.getRenderer(TileEntityEnderChest.class);
 
         if (!(tileentityspecialrenderer instanceof TileEntityEnderChestRenderer))
         {

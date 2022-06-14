@@ -6,6 +6,7 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.Predicate;
 
+import fz.frazionz.tileentity.TileEntityZHopper;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.MapColor;
@@ -25,7 +26,6 @@ import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.StatList;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityZHopper;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
@@ -111,7 +111,7 @@ public class BlockZHopper extends BlockContainer
 
             if (tileentity instanceof TileEntityZHopper)
             {
-                ((TileEntityZHopper)tileentity).func_190575_a(stack.getDisplayName());
+                ((TileEntityZHopper)tileentity).setCustomName(stack.getDisplayName());
             }
         }
     }
@@ -217,7 +217,7 @@ public class BlockZHopper extends BlockContainer
 
     public static EnumFacing getFacing(int meta)
     {
-        return EnumFacing.getFront(meta & 7);
+        return EnumFacing.byIndex(meta & 7);
     }
 
     /**

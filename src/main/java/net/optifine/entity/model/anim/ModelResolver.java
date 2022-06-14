@@ -2,10 +2,11 @@ package net.optifine.entity.model.anim;
 
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.src.Config;
 import net.minecraft.tileentity.TileEntity;
 import net.optifine.entity.model.CustomModelRenderer;
 import net.optifine.entity.model.ModelAdapter;
-import optifine.Config;
+import net.optifine.expr.IExpression;
 
 public class ModelResolver implements IModelResolver
 {
@@ -35,16 +36,16 @@ public class ModelResolver implements IModelResolver
 
     public IExpression getExpression(String name)
     {
-        ModelVariable modelvariable = this.getModelVariable(name);
+        IExpression iexpression = this.getModelVariable(name);
 
-        if (modelvariable != null)
+        if (iexpression != null)
         {
-            return modelvariable;
+            return iexpression;
         }
         else
         {
-            IExpression iexpression = this.renderResolver.getParameter(name);
-            return iexpression != null ? iexpression : null;
+            IExpression iexpression1 = this.renderResolver.getParameter(name);
+            return iexpression1 != null ? iexpression1 : null;
         }
     }
 
@@ -115,7 +116,7 @@ public class ModelResolver implements IModelResolver
         }
     }
 
-    public ModelVariable getModelVariable(String name)
+    public ModelVariableFloat getModelVariable(String name)
     {
         String[] astring = Config.tokenize(name, ".");
 
@@ -135,8 +136,8 @@ public class ModelResolver implements IModelResolver
             }
             else
             {
-                EnumModelVariable enummodelvariable = EnumModelVariable.parse(s1);
-                return enummodelvariable == null ? null : new ModelVariable(name, modelrenderer, enummodelvariable);
+                ModelVariableType modelvariabletype = ModelVariableType.parse(s1);
+                return modelvariabletype == null ? null : new ModelVariableFloat(name, modelrenderer, modelvariabletype);
             }
         }
     }

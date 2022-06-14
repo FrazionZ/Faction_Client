@@ -159,25 +159,25 @@ public class BlockColors
         return blockcolors;
     }
 
-    public int getColor(IBlockState p_189991_1_, World p_189991_2_, BlockPos p_189991_3_)
+    public int getColor(IBlockState state, World p_189991_2_, BlockPos p_189991_3_)
     {
-        IBlockColor iblockcolor = this.mapBlockColors.getByValue(Block.getIdFromBlock(p_189991_1_.getBlock()));
+        IBlockColor iblockcolor = this.mapBlockColors.getByValue(Block.getIdFromBlock(state.getBlock()));
 
         if (iblockcolor != null)
         {
-            return iblockcolor.colorMultiplier(p_189991_1_, (IBlockAccess)null, (BlockPos)null, 0);
+            return iblockcolor.colorMultiplier(state, (IBlockAccess)null, (BlockPos)null, 0);
         }
         else
         {
-            MapColor mapcolor = p_189991_1_.getMapColor(p_189991_2_, p_189991_3_);
+            MapColor mapcolor = state.getMapColor(p_189991_2_, p_189991_3_);
             return mapcolor != null ? mapcolor.colorValue : -1;
         }
     }
 
-    public int colorMultiplier(IBlockState state, @Nullable IBlockAccess blockAccess, @Nullable BlockPos pos, int renderPass)
+    public int colorMultiplier(IBlockState state, @Nullable IBlockAccess blockAccess, @Nullable BlockPos pos, int tintIndex)
     {
         IBlockColor iblockcolor = this.mapBlockColors.getByValue(Block.getIdFromBlock(state.getBlock()));
-        return iblockcolor == null ? -1 : iblockcolor.colorMultiplier(state, blockAccess, pos, renderPass);
+        return iblockcolor == null ? -1 : iblockcolor.colorMultiplier(state, blockAccess, pos, tintIndex);
     }
 
     public void registerBlockColorHandler(IBlockColor blockColor, Block... blocksIn)

@@ -482,7 +482,7 @@ public class NetworkManager extends SimpleChannelInboundHandler < Packet<? >>
         }
     }
 
-    public void checkDisconnected()
+    public void handleDisconnection()
     {
         if (this.channel != null && !this.channel.isOpen())
         {

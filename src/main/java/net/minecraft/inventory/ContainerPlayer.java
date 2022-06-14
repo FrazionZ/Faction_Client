@@ -21,37 +21,33 @@ public class ContainerPlayer extends Container
     private List<Integer> trophySlots = Arrays.asList(46,47,48);
     
     /** The crafting matrix inventory. */
-    public InventoryCrafting craftMatrix;
-    
+    public InventoryCrafting craftMatrix = new InventoryCrafting(this, 2, 2);
     public InventoryCraftResult craftResult = new InventoryCraftResult();
 
-    public Minecraft mc = Minecraft.getMinecraft();
-    
-    
     /** Determines if inventory manipulation should be handled. */
     public boolean isLocalWorld;
-    private final EntityPlayer thePlayer;
-
-    public ContainerPlayer(InventoryPlayer playerInventory, boolean localWorld, EntityPlayer player)
+    private final EntityPlayer player;
+    
+    public Minecraft mc = Minecraft.getMinecraft();
+    
+    public ContainerPlayer(InventoryPlayer playerInventory, boolean localWorld, EntityPlayer playerIn)
     {
-    	
-    	craftMatrix = new InventoryCrafting(this, 2, 2);
         this.isLocalWorld = localWorld;
-        this.thePlayer = player;
-        this.addSlotToContainer(new SlotCrafting(playerInventory.player, this.craftMatrix, this.craftResult, 0, 159, 50));
+        this.player = playerIn;
+        this.addSlotToContainer(new SlotCrafting(playerInventory.player, this.craftMatrix, this.craftResult, 0, 152, 28));
 
         for (int i = 0; i < 2; ++i)
         {
             for (int j = 0; j < 2; ++j)
             {
-                this.addSlotToContainer(new Slot(this.craftMatrix, j + i * 2, 109 + j * 18, 40 + i * 18));
+                this.addSlotToContainer(new Slot(this.craftMatrix, j + i * 2, 104 + j * 18, 18 + i * 18));
             }
         }
 
         for (int k = 0; k < 4; ++k)
         {
             final EntityEquipmentSlot entityequipmentslot = VALID_EQUIPMENT_SLOTS[k];
-            this.addSlotToContainer(new Slot(playerInventory, 36 + (3 - k), 13, 30 + k * 18)
+            this.addSlotToContainer(new Slot(playerInventory, 36 + (3 - k), 8, 8 + k * 18)
             {
                 public int getSlotStackLimit()
                 {
@@ -64,7 +60,7 @@ public class ContainerPlayer extends Container
                 public boolean canTakeStack(EntityPlayer playerIn)
                 {
                     ItemStack itemstack = this.getStack();
-                    return !itemstack.func_190926_b() && !playerIn.isCreative() && EnchantmentHelper.func_190938_b(itemstack) ? false : super.canTakeStack(playerIn);
+                    return !itemstack.isEmpty() && !playerIn.isCreative() && EnchantmentHelper.hasBindingCurse(itemstack) ? false : super.canTakeStack(playerIn);
                 }
                 @Nullable
                 public String getSlotTexture()
@@ -73,18 +69,21 @@ public class ContainerPlayer extends Container
                 }
             });
         }
+
         for (int l = 0; l < 3; ++l)
         {
             for (int j1 = 0; j1 < 9; ++j1)
             {
-               this.addSlotToContainer(new Slot(playerInventory, j1 + (l + 1) * 9, 13 + j1 * 18, 106 + l * 18));
+                this.addSlotToContainer(new Slot(playerInventory, j1 + (l + 1) * 9, 8 + j1 * 18, 84 + l * 18));
             }
         }
+
         for (int i1 = 0; i1 < 9; ++i1)
         {
-            this.addSlotToContainer(new Slot(playerInventory, i1, 13 + i1 * 18, 164));
+            this.addSlotToContainer(new Slot(playerInventory, i1, 8 + i1 * 18, 142));
         }
-        this.addSlotToContainer(new Slot(playerInventory, 40, 82, 84)
+
+        this.addSlotToContainer(new Slot(playerInventory, 40, 77, 62)
         {
             @Nullable
             public String getSlotTexture()
@@ -97,7 +96,7 @@ public class ContainerPlayer extends Container
         for (int k = 0; k < 3; ++k)
         {
             final EntityEquipmentSlot entityequipmentslot = VALID_TROPHY_SLOTS[k];
-            this.addSlotToContainer(new Slot(playerInventory, 41 + k, 82, 30 + k * 18)
+            this.addSlotToContainer(new Slot(playerInventory, 41 + k, 77, 8 + k * 18)
             {
                 public int getSlotStackLimit()
                 {
@@ -121,7 +120,7 @@ public class ContainerPlayer extends Container
      */
     public void onCraftMatrixChanged(IInventory inventoryIn)
     {
-        this.func_192389_a(this.thePlayer.world, this.thePlayer, this.craftMatrix, this.craftResult);
+        this.slotChangedCraftingGrid(this.player.world, this.player, this.craftMatrix, this.craftResult);
     }
 
     /**
@@ -134,7 +133,7 @@ public class ContainerPlayer extends Container
 
         if (!playerIn.world.isRemote)
         {
-            this.func_193327_a(playerIn, playerIn.world, this.craftMatrix);
+            this.clearContainer(playerIn, playerIn.world, this.craftMatrix);
         }
     }
 
@@ -147,106 +146,107 @@ public class ContainerPlayer extends Container
     }
 
     /**
-     * Take a stack from the specified inventory slot.
+     * Handle when the stack in slot {@code index} is shift-clicked. Normally this moves the stack between the player
+     * inventory and the other inventory(s).
      */
     public ItemStack transferStackInSlot(EntityPlayer playerIn, int index)
     {
-        ItemStack itemstack = ItemStack.field_190927_a;
+        ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = this.inventorySlots.get(index);
-        
-            if (slot != null && slot.getHasStack())
+
+        if (slot != null && slot.getHasStack())
+        {
+            ItemStack itemstack1 = slot.getStack();
+            itemstack = itemstack1.copy();
+            EntityEquipmentSlot entityequipmentslot = EntityLiving.getSlotForItemStack(itemstack);
+
+            if (index == 0)
             {
-                ItemStack itemstack1 = slot.getStack();
-                itemstack = itemstack1.copy();
-                EntityEquipmentSlot entityequipmentslot = EntityLiving.getSlotForItemStack(itemstack);
-
-                if (index == 0)
+                if (!this.mergeItemStack(itemstack1, 9, 45, true))
                 {
-                    if (!this.mergeItemStack(itemstack1, 9, 45, true))
-                    {
-                        return ItemStack.field_190927_a;
-                    }
-
-                    slot.onSlotChange(itemstack1, itemstack);
-                }
-                else if (index >= 1 && index < 5)
-                {
-                    if (!this.mergeItemStack(itemstack1, 9, 45, false))
-                    {
-                        return ItemStack.field_190927_a;
-                    }
-                }
-                else if (index >= 5 && index < 9)
-                {
-                    if (!this.mergeItemStack(itemstack1, 9, 45, false))
-                    {
-                        return ItemStack.field_190927_a;
-                    }
-                }
-                else if (entityequipmentslot.getSlotType() == EntityEquipmentSlot.Type.ARMOR && !((Slot)this.inventorySlots.get(8 - entityequipmentslot.getIndex())).getHasStack())
-                {
-                    int i = 8 - entityequipmentslot.getIndex();
-
-                    if (!this.mergeItemStack(itemstack1, i, i + 1, false))
-                    {
-                        return ItemStack.field_190927_a;
-                    }
-                }
-                else if (entityequipmentslot == EntityEquipmentSlot.OFFHAND && !((Slot)this.inventorySlots.get(45)).getHasStack())
-                {
-                    if (!this.mergeItemStack(itemstack1, 45, 46, false))
-                    {
-                        return ItemStack.field_190927_a;
-                    }
-                }
-                // TROPHY_UPDATE
-                else if (itemstack.getItem() instanceof ItemTrophy && !((Slot)this.inventorySlots.get(48 - index)).getHasStack() && !this.trophySlots.contains(index) )
-                {
-                    if (!this.mergeItemStack(itemstack1, 46, 49, false))
-                    {
-                        return ItemStack.field_190927_a;
-                    }
-                }
-                else if (index >= 9 && index < 36)
-                {
-                    if (!this.mergeItemStack(itemstack1, 36, 45, false))
-                    {
-                        return ItemStack.field_190927_a;
-                    }
-                }
-                else if (index >= 36 && index < 45)
-                {
-                    if (!this.mergeItemStack(itemstack1, 9, 36, false))
-                    {
-                        return ItemStack.field_190927_a;
-                    }
-                }
-                else if (!this.mergeItemStack(itemstack1, 9, 45, false))
-                {
-                    return ItemStack.field_190927_a;
+                    return ItemStack.EMPTY;
                 }
 
-                if (itemstack1.func_190926_b())
+                slot.onSlotChange(itemstack1, itemstack);
+            }
+            else if (index >= 1 && index < 5)
+            {
+                if (!this.mergeItemStack(itemstack1, 9, 45, false))
                 {
-                    slot.putStack(ItemStack.field_190927_a);
-                }
-                else
-                {
-                    slot.onSlotChanged();
-                }
-
-                if (itemstack1.func_190916_E() == itemstack.func_190916_E())
-                {
-                    return ItemStack.field_190927_a;
-                }
-
-                ItemStack itemstack2 = slot.func_190901_a(playerIn, itemstack1);
-
-                if (index == 0)
-                {
-                    playerIn.dropItem(itemstack2, false);
+                    return ItemStack.EMPTY;
                 }
             }
+            else if (index >= 5 && index < 9)
+            {
+                if (!this.mergeItemStack(itemstack1, 9, 45, false))
+                {
+                    return ItemStack.EMPTY;
+                }
+            }
+            else if (entityequipmentslot.getSlotType() == EntityEquipmentSlot.Type.ARMOR && !((Slot)this.inventorySlots.get(8 - entityequipmentslot.getIndex())).getHasStack())
+            {
+                int i = 8 - entityequipmentslot.getIndex();
+
+                if (!this.mergeItemStack(itemstack1, i, i + 1, false))
+                {
+                    return ItemStack.EMPTY;
+                }
+            }
+            else if (entityequipmentslot == EntityEquipmentSlot.OFFHAND && !((Slot)this.inventorySlots.get(45)).getHasStack())
+            {
+                if (!this.mergeItemStack(itemstack1, 45, 46, false))
+                {
+                    return ItemStack.EMPTY;
+                }
+            }
+            // TROPHY_UPDATE
+            else if (itemstack.getItem() instanceof ItemTrophy && !((Slot)this.inventorySlots.get(48 - index)).getHasStack() && !this.trophySlots.contains(index) )
+            {
+                if (!this.mergeItemStack(itemstack1, 46, 49, false))
+                {
+                    return ItemStack.EMPTY;
+                }
+            }
+            else if (index >= 9 && index < 36)
+            {
+                if (!this.mergeItemStack(itemstack1, 36, 45, false))
+                {
+                    return ItemStack.EMPTY;
+                }
+            }
+            else if (index >= 36 && index < 45)
+            {
+                if (!this.mergeItemStack(itemstack1, 9, 36, false))
+                {
+                    return ItemStack.EMPTY;
+                }
+            }
+            else if (!this.mergeItemStack(itemstack1, 9, 45, false))
+            {
+                return ItemStack.EMPTY;
+            }
+
+            if (itemstack1.isEmpty())
+            {
+                slot.putStack(ItemStack.EMPTY);
+            }
+            else
+            {
+                slot.onSlotChanged();
+            }
+
+            if (itemstack1.getCount() == itemstack.getCount())
+            {
+                return ItemStack.EMPTY;
+            }
+
+            ItemStack itemstack2 = slot.onTake(playerIn, itemstack1);
+
+            if (index == 0)
+            {
+                playerIn.dropItem(itemstack2, false);
+            }
+        }
 
         return itemstack;
     }

@@ -1,9 +1,5 @@
 package net.minecraft.item;
 
-import java.util.Map;
-
-import com.google.common.collect.Maps;
-
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
@@ -13,27 +9,29 @@ import net.minecraft.world.World;
 
 public class ItemAppleGold extends ItemFood
 {
-	public static int amount;
-	public static float saturation;
-	public static boolean isWolfFood;
-	
     public ItemAppleGold(int amount, float saturation, boolean isWolfFood)
     {
         super(amount, saturation, isWolfFood);
-        this.amount = amount;
-        this.saturation = saturation;
-        this.isWolfFood = isWolfFood;
         this.setHasSubtypes(true);
         this.setMaxStackSize(16);
-        	
     }
-    
+
+    /**
+     * Returns true if this item has an enchantment glint. By default, this returns
+     * <code>stack.isItemEnchanted()</code>, but other items can override it (for instance, written books always return
+     * true).
+     *  
+     * Note that if you override this method, you generally want to also call the super version (on {@link Item}) to get
+     * the glint for enchanted items. Of course, that is unnecessary if the overwritten version always returns true.
+     */
     public boolean hasEffect(ItemStack stack)
     {
         return super.hasEffect(stack) || stack.getMetadata() > 0;
     }
 
-    
+    /**
+     * Return an item rarity from EnumRarity
+     */
     public EnumRarity getRarity(ItemStack stack)
     {
         return stack.getMetadata() == 0 ? EnumRarity.RARE : EnumRarity.EPIC;
@@ -48,6 +46,7 @@ public class ItemAppleGold extends ItemFood
                 player.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 600, 4));
                 player.addPotionEffect(new PotionEffect(MobEffects.RESISTANCE, 6000, 0));
                 player.addPotionEffect(new PotionEffect(MobEffects.FIRE_RESISTANCE, 6000, 0));
+                //player.addPotionEffect(new PotionEffect(MobEffects.ABSORPTION, 2400, 3));
             }
             else
             {
@@ -60,52 +59,12 @@ public class ItemAppleGold extends ItemFood
     /**
      * returns a list of items with the same ID, but different meta (eg: dye returns 16 items)
      */
-    public void getSubItems(CreativeTabs itemIn, NonNullList<ItemStack> tab)
+    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items)
     {
-        if (this.func_194125_a(itemIn))
+        if (this.isInCreativeTab(tab))
         {
-        	for(ItemAppleGold.AppleType appletype : ItemAppleGold.AppleType.values()) {
-        		
-        		ItemStack stack = new ItemStack(this, 1, appletype.getMeta());
-        		tab.add(stack);
-        	}
+            items.add(new ItemStack(this));
+            items.add(new ItemStack(this, 1, 1));
         }
-    }
-    
-    public static enum AppleType
-    {
-        NORMAL(0, 16, ItemAppleGold.amount, ItemAppleGold.saturation, ItemAppleGold.isWolfFood),
-        CHEAT(1, 8, ItemAppleGold.amount, ItemAppleGold.saturation, ItemAppleGold.isWolfFood);
-    	
-        private final int meta;
-        private final int maxStackSize;
-        private final int amount;
-        private final float saturation;
-        private final boolean isWolfFood;
-
-        AppleType(int meta, int maxStackSize, int amount, float saturation, boolean isWolfFood)
-        {
-            this.meta = meta;
-            this.maxStackSize = maxStackSize;
-            this.amount = amount;
-            this.saturation = saturation;
-            this.isWolfFood = isWolfFood;
-        }
-        
-        public int getAmount() {
-			return amount;
-		}
-        
-        public int getMaxStackSize() {
-			return maxStackSize;
-		}
-        
-        public int getMeta() {
-			return meta;
-		}
-        
-        public float getSaturation() {
-			return saturation;
-		}
     }
 }

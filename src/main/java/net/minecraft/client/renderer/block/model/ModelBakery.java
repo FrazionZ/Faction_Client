@@ -1,5 +1,12 @@
 package net.minecraft.client.renderer.block.model;
 
+import com.google.common.base.Joiner;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Queues;
+import com.google.common.collect.Sets;
 import java.io.Closeable;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -8,33 +15,16 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Deque;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
-
+import java.util.Map.Entry;
 import javax.annotation.Nullable;
-
-import org.apache.commons.io.IOUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import com.google.common.base.Joiner;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Queues;
-import com.google.common.collect.Sets;
-
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockStone;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockModelShapes;
@@ -56,10 +46,13 @@ import net.minecraft.util.registry.RegistrySimple;
 import net.minecraftforge.common.model.ITransformation;
 import net.minecraftforge.common.model.TRSRTransformation;
 import net.minecraftforge.registries.IRegistryDelegate;
-import optifine.CustomItems;
-import optifine.Reflector;
-import optifine.StrUtils;
-import optifine.TextureUtils;
+import net.optifine.CustomItems;
+import net.optifine.reflect.Reflector;
+import net.optifine.util.StrUtils;
+import net.optifine.util.TextureUtils;
+import org.apache.commons.io.IOUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class ModelBakery
 {
@@ -115,7 +108,7 @@ public class ModelBakery
         
         return this.bakedRegistry;
     }
-
+    
     // ANTI XRAY V1 //
     
     private boolean hasIllegalBlockStatesOrModel()
@@ -127,11 +120,11 @@ public class ModelBakery
         for (ResourceLocation resourcelocation : blockstatemapper.getBlockstateLocations(stone))
         {
         	ModelBlockDefinition modelblockdefinition = this.getModelBlockDefinition(resourcelocation);
-        	ResourceLocation jsonStone = new ResourceLocation(resourcelocation.getResourceDomain(), "blockstates/" + resourcelocation.getResourcePath() + ".json");
+        	ResourceLocation jsonStone = new ResourceLocation(resourcelocation.getNamespace(), "blockstates/" + resourcelocation.getPath() + ".json");
         }
     	return illegal;
     }
-    
+
     private void loadBlocks()
     {
         BlockStateMapper blockstatemapper = this.blockModelShapes.getBlockStateMapper();
@@ -152,13 +145,11 @@ public class ModelBakery
         }
     }
 
-    // MODEL BLOCKSTATES HASILLEGAL //
-    
     protected void loadBlock(BlockStateMapper p_loadBlock_1_, Block p_loadBlock_2_, final ResourceLocation p_loadBlock_3_)
     {
         ModelBlockDefinition modelblockdefinition = this.getModelBlockDefinition(p_loadBlock_3_);
         Map<IBlockState, ModelResourceLocation> map = p_loadBlock_1_.getVariants(p_loadBlock_2_);
-        
+
         if (modelblockdefinition.hasMultipartData())
         {
             Collection<ModelResourceLocation> collection = Sets.newHashSet(map.values());
@@ -210,8 +201,8 @@ public class ModelBakery
 
     private void loadVariantItemModels()
     {
-        this.variants.put(MODEL_MISSING, new VariantList(Lists.newArrayList(new Variant(new ResourceLocation(MODEL_MISSING.getResourcePath()), ModelRotation.X0_Y0, false, 1))));
-        this.func_191401_d();
+        this.variants.put(MODEL_MISSING, new VariantList(Lists.newArrayList(new Variant(new ResourceLocation(MODEL_MISSING.getPath()), ModelRotation.X0_Y0, false, 1))));
+        this.loadStaticModels();
         this.loadVariantModels();
         this.loadMultipartVariantModels();
         this.loadItemModels();
@@ -219,7 +210,7 @@ public class ModelBakery
         CustomItems.loadModels(this);
     }
 
-    private void func_191401_d()
+    private void loadStaticModels()
     {
         ResourceLocation resourcelocation = new ResourceLocation("item_frame");
         ModelBlockDefinition modelblockdefinition = this.getModelBlockDefinition(resourcelocation);
@@ -304,10 +295,10 @@ public class ModelBakery
 
         return modelblockdefinition;
     }
-    
+
     private ResourceLocation getBlockstateLocation(ResourceLocation location)
     {
-        return new ResourceLocation(location.getResourceDomain(), "blockstates/" + location.getResourcePath() + ".json");
+        return new ResourceLocation(location.getNamespace(), "blockstates/" + location.getPath() + ".json");
     }
 
     private void loadVariantModels()
@@ -359,7 +350,7 @@ public class ModelBakery
 
         try
         {
-            String s = location.getResourcePath();
+            String s = location.getPath();
 
             if ("builtin/generated".equals(s))
             {
@@ -390,7 +381,7 @@ public class ModelBakery
 
                 ModelBlock modelblock3 = ModelBlock.deserialize(reader);
                 modelblock3.name = location.toString();
-                String s3 = TextureUtils.getBasePath(location.getResourcePath());
+                String s3 = TextureUtils.getBasePath(location.getPath());
                 fixModelLocations(modelblock3, s3);
                 ModelBlock modelblock2 = modelblock3;
                 return modelblock2;
@@ -410,17 +401,17 @@ public class ModelBakery
 
     private ResourceLocation getModelLocation(ResourceLocation location)
     {
-        String s = location.getResourcePath();
+        String s = location.getPath();
 
         if (!s.startsWith("mcpatcher") && !s.startsWith("optifine"))
         {
-            return new ResourceLocation(location.getResourceDomain(), "models/" + location.getResourcePath() + ".json");
+            return new ResourceLocation(location.getNamespace(), "models/" + location.getPath() + ".json");
         }
         else
         {
             if (!s.endsWith(".json"))
             {
-                location = new ResourceLocation(location.getResourceDomain(), s + ".json");
+                location = new ResourceLocation(location.getNamespace(), s + ".json");
             }
 
             return location;
@@ -487,9 +478,8 @@ public class ModelBakery
         this.variantNames.put(Item.getItemFromBlock(Blocks.SPONGE), Lists.newArrayList("sponge", "sponge_wet"));
         this.variantNames.put(Item.getItemFromBlock(Blocks.SANDSTONE), Lists.newArrayList("sandstone", "chiseled_sandstone", "smooth_sandstone"));
         this.variantNames.put(Item.getItemFromBlock(Blocks.RED_SANDSTONE), Lists.newArrayList("red_sandstone", "chiseled_red_sandstone", "smooth_red_sandstone"));
-        this.variantNames.put(Item.getItemFromBlock(Blocks.TALLGRASS), Lists.newArrayList("dead_bush", "tall_grass", "fern", "crimson_roots"));
+        this.variantNames.put(Item.getItemFromBlock(Blocks.TALLGRASS), Lists.newArrayList("dead_bush", "tall_grass", "fern"));
         this.variantNames.put(Item.getItemFromBlock(Blocks.DEADBUSH), Lists.newArrayList("dead_bush"));
-        this.variantNames.put(Item.getItemFromBlock(Blocks.CRIMSON_ROOTS), Lists.newArrayList("crimson_roots"));
         this.variantNames.put(Item.getItemFromBlock(Blocks.WOOL), Lists.newArrayList("black_wool", "red_wool", "green_wool", "brown_wool", "blue_wool", "purple_wool", "cyan_wool", "silver_wool", "gray_wool", "pink_wool", "lime_wool", "yellow_wool", "light_blue_wool", "magenta_wool", "orange_wool", "white_wool"));
         this.variantNames.put(Item.getItemFromBlock(Blocks.YELLOW_FLOWER), Lists.newArrayList("dandelion"));
         this.variantNames.put(Item.getItemFromBlock(Blocks.RED_FLOWER), Lists.newArrayList("poppy", "blue_orchid", "allium", "houstonia", "red_tulip", "orange_tulip", "white_tulip", "pink_tulip", "oxeye_daisy"));
@@ -517,14 +507,16 @@ public class ModelBakery
         this.variantNames.put(Items.SKULL, Lists.newArrayList("skull_skeleton", "skull_wither", "skull_zombie", "skull_char", "skull_creeper", "skull_dragon", "skull_frazionz"));
         this.variantNames.put(Items.SPLASH_POTION, Lists.newArrayList("bottle_splash"));
         this.variantNames.put(Items.LINGERING_POTION, Lists.newArrayList("bottle_lingering"));
-        this.variantNames.put(Item.getItemFromBlock(Blocks.field_192443_dR), Lists.newArrayList("black_concrete", "red_concrete", "green_concrete", "brown_concrete", "blue_concrete", "purple_concrete", "cyan_concrete", "silver_concrete", "gray_concrete", "pink_concrete", "lime_concrete", "yellow_concrete", "light_blue_concrete", "magenta_concrete", "orange_concrete", "white_concrete"));
-        this.variantNames.put(Item.getItemFromBlock(Blocks.field_192444_dS), Lists.newArrayList("black_concrete_powder", "red_concrete_powder", "green_concrete_powder", "brown_concrete_powder", "blue_concrete_powder", "purple_concrete_powder", "cyan_concrete_powder", "silver_concrete_powder", "gray_concrete_powder", "pink_concrete_powder", "lime_concrete_powder", "yellow_concrete_powder", "light_blue_concrete_powder", "magenta_concrete_powder", "orange_concrete_powder", "white_concrete_powder"));
+        this.variantNames.put(Item.getItemFromBlock(Blocks.CONCRETE), Lists.newArrayList("black_concrete", "red_concrete", "green_concrete", "brown_concrete", "blue_concrete", "purple_concrete", "cyan_concrete", "silver_concrete", "gray_concrete", "pink_concrete", "lime_concrete", "yellow_concrete", "light_blue_concrete", "magenta_concrete", "orange_concrete", "white_concrete"));
+        this.variantNames.put(Item.getItemFromBlock(Blocks.CONCRETE_POWDER), Lists.newArrayList("black_concrete_powder", "red_concrete_powder", "green_concrete_powder", "brown_concrete_powder", "blue_concrete_powder", "purple_concrete_powder", "cyan_concrete_powder", "silver_concrete_powder", "gray_concrete_powder", "pink_concrete_powder", "lime_concrete_powder", "yellow_concrete_powder", "light_blue_concrete_powder", "magenta_concrete_powder", "orange_concrete_powder", "white_concrete_powder"));
         this.variantNames.put(Item.getItemFromBlock(Blocks.AIR), Collections.emptyList());
         this.variantNames.put(Item.getItemFromBlock(Blocks.OAK_FENCE_GATE), Lists.newArrayList("oak_fence_gate"));
         this.variantNames.put(Item.getItemFromBlock(Blocks.OAK_FENCE), Lists.newArrayList("oak_fence"));
         this.variantNames.put(Items.OAK_DOOR, Lists.newArrayList("oak_door"));
         this.variantNames.put(Items.BOAT, Lists.newArrayList("oak_boat"));
         this.variantNames.put(Items.TOTEM_OF_UNDYING, Lists.newArrayList("totem"));
+
+        this.variantNames.put(Item.getItemFromBlock(Blocks.CRIMSON_ROOTS), Lists.newArrayList("crimson_roots"));
         this.variantNames.put(Item.getItemFromBlock(Blocks.NETHERRACK), Lists.newArrayList("netherrack", "netherrack_nylium"));
         this.variantNames.put(Item.getItemFromBlock(Blocks.NETHER_WART_BLOCK2), Lists.newArrayList("nether_wart_block_brick", "nether_wart_block_bricks", "nether_wart_block_carved", "nether_wart_block_chiseled"));
         this.variantNames.put(Item.getItemFromBlock(Blocks.SANDSTONE2), Lists.newArrayList("sandstone_brick", "sandstone_bricks", "sandstone_carved", "sandstone_chiseled"));
@@ -536,9 +528,6 @@ public class ModelBakery
         this.variantNames.put(Item.getItemFromBlock(Blocks.STONE_DIORITE_SMOOTH), Lists.newArrayList("stone_diorite_smooth_brick", "stone_diorite_smooth_bricks", "stone_diorite_smooth_carved", "stone_diorite_smooth_chiseled"));
         this.variantNames.put(Item.getItemFromBlock(Blocks.STONE_BLACKSTONE), Lists.newArrayList("stone_blackstone_normal", "stone_blackstone_brick", "stone_blackstone_bricks", "stone_blackstone_carved", "stone_blackstone_chiseled"));
         this.variantNames.put(Item.getItemFromBlock(Blocks.STONE_BLACKSTONE_SMOOTH), Lists.newArrayList("stone_blackstone_smooth_normal", "stone_blackstone_smooth_brick", "stone_blackstone_smooth_bricks", "stone_blackstone_smooth_carved", "stone_blackstone_smooth_chiseled"));
-
-        
-        
         
         for (Entry<IRegistryDelegate<Item>, Set<String>> entry : customVariantNames.entrySet())
         {
@@ -567,7 +556,7 @@ public class ModelBakery
             resourcelocation = new ResourceLocation(location.replaceAll("#.*", ""));
         }
 
-        return new ResourceLocation(resourcelocation.getResourceDomain(), "item/" + resourcelocation.getResourcePath());
+        return new ResourceLocation(resourcelocation.getNamespace(), "item/" + resourcelocation.getPath());
     }
 
     private void bakeBlockModels()
@@ -768,6 +757,8 @@ public class ModelBakery
     @Nullable
     public IBakedModel bakeModel(ModelBlock modelBlockIn, ModelRotation modelRotationIn, boolean uvLocked)
     {
+        //return this.bakeModel(modelBlockIn, modelRotationIn, uvLocked);
+    	
         //1.12.__.
         TextureAtlasSprite textureatlassprite = (TextureAtlasSprite)this.sprites.get(new ResourceLocation(modelBlockIn.resolveTextureName("particle")));
         SimpleBakedModel.Builder simplebakedmodel$builder = (new SimpleBakedModel.Builder(modelBlockIn, modelBlockIn.createOverrides())).setTexture(textureatlassprite);
@@ -839,9 +830,9 @@ public class ModelBakery
         }
     }
 
-    private BakedQuad makeBakedQuad(BlockPart p_177589_1_, BlockPartFace p_177589_2_, TextureAtlasSprite p_177589_3_, EnumFacing p_177589_4_, ModelRotation p_177589_5_, boolean p_177589_6_)
+    private BakedQuad makeBakedQuad(BlockPart blockPartt, BlockPartFace blockPartFaceIn, TextureAtlasSprite sprite, EnumFacing face, ModelRotation transform, boolean uvLocked)
     {
-        return Reflector.ForgeHooksClient.exists() ? this.makeBakedQuad(p_177589_1_, p_177589_2_, p_177589_3_, p_177589_4_, p_177589_5_, p_177589_6_) : this.faceBakery.makeBakedQuad(p_177589_1_.positionFrom, p_177589_1_.positionTo, p_177589_2_, p_177589_3_, p_177589_4_, p_177589_5_, p_177589_1_.partRotation, p_177589_6_, p_177589_1_.shade);
+        return Reflector.ForgeHooksClient.exists() ? this.makeBakedQuad(blockPartt, blockPartFaceIn, sprite, face, transform, uvLocked) : this.faceBakery.makeBakedQuad(blockPartt.positionFrom, blockPartt.positionTo, blockPartFaceIn, sprite, face, transform, blockPartt.partRotation, uvLocked, blockPartt.shade);
     }
 
     protected BakedQuad makeBakedQuad(BlockPart p_makeBakedQuad_1_, BlockPartFace p_makeBakedQuad_2_, TextureAtlasSprite p_makeBakedQuad_3_, EnumFacing p_makeBakedQuad_4_, ITransformation p_makeBakedQuad_5_, boolean p_makeBakedQuad_6_)
@@ -1104,18 +1095,18 @@ public class ModelBakery
     {
         if (p_fixModelLocation_0_ != null && p_fixModelLocation_1_ != null)
         {
-            if (!p_fixModelLocation_0_.getResourceDomain().equals("minecraft"))
+            if (!p_fixModelLocation_0_.getNamespace().equals("minecraft"))
             {
                 return p_fixModelLocation_0_;
             }
             else
             {
-                String s = p_fixModelLocation_0_.getResourcePath();
+                String s = p_fixModelLocation_0_.getPath();
                 String s1 = fixResourcePath(s, p_fixModelLocation_1_);
 
                 if (s1 != s)
                 {
-                    p_fixModelLocation_0_ = new ResourceLocation(p_fixModelLocation_0_.getResourceDomain(), s1);
+                    p_fixModelLocation_0_ = new ResourceLocation(p_fixModelLocation_0_.getNamespace(), s1);
                 }
 
                 return p_fixModelLocation_0_;

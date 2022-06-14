@@ -7,8 +7,8 @@ import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.entity.RenderMagmaCube;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.monster.EntityMagmaCube;
-import optifine.Config;
-import optifine.Reflector;
+import net.minecraft.src.Config;
+import net.optifine.reflect.Reflector;
 
 public class ModelAdapterMagmaCube extends ModelAdapter
 {
@@ -62,6 +62,11 @@ public class ModelAdapterMagmaCube extends ModelAdapter
                 }
             }
         }
+    }
+
+    public String[] getModelRendererNames()
+    {
+        return new String[] {"core", "segment1", "segment2", "segment3", "segment4", "segment5", "segment6", "segment7", "segment8"};
     }
 
     public IEntityRenderer makeEntityRender(ModelBase modelBase, float shadowSize)

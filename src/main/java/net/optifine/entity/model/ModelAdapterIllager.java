@@ -11,6 +11,11 @@ public abstract class ModelAdapterIllager extends ModelAdapter
         super(entityClass, name, shadowSize);
     }
 
+    public ModelAdapterIllager(Class entityClass, String name, float shadowSize, String[] aliases)
+    {
+        super(entityClass, name, shadowSize, aliases);
+    }
+
     public ModelRenderer getModelRenderer(ModelBase model, String modelPart)
     {
         if (!(model instanceof ModelIllager))
@@ -35,11 +40,11 @@ public abstract class ModelAdapterIllager extends ModelAdapter
             }
             else if (modelPart.equals("left_leg"))
             {
-                return modelillager.leg0;
+                return modelillager.leg1;
             }
             else if (modelPart.equals("right_leg"))
             {
-                return modelillager.leg1;
+                return modelillager.leg0;
             }
             else if (modelPart.equals("nose"))
             {
@@ -54,5 +59,10 @@ public abstract class ModelAdapterIllager extends ModelAdapter
                 return modelPart.equals("right_arm") ? modelillager.rightArm : null;
             }
         }
+    }
+
+    public String[] getModelRendererNames()
+    {
+        return new String[] {"head", "body", "arms", "right_leg", "left_leg", "nose", "right_arm", "left_arm"};
     }
 }

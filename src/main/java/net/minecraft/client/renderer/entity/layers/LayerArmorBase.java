@@ -11,13 +11,13 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
+import net.minecraft.src.Config;
 import net.minecraft.util.ResourceLocation;
-import optifine.Config;
-import optifine.CustomItems;
-import optifine.Reflector;
-import optifine.ReflectorForge;
-import shadersmod.client.Shaders;
-import shadersmod.client.ShadersRender;
+import net.optifine.CustomItems;
+import net.optifine.reflect.Reflector;
+import net.optifine.reflect.ReflectorForge;
+import net.optifine.shaders.Shaders;
+import net.optifine.shaders.ShadersRender;
 
 public abstract class LayerArmorBase<T extends ModelBase> implements LayerRenderer<EntityLivingBase>
 {
@@ -173,7 +173,7 @@ public abstract class LayerArmorBase<T extends ModelBase> implements LayerRender
                 ShadersRender.renderEnchantedGlintBegin();
             }
 
-            Minecraft.getMinecraft().entityRenderer.func_191514_d(true);
+            Minecraft.getMinecraft().entityRenderer.setupFogColor(true);
             GlStateManager.enableBlend();
             GlStateManager.depthFunc(514);
             GlStateManager.depthMask(false);
@@ -204,7 +204,7 @@ public abstract class LayerArmorBase<T extends ModelBase> implements LayerRender
             GlStateManager.depthMask(true);
             GlStateManager.depthFunc(515);
             GlStateManager.disableBlend();
-            Minecraft.getMinecraft().entityRenderer.func_191514_d(false);
+            Minecraft.getMinecraft().entityRenderer.setupFogColor(false);
 
             if (Config.isShaders())
             {

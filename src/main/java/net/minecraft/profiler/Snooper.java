@@ -98,7 +98,7 @@ public class Snooper
         this.addStatToSnooper("os_version", System.getProperty("os.version"));
         this.addStatToSnooper("os_architecture", System.getProperty("os.arch"));
         this.addStatToSnooper("java_version", System.getProperty("java.version"));
-        this.addClientStat("version", "fRAZIONz");
+        this.addClientStat("version", "FrazionZ");
         this.playerStatsCollector.addServerTypeToSnooper(this);
     }
 

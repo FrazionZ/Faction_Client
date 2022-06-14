@@ -72,7 +72,7 @@ public class GuiSuccessItem extends GuiScreen {
         this.drawDefaultBackground();
         this.drawBackgroundImage();
 
-        this.fontRendererObj.drawScaleString("Mes succ�s", this.guiLeft + 40, this.guiTop + 8, 2F, Color.white);
+        this.fontRenderer.drawScaleString("Mes succ�s", this.guiLeft + 40, this.guiTop + 8, 2F, Color.white);
 
         if(this.imgMinia != null){
             GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.imgMinia.getGlTextureId());
@@ -90,12 +90,12 @@ public class GuiSuccessItem extends GuiScreen {
         
         drawCard();
 
-        this.fontRendererObj.drawScaleString("Mes succès", this.guiLeft + 40, this.guiTop + 8, 2F, Color.white);
-        this.fontRendererObj.drawScaleString(item.getTitle(), this.guiLeft + 40, this.guiTop + 95, 1.5F, Color.white);
-        this.fontRendererObj.drawScaleString(item.getDescription(), this.guiLeft + 40, this.guiTop + 115, 1F, Color.white);
+        this.fontRenderer.drawScaleString("Mes succès", this.guiLeft + 40, this.guiTop + 8, 2F, Color.white);
+        this.fontRenderer.drawScaleString(item.getTitle(), this.guiLeft + 40, this.guiTop + 95, 1.5F, Color.white);
+        this.fontRenderer.drawScaleString(item.getDescription(), this.guiLeft + 40, this.guiTop + 115, 1F, Color.white);
         
-        int xProgress = this.guiLeft + xSize - this.fontRendererObj.getStringWidth(item.getProgress()+"%");
-        this.fontRendererObj.drawScaleString(item.getProgress()+"%", xProgress - 45, this.guiTop + 115, 1.5F, Color.white);
+        int xProgress = this.guiLeft + xSize - this.fontRenderer.getStringWidth(item.getProgress()+"%");
+        this.fontRenderer.drawScaleString(item.getProgress()+"%", xProgress - 45, this.guiTop + 115, 1.5F, Color.white);
         this.drawHorizontalLine(this.guiLeft + 40, this.guiLeft + xSize - 40, this.guiTop + 135, 0xFFFFFFFF);
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         

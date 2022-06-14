@@ -84,7 +84,7 @@ public class GuiModToggle extends GuiScreen {
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 		this.drawDefaultBackground();
-		this.drawCenteredString(this.fontRendererObj, "Mod Options", this.width / 2, 8, 16777215);
+		this.drawCenteredString(this.fontRenderer, "Mod Options", this.width / 2, 8, 16777215);
 
 		super.drawScreen(mouseX, mouseY, partialTicks);
 	}

@@ -33,18 +33,20 @@ public class BlockSand extends BlockFalling
     /**
      * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
      */
-    public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> tab)
+    public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items)
     {
         for (BlockSand.EnumType blocksand$enumtype : BlockSand.EnumType.values())
         {
-            tab.add(new ItemStack(this, 1, blocksand$enumtype.getMetadata()));
+            items.add(new ItemStack(this, 1, blocksand$enumtype.getMetadata()));
         }
     }
 
     /**
      * Get the MapColor for this Block and the given BlockState
+     * @deprecated call via {@link IBlockState#getMapColor(IBlockAccess,BlockPos)} whenever possible.
+     * Implementing/overriding is fine.
      */
-    public MapColor getMapColor(IBlockState state, IBlockAccess p_180659_2_, BlockPos p_180659_3_)
+    public MapColor getMapColor(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
         return ((BlockSand.EnumType)state.getValue(VARIANT)).getMapColor();
     }
@@ -70,9 +72,9 @@ public class BlockSand extends BlockFalling
         return new BlockStateContainer(this, new IProperty[] {VARIANT});
     }
 
-    public int getDustColor(IBlockState p_189876_1_)
+    public int getDustColor(IBlockState state)
     {
-        BlockSand.EnumType blocksand$enumtype = (BlockSand.EnumType)p_189876_1_.getValue(VARIANT);
+        BlockSand.EnumType blocksand$enumtype = (BlockSand.EnumType)state.getValue(VARIANT);
         return blocksand$enumtype.getDustColor();
     }
 
@@ -85,7 +87,7 @@ public class BlockSand extends BlockFalling
         private final int meta;
         private final String name;
         private final MapColor mapColor;
-        private final String unlocalizedName;
+        private final String translationKey;
         private final int dustColor;
 
         private EnumType(int p_i47157_3_, String p_i47157_4_, String p_i47157_5_, MapColor p_i47157_6_, int p_i47157_7_)
@@ -93,7 +95,7 @@ public class BlockSand extends BlockFalling
             this.meta = p_i47157_3_;
             this.name = p_i47157_4_;
             this.mapColor = p_i47157_6_;
-            this.unlocalizedName = p_i47157_5_;
+            this.translationKey = p_i47157_5_;
             this.dustColor = p_i47157_7_;
         }
 
@@ -132,9 +134,9 @@ public class BlockSand extends BlockFalling
             return this.name;
         }
 
-        public String getUnlocalizedName()
+        public String getTranslationKey()
         {
-            return this.unlocalizedName;
+            return this.translationKey;
         }
 
         static {

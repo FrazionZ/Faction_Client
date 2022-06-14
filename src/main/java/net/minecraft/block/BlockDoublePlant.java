@@ -36,9 +36,13 @@ public class BlockDoublePlant extends BlockBush implements IGrowable
         this.setDefaultState(this.blockState.getBaseState().withProperty(VARIANT, BlockDoublePlant.EnumPlantType.SUNFLOWER).withProperty(HALF, BlockDoublePlant.EnumBlockHalf.LOWER).withProperty(FACING, EnumFacing.NORTH));
         this.setHardness(0.0F);
         this.setSoundType(SoundType.PLANT);
-        this.setUnlocalizedName("doublePlant");
+        this.setTranslationKey("doublePlant");
     }
 
+    /**
+     * @deprecated call via {@link IBlockState#getBoundingBox(IBlockAccess,BlockPos)} whenever possible.
+     * Implementing/overriding is fine.
+     */
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
         return FULL_BLOCK_AABB;
@@ -57,6 +61,9 @@ public class BlockDoublePlant extends BlockBush implements IGrowable
         }
     }
 
+    /**
+     * Checks if this block can be placed exactly at the given position.
+     */
     public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
     {
         return super.canPlaceBlockAt(worldIn, pos) && worldIn.isAirBlock(pos.up());
@@ -127,7 +134,7 @@ public class BlockDoublePlant extends BlockBush implements IGrowable
     {
         if (state.getValue(HALF) == BlockDoublePlant.EnumBlockHalf.UPPER)
         {
-            return Items.field_190931_a;
+            return Items.AIR;
         }
         else
         {
@@ -135,11 +142,11 @@ public class BlockDoublePlant extends BlockBush implements IGrowable
 
             if (blockdoubleplant$enumplanttype == BlockDoublePlant.EnumPlantType.FERN)
             {
-                return Items.field_190931_a;
+                return Items.AIR;
             }
             else if (blockdoubleplant$enumplanttype == BlockDoublePlant.EnumPlantType.GRASS)
             {
-                return rand.nextInt(8) == 0 ? Items.WHEAT_SEEDS : Items.field_190931_a;
+                return rand.nextInt(8) == 0 ? Items.WHEAT_SEEDS : Items.AIR;
             }
             else
             {
@@ -171,6 +178,10 @@ public class BlockDoublePlant extends BlockBush implements IGrowable
         worldIn.setBlockState(pos.up(), this.getDefaultState().withProperty(HALF, BlockDoublePlant.EnumBlockHalf.UPPER), 2);
     }
 
+    /**
+     * Spawns the block's drops in the world. By the time this is called the Block has possibly been set to air via
+     * Block.removedByPlayer
+     */
     public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, ItemStack stack)
     {
         if (worldIn.isRemote || stack.getItem() != Items.SHEARS || state.getValue(HALF) != BlockDoublePlant.EnumBlockHalf.LOWER || !this.onHarvest(worldIn, pos, state, player))
@@ -179,6 +190,10 @@ public class BlockDoublePlant extends BlockBush implements IGrowable
         }
     }
 
+    /**
+     * Called before the Block is set to air in the world. Called regardless of if the player's tool can actually
+     * collect this block
+     */
     public void onBlockHarvested(World worldIn, BlockPos pos, IBlockState state, EntityPlayer player)
     {
         if (state.getValue(HALF) == BlockDoublePlant.EnumBlockHalf.UPPER)
@@ -202,7 +217,7 @@ public class BlockDoublePlant extends BlockBush implements IGrowable
                     {
                         worldIn.setBlockToAir(pos.down());
                     }
-                    else if (!player.getHeldItemMainhand().func_190926_b() && player.getHeldItemMainhand().getItem() == Items.SHEARS)
+                    else if (!player.getHeldItemMainhand().isEmpty() && player.getHeldItemMainhand().getItem() == Items.SHEARS)
                     {
                         this.onHarvest(worldIn, pos, iblockstate, player);
                         worldIn.setBlockToAir(pos.down());
@@ -242,11 +257,11 @@ public class BlockDoublePlant extends BlockBush implements IGrowable
     /**
      * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
      */
-    public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> tab)
+    public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items)
     {
         for (BlockDoublePlant.EnumPlantType blockdoubleplant$enumplanttype : BlockDoublePlant.EnumPlantType.values())
         {
-            tab.add(new ItemStack(this, 1, blockdoubleplant$enumplanttype.getMeta()));
+            items.add(new ItemStack(this, 1, blockdoubleplant$enumplanttype.getMeta()));
         }
     }
 
@@ -350,7 +365,7 @@ public class BlockDoublePlant extends BlockBush implements IGrowable
         private static final BlockDoublePlant.EnumPlantType[] META_LOOKUP = new BlockDoublePlant.EnumPlantType[values().length];
         private final int meta;
         private final String name;
-        private final String unlocalizedName;
+        private final String translationKey;
 
         private EnumPlantType(int meta, String name)
         {
@@ -361,7 +376,7 @@ public class BlockDoublePlant extends BlockBush implements IGrowable
         {
             this.meta = meta;
             this.name = name;
-            this.unlocalizedName = unlocalizedName;
+            this.translationKey = unlocalizedName;
         }
 
         public int getMeta()
@@ -389,9 +404,9 @@ public class BlockDoublePlant extends BlockBush implements IGrowable
             return this.name;
         }
 
-        public String getUnlocalizedName()
+        public String getTranslationKey()
         {
-            return this.unlocalizedName;
+            return this.translationKey;
         }
 
         static {

@@ -23,7 +23,7 @@ public class ServerData
 
     /** last server ping that showed up in the server browser */
     public long pingToServer;
-    //public int version = 574200;
+    //public int version = 340;
     public int version = 1343;
 
     /** Game version for this server. */

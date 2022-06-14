@@ -1,15 +1,10 @@
 package fz.frazionz.item;
 
-import java.util.List;
-
-import javax.annotation.Nullable;
-
 import com.google.common.collect.Multimap;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -39,7 +34,7 @@ public class ItemFarmSword extends ItemSword
         this.maxStackSize = 1;
         this.setMaxDamage(material.getMaxUses());
         this.setCreativeTab(CreativeTabs.COMBAT);
-        this.attackDamage = 3.0F + material.getDamageVsEntity();
+        this.attackDamage = 3.0F + material.getAttackDamage();
     }
 
     /**
@@ -47,7 +42,7 @@ public class ItemFarmSword extends ItemSword
      */
     public float getDamageVsEntity()
     {
-        return this.material.getDamageVsEntity();
+        return this.material.getAttackDamage();
     }
 
     public float getStrVsBlock(ItemStack stack, IBlockState state)
@@ -151,7 +146,7 @@ public class ItemFarmSword extends ItemSword
 
         if (equipmentSlot == EntityEquipmentSlot.MAINHAND)
         {
-            multimap.put(SharedMonsterAttributes.ATTACK_DAMAGE.getAttributeUnlocalizedName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", (double)this.attackDamage, 0));
+            multimap.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", (double)this.attackDamage, 0));
         }
 
         return multimap;

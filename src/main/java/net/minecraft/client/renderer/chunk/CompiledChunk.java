@@ -1,6 +1,7 @@
 package net.minecraft.client.renderer.chunk;
 
 import com.google.common.collect.Lists;
+import java.util.BitSet;
 import java.util.List;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.tileentity.TileEntity;
@@ -23,13 +24,18 @@ public class CompiledChunk
         {
             return false;
         }
+        public void setAnimatedSprites(BlockRenderLayer p_setAnimatedSprites_1_, BitSet p_setAnimatedSprites_2_)
+        {
+            throw new UnsupportedOperationException();
+        }
     };
-    private final boolean[] layersUsed = new boolean[BlockRenderLayer.values().length];
-    private final boolean[] layersStarted = new boolean[BlockRenderLayer.values().length];
+    private final boolean[] layersUsed = new boolean[RenderChunk.ENUM_WORLD_BLOCK_LAYERS.length];
+    private final boolean[] layersStarted = new boolean[RenderChunk.ENUM_WORLD_BLOCK_LAYERS.length];
     private boolean empty = true;
     private final List<TileEntity> tileEntities = Lists.<TileEntity>newArrayList();
     private SetVisibility setVisibility = new SetVisibility();
     private BufferBuilder.State state;
+    private BitSet[] animatedSprites = new BitSet[RenderChunk.ENUM_WORLD_BLOCK_LAYERS.length];
 
     public boolean isEmpty()
     {
@@ -85,5 +91,15 @@ public class CompiledChunk
     public void setState(BufferBuilder.State stateIn)
     {
         this.state = stateIn;
+    }
+
+    public BitSet getAnimatedSprites(BlockRenderLayer p_getAnimatedSprites_1_)
+    {
+        return this.animatedSprites[p_getAnimatedSprites_1_.ordinal()];
+    }
+
+    public void setAnimatedSprites(BlockRenderLayer p_setAnimatedSprites_1_, BitSet p_setAnimatedSprites_2_)
+    {
+        this.animatedSprites[p_setAnimatedSprites_1_.ordinal()] = p_setAnimatedSprites_2_;
     }
 }

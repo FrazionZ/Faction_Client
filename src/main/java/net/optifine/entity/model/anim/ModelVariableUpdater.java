@@ -1,13 +1,16 @@
 package net.optifine.entity.model.anim;
 
-import optifine.Config;
+import net.minecraft.src.Config;
+import net.optifine.expr.ExpressionParser;
+import net.optifine.expr.IExpressionFloat;
+import net.optifine.expr.ParseException;
 
 public class ModelVariableUpdater
 {
     private String modelVariableName;
     private String expressionText;
-    private ModelVariable modelVariable;
-    private IExpression expression;
+    private ModelVariableFloat modelVariable;
+    private IExpressionFloat expression;
 
     public boolean initialize(IModelResolver mr)
     {
@@ -23,7 +26,7 @@ public class ModelVariableUpdater
             try
             {
                 ExpressionParser expressionparser = new ExpressionParser(mr);
-                this.expression = expressionparser.parse(this.expressionText);
+                this.expression = expressionparser.parseFloat(this.expressionText);
                 return true;
             }
             catch (ParseException parseexception)

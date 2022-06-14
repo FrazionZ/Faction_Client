@@ -6,9 +6,9 @@ import net.minecraft.client.model.ModelShulker;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.client.renderer.tileentity.TileEntityShulkerBoxRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.src.Config;
 import net.minecraft.tileentity.TileEntityShulkerBox;
-import optifine.Config;
-import optifine.Reflector;
+import net.optifine.reflect.Reflector;
 
 public class ModelAdapterShulkerBox extends ModelAdapter
 {
@@ -47,10 +47,15 @@ public class ModelAdapterShulkerBox extends ModelAdapter
         }
     }
 
+    public String[] getModelRendererNames()
+    {
+        return new String[] {"base", "lid", "head"};
+    }
+
     public IEntityRenderer makeEntityRender(ModelBase modelBase, float shadowSize)
     {
         TileEntityRendererDispatcher tileentityrendererdispatcher = TileEntityRendererDispatcher.instance;
-        TileEntitySpecialRenderer tileentityspecialrenderer = tileentityrendererdispatcher.getSpecialRendererByClass(TileEntityShulkerBox.class);
+        TileEntitySpecialRenderer tileentityspecialrenderer = tileentityrendererdispatcher.getRenderer(TileEntityShulkerBox.class);
 
         if (!(tileentityspecialrenderer instanceof TileEntityShulkerBoxRenderer))
         {

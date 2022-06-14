@@ -299,14 +299,17 @@ public class Scoreboard
     public void removeTeam(ScorePlayerTeam playerTeam)
     {
     	if(playerTeam != null) {
-            this.teams.remove(playerTeam.getRegisteredName());
-            
+            this.teams.remove(playerTeam.getName());
+
             for (String s : playerTeam.getMembershipCollection())
             {
                 this.teamMemberships.remove(s);
             }
 
             this.broadcastTeamRemove(playerTeam);
+    	}
+    	else {
+    		System.out.println("remove player from team: player does not exist.");
     	}
     }
 
@@ -361,7 +364,7 @@ public class Scoreboard
     {
         if (this.getPlayersTeam(username) != playerTeam)
         {
-            throw new IllegalStateException("Player is either on another team or not on any team. Cannot remove from team '" + playerTeam.getRegisteredName() + "'.");
+            throw new IllegalStateException("Player is either on another team or not on any team. Cannot remove from team '" + playerTeam.getName() + "'.");
         }
         else
         {

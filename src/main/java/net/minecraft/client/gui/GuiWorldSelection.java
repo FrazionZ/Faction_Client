@@ -1,16 +1,19 @@
 package net.minecraft.client.gui;
 
-import com.google.common.base.Splitter;
-import com.google.common.collect.Lists;
 import java.io.IOException;
-import javax.annotation.Nullable;
 
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.util.ResourceLocation;
+import javax.annotation.Nullable;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import com.google.common.base.Splitter;
+import com.google.common.collect.Lists;
+
+import fz.frazionz.gui.buttons.GuiFzButton;
+import fz.frazionz.gui.renderer.fonts.FzFontRenderer;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.util.ResourceLocation;
 
 public class GuiWorldSelection extends GuiScreen
 {
@@ -29,9 +32,8 @@ public class GuiWorldSelection extends GuiScreen
     private GuiButton renameButton;
     private GuiButton copyButton;
     private GuiListWorldSelection selectionList;
-    
     private static final ResourceLocation BACKGROUND_TEXTURE  = new ResourceLocation("textures/gui/title/background/fz_background.png");
-
+    
     public GuiWorldSelection(GuiScreen screenIn)
     {
         this.prevScreen = screenIn;
@@ -44,7 +46,7 @@ public class GuiWorldSelection extends GuiScreen
     public void initGui()
     {
         this.title = I18n.format("selectWorld.title");
-        this.selectionList = new GuiListWorldSelection(this, this.mc, this.width, this.height, 32, this.height - 64, 36);
+        this.selectionList = new GuiListWorldSelection(this, this.mc, 0, this.width, this.height/8, this.height - this.height/8, 36);
         this.postInit();
     }
 
@@ -59,12 +61,12 @@ public class GuiWorldSelection extends GuiScreen
 
     public void postInit()
     {
-        this.selectButton = this.addButton(new GuiButton(1, this.width / 2 - 154, this.height - 52, 150, 20, I18n.format("selectWorld.select")));
-        this.addButton(new GuiButton(3, this.width / 2 + 4, this.height - 52, 150, 20, I18n.format("selectWorld.create")));
-        this.renameButton = this.addButton(new GuiButton(4, this.width / 2 - 154, this.height - 28, 72, 20, I18n.format("selectWorld.edit")));
-        this.deleteButton = this.addButton(new GuiButton(2, this.width / 2 - 76, this.height - 28, 72, 20, I18n.format("selectWorld.delete")));
-        this.copyButton = this.addButton(new GuiButton(5, this.width / 2 + 4, this.height - 28, 72, 20, I18n.format("selectWorld.recreate")));
-        this.addButton(new GuiButton(0, this.width / 2 + 82, this.height - 28, 72, 20, I18n.format("gui.cancel")));
+        this.selectButton = this.addButton(new GuiFzButton(1, this.width / 2 - 154, this.height - 52, 150, 20, I18n.format("selectWorld.select")));
+        this.addButton(new GuiFzButton(3, this.width / 2 + 4, this.height - 52, 150, 20, I18n.format("selectWorld.create")));
+        this.renameButton = this.addButton(new GuiFzButton(4, this.width / 2 - 154, this.height - 28, 72, 20, I18n.format("selectWorld.edit")));
+        this.deleteButton = this.addButton(new GuiFzButton(2, this.width / 2 - 76, this.height - 28, 72, 20, I18n.format("selectWorld.delete")));
+        this.copyButton = this.addButton(new GuiFzButton(5, this.width / 2 + 4, this.height - 28, 72, 20, I18n.format("selectWorld.recreate")));
+        this.addButton(new GuiFzButton(0, this.width / 2 + 82, this.height - 28, 72, 20, I18n.format("gui.cancel")));
         this.selectButton.enabled = false;
         this.deleteButton.enabled = false;
         this.renameButton.enabled = false;
@@ -74,7 +76,7 @@ public class GuiWorldSelection extends GuiScreen
     /**
      * Called by the controls from the buttonList when activated. (Mouse pressed for buttons)
      */
-    protected void actionPerformed(GuiButton button, int mouseButton) throws IOException
+    protected void actionPerformed(GuiButton button, int keyCode) throws IOException
     {
         if (button.enabled)
         {
@@ -121,13 +123,18 @@ public class GuiWorldSelection extends GuiScreen
      */
     public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
-    	mc.getTextureManager().bindTexture(BACKGROUND_TEXTURE);
-        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-        Gui.drawScaledCustomSizeModalRect(0, 0, 0, 0, 1, 1, this.width, this.height, 1, 1);
-        GlStateManager.enableAlpha();
+    	this.drawRect(0, 0, width, height, BLACK_3);
+        
         this.worldVersTooltip = null;
         this.selectionList.drawScreen(mouseX, mouseY, partialTicks);
-        this.drawCenteredString(this.fontRendererObj, this.title, this.width / 2, 20, 16777215);
+        
+        this.drawRect(0, 0, this.width, this.height/8, this.BLACK_4);
+	    this.drawRect(0, this.height - this.height/8, this.width, this.height, this.BLACK_4);
+	    
+        FzFontRenderer titleRenderer = this.mc.fzFontRenderers.get(24);
+        int titleSize = titleRenderer.getStringWidth(this.title);
+        titleRenderer.drawCenteredString(this.title, this.width / 2, this.height/16, 0xFFFFFFFF);
+        
         super.drawScreen(mouseX, mouseY, partialTicks);
 
         if (this.worldVersTooltip != null)

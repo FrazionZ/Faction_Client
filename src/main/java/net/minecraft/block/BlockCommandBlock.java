@@ -30,7 +30,7 @@ import org.apache.logging.log4j.Logger;
 
 public class BlockCommandBlock extends BlockContainer
 {
-    private static final Logger field_193388_c = LogManager.getLogger();
+    private static final Logger LOGGER = LogManager.getLogger();
     public static final PropertyDirection FACING = BlockDirectional.FACING;
     public static final PropertyBool CONDITIONAL = PropertyBool.create("conditional");
 
@@ -55,7 +55,7 @@ public class BlockCommandBlock extends BlockContainer
      * change. Cases may include when redstone power is updated, cactus blocks popping off due to a neighboring solid
      * block, etc.
      */
-    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos p_189540_5_)
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
     {
         if (!worldIn.isRemote)
         {
@@ -100,7 +100,7 @@ public class BlockCommandBlock extends BlockContainer
 
                     if (flag1)
                     {
-                        this.func_193387_a(state, worldIn, pos, commandblockbaselogic, flag);
+                        this.execute(state, worldIn, pos, commandblockbaselogic, flag);
                     }
                     else if (tileentitycommandblock.isConditional())
                     {
@@ -116,7 +116,7 @@ public class BlockCommandBlock extends BlockContainer
                 {
                     if (flag1)
                     {
-                        this.func_193387_a(state, worldIn, pos, commandblockbaselogic, flag);
+                        this.execute(state, worldIn, pos, commandblockbaselogic, flag);
                     }
                     else if (tileentitycommandblock.isConditional())
                     {
@@ -129,7 +129,7 @@ public class BlockCommandBlock extends BlockContainer
         }
     }
 
-    private void func_193387_a(IBlockState p_193387_1_, World p_193387_2_, BlockPos p_193387_3_, CommandBlockBaseLogic p_193387_4_, boolean p_193387_5_)
+    private void execute(IBlockState p_193387_1_, World p_193387_2_, BlockPos p_193387_3_, CommandBlockBaseLogic p_193387_4_, boolean p_193387_5_)
     {
         if (p_193387_5_)
         {
@@ -140,7 +140,7 @@ public class BlockCommandBlock extends BlockContainer
             p_193387_4_.setSuccessCount(0);
         }
 
-        func_193386_c(p_193387_2_, p_193387_3_, (EnumFacing)p_193387_1_.getValue(FACING));
+        executeChain(p_193387_2_, p_193387_3_, (EnumFacing)p_193387_1_.getValue(FACING));
     }
 
     /**
@@ -151,7 +151,10 @@ public class BlockCommandBlock extends BlockContainer
         return 1;
     }
 
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing heldItem, float side, float hitX, float hitY)
+    /**
+     * Called when the block is right clicked by a player.
+     */
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
         TileEntity tileentity = worldIn.getTileEntity(pos);
 
@@ -166,11 +169,19 @@ public class BlockCommandBlock extends BlockContainer
         }
     }
 
+    /**
+     * @deprecated call via {@link IBlockState#hasComparatorInputOverride()} whenever possible. Implementing/overriding
+     * is fine.
+     */
     public boolean hasComparatorInputOverride(IBlockState state)
     {
         return true;
     }
 
+    /**
+     * @deprecated call via {@link IBlockState#getComparatorInputOverride(World,BlockPos)} whenever possible.
+     * Implementing/overriding is fine.
+     */
     public int getComparatorInputOverride(IBlockState blockState, World worldIn, BlockPos pos)
     {
         TileEntity tileentity = worldIn.getTileEntity(pos);
@@ -224,6 +235,7 @@ public class BlockCommandBlock extends BlockContainer
     /**
      * The type of render function called. MODEL for mixed tesr and static model, MODELBLOCK_ANIMATED for TESR-only,
      * LIQUID for vanilla liquids, INVISIBLE to skip all rendering
+     * @deprecated call via {@link IBlockState#getRenderType()} whenever possible. Implementing/overriding is fine.
      */
     public EnumBlockRenderType getRenderType(IBlockState state)
     {
@@ -235,7 +247,7 @@ public class BlockCommandBlock extends BlockContainer
      */
     public IBlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(FACING, EnumFacing.getFront(meta & 7)).withProperty(CONDITIONAL, Boolean.valueOf((meta & 8) != 0));
+        return this.getDefaultState().withProperty(FACING, EnumFacing.byIndex(meta & 7)).withProperty(CONDITIONAL, Boolean.valueOf((meta & 8) != 0));
     }
 
     /**
@@ -249,6 +261,8 @@ public class BlockCommandBlock extends BlockContainer
     /**
      * Returns the blockstate with the given rotation from the passed blockstate. If inapplicable, returns the passed
      * blockstate.
+     * @deprecated call via {@link IBlockState#withRotation(Rotation)} whenever possible. Implementing/overriding is
+     * fine.
      */
     public IBlockState withRotation(IBlockState state, Rotation rot)
     {
@@ -258,6 +272,7 @@ public class BlockCommandBlock extends BlockContainer
     /**
      * Returns the blockstate with the given mirror of the passed blockstate. If inapplicable, returns the passed
      * blockstate.
+     * @deprecated call via {@link IBlockState#withMirror(Mirror)} whenever possible. Implementing/overriding is fine.
      */
     public IBlockState withMirror(IBlockState state, Mirror mirrorIn)
     {
@@ -273,12 +288,12 @@ public class BlockCommandBlock extends BlockContainer
      * Called by ItemBlocks just before a block is actually set in the world, to allow for adjustments to the
      * IBlockstate
      */
-    public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
+    public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
-        return this.getDefaultState().withProperty(FACING, EnumFacing.func_190914_a(pos, placer)).withProperty(CONDITIONAL, Boolean.valueOf(false));
+        return this.getDefaultState().withProperty(FACING, EnumFacing.getDirectionFromEntityLiving(pos, placer)).withProperty(CONDITIONAL, Boolean.valueOf(false));
     }
 
-    private static void func_193386_c(World p_193386_0_, BlockPos p_193386_1_, EnumFacing p_193386_2_)
+    private static void executeChain(World p_193386_0_, BlockPos p_193386_1_, EnumFacing p_193386_2_)
     {
         BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos(p_193386_1_);
         GameRules gamerules = p_193386_0_.getGameRules();
@@ -333,7 +348,7 @@ public class BlockCommandBlock extends BlockContainer
         if (i <= 0)
         {
             int j = Math.max(gamerules.getInt("maxCommandChainLength"), 0);
-            field_193388_c.warn("Commandblock chain tried to execure more than " + j + " steps!");
+            LOGGER.warn("Commandblock chain tried to execure more than " + j + " steps!");
         }
     }
 }

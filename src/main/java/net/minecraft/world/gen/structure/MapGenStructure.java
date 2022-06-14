@@ -28,8 +28,7 @@ public abstract class MapGenStructure extends MapGenBase
     /**
      * Recursively called by generate()
      */
-
-    protected final synchronized void recursiveGenerate(World worldIn, final int chunkX, final int chunkZ, int p_180701_4_, int p_180701_5_, ChunkPrimer chunkPrimerIn)
+    protected final synchronized void recursiveGenerate(World worldIn, final int chunkX, final int chunkZ, int originalX, int originalZ, ChunkPrimer chunkPrimerIn)
     {
         this.initializeStructureData(worldIn);
 
@@ -54,7 +53,7 @@ public abstract class MapGenStructure extends MapGenBase
             {
                 CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Exception preparing structure feature");
                 CrashReportCategory crashreportcategory = crashreport.makeCategory("Feature being prepared");
-                crashreportcategory.setDetail("Is feature chunk", new ICrashReportDetail<String>()
+                crashreportcategory.addDetail("Is feature chunk", new ICrashReportDetail<String>()
                 {
                     public String call() throws Exception
                     {
@@ -62,14 +61,14 @@ public abstract class MapGenStructure extends MapGenBase
                     }
                 });
                 crashreportcategory.addCrashSection("Chunk location", String.format("%d,%d", chunkX, chunkZ));
-                crashreportcategory.setDetail("Chunk pos hash", new ICrashReportDetail<String>()
+                crashreportcategory.addDetail("Chunk pos hash", new ICrashReportDetail<String>()
                 {
                     public String call() throws Exception
                     {
                         return String.valueOf(ChunkPos.asLong(chunkX, chunkZ));
                     }
                 });
-                crashreportcategory.setDetail("Structure type", new ICrashReportDetail<String>()
+                crashreportcategory.addDetail("Structure type", new ICrashReportDetail<String>()
                 {
                     public String call() throws Exception
                     {
@@ -84,8 +83,8 @@ public abstract class MapGenStructure extends MapGenBase
     public synchronized boolean generateStructure(World worldIn, Random randomIn, ChunkPos chunkCoord)
     {
         this.initializeStructureData(worldIn);
-        int i = (chunkCoord.chunkXPos << 4) + 8;
-        int j = (chunkCoord.chunkZPos << 4) + 8;
+        int i = (chunkCoord.x << 4) + 8;
+        int j = (chunkCoord.z << 4) + 8;
         boolean flag = false;
         ObjectIterator objectiterator = this.structureMap.values().iterator();
 
@@ -107,13 +106,13 @@ public abstract class MapGenStructure extends MapGenBase
 
     public boolean isInsideStructure(BlockPos pos)
     {
-        if (this.worldObj == null)
+        if (this.world == null)
         {
             return false;
         }
         else
         {
-            this.initializeStructureData(this.worldObj);
+            this.initializeStructureData(this.world);
             return this.getStructureAt(pos) != null;
         }
     }
@@ -173,18 +172,18 @@ public abstract class MapGenStructure extends MapGenBase
     }
 
     @Nullable
-    public abstract BlockPos getClosestStrongholdPos(World worldIn, BlockPos pos, boolean p_180706_3_);
+    public abstract BlockPos getNearestStructurePos(World worldIn, BlockPos pos, boolean findUnexplored);
 
     protected void initializeStructureData(World worldIn)
     {
         if (this.structureData == null && worldIn != null)
         {
-            this.structureData = (MapGenStructureData)worldIn.loadItemData(MapGenStructureData.class, this.getStructureName());
+            this.structureData = (MapGenStructureData)worldIn.loadData(MapGenStructureData.class, this.getStructureName());
 
             if (this.structureData == null)
             {
                 this.structureData = new MapGenStructureData(this.getStructureName());
-                worldIn.setItemData(this.getStructureName(), this.structureData);
+                worldIn.setData(this.getStructureName(), this.structureData);
             }
             else
             {
@@ -225,13 +224,13 @@ public abstract class MapGenStructure extends MapGenBase
 
     protected abstract StructureStart getStructureStart(int chunkX, int chunkZ);
 
-    protected static BlockPos func_191069_a(World p_191069_0_, MapGenStructure p_191069_1_, BlockPos p_191069_2_, int p_191069_3_, int p_191069_4_, int p_191069_5_, boolean p_191069_6_, int p_191069_7_, boolean p_191069_8_)
+    protected static BlockPos findNearestStructurePosBySpacing(World worldIn, MapGenStructure structureType, BlockPos startPos, int distanceStep, int stepOffset, int randomSeedZ, boolean addExtraRandomness, int maxAttempts, boolean findUnexplored)
     {
-        int i = p_191069_2_.getX() >> 4;
-        int j = p_191069_2_.getZ() >> 4;
+        int i = startPos.getX() >> 4;
+        int j = startPos.getZ() >> 4;
         int k = 0;
 
-        for (Random random = new Random(); k <= p_191069_7_; ++k)
+        for (Random random = new Random(); k <= maxAttempts; ++k)
         {
             for (int l = -k; l <= k; ++l)
             {
@@ -243,42 +242,42 @@ public abstract class MapGenStructure extends MapGenBase
 
                     if (flag || flag1)
                     {
-                        int j1 = i + p_191069_3_ * l;
-                        int k1 = j + p_191069_3_ * i1;
+                        int j1 = i + distanceStep * l;
+                        int k1 = j + distanceStep * i1;
 
                         if (j1 < 0)
                         {
-                            j1 -= p_191069_3_ - 1;
+                            j1 -= distanceStep - 1;
                         }
 
                         if (k1 < 0)
                         {
-                            k1 -= p_191069_3_ - 1;
+                            k1 -= distanceStep - 1;
                         }
 
-                        int l1 = j1 / p_191069_3_;
-                        int i2 = k1 / p_191069_3_;
-                        Random random1 = p_191069_0_.setRandomSeed(l1, i2, p_191069_5_);
-                        l1 = l1 * p_191069_3_;
-                        i2 = i2 * p_191069_3_;
+                        int l1 = j1 / distanceStep;
+                        int i2 = k1 / distanceStep;
+                        Random random1 = worldIn.setRandomSeed(l1, i2, randomSeedZ);
+                        l1 = l1 * distanceStep;
+                        i2 = i2 * distanceStep;
 
-                        if (p_191069_6_)
+                        if (addExtraRandomness)
                         {
-                            l1 = l1 + (random1.nextInt(p_191069_3_ - p_191069_4_) + random1.nextInt(p_191069_3_ - p_191069_4_)) / 2;
-                            i2 = i2 + (random1.nextInt(p_191069_3_ - p_191069_4_) + random1.nextInt(p_191069_3_ - p_191069_4_)) / 2;
+                            l1 = l1 + (random1.nextInt(distanceStep - stepOffset) + random1.nextInt(distanceStep - stepOffset)) / 2;
+                            i2 = i2 + (random1.nextInt(distanceStep - stepOffset) + random1.nextInt(distanceStep - stepOffset)) / 2;
                         }
                         else
                         {
-                            l1 = l1 + random1.nextInt(p_191069_3_ - p_191069_4_);
-                            i2 = i2 + random1.nextInt(p_191069_3_ - p_191069_4_);
+                            l1 = l1 + random1.nextInt(distanceStep - stepOffset);
+                            i2 = i2 + random1.nextInt(distanceStep - stepOffset);
                         }
 
-                        MapGenBase.func_191068_a(p_191069_0_.getSeed(), random, l1, i2);
+                        MapGenBase.setupChunkSeed(worldIn.getSeed(), random, l1, i2);
                         random.nextInt();
 
-                        if (p_191069_1_.canSpawnStructureAtCoords(l1, i2))
+                        if (structureType.canSpawnStructureAtCoords(l1, i2))
                         {
-                            if (!p_191069_8_ || !p_191069_0_.func_190526_b(l1, i2))
+                            if (!findUnexplored || !worldIn.isChunkGeneratedAt(l1, i2))
                             {
                                 return new BlockPos((l1 << 4) + 8, 64, (i2 << 4) + 8);
                             }

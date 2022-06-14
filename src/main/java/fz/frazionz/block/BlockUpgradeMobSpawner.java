@@ -33,14 +33,6 @@ public class BlockUpgradeMobSpawner extends BlockContainer
     }
 
     /**
-     * Get the Item that this Block should drop when harvested.
-     */
-    public Item getItemDropped(IBlockState state, Random rand, int fortune)
-    {
-        return Items.field_190931_a;
-    }
-
-    /**
      * Returns the quantity of items to drop on block destruction.
      */
     public int quantityDropped(Random random)
@@ -88,6 +80,6 @@ public class BlockUpgradeMobSpawner extends BlockContainer
 
     public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state)
     {
-        return ItemStack.field_190927_a;
+        return ItemStack.EMPTY;
     }
 }

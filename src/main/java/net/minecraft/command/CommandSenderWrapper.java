@@ -11,86 +11,136 @@ import net.minecraft.world.World;
 
 public class CommandSenderWrapper implements ICommandSender
 {
-    private final ICommandSender field_193043_a;
+    private final ICommandSender delegate;
     @Nullable
-    private final Vec3d field_194002_b;
+    private final Vec3d positionVector;
     @Nullable
-    private final BlockPos field_194003_c;
+    private final BlockPos position;
     @Nullable
-    private final Integer field_194004_d;
+    private final Integer permissionLevel;
     @Nullable
-    private final Entity field_194005_e;
+    private final Entity entity;
     @Nullable
-    private final Boolean field_194006_f;
+    private final Boolean sendCommandFeedback;
 
-    public CommandSenderWrapper(ICommandSender p_i47599_1_, @Nullable Vec3d p_i47599_2_, @Nullable BlockPos p_i47599_3_, @Nullable Integer p_i47599_4_, @Nullable Entity p_i47599_5_, @Nullable Boolean p_i47599_6_)
+    public CommandSenderWrapper(ICommandSender delegateIn, @Nullable Vec3d positionVectorIn, @Nullable BlockPos positionIn, @Nullable Integer permissionLevelIn, @Nullable Entity entityIn, @Nullable Boolean sendCommandFeedbackIn)
     {
-        this.field_193043_a = p_i47599_1_;
-        this.field_194002_b = p_i47599_2_;
-        this.field_194003_c = p_i47599_3_;
-        this.field_194004_d = p_i47599_4_;
-        this.field_194005_e = p_i47599_5_;
-        this.field_194006_f = p_i47599_6_;
+        this.delegate = delegateIn;
+        this.positionVector = positionVectorIn;
+        this.position = positionIn;
+        this.permissionLevel = permissionLevelIn;
+        this.entity = entityIn;
+        this.sendCommandFeedback = sendCommandFeedbackIn;
     }
 
-    public static CommandSenderWrapper func_193998_a(ICommandSender p_193998_0_)
+    public static CommandSenderWrapper create(ICommandSender sender)
     {
-        return p_193998_0_ instanceof CommandSenderWrapper ? (CommandSenderWrapper)p_193998_0_ : new CommandSenderWrapper(p_193998_0_, (Vec3d)null, (BlockPos)null, (Integer)null, (Entity)null, (Boolean)null);
+        return sender instanceof CommandSenderWrapper ? (CommandSenderWrapper)sender : new CommandSenderWrapper(sender, (Vec3d)null, (BlockPos)null, (Integer)null, (Entity)null, (Boolean)null);
     }
 
-    public CommandSenderWrapper func_193997_a(Entity p_193997_1_, Vec3d p_193997_2_)
+    public CommandSenderWrapper withEntity(Entity entityIn, Vec3d p_193997_2_)
     {
-        return this.field_194005_e == p_193997_1_ && Objects.equals(this.field_194002_b, p_193997_2_) ? this : new CommandSenderWrapper(this.field_193043_a, p_193997_2_, new BlockPos(p_193997_2_), this.field_194004_d, p_193997_1_, this.field_194006_f);
+        return this.entity == entityIn && Objects.equals(this.positionVector, p_193997_2_) ? this : new CommandSenderWrapper(this.delegate, p_193997_2_, new BlockPos(p_193997_2_), this.permissionLevel, entityIn, this.sendCommandFeedback);
     }
 
-    public CommandSenderWrapper func_193999_a(int p_193999_1_)
+    public CommandSenderWrapper withPermissionLevel(int level)
     {
-        return this.field_194004_d != null && this.field_194004_d.intValue() <= p_193999_1_ ? this : new CommandSenderWrapper(this.field_193043_a, this.field_194002_b, this.field_194003_c, p_193999_1_, this.field_194005_e, this.field_194006_f);
+        return this.permissionLevel != null && this.permissionLevel.intValue() <= level ? this : new CommandSenderWrapper(this.delegate, this.positionVector, this.position, level, this.entity, this.sendCommandFeedback);
     }
 
-    public CommandSenderWrapper func_194001_a(boolean p_194001_1_)
+    public CommandSenderWrapper withSendCommandFeedback(boolean sendCommandFeedbackIn)
     {
-        return this.field_194006_f == null || this.field_194006_f.booleanValue() && !p_194001_1_ ? new CommandSenderWrapper(this.field_193043_a, this.field_194002_b, this.field_194003_c, this.field_194004_d, this.field_194005_e, p_194001_1_) : this;
+        return this.sendCommandFeedback == null || this.sendCommandFeedback.booleanValue() && !sendCommandFeedbackIn ? new CommandSenderWrapper(this.delegate, this.positionVector, this.position, this.permissionLevel, this.entity, sendCommandFeedbackIn) : this;
     }
 
-    public CommandSenderWrapper func_194000_i()
+    public CommandSenderWrapper computePositionVector()
     {
-        return this.field_194002_b != null ? this : new CommandSenderWrapper(this.field_193043_a, this.getPositionVector(), this.getPosition(), this.field_194004_d, this.field_194005_e, this.field_194006_f);
+        return this.positionVector != null ? this : new CommandSenderWrapper(this.delegate, this.getPositionVector(), this.getPosition(), this.permissionLevel, this.entity, this.sendCommandFeedback);
     }
 
     /**
-     * Get the name of this object. For players this returns their username
+     * Gets the name of this thing. This method has slightly different behavior depending on the interface (for <a
+     * href="https://github.com/ModCoderPack/MCPBot-Issues/issues/14">technical reasons</a> the same method is used for
+     * both IWorldNameable and ICommandSender):
+     *  
+     * <dl>
+     * <dt>{@link net.minecraft.util.INameable#getName() INameable.getName()}</dt>
+     * <dd>Returns the name of this inventory. If this {@linkplain net.minecraft.inventory#hasCustomName() has a custom
+     * name} then this <em>should</em> be a direct string; otherwise it <em>should</em> be a valid translation
+     * string.</dd>
+     * <dd>However, note that <strong>the translation string may be invalid</strong>, as is the case for {@link
+     * net.minecraft.tileentity.TileEntityBanner TileEntityBanner} (always returns nonexistent translation code
+     * <code>banner</code> without a custom name), {@link net.minecraft.block.BlockAnvil.Anvil BlockAnvil$Anvil} (always
+     * returns <code>anvil</code>), {@link net.minecraft.block.BlockWorkbench.InterfaceCraftingTable
+     * BlockWorkbench$InterfaceCraftingTable} (always returns <code>crafting_table</code>), {@link
+     * net.minecraft.inventory.InventoryCraftResult InventoryCraftResult} (always returns <code>Result</code>) and the
+     * {@link net.minecraft.entity.item.EntityMinecart EntityMinecart} family (uses the entity definition). This is not
+     * an exaustive list.</dd>
+     * <dd>In general, this method should be safe to use on tile entities that implement IInventory.</dd>
+     * <dt>{@link net.minecraft.command.ICommandSender#getName() ICommandSender.getName()} and {@link
+     * net.minecraft.entity.Entity#getName() Entity.getName()}</dt>
+     * <dd>Returns a valid, displayable name (which may be localized). For most entities, this is the translated version
+     * of its translation string (obtained via {@link net.minecraft.entity.EntityList#getEntityString
+     * EntityList.getEntityString}).</dd>
+     * <dd>If this entity has a custom name set, this will return that name.</dd>
+     * <dd>For some entities, this will attempt to translate a nonexistent translation string; see <a
+     * href="https://bugs.mojang.com/browse/MC-68446">MC-68446</a>. For {@linkplain
+     * net.minecraft.entity.player.EntityPlayer#getName() players} this returns the player's name. For {@linkplain
+     * net.minecraft.entity.passive.EntityOcelot ocelots} this may return the translation of
+     * <code>entity.Cat.name</code> if it is tamed. For {@linkplain net.minecraft.entity.item.EntityItem#getName() item
+     * entities}, this will attempt to return the name of the item in that item entity. In all cases other than players,
+     * the custom name will overrule this.</dd>
+     * <dd>For non-entity command senders, this will return some arbitrary name, such as "Rcon" or "Server".</dd>
+     * </dl>
      */
     public String getName()
     {
-        return this.field_194005_e != null ? this.field_194005_e.getName() : this.field_193043_a.getName();
+        return this.entity != null ? this.entity.getName() : this.delegate.getName();
     }
 
     /**
-     * Get the formatted ChatComponent that will be used for the sender's username in chat
+     * Returns a displayable component representing this thing's name. This method should be implemented slightly
+     * differently depending on the interface (for <a href="https://github.com/ModCoderPack/MCPBot-
+     * Issues/issues/14">technical reasons</a> the same method is used for both IWorldNameable and ICommandSender), but
+     * unlike {@link #getName()} this method will generally behave sanely.
+     *  
+     * <dl>
+     * <dt>{@link net.minecraft.util.INameable#getDisplayName() INameable.getDisplayName()}</dt>
+     * <dd>A normal component. Might be a translation component or a text component depending on the context. Usually
+     * implemented as:</dd>
+     * <dd><pre><code>return this.{@link net.minecraft.util.INameable#hasCustomName() hasCustomName()} ? new
+     * TextComponentString(this.{@link #getName()}) : new TextComponentTranslation(this.{@link
+     * #getName()});</code></pre></dd>
+     * <dt>{@link net.minecraft.command.ICommandSender#getDisplayName() ICommandSender.getDisplayName()} and {@link
+     * net.minecraft.entity.Entity#getDisplayName() Entity.getDisplayName()}</dt>
+     * <dd>For most entities, this returns the result of {@link #getName()}, with {@linkplain
+     * net.minecraft.scoreboard.ScorePlayerTeam#formatPlayerName scoreboard formatting} and a {@linkplain
+     * net.minecraft.entity.Entity#getHoverEvent special hover event}.</dd>
+     * <dd>For non-entity command senders, this will return the result of {@link #getName()} in a text component.</dd>
+     * </dl>
      */
     public ITextComponent getDisplayName()
     {
-        return this.field_194005_e != null ? this.field_194005_e.getDisplayName() : this.field_193043_a.getDisplayName();
+        return this.entity != null ? this.entity.getDisplayName() : this.delegate.getDisplayName();
     }
 
     /**
      * Send a chat message to the CommandSender
      */
-    public void addChatMessage(ITextComponent component)
+    public void sendMessage(ITextComponent component)
     {
-        if (this.field_194006_f == null || this.field_194006_f.booleanValue())
+        if (this.sendCommandFeedback == null || this.sendCommandFeedback.booleanValue())
         {
-            this.field_193043_a.addChatMessage(component);
+            this.delegate.sendMessage(component);
         }
     }
 
     /**
      * Returns {@code true} if the CommandSender is allowed to execute the command, {@code false} if not
      */
-    public boolean canCommandSenderUseCommand(int permLevel, String commandName)
+    public boolean canUseCommand(int permLevel, String commandName)
     {
-        return this.field_194004_d != null && this.field_194004_d.intValue() < permLevel ? false : this.field_193043_a.canCommandSenderUseCommand(permLevel, commandName);
+        return this.permissionLevel != null && this.permissionLevel.intValue() < permLevel ? false : this.delegate.canUseCommand(permLevel, commandName);
     }
 
     /**
@@ -99,13 +149,13 @@ public class CommandSenderWrapper implements ICommandSender
      */
     public BlockPos getPosition()
     {
-        if (this.field_194003_c != null)
+        if (this.position != null)
         {
-            return this.field_194003_c;
+            return this.position;
         }
         else
         {
-            return this.field_194005_e != null ? this.field_194005_e.getPosition() : this.field_193043_a.getPosition();
+            return this.entity != null ? this.entity.getPosition() : this.delegate.getPosition();
         }
     }
 
@@ -115,13 +165,13 @@ public class CommandSenderWrapper implements ICommandSender
      */
     public Vec3d getPositionVector()
     {
-        if (this.field_194002_b != null)
+        if (this.positionVector != null)
         {
-            return this.field_194002_b;
+            return this.positionVector;
         }
         else
         {
-            return this.field_194005_e != null ? this.field_194005_e.getPositionVector() : this.field_193043_a.getPositionVector();
+            return this.entity != null ? this.entity.getPositionVector() : this.delegate.getPositionVector();
         }
     }
 
@@ -131,7 +181,7 @@ public class CommandSenderWrapper implements ICommandSender
      */
     public World getEntityWorld()
     {
-        return this.field_194005_e != null ? this.field_194005_e.getEntityWorld() : this.field_193043_a.getEntityWorld();
+        return this.entity != null ? this.entity.getEntityWorld() : this.delegate.getEntityWorld();
     }
 
     @Nullable
@@ -141,7 +191,7 @@ public class CommandSenderWrapper implements ICommandSender
      */
     public Entity getCommandSenderEntity()
     {
-        return this.field_194005_e != null ? this.field_194005_e.getCommandSenderEntity() : this.field_193043_a.getCommandSenderEntity();
+        return this.entity != null ? this.entity.getCommandSenderEntity() : this.delegate.getCommandSenderEntity();
     }
 
     /**
@@ -149,18 +199,18 @@ public class CommandSenderWrapper implements ICommandSender
      */
     public boolean sendCommandFeedback()
     {
-        return this.field_194006_f != null ? this.field_194006_f.booleanValue() : this.field_193043_a.sendCommandFeedback();
+        return this.sendCommandFeedback != null ? this.sendCommandFeedback.booleanValue() : this.delegate.sendCommandFeedback();
     }
 
     public void setCommandStat(CommandResultStats.Type type, int amount)
     {
-        if (this.field_194005_e != null)
+        if (this.entity != null)
         {
-            this.field_194005_e.setCommandStat(type, amount);
+            this.entity.setCommandStat(type, amount);
         }
         else
         {
-            this.field_193043_a.setCommandStat(type, amount);
+            this.delegate.setCommandStat(type, amount);
         }
     }
 
@@ -171,6 +221,6 @@ public class CommandSenderWrapper implements ICommandSender
      */
     public MinecraftServer getServer()
     {
-        return this.field_193043_a.getServer();
+        return this.delegate.getServer();
     }
 }

@@ -2,9 +2,9 @@ package fz.frazionz.packets.server;
 
 import java.io.IOException;
 
-import fz.frazionz.gui.GuiBoutiqueCategory;
 import fz.frazionz.gui.GuiServerSwitcher;
-import fz.frazionz.gui.GuiShopCategory;
+import fz.frazionz.gui.shop.GuiBoutiqueCategory;
+import fz.frazionz.gui.shop.GuiShopCategory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.Packet;
 import net.minecraft.network.PacketBuffer;

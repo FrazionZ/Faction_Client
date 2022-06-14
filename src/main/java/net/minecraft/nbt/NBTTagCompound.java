@@ -23,8 +23,8 @@ import org.apache.logging.log4j.Logger;
 
 public class NBTTagCompound extends NBTBase
 {
-    private static final Logger field_191551_b = LogManager.getLogger();
-    private static final Pattern field_193583_c = Pattern.compile("[A-Za-z0-9._+-]+");
+    private static final Logger LOGGER = LogManager.getLogger();
+    private static final Pattern SIMPLE_VALUE = Pattern.compile("[A-Za-z0-9._+-]+");
     private final Map<String, NBTBase> tagMap = Maps.<String, NBTBase>newHashMap();
 
     /**
@@ -451,7 +451,7 @@ public class NBTTagCompound extends NBTBase
             {
                 NBTTagList nbttaglist = (NBTTagList)this.tagMap.get(key);
 
-                if (!nbttaglist.hasNoTags() && nbttaglist.getTagType() != type)
+                if (!nbttaglist.isEmpty() && nbttaglist.getTagType() != type)
                 {
                     return new NBTTagList();
                 }
@@ -489,7 +489,7 @@ public class NBTTagCompound extends NBTBase
         StringBuilder stringbuilder = new StringBuilder("{");
         Collection<String> collection = this.tagMap.keySet();
 
-        if (field_191551_b.isDebugEnabled())
+        if (LOGGER.isDebugEnabled())
         {
             List<String> list = Lists.newArrayList(this.tagMap.keySet());
             Collections.sort(list);
@@ -503,7 +503,7 @@ public class NBTTagCompound extends NBTBase
                 stringbuilder.append(',');
             }
 
-            stringbuilder.append(func_193582_s(s)).append(':').append(this.tagMap.get(s));
+            stringbuilder.append(handleEscape(s)).append(':').append(this.tagMap.get(s));
         }
 
         return stringbuilder.append('}').toString();
@@ -512,7 +512,7 @@ public class NBTTagCompound extends NBTBase
     /**
      * Return whether this compound has no tags.
      */
-    public boolean hasNoTags()
+    public boolean isEmpty()
     {
         return this.tagMap.isEmpty();
     }
@@ -524,14 +524,14 @@ public class NBTTagCompound extends NBTBase
     {
         CrashReport crashreport = CrashReport.makeCrashReport(ex, "Reading NBT data");
         CrashReportCategory crashreportcategory = crashreport.makeCategoryDepth("Corrupt NBT tag", 1);
-        crashreportcategory.setDetail("Tag type found", new ICrashReportDetail<String>()
+        crashreportcategory.addDetail("Tag type found", new ICrashReportDetail<String>()
         {
             public String call() throws Exception
             {
                 return NBTBase.NBT_TYPES[((NBTBase)NBTTagCompound.this.tagMap.get(key)).getId()];
             }
         });
-        crashreportcategory.setDetail("Tag type expected", new ICrashReportDetail<String>()
+        crashreportcategory.addDetail("Tag type expected", new ICrashReportDetail<String>()
         {
             public String call() throws Exception
             {
@@ -590,7 +590,7 @@ public class NBTTagCompound extends NBTBase
 
     static NBTBase readNBT(byte id, String key, DataInput input, int depth, NBTSizeTracker sizeTracker) throws IOException
     {
-        NBTBase nbtbase = NBTBase.createNewByType(id);
+        NBTBase nbtbase = NBTBase.create(id);
 
         try
         {
@@ -608,8 +608,7 @@ public class NBTTagCompound extends NBTBase
     }
 
     /**
-     * Merges this NBTTagCompound with the given compound. Any sub-compounds are merged using the same methods, other
-     * types of tags are overwritten from the given compound.
+     * Merges copies of data contained in {@code other} into this compound tag.
      */
     public void merge(NBTTagCompound other)
     {
@@ -636,8 +635,8 @@ public class NBTTagCompound extends NBTBase
         }
     }
 
-    protected static String func_193582_s(String p_193582_0_)
+    protected static String handleEscape(String p_193582_0_)
     {
-        return field_193583_c.matcher(p_193582_0_).matches() ? p_193582_0_ : NBTTagString.func_193588_a(p_193582_0_);
+        return SIMPLE_VALUE.matcher(p_193582_0_).matches() ? p_193582_0_ : NBTTagString.quoteAndEscape(p_193582_0_);
     }
 }

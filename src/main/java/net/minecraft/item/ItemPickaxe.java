@@ -138,23 +138,6 @@ public class ItemPickaxe extends ItemTool
         }
     }
 
-    public float getStrVsBlock(ItemStack stack, IBlockState state)
-    {
-        Material material = state.getMaterial();
-        
-        if(this.toolMaterial.getHarvestLevel() >= 7) {
-            Block block = state.getBlock();
-            
-            if (block == Blocks.OBSIDIAN || block == Blocks.OBSIDIAN_YELLITE || block == Blocks.OBSIDIAN_BAUXITE)
-            	return 80.0F;
-            else if(block == Blocks.OBSIDIAN_ONYX || block == Blocks.OBSIDIAN_FRAZION)
-            	return 50.0F;
-            else
-            	return material != Material.IRON && material != Material.ANVIL && material != Material.ROCK ? super.getStrVsBlock(stack, state) : this.efficiencyOnProperMaterial;
-        }
-        return material != Material.IRON && material != Material.ANVIL && material != Material.ROCK ? super.getStrVsBlock(stack, state) : this.efficiencyOnProperMaterial;
-    }
-    
     public void addInformation(ItemStack stack, @Nullable World playerIn, List<String> tooltip, ITooltipFlag advanced)
     {
     	if(this.toolMaterial.getHarvestLevel() >= 7) {
@@ -170,4 +153,21 @@ public class ItemPickaxe extends ItemTool
     	
     }
     
+    public float getDestroySpeed(ItemStack stack, IBlockState state)
+    {
+        Material material = state.getMaterial();
+        
+        if(this.toolMaterial.getHarvestLevel() >= 7) {
+            Block block = state.getBlock();
+            
+            if (block == Blocks.OBSIDIAN || block == Blocks.OBSIDIAN_YELLITE || block == Blocks.OBSIDIAN_BAUXITE)
+            	return 80.0F;
+            else if(block == Blocks.OBSIDIAN_ONYX || block == Blocks.OBSIDIAN_FRAZION)
+            	return 50.0F;
+            else
+            	return material != Material.IRON && material != Material.ANVIL && material != Material.ROCK ? super.getDestroySpeed(stack, state) : this.efficiency;
+        }
+        return material != Material.IRON && material != Material.ANVIL && material != Material.ROCK ? super.getDestroySpeed(stack, state) : this.efficiency;
+    
+    }
 }

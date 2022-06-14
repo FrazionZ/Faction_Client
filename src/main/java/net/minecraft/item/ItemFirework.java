@@ -21,53 +21,52 @@ public class ItemFirework extends Item
     /**
      * Called when a Block is right-clicked with this Item
      */
-    public EnumActionResult onItemUse(EntityPlayer stack, World playerIn, BlockPos worldIn, EnumHand pos, EnumFacing hand, float facing, float hitX, float hitY)
+    public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
-        if (!playerIn.isRemote)
+        if (!worldIn.isRemote)
         {
-            ItemStack itemstack = stack.getHeldItem(pos);
-            EntityFireworkRocket entityfireworkrocket = new EntityFireworkRocket(playerIn, (double)((float)worldIn.getX() + facing), (double)((float)worldIn.getY() + hitX), (double)((float)worldIn.getZ() + hitY), itemstack);
-            playerIn.spawnEntityInWorld(entityfireworkrocket);
+            ItemStack itemstack = player.getHeldItem(hand);
+            EntityFireworkRocket entityfireworkrocket = new EntityFireworkRocket(worldIn, (double)((float)pos.getX() + hitX), (double)((float)pos.getY() + hitY), (double)((float)pos.getZ() + hitZ), itemstack);
+            worldIn.spawnEntity(entityfireworkrocket);
 
-            if (!stack.capabilities.isCreativeMode)
+            if (!player.capabilities.isCreativeMode)
             {
-                itemstack.substract(1);
+                itemstack.shrink(1);
             }
         }
 
         return EnumActionResult.SUCCESS;
     }
 
-    public ActionResult<ItemStack> onItemRightClick(World itemStackIn, EntityPlayer worldIn, EnumHand playerIn)
+    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn)
     {
-    	worldIn.getCooldownTracker().setCooldown(this, 1800);
-        if (worldIn.isElytraFlying())
+        if (playerIn.isElytraFlying())
         {
-            ItemStack itemstack = worldIn.getHeldItem(playerIn);
+            ItemStack itemstack = playerIn.getHeldItem(handIn);
 
-            if (!itemStackIn.isRemote)
+            if (!worldIn.isRemote)
             {
-                EntityFireworkRocket entityfireworkrocket = new EntityFireworkRocket(itemStackIn, itemstack, worldIn);
-                itemStackIn.spawnEntityInWorld(entityfireworkrocket);
+                EntityFireworkRocket entityfireworkrocket = new EntityFireworkRocket(worldIn, itemstack, playerIn);
+                worldIn.spawnEntity(entityfireworkrocket);
 
-                if (!worldIn.capabilities.isCreativeMode)
+                if (!playerIn.capabilities.isCreativeMode)
                 {
-                    itemstack.substract(1);
+                    itemstack.shrink(1);
                 }
             }
 
-            return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, worldIn.getHeldItem(playerIn));
+            return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, playerIn.getHeldItem(handIn));
         }
         else
         {
-            return new ActionResult<ItemStack>(EnumActionResult.PASS, worldIn.getHeldItem(playerIn));
+            return new ActionResult<ItemStack>(EnumActionResult.PASS, playerIn.getHeldItem(handIn));
         }
     }
 
     /**
      * allows items to add custom lines of information to the mouseover description
      */
-    public void addInformation(ItemStack stack, @Nullable World playerIn, List<String> tooltip, ITooltipFlag advanced)
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
     {
         NBTTagCompound nbttagcompound = stack.getSubCompound("Fireworks");
 
@@ -80,7 +79,7 @@ public class ItemFirework extends Item
 
             NBTTagList nbttaglist = nbttagcompound.getTagList("Explosions", 10);
 
-            if (!nbttaglist.hasNoTags())
+            if (!nbttaglist.isEmpty())
             {
                 for (int i = 0; i < nbttaglist.tagCount(); ++i)
                 {

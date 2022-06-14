@@ -31,7 +31,7 @@ public abstract class AbstractResourcePack implements IResourcePack
 
     private static String locationToName(ResourceLocation location)
     {
-        return String.format("%s/%s/%s", "assets", location.getResourceDomain(), location.getResourcePath());
+        return String.format("%s/%s/%s", "assets", location.getNamespace(), location.getPath());
     }
 
     protected static String getRelativeName(File p_110595_0_, File p_110595_1_)

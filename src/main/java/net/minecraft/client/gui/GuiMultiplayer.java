@@ -138,7 +138,7 @@ public class GuiMultiplayer extends GuiScreen
     /**
      * Called by the controls from the buttonList when activated. (Mouse pressed for buttons)
      */
-    protected void actionPerformed(GuiButton button, int mouseButton) throws IOException
+    protected void actionPerformed(GuiButton button, int keyCode) throws IOException
     {
         if (button.enabled)
         {
@@ -373,7 +373,7 @@ public class GuiMultiplayer extends GuiScreen
         this.hoveringText = null;
         this.drawDefaultBackground();
         this.serverListSelector.drawScreen(mouseX, mouseY, partialTicks);
-        this.drawCenteredString(this.fontRendererObj, I18n.format("multiplayer.title"), this.width / 2, 20, 16777215);
+        this.drawCenteredString(this.fontRenderer, I18n.format("multiplayer.title"), this.width / 2, 20, 16777215);
         super.drawScreen(mouseX, mouseY, partialTicks);
 
         if (this.hoveringText != null)

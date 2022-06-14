@@ -3,7 +3,7 @@ package fz.frazionz.gui;
 import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.*;
+import java.util.concurrent.Executors;
 
 import fz.frazionz.api.HTTPFunctions;
 import fz.frazionz.packets.client.CPacketServerSwitch;
@@ -14,33 +14,20 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
 
-public class GuiServerSwitcher extends GuiScreen {
+public class GuiServerSwitcher extends GuiFrazionZInterface {
 
-	private static final ResourceLocation SERVER_SWITCHER_RESOURCE = new ResourceLocation("textures/gui/frazionz/server_switcher/server_switcher.png");
+	private static final ResourceLocation SERVER_SWITCHER_RESOURCE = new ResourceLocation("textures/gui/frazionz/server_switcher.png");
 	
-	private final GuiScreen lastScreen;
-	private Minecraft mc;
-	
-	private final int xSize = 388;
-	private final int ySize = 210;
-	private int guiLeft;
-	private int guiTop;
-	private String factionCountPlayer = "-";
-	private String minageCountPlayer = "-";
-
 	public GuiServerSwitcher(GuiScreen lastScreen, Minecraft mc) {
-		this.lastScreen = lastScreen;
-		this.mc = mc;
+		super("Server Switcher", lastScreen, mc);
+		this.hasBackButton = true;
 	}
 	
 	public void initGui() {
-		guiLeft = (this.width - this.xSize) / 2;
-		guiTop = (this.height - this.ySize) / 2;
-
 		String ip = "185.157.246.85";
 
-		SwitcherButton faction = new SwitcherButton(0, (this.width / 2) - 103, (this.height / 2) - 59, 85, 142, 0, 352, this.SERVER_SWITCHER_RESOURCE, factionCountPlayer, this.fontRendererObj);
-		SwitcherButton minage  = new SwitcherButton(1, (this.width / 2) + 23, (this.height / 2) - 59, 85, 142, 0, 210, this.SERVER_SWITCHER_RESOURCE, minageCountPlayer, this.fontRendererObj);
+		SwitcherButton faction = new SwitcherButton(2, "Faction", (this.width / 2) - 103, (this.height / 2) - 59, 84, 141, 0, 0, this.fontRenderer, this.mc.fzFontRenderers.get(24), 4, 1);
+		SwitcherButton minage  = new SwitcherButton(3, "Minage", (this.width / 2) + 23, (this.height / 2) - 59, 84, 141, 0, 0, this.fontRenderer, this.mc.fzFontRenderers.get(24), 3, 0);
 		this.buttonList.add(faction);
 		this.buttonList.add(minage);
 
@@ -65,90 +52,69 @@ public class GuiServerSwitcher extends GuiScreen {
 	protected void actionPerformed(GuiButton button, int mouseButton) throws IOException {
         switch (button.id)
         {
-	        case 0:
-	        case 1:
-	        	this.mc.player.connection.sendPacket(new CPacketServerSwitch(this.mc.player.getUniqueID(), button.id));
+			case 1:
+				this.mc.displayGuiScreen(lastScreen);
+				break;
+	        case 2:
+	        case 3:
+	        	this.mc.player.connection.sendPacket(new CPacketServerSwitch(this.mc.player.getUniqueID(), button.id - 2));
 	        	this.mc.displayGuiScreen(null);
 	        	break;
         }
 	}
 	
-    public void updateScreen()
-    {
-        super.updateScreen();
-    }
-	
-	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-		this.drawGradientRect(0, 0, this.width, this.height, -1072689136, -804253680);
-		this.drawBackgroundImage();
-        super.drawScreen(mouseX, mouseY, partialTicks);
-	}
-	
-    protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException
-    {
-        super.mouseClicked(mouseX, mouseY, mouseButton);
-    }
-
-	
-	public void drawBackgroundImage() {
-		
-		GlStateManager.pushMatrix();
-        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-        this.mc.getTextureManager().bindTexture(SERVER_SWITCHER_RESOURCE);
-        int i = (this.width - this.xSize) / 2;
-        int j = (this.height - this.ySize) / 2;
-        GlStateManager.enableBlend();
-        this.drawModalRectWithCustomSizedTexture(i, j, 0, 0, this.xSize, this.ySize, 512.0F, 512.0F);
-        GlStateManager.popMatrix();
-		
-	}
-	
-	
 	private class SwitcherButton extends GuiButton
 	{
-	    private final ResourceLocation resourceLocation;
 	    private final int textureX;
 	    private final int textureY;
 	    private final FontRenderer fontRenderer;
+	    private final fz.frazionz.gui.renderer.fonts.FzFontRenderer tfFontRenderer;
 		private String serverCount;
+		
+		private int iconX;
+		private int iconY;
 
-	    public SwitcherButton(int buttonId, int x, int y, int widthIn, int heightIn, int textureX, int textureY, ResourceLocation resourceLocation, String serverCount, FontRenderer fontRenderer)
+	    public SwitcherButton(int buttonId, String displayString, int x, int y, int widthIn, int heightIn, int textureX, int textureY, FontRenderer fontRenderer, fz.frazionz.gui.renderer.fonts.FzFontRenderer tfFontRenderer, int iconX, int iconY)
 	    {
-	        super(buttonId, x, y, widthIn, heightIn, "");
+	        super(buttonId, x, y, widthIn, heightIn, displayString);
 	        this.width = widthIn;
 	        this.height = heightIn;
 	        this.textureX = textureX;
 	        this.textureY = textureY;
-	        this.resourceLocation = resourceLocation;
 			this.fontRenderer = fontRenderer;
-			this.serverCount = serverCount;
+			this.iconX = iconX;
+			this.iconY = iconY;
+			this.tfFontRenderer = tfFontRenderer;
 	    }
 
 		public void setServerCount(String serverCount) {
 			this.serverCount = serverCount;
 		}
 
-		public void func_191745_a(Minecraft mc, int mouseX, int mouseY, float p_191745_4_)
+		public void drawButton(Minecraft mc, int mouseX, int mouseY, float p_191745_4_)
 	    {
 	        if (this.visible)
 	        {	    
-	            this.hovered = mouseX >= this.xPosition && mouseY >= this.yPosition && mouseX < this.xPosition + this.width && mouseY < this.yPosition + this.height;
-	        	mc.getTextureManager().bindTexture(this.resourceLocation);
+	            this.hovered = mouseX >= this.x && mouseY >= this.y && mouseX <= this.x + this.width && mouseY <= this.y + this.height;
+	        	mc.getTextureManager().bindTexture(SERVER_SWITCHER_RESOURCE);
 	            GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-	            GlStateManager.enableBlend();
-	            GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-	            GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-	            
-	            int i = this.textureX;
-	            int j = this.textureY;
+	            int x = this.textureX;
+	            int y = this.textureY;
 	            
 	            if (this.hovered) {
-	            	i += 85;
+	            	x += 84;
 	            }
 	            
-	            this.drawModalRectWithCustomSizedTexture(this.xPosition, this.yPosition, i, j, this.width, this.height,  512.0F, 512.0F);
-				this.drawString(fontRenderer, ((serverCount.equalsIgnoreCase("-")) ? "Recherche.." : serverCount+" Joueur(s)"), this.xPosition+12, this.yPosition + this.height - 17, -1);
+	            this.drawModalRectWithCustomSizedTexture(this.x, this.y, x, y, this.width, this.height, 512.0F, 512.0F);
 
+				mc.getTextureManager().bindTexture(SERVER_SWITCHER_RESOURCE);
+				GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+	            this.drawModalRectWithCustomSizedTexture(this.x + this.width/2 - 32, this.y + 15, iconX * 64, 141 + iconY * 64, 64, 64, 512.0F, 512.0F);
+	            
+	            String info = (this.serverCount == null ? "Recherche..." : serverCount + (Integer.parseInt(serverCount) > 1 ? " Joueurs" :" Joueur"));
+				this.drawString(fontRenderer, info, this.x + this.width/2 - fontRenderer.getStringWidth(info)/2, this.y + this.height - 16, 0xFFFFFFFF);
+
+	            tfFontRenderer.drawCenteredString(this.displayString, this.x + this.width / 2, this.y + this.height/2 + 24, 0xFFFFFFFF);
 
 	            this.mouseDragged(mc, mouseX, mouseY);
 	        }

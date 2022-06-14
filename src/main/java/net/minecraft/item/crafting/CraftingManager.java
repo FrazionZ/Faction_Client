@@ -41,31 +41,31 @@ import net.minecraft.world.World;
 public class CraftingManager
 {
 	private static CraftingManager instance = new CraftingManager();
-    private static final Logger field_192422_a = LogManager.getLogger();
+    private static final Logger LOGGER = LogManager.getLogger();
     private static List<IRecipe> craftList = new ArrayList<IRecipe>();
-    private static int field_193381_c;
-    public static final RegistryNamespaced<ResourceLocation, IRecipe> field_193380_a = new RegistryNamespaced<ResourceLocation, IRecipe>();
+    private static int nextAvailableId;
+    public static final RegistryNamespaced<ResourceLocation, IRecipe> REGISTRY = new RegistryNamespaced<ResourceLocation, IRecipe>();
 
     public static CraftingManager getInstance() {
 		return instance;
 	}
     
-    public static boolean func_193377_a()
+    public static boolean init()
     {
         try
         {
-            func_193379_a("armordye", new RecipesArmorDyes());
-            func_193379_a("bookcloning", new RecipeBookCloning());
-            func_193379_a("mapcloning", new RecipesMapCloning());
-            func_193379_a("mapextending", new RecipesMapExtending());
-            func_193379_a("fireworks", new RecipeFireworks());
-            func_193379_a("repairitem", new RecipeRepairItem());
-            func_193379_a("tippedarrow", new RecipeTippedArrow());
-            func_193379_a("bannerduplicate", new RecipesBanners.RecipeDuplicatePattern());
-            func_193379_a("banneraddpattern", new RecipesBanners.RecipeAddPattern());
-            func_193379_a("shielddecoration", new ShieldRecipes.Decoration());
-            func_193379_a("shulkerboxcoloring", new ShulkerBoxRecipes.ShulkerBoxColoring());
-            return func_192420_c();
+            register("armordye", new RecipesArmorDyes());
+            register("bookcloning", new RecipeBookCloning());
+            register("mapcloning", new RecipesMapCloning());
+            register("mapextending", new RecipesMapExtending());
+            register("fireworks", new RecipeFireworks());
+            register("repairitem", new RecipeRepairItem());
+            register("tippedarrow", new RecipeTippedArrow());
+            register("bannerduplicate", new RecipesBanners.RecipeDuplicatePattern());
+            register("banneraddpattern", new RecipesBanners.RecipeAddPattern());
+            register("shielddecoration", new ShieldRecipes.Decoration());
+            register("shulkerboxcoloring", new ShulkerBoxRecipes.ShulkerBoxColoring());
+            return parseJsonRecipes();
         }
         catch (Throwable var1)
         {
@@ -73,7 +73,7 @@ public class CraftingManager
         }
     }
 
-    private static boolean func_192420_c()
+    private static boolean parseJsonRecipes()
     {
         FileSystem filesystem = null;
         Gson gson = (new GsonBuilder()).setPrettyPrinting().disableHtmlEscaping().create();
@@ -96,7 +96,7 @@ public class CraftingManager
                 {
                     if (!"jar".equals(uri.getScheme()))
                     {
-                        field_192422_a.error("Unsupported scheme " + uri + " trying to list all recipes");
+                        LOGGER.error("Unsupported scheme " + uri + " trying to list all recipes");
                         boolean flag2 = false;
                         return flag2;
                     }
@@ -125,17 +125,17 @@ public class CraftingManager
                             try
                             {
                                 bufferedreader = Files.newBufferedReader(path1);
-                                func_193379_a(s, func_193376_a((JsonObject)JsonUtils.func_193839_a(gson, bufferedreader, JsonObject.class)));
+                                register(s, parseRecipeJson((JsonObject)JsonUtils.fromJson(gson, bufferedreader, JsonObject.class)));
                             }
                             catch (JsonParseException jsonparseexception)
                             {
-                                field_192422_a.error("Parsing error loading recipe " + resourcelocation, (Throwable)jsonparseexception);
+                                LOGGER.error("Parsing error loading recipe " + resourcelocation, (Throwable)jsonparseexception);
                                 flag = false;
                                 return flag;
                             }
                             catch (IOException ioexception)
                             {
-                                field_192422_a.error("Couldn't read recipe " + resourcelocation + " from " + path1, (Throwable)ioexception);
+                                LOGGER.error("Couldn't read recipe " + resourcelocation + " from " + path1, (Throwable)ioexception);
                                 flag = false;
                                 return flag;
                             }
@@ -150,12 +150,12 @@ public class CraftingManager
                 return true;
             }
 
-            field_192422_a.error("Couldn't find .mcassetsroot");
+            LOGGER.error("Couldn't find .mcassetsroot");
             flag1 = false;
         }
         catch (IOException | URISyntaxException urisyntaxexception)
         {
-            field_192422_a.error("Couldn't get a list of all recipe files", (Throwable)urisyntaxexception);
+            LOGGER.error("Couldn't get a list of all recipe files", (Throwable)urisyntaxexception);
             flag1 = false;
             return flag1;
         }
@@ -167,17 +167,17 @@ public class CraftingManager
         return flag1;
     }
 
-    private static IRecipe func_193376_a(JsonObject p_193376_0_)
+    private static IRecipe parseRecipeJson(JsonObject json)
     {
-        String s = JsonUtils.getString(p_193376_0_, "type");
+        String s = JsonUtils.getString(json, "type");
 
         if ("crafting_shaped".equals(s))
         {
-            return ShapedRecipes.func_193362_a(p_193376_0_);
+            return ShapedRecipes.deserialize(json);
         }
         else if ("crafting_shapeless".equals(s))
         {
-            return ShapelessRecipes.func_193363_a(p_193376_0_);
+            return ShapelessRecipes.deserialize(json);
         }
         else
         {
@@ -185,46 +185,46 @@ public class CraftingManager
         }
     }
 
-    public static void func_193379_a(String p_193379_0_, IRecipe p_193379_1_)
+    public static void register(String name, IRecipe recipe)
     {
-        func_193372_a(new ResourceLocation(p_193379_0_), p_193379_1_);
+        register(new ResourceLocation(name), recipe);
     }
 
-    public static void func_193372_a(ResourceLocation p_193372_0_, IRecipe p_193372_1_)
+    public static void register(ResourceLocation name, IRecipe recipe)
     {
-        if (field_193380_a.containsKey(p_193372_0_))
+        if (REGISTRY.containsKey(name))
         {
-            throw new IllegalStateException("Duplicate recipe ignored with ID " + p_193372_0_);
+            throw new IllegalStateException("Duplicate recipe ignored with ID " + name);
         }
         else
         {
-            field_193380_a.register(field_193381_c++, p_193372_0_, p_193372_1_);
-            craftList.add(p_193372_1_);
+            REGISTRY.register(nextAvailableId++, name, recipe);
+            craftList.add(recipe);
         }
     }
 
     /**
      * Retrieves an ItemStack that has multiple recipes for it.
      */
-    public static ItemStack findMatchingRecipe(InventoryCrafting p_82787_0_, World craftMatrix)
+    public static ItemStack findMatchingResult(InventoryCrafting craftMatrix, World worldIn)
     {
-        for (IRecipe irecipe : field_193380_a)
+        for (IRecipe irecipe : REGISTRY)
         {
-            if (irecipe.matches(p_82787_0_, craftMatrix))
+            if (irecipe.matches(craftMatrix, worldIn))
             {
-                return irecipe.getCraftingResult(p_82787_0_);
+                return irecipe.getCraftingResult(craftMatrix);
             }
         }
 
-        return ItemStack.field_190927_a;
+        return ItemStack.EMPTY;
     }
 
     @Nullable
-    public static IRecipe func_192413_b(InventoryCrafting p_192413_0_, World p_192413_1_)
+    public static IRecipe findMatchingRecipe(InventoryCrafting craftMatrix, World worldIn)
     {
-        for (IRecipe irecipe : field_193380_a)
+        for (IRecipe irecipe : REGISTRY)
         {
-            if (irecipe.matches(p_192413_0_, p_192413_1_))
+            if (irecipe.matches(craftMatrix, worldIn))
             {
                 return irecipe;
             }
@@ -233,45 +233,44 @@ public class CraftingManager
         return null;
     }
 
-    public static NonNullList<ItemStack> getRemainingItems(InventoryCrafting p_180303_0_, World craftMatrix)
+    public static NonNullList<ItemStack> getRemainingItems(InventoryCrafting craftMatrix, World worldIn)
     {
-        for (IRecipe irecipe : field_193380_a)
+        for (IRecipe irecipe : REGISTRY)
         {
-            if (irecipe.matches(p_180303_0_, craftMatrix))
+            if (irecipe.matches(craftMatrix, worldIn))
             {
-                return irecipe.getRemainingItems(p_180303_0_);
+                return irecipe.getRemainingItems(craftMatrix);
             }
         }
 
-        NonNullList<ItemStack> nonnulllist = NonNullList.<ItemStack>func_191197_a(p_180303_0_.getSizeInventory(), ItemStack.field_190927_a);
+        NonNullList<ItemStack> nonnulllist = NonNullList.<ItemStack>withSize(craftMatrix.getSizeInventory(), ItemStack.EMPTY);
 
         for (int i = 0; i < nonnulllist.size(); ++i)
         {
-            nonnulllist.set(i, p_180303_0_.getStackInSlot(i));
+            nonnulllist.set(i, craftMatrix.getStackInSlot(i));
         }
 
         return nonnulllist;
     }
 
     @Nullable
-    public static IRecipe func_193373_a(ResourceLocation p_193373_0_)
+    public static IRecipe getRecipe(ResourceLocation name)
     {
-        return field_193380_a.getObject(p_193373_0_);
+        return REGISTRY.getObject(name);
     }
 
-    public static int func_193375_a(IRecipe p_193375_0_)
+    public static int getIDForRecipe(IRecipe recipe)
     {
-        return field_193380_a.getIDForObject(p_193375_0_);
+        return REGISTRY.getIDForObject(recipe);
     }
 
     @Nullable
-    public static IRecipe func_193374_a(int p_193374_0_)
+    public static IRecipe getRecipeById(int id)
     {
-        return field_193380_a.getObjectById(p_193374_0_);
+        return REGISTRY.getObjectById(id);
     }
     
-    public static List<IRecipe> getRecipeList()
-    {
-    	return craftList;
-    }
+    public static List<IRecipe> getCraftList() {
+		return craftList;
+	}
 }

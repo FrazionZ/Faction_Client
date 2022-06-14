@@ -45,7 +45,7 @@ public class FzUtils {
                 : (s.substring(0, s.length() - 1));
     }
 
-    public static String conversMoney(String s){
+    public static String convertMoney(String s){
         if(s.equalsIgnoreCase("N/A"))
             return "0.00";
         Locale usa = new Locale("en", "US");

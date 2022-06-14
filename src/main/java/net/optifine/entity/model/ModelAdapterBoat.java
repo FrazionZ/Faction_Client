@@ -7,8 +7,8 @@ import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.entity.RenderBoat;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.item.EntityBoat;
-import optifine.Config;
-import optifine.Reflector;
+import net.minecraft.src.Config;
+import net.optifine.reflect.Reflector;
 
 public class ModelAdapterBoat extends ModelAdapter
 {
@@ -65,6 +65,11 @@ public class ModelAdapterBoat extends ModelAdapter
                 return modelPart.equals("bottom_no_water") ? modelboat.noWater : null;
             }
         }
+    }
+
+    public String[] getModelRendererNames()
+    {
+        return new String[] {"bottom", "back", "front", "right", "left", "paddle_left", "paddle_right", "bottom_no_water"};
     }
 
     public IEntityRenderer makeEntityRender(ModelBase modelBase, float shadowSize)

@@ -104,7 +104,7 @@ public class BlockGrass extends Block implements IGrowable
             {
                 if (j >= i / 16)
                 {
-                    if (worldIn.getBlockState(blockpos1).getBlock().blockMaterial == Material.AIR)
+                    if (worldIn.getBlockState(blockpos1).getBlock().material == Material.AIR)
                     {
                         if (rand.nextInt(8) == 0)
                         {
@@ -143,7 +143,11 @@ public class BlockGrass extends Block implements IGrowable
         }
     }
 
-    public BlockRenderLayer getBlockLayer()
+    /**
+     * Gets the render layer this block will render on. SOLID for solid blocks, CUTOUT or CUTOUT_MIPPED for on-off
+     * transparency (glass, reeds), TRANSLUCENT for fully blended transparency (stained glass)
+     */
+    public BlockRenderLayer getRenderLayer()
     {
         return BlockRenderLayer.CUTOUT_MIPPED;
     }

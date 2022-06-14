@@ -4,12 +4,12 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.renderer.vertex.VertexFormat;
+import net.minecraft.src.Config;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.client.model.pipeline.IVertexConsumer;
 import net.minecraftforge.client.model.pipeline.IVertexProducer;
-import optifine.Config;
-import optifine.QuadBounds;
-import optifine.Reflector;
+import net.optifine.model.QuadBounds;
+import net.optifine.reflect.Reflector;
 
 public class BakedQuad implements IVertexProducer
 {
@@ -25,6 +25,8 @@ public class BakedQuad implements IVertexProducer
     protected boolean applyDiffuseLighting = Reflector.ForgeHooksClient_fillNormal.exists();
     protected VertexFormat format = DefaultVertexFormats.ITEM;
     private QuadBounds quadBounds;
+    private boolean quadEmissiveChecked;
+    private BakedQuad quadEmissive;
 
     public BakedQuad(int[] p_i6_1_, int p_i6_2_, EnumFacing p_i6_3_, TextureAtlasSprite p_i6_4_, boolean p_i6_5_, VertexFormat p_i6_6_)
     {
@@ -95,19 +97,17 @@ public class BakedQuad implements IVertexProducer
     private static int[] makeVertexDataSingle(int[] p_makeVertexDataSingle_0_, TextureAtlasSprite p_makeVertexDataSingle_1_)
     {
         int[] aint = (int[])p_makeVertexDataSingle_0_.clone();
-        int i = p_makeVertexDataSingle_1_.sheetWidth / p_makeVertexDataSingle_1_.getIconWidth();
-        int j = p_makeVertexDataSingle_1_.sheetHeight / p_makeVertexDataSingle_1_.getIconHeight();
-        int k = aint.length / 4;
+        int i = aint.length / 4;
 
-        for (int l = 0; l < 4; ++l)
+        for (int j = 0; j < 4; ++j)
         {
-            int i1 = l * k;
-            float f = Float.intBitsToFloat(aint[i1 + 4]);
-            float f1 = Float.intBitsToFloat(aint[i1 + 4 + 1]);
+            int k = j * i;
+            float f = Float.intBitsToFloat(aint[k + 4]);
+            float f1 = Float.intBitsToFloat(aint[k + 4 + 1]);
             float f2 = p_makeVertexDataSingle_1_.toSingleU(f);
             float f3 = p_makeVertexDataSingle_1_.toSingleV(f1);
-            aint[i1 + 4] = Float.floatToRawIntBits(f2);
-            aint[i1 + 4 + 1] = Float.floatToRawIntBits(f3);
+            aint[k + 4] = Float.floatToRawIntBits(f2);
+            aint[k + 4 + 1] = Float.floatToRawIntBits(f3);
         }
 
         return aint;
@@ -239,6 +239,24 @@ public class BakedQuad implements IVertexProducer
     public boolean isFullFaceQuad()
     {
         return this.isFullQuad() && this.isFaceQuad();
+    }
+
+    public BakedQuad getQuadEmissive()
+    {
+        if (this.quadEmissiveChecked)
+        {
+            return this.quadEmissive;
+        }
+        else
+        {
+            if (this.quadEmissive == null && this.sprite != null && this.sprite.spriteEmissive != null)
+            {
+                this.quadEmissive = new BakedQuadRetextured(this, this.sprite.spriteEmissive);
+            }
+
+            this.quadEmissiveChecked = true;
+            return this.quadEmissive;
+        }
     }
 
     public String toString()

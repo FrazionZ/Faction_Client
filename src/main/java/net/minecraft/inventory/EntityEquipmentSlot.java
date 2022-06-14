@@ -12,6 +12,7 @@ public enum EntityEquipmentSlot
     TROPHY_2(EntityEquipmentSlot.Type.TROPHY, 1, 7, "trophy_2"),
     TROPHY_3(EntityEquipmentSlot.Type.TROPHY, 2, 8, "trophy_3");
 
+	
     private final EntityEquipmentSlot.Type slotType;
     private final int index;
     private final int slotIndex;

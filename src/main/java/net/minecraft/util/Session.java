@@ -15,15 +15,21 @@ public class Session
     private final String token;
     private final Session.Type sessionType;
     private final boolean discordRPC;
+    private final boolean dev;
 
-    public Session(String usernameIn, String playerIDIn, String tokenIn, String sessionTypeIn, boolean discordRPC)
+    public Session(String usernameIn, String playerIDIn, String tokenIn, String sessionTypeIn, boolean discordRPC, boolean dev)
     {
         this.username = usernameIn;
         this.playerID = playerIDIn;
         this.token = tokenIn;
         this.sessionType = Session.Type.setSessionType(sessionTypeIn);
         this.discordRPC = discordRPC;
+        this.dev = dev;
     }
+    
+    public boolean isDev() {
+		return dev;
+	}
     
     public boolean getDiscordRPC()
     {

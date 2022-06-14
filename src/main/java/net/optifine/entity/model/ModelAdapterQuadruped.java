@@ -47,4 +47,9 @@ public abstract class ModelAdapterQuadruped extends ModelAdapter
             }
         }
     }
+
+    public String[] getModelRendererNames()
+    {
+        return new String[] {"head", "body", "leg1", "leg2", "leg3", "leg4"};
+    }
 }

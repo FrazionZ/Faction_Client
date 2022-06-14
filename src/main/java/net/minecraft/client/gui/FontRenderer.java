@@ -24,17 +24,15 @@ import net.minecraft.client.resources.IResource;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.client.resources.IResourceManagerReloadListener;
 import net.minecraft.client.settings.GameSettings;
+import net.minecraft.src.Config;
 import net.minecraft.util.ResourceLocation;
-import optifine.Config;
-import optifine.CustomColors;
-import optifine.FontUtils;
-import optifine.GlBlendState;
-
+import net.optifine.CustomColors;
+import net.optifine.render.GlBlendState;
+import net.optifine.util.FontUtils;
 import org.apache.commons.io.IOUtils;
 
 public class FontRenderer implements IResourceManagerReloadListener
 {
-	
     private static final ResourceLocation[] UNICODE_PAGE_LOCATIONS = new ResourceLocation[256];
 
     /** Array of width of all the characters in default.png */
@@ -110,7 +108,6 @@ public class FontRenderer implements IResourceManagerReloadListener
     private boolean strikethroughStyle;
     public GameSettings gameSettings;
     public ResourceLocation locationFontTextureBase;
-    public boolean enabled = true;
     public float offsetBold = 1.0F;
     private float[] charWidthFloat = new float[256];
     private boolean blend = false;
@@ -119,10 +116,8 @@ public class FontRenderer implements IResourceManagerReloadListener
     public FontRenderer(GameSettings gameSettingsIn, ResourceLocation location, TextureManager textureManagerIn, boolean unicode)
     {
         this.gameSettings = gameSettingsIn;
-        
-        	this.locationFontTextureBase = location;
-            this.locationFontTexture = location;
-        
+        this.locationFontTextureBase = location;
+        this.locationFontTexture = location;
         this.renderEngine = textureManagerIn;
         this.unicodeFlag = unicode;
         this.locationFontTexture = FontUtils.getHdFontLocation(this.locationFontTextureBase);
@@ -167,7 +162,6 @@ public class FontRenderer implements IResourceManagerReloadListener
     {
         this.locationFontTexture = FontUtils.getHdFontLocation(this.locationFontTextureBase);
 
-        
         for (int i = 0; i < UNICODE_PAGE_LOCATIONS.length; ++i)
         {
             UNICODE_PAGE_LOCATIONS[i] = null;
@@ -244,6 +238,7 @@ public class FontRenderer implements IResourceManagerReloadListener
                 }
             }
 
+            // PK MINECRAFT - POURQUOI 
             /*if (i1 == 65)
             {
                 i1 = i1;
@@ -335,8 +330,8 @@ public class FontRenderer implements IResourceManagerReloadListener
     {
         if (UNICODE_PAGE_LOCATIONS[page] == null)
         {
-	        UNICODE_PAGE_LOCATIONS[page] = new ResourceLocation(String.format("textures/font/unicode_page_%02x.png", page));
-	        UNICODE_PAGE_LOCATIONS[page] = FontUtils.getHdFontLocation(UNICODE_PAGE_LOCATIONS[page]);
+            UNICODE_PAGE_LOCATIONS[page] = new ResourceLocation(String.format("textures/font/unicode_page_%02x.png", page));
+            UNICODE_PAGE_LOCATIONS[page] = FontUtils.getHdFontLocation(UNICODE_PAGE_LOCATIONS[page]);
         }
 
         return UNICODE_PAGE_LOCATIONS[page];
@@ -354,7 +349,7 @@ public class FontRenderer implements IResourceManagerReloadListener
      * Render a single Unicode character at current (posX,posY) location using one of the /font/glyph_XX.png files...
      */
     private float renderUnicodeChar(char ch, boolean italic)
-    {	
+    {
         int i = this.glyphWidth[ch] & 255;
 
         if (i == 0)
@@ -400,29 +395,17 @@ public class FontRenderer implements IResourceManagerReloadListener
      */
     public int drawString(String text, int x, int y, int color)
     {
-        return !this.enabled ? 0 : this.drawString(text, (float)x, (float)y, color, false);
-    }
-
-    public int drawString(String text, float x, float y, int color)
-    {
-        return !this.enabled ? 0 : this.drawString(text, (float)x, (float)y, color, false);
+        return this.drawString(text, (float)x, (float)y, color, false);
     }
     
-    public static void drawChromaString(String string, int x, int y, boolean shadow)
+    /**
+     * Draws the specified string.
+     */
+    public int drawString(String text, float x, float y, int color)
     {
-  	   Minecraft mc = Minecraft.getMinecraft();
-         
-         int xTmp = x;
-         for (char textChar : string.toCharArray())
-         {
-             long l = System.currentTimeMillis() - (xTmp * 10 - y * 10);
-             int i = Color.HSBtoRGB(l % (int) 2000.0F / 2000.0F, 0.8F, 0.8F);
-             String tmp = String.valueOf(textChar);
-             mc.fontRendererObj.drawString(tmp, xTmp, y, i, shadow);
-             xTmp += mc.fontRendererObj.getCharWidth(textChar);
-         }	
-     }
-
+        return this.drawString(text, x, y, color, false);
+    }
+   
     /**
      * Draws the specified string.
      */
@@ -823,7 +806,23 @@ public class FontRenderer implements IResourceManagerReloadListener
     }
 
     /**
-     * Trims a string to a specified width, and will reverse it if par3 is set.
+     * Trims a string to a specified width, optionally starting from the end and working backwards.
+     * <h3>Samples:</h3>
+     * (Assuming that {@link #getCharWidth(char)} returns <code>6</code> for all of the characters in
+     * <code>0123456789</code> on the current resource pack)
+     * <table>
+     * <tr><th>Input</th><th>Returns</th></tr>
+     * <tr><td><code>trimStringToWidth("0123456789", 1, false)</code></td><td><samp>""</samp></td></tr>
+     * <tr><td><code>trimStringToWidth("0123456789", 6, false)</code></td><td><samp>"0"</samp></td></tr>
+     * <tr><td><code>trimStringToWidth("0123456789", 29, false)</code></td><td><samp>"0123"</samp></td></tr>
+     * <tr><td><code>trimStringToWidth("0123456789", 30, false)</code></td><td><samp>"01234"</samp></td></tr>
+     * <tr><td><code>trimStringToWidth("0123456789", 9001, false)</code></td><td><samp>"0123456789"</samp></td></tr>
+     * <tr><td><code>trimStringToWidth("0123456789", 1, true)</code></td><td><samp>""</samp></td></tr>
+     * <tr><td><code>trimStringToWidth("0123456789", 6, true)</code></td><td><samp>"9"</samp></td></tr>
+     * <tr><td><code>trimStringToWidth("0123456789", 29, true)</code></td><td><samp>"6789"</samp></td></tr>
+     * <tr><td><code>trimStringToWidth("0123456789", 30, true)</code></td><td><samp>"56789"</samp></td></tr>
+     * <tr><td><code>trimStringToWidth("0123456789", 9001, true)</code></td><td><samp>"0123456789"</samp></td></tr>
+     * </table>
      */
     public String trimStringToWidth(String text, int width, boolean reverse)
     {
@@ -937,9 +936,9 @@ public class FontRenderer implements IResourceManagerReloadListener
     }
 
     /**
-     * Returns the width of the wordwrapped String (maximum length is parameter k)
+     * Returns the height (in pixels) of the given string if it is wordwrapped to the given max width.
      */
-    public int splitStringWidth(String str, int maxLength)
+    public int getWordWrappedHeight(String str, int maxLength)
     {
         return this.FONT_HEIGHT * this.listFormattedStringToWidth(str, maxLength).size();
     }

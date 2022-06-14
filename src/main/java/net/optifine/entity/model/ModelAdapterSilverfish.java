@@ -7,8 +7,8 @@ import net.minecraft.client.model.ModelSilverfish;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RenderSilverfish;
 import net.minecraft.entity.monster.EntitySilverfish;
-import optifine.Config;
-import optifine.Reflector;
+import net.minecraft.src.Config;
+import net.optifine.reflect.Reflector;
 
 public class ModelAdapterSilverfish extends ModelAdapter
 {
@@ -75,6 +75,11 @@ public class ModelAdapterSilverfish extends ModelAdapter
                 }
             }
         }
+    }
+
+    public String[] getModelRendererNames()
+    {
+        return new String[] {"body1", "body2", "body3", "body4", "body5", "body6", "body7", "wing1", "wing2", "wing3"};
     }
 
     public IEntityRenderer makeEntityRender(ModelBase modelBase, float shadowSize)

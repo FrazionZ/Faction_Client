@@ -35,7 +35,7 @@ public class EntityAILeapAtTarget extends EntityAIBase
         }
         else
         {
-            double d0 = this.leaper.getDistanceSqToEntity(this.leapTarget);
+            double d0 = this.leaper.getDistanceSq(this.leapTarget);
 
             if (d0 >= 4.0D && d0 <= 16.0D)
             {
@@ -58,7 +58,7 @@ public class EntityAILeapAtTarget extends EntityAIBase
     /**
      * Returns whether an in-progress EntityAIBase should continue executing
      */
-    public boolean continueExecuting()
+    public boolean shouldContinueExecuting()
     {
         return !this.leaper.onGround;
     }

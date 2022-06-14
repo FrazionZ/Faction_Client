@@ -7,8 +7,8 @@ import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderEnderCrystal;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.item.EntityEnderCrystal;
-import optifine.Config;
-import optifine.Reflector;
+import net.minecraft.src.Config;
+import net.optifine.reflect.Reflector;
 
 public class ModelAdapterEnderCrystalNoBase extends ModelAdapterEnderCrystal
 {
@@ -20,6 +20,13 @@ public class ModelAdapterEnderCrystalNoBase extends ModelAdapterEnderCrystal
     public ModelBase makeModel()
     {
         return new ModelEnderCrystal(0.0F, false);
+    }
+
+    public String[] getModelRendererNames()
+    {
+        String[] astring = super.getModelRendererNames();
+        astring = (String[])Config.removeObjectFromArray(astring, "base");
+        return astring;
     }
 
     public IEntityRenderer makeEntityRender(ModelBase modelBase, float shadowSize)

@@ -44,7 +44,7 @@ public class ModelPlayer extends ModelBiped
         {
             this.bipedLeftArm = new ModelRenderer(this, 32, 48);
             this.bipedLeftArm.addBox(-1.0F, -2.0F, -2.0F, 4, 12, 4, modelSize);
-            this.bipedLeftArm.setRotationPoint(5.0F, 2.0F, 60.0F);
+            this.bipedLeftArm.setRotationPoint(5.0F, 2.0F, 0.0F);
             this.bipedLeftArmwear = new ModelRenderer(this, 48, 48);
             this.bipedLeftArmwear.addBox(-1.0F, -2.0F, -2.0F, 4, 12, 4, modelSize + 0.25F);
             this.bipedLeftArmwear.setRotationPoint(5.0F, 2.0F, 0.0F);
@@ -92,6 +92,7 @@ public class ModelPlayer extends ModelBiped
             {
                 GlStateManager.translate(0.0F, 0.2F, 0.0F);
             }
+
             this.bipedLeftLegwear.render(scale);
             this.bipedRightLegwear.render(scale);
             this.bipedLeftArmwear.render(scale);
@@ -130,16 +131,16 @@ public class ModelPlayer extends ModelBiped
         copyModelAngles(this.bipedBody, this.bipedBodyWear);
     }
 
-    public void setInvisible(boolean invisible)
+    public void setVisible(boolean visible)
     {
-        super.setInvisible(invisible);
-        this.bipedLeftArmwear.showModel = invisible;
-        this.bipedRightArmwear.showModel = invisible;
-        this.bipedLeftLegwear.showModel = invisible;
-        this.bipedRightLegwear.showModel = invisible;
-        this.bipedBodyWear.showModel = invisible;
-        this.bipedCape.showModel = invisible;
-        this.bipedDeadmau5Head.showModel = invisible;
+        super.setVisible(visible);
+        this.bipedLeftArmwear.showModel = visible;
+        this.bipedRightArmwear.showModel = visible;
+        this.bipedLeftLegwear.showModel = visible;
+        this.bipedRightLegwear.showModel = visible;
+        this.bipedBodyWear.showModel = visible;
+        this.bipedCape.showModel = visible;
+        this.bipedDeadmau5Head.showModel = visible;
     }
 
     public void postRenderArm(float scale, EnumHandSide side)

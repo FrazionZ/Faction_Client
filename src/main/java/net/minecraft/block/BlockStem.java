@@ -35,6 +35,10 @@ public class BlockStem extends BlockBush implements IGrowable
         this.setCreativeTab((CreativeTabs)null);
     }
 
+    /**
+     * @deprecated call via {@link IBlockState#getBoundingBox(IBlockAccess,BlockPos)} whenever possible.
+     * Implementing/overriding is fine.
+     */
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
         return STEM_AABB[((Integer)state.getValue(AGE)).intValue()];
@@ -99,7 +103,7 @@ public class BlockStem extends BlockBush implements IGrowable
                     pos = pos.offset(EnumFacing.Plane.HORIZONTAL.random(rand));
                     Block block = worldIn.getBlockState(pos.down()).getBlock();
 
-                    if (worldIn.getBlockState(pos).getBlock().blockMaterial == Material.AIR && (block == Blocks.FARMLAND || block == Blocks.DIRT || block == Blocks.GRASS))
+                    if (worldIn.getBlockState(pos).getBlock().material == Material.AIR && (block == Blocks.FARMLAND || block == Blocks.DIRT || block == Blocks.GRASS))
                     {
                         worldIn.setBlockState(pos, this.crop.getDefaultState());
                     }
@@ -158,13 +162,13 @@ public class BlockStem extends BlockBush implements IGrowable
      */
     public Item getItemDropped(IBlockState state, Random rand, int fortune)
     {
-        return Items.field_190931_a;
+        return Items.AIR;
     }
 
     public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state)
     {
         Item item = this.getSeedItem();
-        return item == null ? ItemStack.field_190927_a : new ItemStack(item);
+        return item == null ? ItemStack.EMPTY : new ItemStack(item);
     }
 
     /**

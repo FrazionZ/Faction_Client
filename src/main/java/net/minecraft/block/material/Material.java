@@ -3,7 +3,6 @@ package net.minecraft.block.material;
 public class Material
 {
     public static final Material AIR = new MaterialTransparent(MapColor.AIR);
-    public static final Material BEDROCK = new MaterialTransparent(MapColor.AIR);
     public static final Material GRASS = new Material(MapColor.GRASS);
     public static final Material GROUND = new Material(MapColor.DIRT);
     public static final Material WOOD = (new Material(MapColor.WOOD)).setBurning();
@@ -37,11 +36,6 @@ public class Material
     public static final Material DRAGON_EGG = (new Material(MapColor.FOLIAGE)).setNoPushMobility();
     public static final Material PORTAL = (new MaterialPortal(MapColor.AIR)).setImmovableMobility();
     public static final Material CAKE = (new Material(MapColor.AIR)).setNoPushMobility();
-    public static final Material OBSIDIAN = (new Material(MapColor.BLACK)).setRequiresTool();
-    public static final Material obsidian_yellite = (new Material(MapColor.BLACK)).setRequiresTool();
-    public static final Material obsidian_bauxite = (new Material(MapColor.BLACK)).setRequiresTool();
-    public static final Material obsidian_onyx = (new Material(MapColor.BLACK)).setRequiresTool();
-    public static final Material obsidian_frazion = (new Material(MapColor.BLACK)).setRequiresTool();
     public static final Material WEB = (new Material(MapColor.CLOTH)
     {
         public boolean blocksMovement()
@@ -79,7 +73,7 @@ public class Material
      * Mobility information flag. 0 indicates that this block is normal, 1 indicates that it can't push other blocks, 2
      * indicates that it can't be pushed.
      */
-    private EnumPushReaction mobilityFlag = EnumPushReaction.NORMAL;
+    private EnumPushReaction pushReaction = EnumPushReaction.NORMAL;
     private boolean isAdventureModeExempt;
 
     public Material(MapColor color)
@@ -187,9 +181,9 @@ public class Material
         return this.requiresNoTool;
     }
 
-    public EnumPushReaction getMobilityFlag()
+    public EnumPushReaction getPushReaction()
     {
-        return this.mobilityFlag;
+        return this.pushReaction;
     }
 
     /**
@@ -197,7 +191,7 @@ public class Material
      */
     protected Material setNoPushMobility()
     {
-        this.mobilityFlag = EnumPushReaction.DESTROY;
+        this.pushReaction = EnumPushReaction.DESTROY;
         return this;
     }
 
@@ -206,7 +200,7 @@ public class Material
      */
     protected Material setImmovableMobility()
     {
-        this.mobilityFlag = EnumPushReaction.BLOCK;
+        this.pushReaction = EnumPushReaction.BLOCK;
         return this;
     }
 

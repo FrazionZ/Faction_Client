@@ -60,7 +60,7 @@ public class RegistryNamespaced<K, V> extends RegistrySimple<K, V> implements IO
     {
         return this.underlyingIntegerMap.getId(value);
     }
-
+    
     public int getValueForObject(int id)
     {
         return this.underlyingIntegerMap.getValue(id);

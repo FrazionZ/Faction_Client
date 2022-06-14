@@ -23,6 +23,10 @@ import org.lwjgl.input.Keyboard;
 public class GuiRepair extends GuiContainer implements IContainerListener
 {
     private static final ResourceLocation ANVIL_RESOURCE = new ResourceLocation("textures/gui/frazionz/container/anvil.png");
+
+    /**
+     * The same reference as {@link GuiContainer#inventorySlots}, downcasted to {@link ContainerRepair}.
+     */
     private final ContainerRepair anvil;
     private GuiTextField nameField;
     private final InventoryPlayer playerInventory;
@@ -44,7 +48,7 @@ public class GuiRepair extends GuiContainer implements IContainerListener
         Keyboard.enableRepeatEvents(true);
         int i = (this.width - this.xSize) / 2;
         int j = (this.height - this.ySize) / 2;
-        this.nameField = new GuiTextField(0, this.fontRendererObj, i + 67, j + 47, 103, 12);
+        this.nameField = new GuiTextField(0, this.fontRenderer, i + 62, j + 24, 103, 12);
         this.nameField.setTextColor(-1);
         this.nameField.setDisabledTextColour(-1);
         this.nameField.setEnableBackgroundDrawing(false);
@@ -71,7 +75,7 @@ public class GuiRepair extends GuiContainer implements IContainerListener
         GlStateManager.disableLighting();
         GlStateManager.disableBlend();
         String s1 = I18n.format("Anvil");
-        this.fontRendererObj.drawString(s1, this.xSize / 2 - this.fontRendererObj.getStringWidth(s1) / 2, 8, 16777215, true);
+        this.fontRenderer.drawString(s1, 60, 6, 16777215, true);
 
         if (this.anvil.maximumCost > 0)
         {
@@ -79,7 +83,7 @@ public class GuiRepair extends GuiContainer implements IContainerListener
             boolean flag = true;
             String s = I18n.format("container.repair.cost", this.anvil.maximumCost);
 
-            if (this.anvil.maximumCost >= 100 && !this.mc.player.capabilities.isCreativeMode)
+            if (this.anvil.maximumCost >= 40 && !this.mc.player.capabilities.isCreativeMode)
             {
                 s = I18n.format("container.repair.expensive");
                 i = 16736352;
@@ -96,23 +100,23 @@ public class GuiRepair extends GuiContainer implements IContainerListener
             if (flag)
             {
                 int j = -16777216 | (i & 16579836) >> 2 | i & -16777216;
-                int k = this.xSize / 2 - this.fontRendererObj.getStringWidth(s) / 2;
+                int k = this.xSize - 8 - this.fontRenderer.getStringWidth(s);
                 int l = 67;
 
-                if (this.fontRendererObj.getUnicodeFlag())
+                if (this.fontRenderer.getUnicodeFlag())
                 {
                     drawRect(k - 3, 65, this.xSize - 7, 77, -16777216);
                     drawRect(k - 2, 66, this.xSize - 8, 76, -12895429);
                 }
                 else
                 {
-                    this.fontRendererObj.drawString(s, k, 93, j);
-                    this.fontRendererObj.drawString(s, k + 1, 92, j);
-                    this.fontRendererObj.drawString(s, k + 1, 93, j);
+                    this.fontRenderer.drawString(s, k, 68, j);
+                    this.fontRenderer.drawString(s, k + 1, 67, j);
+                    this.fontRenderer.drawString(s, k + 1, 68, j);
                 }
 
-                this.fontRendererObj.drawString(s, k, 92, i);
-            }
+                this.fontRenderer.drawString(s, k, 67, i);
+           }
         }
 
         GlStateManager.enableLighting();
@@ -139,7 +143,8 @@ public class GuiRepair extends GuiContainer implements IContainerListener
         String s = this.nameField.getText();
         Slot slot = this.anvil.getSlot(0);
 
-        if (slot != null && slot.getHasStack() && !slot.getStack().hasDisplayName() && s.equals(slot.getStack().getDisplayName())){
+        if (slot != null && slot.getHasStack() && !slot.getStack().hasDisplayName() && s.equals(slot.getStack().getDisplayName()))
+        {
             s = "";
         }
 
@@ -163,7 +168,7 @@ public class GuiRepair extends GuiContainer implements IContainerListener
     {
         this.drawDefaultBackground();
         super.drawScreen(mouseX, mouseY, partialTicks);
-        this.func_191948_b(mouseX, mouseY);
+        this.renderHoveredToolTip(mouseX, mouseY);
         GlStateManager.disableLighting();
         GlStateManager.disableBlend();
         this.nameField.drawTextBox();
@@ -179,18 +184,18 @@ public class GuiRepair extends GuiContainer implements IContainerListener
         int i = (this.width - this.xSize) / 2;
         int j = (this.height - this.ySize) / 2;
         this.drawTexturedModalRect(i, j, 0, 0, this.xSize, this.ySize);
-        this.drawTexturedModalRect(i + 64, j + 42, 0, this.ySize + (this.anvil.getSlot(0).getHasStack() ? 0 : 16), 110, 16);
+        this.drawTexturedModalRect(i + 59, j + 20, 0, this.ySize + (this.anvil.getSlot(0).getHasStack() ? 0 : 16), 110, 16);
 
         if ((this.anvil.getSlot(0).getHasStack() || this.anvil.getSlot(1).getHasStack()) && !this.anvil.getSlot(2).getHasStack())
         {
-            this.drawTexturedModalRect(i + 104, j + 67, this.xSize, 0, 28, 21);
+            this.drawTexturedModalRect(i + 99, j + 45, this.xSize, 0, 28, 21);
         }
     }
 
     /**
      * update the crafting window inventory with the items in the list
      */
-    public void updateCraftingInventory(Container containerToSend, NonNullList<ItemStack> itemsList)
+    public void sendAllContents(Container containerToSend, NonNullList<ItemStack> itemsList)
     {
         this.sendSlotContents(containerToSend, 0, containerToSend.getSlot(0).getStack());
     }
@@ -203,10 +208,10 @@ public class GuiRepair extends GuiContainer implements IContainerListener
     {
         if (slotInd == 0)
         {
-            this.nameField.setText(stack.func_190926_b() ? "" : stack.getDisplayName());
-            this.nameField.setEnabled(!stack.func_190926_b());
+            this.nameField.setText(stack.isEmpty() ? "" : stack.getDisplayName());
+            this.nameField.setEnabled(!stack.isEmpty());
 
-            if (!stack.func_190926_b())
+            if (!stack.isEmpty())
             {
                 this.renameItem();
             }
@@ -218,7 +223,7 @@ public class GuiRepair extends GuiContainer implements IContainerListener
      * and enchanting level. Normally the first int identifies which variable to update, and the second contains the new
      * value. Both are truncated to shorts in non-local SMP.
      */
-    public void sendProgressBarUpdate(Container containerIn, int varToUpdate, int newValue)
+    public void sendWindowProperty(Container containerIn, int varToUpdate, int newValue)
     {
     }
 

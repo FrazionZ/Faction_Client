@@ -38,7 +38,7 @@ public class BlockFalling extends Block
      * change. Cases may include when redstone power is updated, cactus blocks popping off due to a neighboring solid
      * block, etc.
      */
-    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos p_189540_5_)
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
     {
         worldIn.scheduleUpdate(pos, this, this.tickRate(worldIn));
     }
@@ -63,7 +63,7 @@ public class BlockFalling extends Block
                 {
                     EntityFallingBlock entityfallingblock = new EntityFallingBlock(worldIn, (double)pos.getX() + 0.5D, (double)pos.getY(), (double)pos.getZ() + 0.5D, worldIn.getBlockState(pos));
                     this.onStartFalling(entityfallingblock);
-                    worldIn.spawnEntityInWorld(entityfallingblock);
+                    worldIn.spawnEntity(entityfallingblock);
                 }
             }
             else
@@ -103,14 +103,19 @@ public class BlockFalling extends Block
         return block == Blocks.FIRE || material == Material.AIR || material == Material.WATER || material == Material.LAVA;
     }
 
-    public void onEndFalling(World worldIn, BlockPos pos, IBlockState p_176502_3_, IBlockState p_176502_4_)
+    public void onEndFalling(World worldIn, BlockPos pos, IBlockState fallingState, IBlockState hitState)
     {
     }
 
-    public void func_190974_b(World p_190974_1_, BlockPos p_190974_2_)
+    public void onBroken(World worldIn, BlockPos pos)
     {
     }
 
+    /**
+     * Called periodically clientside on blocks near the player to show effects (like furnace fire particles). Note that
+     * this method is unrelated to {@link randomTick} and {@link #needsRandomTick}, and will always be called regardless
+     * of whether the block can receive random update ticks
+     */
     public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand)
     {
         if (rand.nextInt(16) == 0)
@@ -127,7 +132,7 @@ public class BlockFalling extends Block
         }
     }
 
-    public int getDustColor(IBlockState p_189876_1_)
+    public int getDustColor(IBlockState state)
     {
         return -16777216;
     }

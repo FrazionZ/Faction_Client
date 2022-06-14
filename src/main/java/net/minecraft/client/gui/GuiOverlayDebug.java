@@ -13,8 +13,10 @@ import net.minecraft.client.ClientBrandRetriever;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.src.Config;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -24,24 +26,32 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.WorldType;
 import net.minecraft.world.chunk.Chunk;
-import optifine.Reflector;
-
+import net.optifine.SmartAnimations;
+import net.optifine.TextureAnimations;
+import net.optifine.reflect.Reflector;
+import net.optifine.util.MemoryMonitor;
+import net.optifine.util.NativeMemory;
 import org.lwjgl.opengl.Display;
 
 public class GuiOverlayDebug extends Gui
 {
     private final Minecraft mc;
     private final FontRenderer fontRenderer;
+    private String debugOF = null;
+    private List<String> debugInfoLeft = null;
+    private List<String> debugInfoRight = null;
+    private long updateInfoLeftTimeMs = 0L;
+    private long updateInfoRightTimeMs = 0L;
 
     public GuiOverlayDebug(Minecraft mc)
     {
         this.mc = mc;
-        this.fontRenderer = mc.fontRendererObj;
+        this.fontRenderer = mc.fontRenderer;
     }
 
     public void renderDebugInfo(ScaledResolution scaledResolutionIn)
     {
-        this.mc.mcProfiler.startSection("debug");
+        this.mc.profiler.startSection("debug");
         GlStateManager.pushMatrix();
         this.renderDebugInfoLeft();
         this.renderDebugInfoRight(scaledResolutionIn);
@@ -52,15 +62,22 @@ public class GuiOverlayDebug extends Gui
             this.renderLagometer();
         }
 
-        this.mc.mcProfiler.endSection();
+        this.mc.profiler.endSection();
     }
 
     protected void renderDebugInfoLeft()
     {
-        List<String> list = this.call();
-        /*list.add("");
-        list.add("Debug: Pie [shift]: " + (this.mc.gameSettings.showDebugProfilerChart ? "visible" : "hidden") + " FPS [alt]: " + (this.mc.gameSettings.showLagometer ? "visible" : "hidden"));
-        list.add("For help: press F3 + Q");*/
+        List<String> list = this.debugInfoLeft;
+
+        if (list == null || System.currentTimeMillis() > this.updateInfoLeftTimeMs)
+        {
+            list = this.call();
+            list.add("");
+            list.add("Debug: Pie [shift]: " + (this.mc.gameSettings.showDebugProfilerChart ? "visible" : "hidden") + " FPS [alt]: " + (this.mc.gameSettings.showLagometer ? "visible" : "hidden"));
+            list.add("For help: press F3 + Q");
+            this.debugInfoLeft = list;
+            this.updateInfoLeftTimeMs = System.currentTimeMillis() + 100L;
+        }
 
         for (int i = 0; i < list.size(); ++i)
         {
@@ -72,7 +89,7 @@ public class GuiOverlayDebug extends Gui
                 int k = this.fontRenderer.getStringWidth(s);
                 int l = 2;
                 int i1 = 2 + j * i;
-                //drawRect(1, i1 - 1, 2 + k + 1, i1 + j - 1, -1873784752);
+                drawRect(1, i1 - 1, 2 + k + 1, i1 + j - 1, -1873784752);
                 this.fontRenderer.drawString(s, 2, i1, 14737632, true);
             }
         }
@@ -80,7 +97,14 @@ public class GuiOverlayDebug extends Gui
 
     protected void renderDebugInfoRight(ScaledResolution scaledRes)
     {
-        List<String> list = this.getDebugInfoRight();
+        List<String> list = this.debugInfoRight;
+
+        if (list == null || System.currentTimeMillis() > this.updateInfoRightTimeMs)
+        {
+            list = this.getDebugInfoRight();
+            this.debugInfoRight = list;
+            this.updateInfoRightTimeMs = System.currentTimeMillis() + 100L;
+        }
 
         for (int i = 0; i < list.size(); ++i)
         {
@@ -103,9 +127,67 @@ public class GuiOverlayDebug extends Gui
     {
         BlockPos blockpos = new BlockPos(this.mc.getRenderViewEntity().posX, this.mc.getRenderViewEntity().getEntityBoundingBox().minY, this.mc.getRenderViewEntity().posZ);
 
+        if (this.mc.debug != this.debugOF)
+        {
+            StringBuffer stringbuffer = new StringBuffer(this.mc.debug);
+            int i = Config.getFpsMin();
+            int j = this.mc.debug.indexOf(" fps ");
+
+            if (j >= 0)
+            {
+                stringbuffer.insert(j, "/" + i);
+            }
+
+            if (Config.isSmoothFps())
+            {
+                stringbuffer.append(" sf");
+            }
+
+            if (Config.isFastRender())
+            {
+                stringbuffer.append(" fr");
+            }
+
+            if (Config.isAnisotropicFiltering())
+            {
+                stringbuffer.append(" af");
+            }
+
+            if (Config.isAntialiasing())
+            {
+                stringbuffer.append(" aa");
+            }
+
+            if (Config.isRenderRegions())
+            {
+                stringbuffer.append(" reg");
+            }
+
+            if (Config.isShaders())
+            {
+                stringbuffer.append(" sh");
+            }
+
+            this.mc.debug = stringbuffer.toString();
+            this.debugOF = this.mc.debug;
+        }
+
+        StringBuilder stringbuilder = new StringBuilder();
+        TextureMap texturemap = Config.getTextureMap();
+        stringbuilder.append(", A: ");
+
+        if (SmartAnimations.isActive())
+        {
+            stringbuilder.append(texturemap.getCountAnimationsActive() + TextureAnimations.getCountAnimationsActive());
+            stringbuilder.append("/");
+        }
+
+        stringbuilder.append(texturemap.getCountAnimations() + TextureAnimations.getCountAnimations());
+        String s1 = stringbuilder.toString();
+
         /*if (this.mc.isReducedDebug())
         {
-            return Lists.newArrayList("Minecraft 1.12.2 (" + this.mc.getVersion() + "/" + ClientBrandRetriever.getClientModName() + ")", this.mc.debug, this.mc.renderGlobal.getDebugInfoRenders(), this.mc.renderGlobal.getDebugInfoEntities(), "P: " + this.mc.effectRenderer.getStatistics() + ". T: " + this.mc.world.getDebugLoadedEntities(), this.mc.world.getProviderName(), "", String.format("Chunk-relative: %d %d %d", blockpos.getX() & 15, blockpos.getY() & 15, blockpos.getZ() & 15));
+            return Lists.newArrayList("Minecraft 1.12.2 (" + this.mc.getVersion() + "/" + ClientBrandRetriever.getClientModName() + ")", this.mc.debug, this.mc.renderGlobal.getDebugInfoRenders(), this.mc.renderGlobal.getDebugInfoEntities(), "P: " + this.mc.effectRenderer.getStatistics() + ". T: " + this.mc.world.getDebugLoadedEntities() + s1, this.mc.world.getProviderName(), "", String.format("Chunk-relative: %d %d %d", blockpos.getX() & 15, blockpos.getY() & 15, blockpos.getZ() & 15));
         }
         else
         {*/
@@ -115,43 +197,41 @@ public class GuiOverlayDebug extends Gui
 
             switch (enumfacing)
             {
-                case NORTH:
-                    s = "+Z";
-                    break;
-
-                case SOUTH:
-                    s = "-Z";
-                    break;
-
-                case WEST:
-                    s = "-X";
-                    break;
-
-                case EAST:
-                    s = "+X";
+	            case NORTH:
+	                s = "+Z";
+	                break;
+	
+	            case SOUTH:
+	                s = "-Z";
+	                break;
+	
+	            case WEST:
+	                s = "-X";
+	                break;
+	
+	            case EAST:
+	                s = "+X";
             }
 
             List<String> list = Lists.newArrayList("          \u00A76FrazionZ", "",
-                                                   this.mc.debug,
-                                                   /*this.mc.renderGlobal.getDebugInfoRenders(),
-                                                   this.mc.renderGlobal.getDebugInfoEntities(), "P: " + this.mc.effectRenderer.getStatistics() + ". T: " + this.mc.world.getDebugLoadedEntities(),
-                                                   this.mc.world.getProviderName()*/
-                                                   /*String.format("\u00A76XYZ: \u00A7e%.0f \u00A76/ \u00A7e%.0f \u00A76/ \u00A7e%.0f",
-                                                   		this.mc.getRenderViewEntity().posX,
-                                                   		this.mc.getRenderViewEntity().getEntityBoundingBox().minY, this.mc.getRenderViewEntity().posZ),*/
-                                                   String.format("\u00A76XYZ : \u00A7e%d \u00A76/ \u00A7e%d \u00A76/ \u00A7e%d", blockpos.getX(), blockpos.getY(), blockpos.getZ()),
-                                                   /*String.format("Chunk : %d %d %d in %d %d %d",
-                                                   		blockpos.getX() & 15,
-                                                   		blockpos.getY() & 15,
-                                                   		blockpos.getZ() & 15,
-                                                   		blockpos.getX() >> 4, blockpos.getY() >> 4, blockpos.getZ() >> 4),*/
-                                                   String.format("\u00A76Facing : \u00A7e%s \u00A76(%s)", enumfacing, s, MathHelper.wrapDegrees(entity.rotationYaw), MathHelper.wrapDegrees(entity.rotationPitch)));
-
-            // (%.1f / %.1f) // PITCH - YAW
-
+                    this.mc.debug,
+                    /*this.mc.renderGlobal.getDebugInfoRenders(),
+                    this.mc.renderGlobal.getDebugInfoEntities(), "P: " + this.mc.effectRenderer.getStatistics() + ". T: " + this.mc.world.getDebugLoadedEntities(),
+                    this.mc.world.getProviderName()*/
+                    /*String.format("\u00A76XYZ: \u00A7e%.0f \u00A76/ \u00A7e%.0f \u00A76/ \u00A7e%.0f",
+                    		this.mc.getRenderViewEntity().posX,
+                    		this.mc.getRenderViewEntity().getEntityBoundingBox().minY, this.mc.getRenderViewEntity().posZ),*/
+                    String.format("\u00A76XYZ : \u00A7e%d \u00A76/ \u00A7e%d \u00A76/ \u00A7e%d", blockpos.getX(), blockpos.getY(), blockpos.getZ()),
+                    /*String.format("Chunk : %d %d %d in %d %d %d",
+                    		blockpos.getX() & 15,
+                    		blockpos.getY() & 15,
+                    		blockpos.getZ() & 15,
+                    		blockpos.getX() >> 4, blockpos.getY() >> 4, blockpos.getZ() >> 4),*/
+                    String.format("\u00A76Facing : \u00A7e%s \u00A76(%s)", enumfacing, s, MathHelper.wrapDegrees(entity.rotationYaw), MathHelper.wrapDegrees(entity.rotationPitch)));
+            
             if (this.mc.world != null)
             {
-                Chunk chunk = this.mc.world.getChunkFromBlockCoords(blockpos);
+                Chunk chunk = this.mc.world.getChunk(blockpos);
 
                 if (this.mc.world.isBlockLoaded(blockpos) && blockpos.getY() >= 0 && blockpos.getY() < 256)
                 {
@@ -159,7 +239,8 @@ public class GuiOverlayDebug extends Gui
                     {
                     	list.add("");
                         list.add("\u00A76Biome : \u00A7e" + chunk.getBiome(blockpos, this.mc.world.getBiomeProvider()).getBiomeName());
-                        /*list.add("Light: " + chunk.getLightSubtracted(blockpos, 0) + " (" + chunk.getLightFor(EnumSkyBlock.SKY, blockpos) + " sky, " + chunk.getLightFor(EnumSkyBlock.BLOCK, blockpos) + " block)");
+                        /*list.add("Biome: " + chunk.getBiome(blockpos, this.mc.world.getBiomeProvider()).getBiomeName());
+                        list.add("Light: " + chunk.getLightSubtracted(blockpos, 0) + " (" + chunk.getLightFor(EnumSkyBlock.SKY, blockpos) + " sky, " + chunk.getLightFor(EnumSkyBlock.BLOCK, blockpos) + " block)");
                         DifficultyInstance difficultyinstance = this.mc.world.getDifficultyForLocation(blockpos);
 
                         if (this.mc.isIntegratedServerRunning() && this.mc.getIntegratedServer() != null)
@@ -168,11 +249,17 @@ public class GuiOverlayDebug extends Gui
 
                             if (entityplayermp != null)
                             {
-                                difficultyinstance = entityplayermp.world.getDifficultyForLocation(new BlockPos(entityplayermp));
+                                DifficultyInstance difficultyinstance1 = this.mc.getIntegratedServer().getDifficultyAsync(entityplayermp.world, new BlockPos(entityplayermp));
+
+                                if (difficultyinstance1 != null)
+                                {
+                                    difficultyinstance = difficultyinstance1;
+                                }
                             }
                         }
-
-                        list.add(String.format("Local Difficulty: %.2f // %.2f (Day %d)", difficultyinstance.getAdditionalDifficulty(), difficultyinstance.getClampedAdditionalDifficulty(), this.mc.world.getWorldTime() / 24000L));*/
+                        
+                        list.add(String.format("Local Difficulty: %.2f // %.2f (Day %d)", difficultyinstance.getAdditionalDifficulty(), difficultyinstance.getClampedAdditionalDifficulty(), this.mc.world.getWorldTime() / 24000L));
+                    	*/
                     }
                     else
                     {
@@ -191,10 +278,11 @@ public class GuiOverlayDebug extends Gui
             }
 
             /*if (this.mc.objectMouseOver != null && this.mc.objectMouseOver.typeOfHit == RayTraceResult.Type.BLOCK && this.mc.objectMouseOver.getBlockPos() != null)
-             {
-                 BlockPos blockpos1 = this.mc.objectMouseOver.getBlockPos();
-                 list.add(String.format("Looking at: %d %d %d", blockpos1.getX(), blockpos1.getY(), blockpos1.getZ()));
-             }*/
+            {
+                BlockPos blockpos1 = this.mc.objectMouseOver.getBlockPos();
+                list.add(String.format("Looking at: %d %d %d", blockpos1.getX(), blockpos1.getY(), blockpos1.getZ()));
+            }*/
+
             return list;
         //}
     }
@@ -206,6 +294,11 @@ public class GuiOverlayDebug extends Gui
         long k = Runtime.getRuntime().freeMemory();
         long l = j - k;
         List<String> list = Lists.newArrayList(String.format("Java: %s %dbit", System.getProperty("java.version"), this.mc.isJava64bit() ? 64 : 32), String.format("Mem: % 2d%% %03d/%03dMB", l * 100L / i, bytesToMb(l), bytesToMb(i)), String.format("Allocated: % 2d%% %03dMB", j * 100L / i, bytesToMb(j)), "", String.format("CPU: %s", OpenGlHelper.getCpu()), "", String.format("Display: %dx%d (%s)", Display.getWidth(), Display.getHeight(), GlStateManager.glGetString(7936)), GlStateManager.glGetString(7937), GlStateManager.glGetString(7938));
+        long i1 = NativeMemory.getBufferAllocated();
+        long j1 = NativeMemory.getBufferMaximum();
+        String s = "Native: " + bytesToMb(i1) + "/" + bytesToMb(j1) + "MB";
+        list.add(4, s);
+        list.set(5, "GC: " + MemoryMonitor.getAllocationRateMb() + "MB/s");
 
         if (Reflector.FMLCommonHandler_getBrandings.exists())
         {
@@ -225,7 +318,7 @@ public class GuiOverlayDebug extends Gui
                 BlockPos blockpos = this.mc.objectMouseOver.getBlockPos();
                 IBlockState iblockstate = this.mc.world.getBlockState(blockpos);
 
-                if (this.mc.world.getWorldType() != WorldType.DEBUG_WORLD)
+                if (this.mc.world.getWorldType() != WorldType.DEBUG_ALL_BLOCK_STATES)
                 {
                     iblockstate = iblockstate.getActualState(this.mc.world, blockpos);
                 }
@@ -233,22 +326,22 @@ public class GuiOverlayDebug extends Gui
                 list.add("");
                 list.add(String.valueOf(Block.REGISTRY.getNameForObject(iblockstate.getBlock())));
                 IProperty<T> iproperty;
-                String s;
+                String s1;
 
-                for (UnmodifiableIterator unmodifiableiterator = iblockstate.getProperties().entrySet().iterator(); unmodifiableiterator.hasNext(); list.add(iproperty.getName() + ": " + s))
+                for (UnmodifiableIterator unmodifiableiterator = iblockstate.getProperties().entrySet().iterator(); unmodifiableiterator.hasNext(); list.add(iproperty.getName() + ": " + s1))
                 {
                     Entry < IProperty<?>, Comparable<? >> entry = (Entry)unmodifiableiterator.next();
                     iproperty = (IProperty)entry.getKey();
-                    T t = (T)entry.getValue();
-                    s = iproperty.getName(t);
+                    T t = (T) entry.getValue();
+                    s1 = iproperty.getName(t);
 
                     if (Boolean.TRUE.equals(t))
                     {
-                        s = TextFormatting.GREEN + s;
+                        s1 = TextFormatting.GREEN + s1;
                     }
                     else if (Boolean.FALSE.equals(t))
                     {
-                        s = TextFormatting.RED + s;
+                        s1 = TextFormatting.RED + s1;
                     }
                 }
             }

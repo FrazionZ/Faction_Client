@@ -27,9 +27,13 @@ public abstract class BlockFlower extends BlockBush
         this.setDefaultState(this.blockState.getBaseState().withProperty(this.getTypeProperty(), this.getBlockType() == BlockFlower.EnumFlowerColor.RED ? BlockFlower.EnumFlowerType.POPPY : BlockFlower.EnumFlowerType.DANDELION));
     }
 
+    /**
+     * @deprecated call via {@link IBlockState#getBoundingBox(IBlockAccess,BlockPos)} whenever possible.
+     * Implementing/overriding is fine.
+     */
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
-        return super.getBoundingBox(state, source, pos).func_191194_a(state.func_191059_e(source, pos));
+        return super.getBoundingBox(state, source, pos).offset(state.getOffset(source, pos));
     }
 
     /**
@@ -44,11 +48,11 @@ public abstract class BlockFlower extends BlockBush
     /**
      * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
      */
-    public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> tab)
+    public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items)
     {
         for (BlockFlower.EnumFlowerType blockflower$enumflowertype : BlockFlower.EnumFlowerType.getTypes(this.getBlockType()))
         {
-            tab.add(new ItemStack(this, 1, blockflower$enumflowertype.getMeta()));
+            items.add(new ItemStack(this, 1, blockflower$enumflowertype.getMeta()));
         }
     }
 
@@ -130,7 +134,7 @@ public abstract class BlockFlower extends BlockBush
         private final BlockFlower.EnumFlowerColor blockType;
         private final int meta;
         private final String name;
-        private final String unlocalizedName;
+        private final String translationKey;
 
         private EnumFlowerType(BlockFlower.EnumFlowerColor blockType, int meta, String name)
         {
@@ -142,7 +146,7 @@ public abstract class BlockFlower extends BlockBush
             this.blockType = blockType;
             this.meta = meta;
             this.name = name;
-            this.unlocalizedName = unlocalizedName;
+            this.translationKey = unlocalizedName;
         }
 
         public BlockFlower.EnumFlowerColor getBlockType()
@@ -182,9 +186,9 @@ public abstract class BlockFlower extends BlockBush
             return this.name;
         }
 
-        public String getUnlocalizedName()
+        public String getTranslationKey()
         {
-            return this.unlocalizedName;
+            return this.translationKey;
         }
 
         static {

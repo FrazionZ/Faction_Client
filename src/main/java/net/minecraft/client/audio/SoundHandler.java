@@ -52,11 +52,11 @@ public class SoundHandler implements IResourceManagerReloadListener, ITickable
     };
     private final SoundRegistry soundRegistry = new SoundRegistry();
     private final SoundManager sndManager;
-    private final IResourceManager mcResourceManager;
+    private final IResourceManager resourceManager;
 
     public SoundHandler(IResourceManager manager, GameSettings gameSettingsIn)
     {
-        this.mcResourceManager = manager;
+        this.resourceManager = manager;
         this.sndManager = new SoundManager(this, gameSettingsIn);
     }
 
@@ -124,7 +124,7 @@ public class SoundHandler implements IResourceManagerReloadListener, ITickable
 
         try
         {
-            map = (Map)JsonUtils.func_193841_a(GSON, new InputStreamReader(stream, StandardCharsets.UTF_8), TYPE);
+            map = (Map)JsonUtils.fromJson(GSON, new InputStreamReader(stream, StandardCharsets.UTF_8), TYPE);
         }
         finally
         {
@@ -207,7 +207,7 @@ public class SoundHandler implements IResourceManagerReloadListener, ITickable
 
         try
         {
-            iresource = this.mcResourceManager.getResource(resourcelocation);
+            iresource = this.resourceManager.getResource(resourcelocation);
             iresource.getInputStream();
             return true;
         }

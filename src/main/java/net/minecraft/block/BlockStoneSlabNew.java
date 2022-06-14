@@ -47,7 +47,7 @@ public abstract class BlockStoneSlabNew extends BlockSlab
      */
     public String getLocalizedName()
     {
-        return I18n.translateToLocal(this.getUnlocalizedName() + ".red_sandstone.name");
+        return I18n.translateToLocal(this.getTranslationKey() + ".red_sandstone.name");
     }
 
     /**
@@ -66,9 +66,9 @@ public abstract class BlockStoneSlabNew extends BlockSlab
     /**
      * Returns the slab block name with the type associated with it
      */
-    public String getUnlocalizedName(int meta)
+    public String getTranslationKey(int meta)
     {
-        return super.getUnlocalizedName() + "." + BlockStoneSlabNew.EnumType.byMetadata(meta).getUnlocalizedName();
+        return super.getTranslationKey() + "." + BlockStoneSlabNew.EnumType.byMetadata(meta).getTranslationKey();
     }
 
     public IProperty<?> getVariantProperty()
@@ -84,11 +84,11 @@ public abstract class BlockStoneSlabNew extends BlockSlab
     /**
      * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
      */
-    public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> tab)
+    public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items)
     {
         for (BlockStoneSlabNew.EnumType blockstoneslabnew$enumtype : BlockStoneSlabNew.EnumType.values())
         {
-            tab.add(new ItemStack(this, 1, blockstoneslabnew$enumtype.getMetadata()));
+            items.add(new ItemStack(this, 1, blockstoneslabnew$enumtype.getMetadata()));
         }
     }
 
@@ -141,8 +141,10 @@ public abstract class BlockStoneSlabNew extends BlockSlab
 
     /**
      * Get the MapColor for this Block and the given BlockState
+     * @deprecated call via {@link IBlockState#getMapColor(IBlockAccess,BlockPos)} whenever possible.
+     * Implementing/overriding is fine.
      */
-    public MapColor getMapColor(IBlockState state, IBlockAccess p_180659_2_, BlockPos p_180659_3_)
+    public MapColor getMapColor(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
         return ((BlockStoneSlabNew.EnumType)state.getValue(VARIANT)).getMapColor();
     }
@@ -202,7 +204,7 @@ public abstract class BlockStoneSlabNew extends BlockSlab
             return this.name;
         }
 
-        public String getUnlocalizedName()
+        public String getTranslationKey()
         {
             return this.name;
         }

@@ -10,7 +10,7 @@ import net.minecraft.world.World;
 
 public class EntityAIAttackMelee extends EntityAIBase
 {
-    World worldObj;
+    World world;
     protected EntityCreature attacker;
 
     /**
@@ -27,7 +27,7 @@ public class EntityAIAttackMelee extends EntityAIBase
     boolean longMemory;
 
     /** The PathEntity of our entity. */
-    Path entityPathEntity;
+    Path path;
     private int delayCounter;
     private double targetX;
     private double targetY;
@@ -37,7 +37,7 @@ public class EntityAIAttackMelee extends EntityAIBase
     public EntityAIAttackMelee(EntityCreature creature, double speedIn, boolean useLongMemory)
     {
         this.attacker = creature;
-        this.worldObj = creature.world;
+        this.world = creature.world;
         this.speedTowardsTarget = speedIn;
         this.longMemory = useLongMemory;
         this.setMutexBits(3);
@@ -60,9 +60,9 @@ public class EntityAIAttackMelee extends EntityAIBase
         }
         else
         {
-            this.entityPathEntity = this.attacker.getNavigator().getPathToEntityLiving(entitylivingbase);
+            this.path = this.attacker.getNavigator().getPathToEntityLiving(entitylivingbase);
 
-            if (this.entityPathEntity != null)
+            if (this.path != null)
             {
                 return true;
             }
@@ -76,7 +76,7 @@ public class EntityAIAttackMelee extends EntityAIBase
     /**
      * Returns whether an in-progress EntityAIBase should continue executing
      */
-    public boolean continueExecuting()
+    public boolean shouldContinueExecuting()
     {
         EntityLivingBase entitylivingbase = this.attacker.getAttackTarget();
 
@@ -107,12 +107,12 @@ public class EntityAIAttackMelee extends EntityAIBase
      */
     public void startExecuting()
     {
-        this.attacker.getNavigator().setPath(this.entityPathEntity, this.speedTowardsTarget);
+        this.attacker.getNavigator().setPath(this.path, this.speedTowardsTarget);
         this.delayCounter = 0;
     }
 
     /**
-     * Resets the task
+     * Reset the task's internal state. Called when this task is interrupted by another one
      */
     public void resetTask()
     {
@@ -123,11 +123,11 @@ public class EntityAIAttackMelee extends EntityAIBase
             this.attacker.setAttackTarget((EntityLivingBase)null);
         }
 
-        this.attacker.getNavigator().clearPathEntity();
+        this.attacker.getNavigator().clearPath();
     }
 
     /**
-     * Updates the task
+     * Keep ticking a continuous task that has already been started
      */
     public void updateTask()
     {
@@ -162,15 +162,15 @@ public class EntityAIAttackMelee extends EntityAIBase
         this.checkAndPerformAttack(entitylivingbase, d0);
     }
 
-    protected void checkAndPerformAttack(EntityLivingBase p_190102_1_, double p_190102_2_)
+    protected void checkAndPerformAttack(EntityLivingBase enemy, double distToEnemySqr)
     {
-        double d0 = this.getAttackReachSqr(p_190102_1_);
+        double d0 = this.getAttackReachSqr(enemy);
 
-        if (p_190102_2_ <= d0 && this.attackTick <= 0)
+        if (distToEnemySqr <= d0 && this.attackTick <= 0)
         {
             this.attackTick = 20;
             this.attacker.swingArm(EnumHand.MAIN_HAND);
-            this.attacker.attackEntityAsMob(p_190102_1_);
+            this.attacker.attackEntityAsMob(enemy);
         }
     }
 

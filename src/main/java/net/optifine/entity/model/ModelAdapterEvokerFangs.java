@@ -7,8 +7,8 @@ import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.entity.RenderEvokerFangs;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.projectile.EntityEvokerFangs;
-import optifine.Config;
-import optifine.Reflector;
+import net.minecraft.src.Config;
+import net.optifine.reflect.Reflector;
 
 public class ModelAdapterEvokerFangs extends ModelAdapter
 {
@@ -45,6 +45,11 @@ public class ModelAdapterEvokerFangs extends ModelAdapter
                 return modelPart.equals("lower_jaw") ? (ModelRenderer)Reflector.getFieldValue(modelevokerfangs, Reflector.ModelEvokerFangs_ModelRenderers, 2) : null;
             }
         }
+    }
+
+    public String[] getModelRendererNames()
+    {
+        return new String[] {"base", "upper_jaw", "lower_jaw"};
     }
 
     public IEntityRenderer makeEntityRender(ModelBase modelBase, float shadowSize)

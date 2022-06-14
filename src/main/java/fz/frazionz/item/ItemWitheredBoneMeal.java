@@ -69,7 +69,7 @@ public class ItemWitheredBoneMeal extends Item
                         igrowable.grow(worldIn, worldIn.rand, target, iblockstate, true);
                     }
 
-                    stack.substract(1);
+                    stack.shrink(1);
                 }
 
                 return true;

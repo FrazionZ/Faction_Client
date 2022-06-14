@@ -11,22 +11,22 @@ public abstract class GuiResourcePackList extends GuiListExtended
     protected final Minecraft mc;
     protected final List<ResourcePackListEntry> resourcePackEntries;
 
-    public GuiResourcePackList(Minecraft mcIn, int p_i45055_2_, int p_i45055_3_, List<ResourcePackListEntry> p_i45055_4_)
+    public GuiResourcePackList(Minecraft mcIn, int left, int right, List<ResourcePackListEntry> p_i45055_4_)
     {
-        super(mcIn, p_i45055_2_, p_i45055_3_, 32, p_i45055_3_ - 55 + 4, 36);
+        super(mcIn, left, right, 32, 200 - 55 + 4, 36);
         this.mc = mcIn;
         this.resourcePackEntries = p_i45055_4_;
         this.centerListVertically = false;
-        this.setHasListHeader(true, (int)((float)mcIn.fontRendererObj.FONT_HEIGHT * 1.5F));
+        this.setHasListHeader(true, (int)((float)mcIn.fontRenderer.FONT_HEIGHT * 1.5F));
     }
     
-    public GuiResourcePackList(Minecraft mcIn, int left, int right, int topIn, int bottomIn, int slotHeightIn, boolean second, List<ResourcePackListEntry> packEntries)
+    public GuiResourcePackList(Minecraft mcIn, int left, int right, int topIn, int bottomIn, int slotHeightIn, List<ResourcePackListEntry> packEntries)
     {
-        super(mcIn, left, right, topIn, bottomIn, slotHeightIn, second);
+        super(mcIn, left, right, topIn, bottomIn, slotHeightIn);
         this.mc = mcIn;
         this.resourcePackEntries = packEntries;
         this.centerListVertically = false;
-        this.setHasListHeader(true, (int)((float)mcIn.fontRendererObj.FONT_HEIGHT * 1.5F));
+        this.setHasListHeader(true, (int)((float)mcIn.fontRenderer.FONT_HEIGHT * 1.5F));
     }
 
     /**
@@ -36,7 +36,7 @@ public abstract class GuiResourcePackList extends GuiListExtended
     {
     	if (insideTop >= this.top - this.slotHeight && insideTop <= this.bottom) {
             String s = TextFormatting.UNDERLINE + "" + TextFormatting.BOLD + this.getListHeader();
-            this.mc.fontRendererObj.drawString(s, insideLeft + this.width / 2 - this.mc.fontRendererObj.getStringWidth(s) / 2, Math.min(this.top + 3, insideTop), 16777215, true);
+            this.mc.fontRenderer.drawString(s, insideLeft + this.width / 2 - this.mc.fontRenderer.getStringWidth(s) / 2, Math.min(this.top + 3, insideTop), 16777215, true);
     	} 
     }
 

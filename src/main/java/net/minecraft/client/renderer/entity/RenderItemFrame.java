@@ -16,12 +16,13 @@ import net.minecraft.entity.item.EntityItemFrame;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemMap;
 import net.minecraft.item.ItemStack;
+import net.minecraft.src.Config;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.storage.MapData;
-import optifine.Config;
-import optifine.Reflector;
-import optifine.ReflectorForge;
+import net.optifine.reflect.Reflector;
+import net.optifine.reflect.ReflectorForge;
+import net.optifine.shaders.Shaders;
 
 public class RenderItemFrame extends Render<EntityItemFrame>
 {
@@ -30,6 +31,7 @@ public class RenderItemFrame extends Render<EntityItemFrame>
     private final ModelResourceLocation itemFrameModel = new ModelResourceLocation("item_frame", "normal");
     private final ModelResourceLocation mapModel = new ModelResourceLocation("item_frame", "map");
     private final RenderItem itemRenderer;
+    private static double itemRenderDistanceSq = 4096.0D;
 
     public RenderItemFrame(RenderManager renderManagerIn, RenderItem itemRendererIn)
     {
@@ -84,7 +86,7 @@ public class RenderItemFrame extends Render<EntityItemFrame>
         GlStateManager.translate(0.0F, 0.0F, 0.4375F);
         this.renderItem(entity);
         GlStateManager.popMatrix();
-        this.renderName(entity, x + (double)((float)entity.facingDirection.getFrontOffsetX() * 0.3F), y - 0.25D, z + (double)((float)entity.facingDirection.getFrontOffsetZ() * 0.3F));
+        this.renderName(entity, x + (double)((float)entity.facingDirection.getXOffset() * 0.3F), y - 0.25D, z + (double)((float)entity.facingDirection.getZOffset() * 0.3F));
     }
 
     @Nullable
@@ -101,8 +103,13 @@ public class RenderItemFrame extends Render<EntityItemFrame>
     {
         ItemStack itemstack = itemFrame.getDisplayedItem();
 
-        if (!itemstack.func_190926_b())
+        if (!itemstack.isEmpty())
         {
+            if (!this.isRenderItem(itemFrame))
+            {
+                return;
+            }
+
             if (!Config.zoomMode)
             {
                 Entity entity = this.mc.player;
@@ -155,9 +162,9 @@ public class RenderItemFrame extends Render<EntityItemFrame>
 
     protected void renderName(EntityItemFrame entity, double x, double y, double z)
     {
-        if (Minecraft.isGuiEnabled() && !entity.getDisplayedItem().func_190926_b() && entity.getDisplayedItem().hasDisplayName() && this.renderManager.pointedEntity == entity)
+        if (Minecraft.isGuiEnabled() && !entity.getDisplayedItem().isEmpty() && entity.getDisplayedItem().hasDisplayName() && this.renderManager.pointedEntity == entity)
         {
-            double d0 = entity.getDistanceSqToEntity(this.renderManager.renderViewEntity);
+            double d0 = entity.getDistanceSq(this.renderManager.renderViewEntity);
             float f = entity.isSneaking() ? 32.0F : 64.0F;
 
             if (d0 < (double)(f * f))
@@ -166,5 +173,36 @@ public class RenderItemFrame extends Render<EntityItemFrame>
                 this.renderLivingLabel(entity, s, x, y, z, 64);
             }
         }
+    }
+
+    private boolean isRenderItem(EntityItemFrame p_isRenderItem_1_)
+    {
+        if (Shaders.isShadowPass)
+        {
+            return false;
+        }
+        else
+        {
+            if (!Config.zoomMode)
+            {
+                Entity entity = this.mc.getRenderViewEntity();
+                double d0 = p_isRenderItem_1_.getDistanceSq(entity.posX, entity.posY, entity.posZ);
+
+                if (d0 > itemRenderDistanceSq)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+    }
+
+    public static void updateItemRenderDistance()
+    {
+        Minecraft minecraft = Config.getMinecraft();
+        double d0 = (double)Config.limit(minecraft.gameSettings.fovSetting, 1.0F, 120.0F);
+        double d1 = Math.max(6.0D * (double)minecraft.displayHeight / d0, 16.0D);
+        itemRenderDistanceSq = d1 * d1;
     }
 }

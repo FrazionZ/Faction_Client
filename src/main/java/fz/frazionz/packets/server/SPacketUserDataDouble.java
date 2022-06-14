@@ -15,7 +15,7 @@ public class SPacketUserDataDouble extends SPacket {
 	
 	@Override
 	public void readPacketData(PacketBuffer buf) throws IOException {
-		this.key = buf.readStringFromBuffer(32);
+		this.key = buf.readString(32);
 		this.value = buf.readDouble();
 	}
 

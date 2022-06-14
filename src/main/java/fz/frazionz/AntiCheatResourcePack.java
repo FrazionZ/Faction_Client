@@ -23,7 +23,7 @@ import net.minecraft.client.resources.data.IMetadataSection;
 import net.minecraft.client.resources.data.MetadataSerializer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Util;
-import optifine.ReflectorForge;
+import net.optifine.reflect.ReflectorForge;
 
 public class AntiCheatResourcePack implements IResourcePack
 {
@@ -54,7 +54,7 @@ public class AntiCheatResourcePack implements IResourcePack
             }
             else
             {
-                throw new FileNotFoundException(location.getResourcePath());
+                throw new FileNotFoundException(location.getPath());
             }
         }
     }
@@ -69,7 +69,7 @@ public class AntiCheatResourcePack implements IResourcePack
     @Nullable
     private InputStream getResourceStream(ResourceLocation location)
     {
-        String s = "/assets/" + location.getResourceDomain() + "/" + location.getResourcePath();
+        String s = "/assets/" + location.getNamespace() + "/" + location.getPath();
         InputStream inputstream = ReflectorForge.getOptiFineResourceStream(s);
 
         if (inputstream != null)
@@ -120,7 +120,7 @@ public class AntiCheatResourcePack implements IResourcePack
 
     public BufferedImage getPackImage() throws IOException
     {
-        return TextureUtil.readBufferedImage(AntiCheatResourcePack.class.getResourceAsStream("/" + (new ResourceLocation("pack.png")).getResourcePath()));
+        return TextureUtil.readBufferedImage(AntiCheatResourcePack.class.getResourceAsStream("/" + (new ResourceLocation("pack.png")).getPath()));
     }
 
     public String getPackName()
@@ -143,7 +143,7 @@ public class AntiCheatResourcePack implements IResourcePack
         }
         else
         {
-            return FolderResourcePack.func_191384_a(p_validatePath_1_, p_validatePath_2_);
+            return FolderResourcePack.validatePath(p_validatePath_1_, p_validatePath_2_);
         }
     }
 }

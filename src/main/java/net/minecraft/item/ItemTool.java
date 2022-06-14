@@ -15,23 +15,26 @@ import net.minecraft.world.World;
 public class ItemTool extends Item
 {
     private final Set<Block> effectiveBlocks;
-    protected float efficiencyOnProperMaterial;
+    protected float efficiency;
 
-    /** Damage versus entities. */
-    protected float damageVsEntity;
+    /**
+     * Total combined attack damage of this item (tool damage + material damage)
+     */
+    protected float attackDamage;
+    //protected float attackSpeed;
 
     /** The material this tool is made from. */
     protected Item.ToolMaterial toolMaterial;
 
     protected ItemTool(float attackDamageIn, Item.ToolMaterial materialIn, Set<Block> effectiveBlocksIn)
     {
-        this.efficiencyOnProperMaterial = 4.0F;
+        this.efficiency = 4.0F;
         this.toolMaterial = materialIn;
         this.effectiveBlocks = effectiveBlocksIn;
         this.maxStackSize = 1;
         this.setMaxDamage(materialIn.getMaxUses());
-        this.efficiencyOnProperMaterial = materialIn.getEfficiencyOnProperMaterial();
-        this.damageVsEntity = attackDamageIn + materialIn.getDamageVsEntity();
+        this.efficiency = materialIn.getEfficiency();
+        this.attackDamage = attackDamageIn + materialIn.getAttackDamage();
         this.setCreativeTab(CreativeTabs.TOOLS);
     }
 
@@ -40,9 +43,9 @@ public class ItemTool extends Item
         this(0.0F, materialIn, effectiveBlocksIn);
     }
 
-    public float getStrVsBlock(ItemStack stack, IBlockState state)
+    public float getDestroySpeed(ItemStack stack, IBlockState state)
     {
-        return this.effectiveBlocks.contains(state.getBlock()) ? this.efficiencyOnProperMaterial : 1.0F;
+        return this.effectiveBlocks.contains(state.getBlock()) ? this.efficiency : 1.0F;
     }
 
     /**
@@ -94,6 +97,9 @@ public class ItemTool extends Item
 
     /**
      * Return whether this item is repairable in an anvil.
+     *  
+     * @param toRepair the {@code ItemStack} being repaired
+     * @param repair the {@code ItemStack} being used to perform the repair
      */
     public boolean getIsRepairable(ItemStack toRepair, ItemStack repair)
     {
@@ -106,7 +112,8 @@ public class ItemTool extends Item
 
         if (equipmentSlot == EntityEquipmentSlot.MAINHAND)
         {
-            multimap.put(SharedMonsterAttributes.ATTACK_DAMAGE.getAttributeUnlocalizedName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Tool modifier", (double)this.damageVsEntity, 0));
+            multimap.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Tool modifier", (double)this.attackDamage, 0));
+            //multimap.put(SharedMonsterAttributes.ATTACK_SPEED.getName(), new AttributeModifier(ATTACK_SPEED_MODIFIER, "Tool modifier", (double)this.attackSpeed, 0));
         }
 
         return multimap;

@@ -179,7 +179,7 @@ public class ModifiableAttributeInstance implements IAttributeInstance
     private double computeValue()
     {
         double d0 = this.getBaseValue();
-        
+
         for (AttributeModifier attributemodifier : this.getAppliedModifiers(0))
         {
             d0 += attributemodifier.getAmount();

@@ -22,7 +22,7 @@ public class EntityMinecartEmpty extends EntityMinecart
         EntityMinecart.registerFixesMinecart(fixer, EntityMinecartEmpty.class);
     }
 
-    public boolean processInitialInteract(EntityPlayer player, EnumHand stack)
+    public boolean processInitialInteract(EntityPlayer player, EnumHand hand)
     {
         if (player.isSneaking())
         {
@@ -60,7 +60,7 @@ public class EntityMinecartEmpty extends EntityMinecart
                 this.setRollingDirection(-this.getRollingDirection());
                 this.setRollingAmplitude(10);
                 this.setDamage(50.0F);
-                this.setBeenAttacked();
+                this.markVelocityChanged();
             }
         }
     }

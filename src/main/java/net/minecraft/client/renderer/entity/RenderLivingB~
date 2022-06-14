@@ -6,6 +6,7 @@ import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.model.ModelBase;
+import net.minecraft.client.model.ModelSpider;
 import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -16,13 +17,14 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EnumPlayerModelParts;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.src.Config;
-import net.minecraft.src.Reflector;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextFormatting;
+import net.optifine.EmissiveTextures;
 import net.optifine.entity.model.CustomEntityModels;
+import net.optifine.reflect.Reflector;
+import net.optifine.shaders.Shaders;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import shadersmod.client.Shaders;
 
 public abstract class RenderLivingBase<T extends EntityLivingBase> extends Render<T> {
    private static final Logger field_147923_a = LogManager.getLogger();
@@ -33,18 +35,23 @@ public abstract class RenderLivingBase<T extends EntityLivingBase> extends Rende
    protected boolean field_188323_j;
    public static float NAME_TAG_RANGE = 64.0F;
    public static float NAME_TAG_RANGE_SNEAK = 32.0F;
+   public EntityLivingBase renderEntity;
    public float renderLimbSwing;
    public float renderLimbSwingAmount;
    public float renderAgeInTicks;
    public float renderHeadYaw;
    public float renderHeadPitch;
    public float renderScaleFactor;
+   public float renderPartialTicks;
+   private boolean renderModelPushMatrix;
+   private boolean renderLayersPushMatrix;
    public static final boolean animateModelLiving = Boolean.getBoolean("animate.model.living");
 
    public RenderLivingBase(RenderManager p_i46156_1_, ModelBase p_i46156_2_, float p_i46156_3_) {
       super(p_i46156_1_);
       this.field_77045_g = p_i46156_2_;
       this.field_76989_e = p_i46156_3_;
+      this.renderModelPushMatrix = this.field_77045_g instanceof ModelSpider;
    }
 
    public <V extends EntityLivingBase, U extends LayerRenderer<V>> boolean func_177094_a(U p_177094_1_) {
@@ -135,12 +142,14 @@ public abstract class RenderLivingBase<T extends EntityLivingBase> extends Rende
             this.field_77045_g.func_78086_a(p_76986_1_, f6, f5, p_76986_9_);
             this.field_77045_g.func_78087_a(f6, f5, f8, f2, f7, f4, p_76986_1_);
             if (CustomEntityModels.isActive()) {
+               this.renderEntity = p_76986_1_;
                this.renderLimbSwing = f6;
                this.renderLimbSwingAmount = f5;
                this.renderAgeInTicks = f8;
                this.renderHeadYaw = f2;
                this.renderHeadPitch = f7;
                this.renderScaleFactor = f4;
+               this.renderPartialTicks = p_76986_9_;
             }
 
             if (this.field_188301_f) {
@@ -162,7 +171,32 @@ public abstract class RenderLivingBase<T extends EntityLivingBase> extends Rende
                }
             } else {
                boolean flag = this.func_177090_c(p_76986_1_, p_76986_9_);
+               if (EmissiveTextures.isActive()) {
+                  EmissiveTextures.beginRender();
+               }
+
+               if (this.renderModelPushMatrix) {
+                  GlStateManager.func_179094_E();
+               }
+
                this.func_77036_a(p_76986_1_, f6, f5, f8, f2, f7, f4);
+               if (this.renderModelPushMatrix) {
+                  GlStateManager.func_179121_F();
+               }
+
+               if (EmissiveTextures.isActive()) {
+                  if (EmissiveTextures.hasEmissive()) {
+                     this.renderModelPushMatrix = true;
+                     EmissiveTextures.beginRenderEmissive();
+                     GlStateManager.func_179094_E();
+                     this.func_77036_a(p_76986_1_, f6, f5, f8, f2, f7, f4);
+                     GlStateManager.func_179121_F();
+                     EmissiveTextures.endRenderEmissive();
+                  }
+
+                  EmissiveTextures.endRender();
+               }
+
                if (flag) {
                   this.func_177091_f();
                }
@@ -171,6 +205,10 @@ public abstract class RenderLivingBase<T extends EntityLivingBase> extends Rende
                if (!(p_76986_1_ instanceof EntityPlayer) || !((EntityPlayer)p_76986_1_).func_175149_v()) {
                   this.func_177093_a(p_76986_1_, f6, f5, p_76986_9_, f8, f2, f7, f4);
                }
+            }
+
+            if (CustomEntityModels.isActive()) {
+               this.renderEntity = null;
             }
 
             GlStateManager.func_179101_C();
@@ -398,7 +436,32 @@ public abstract class RenderLivingBase<T extends EntityLivingBase> extends Rende
    protected void func_177093_a(T p_177093_1_, float p_177093_2_, float p_177093_3_, float p_177093_4_, float p_177093_5_, float p_177093_6_, float p_177093_7_, float p_177093_8_) {
       for(LayerRenderer<T> layerrenderer : this.field_177097_h) {
          boolean flag = this.func_177092_a(p_177093_1_, p_177093_4_, layerrenderer.func_177142_b());
+         if (EmissiveTextures.isActive()) {
+            EmissiveTextures.beginRender();
+         }
+
+         if (this.renderLayersPushMatrix) {
+            GlStateManager.func_179094_E();
+         }
+
          layerrenderer.func_177141_a(p_177093_1_, p_177093_2_, p_177093_3_, p_177093_4_, p_177093_5_, p_177093_6_, p_177093_7_, p_177093_8_);
+         if (this.renderLayersPushMatrix) {
+            GlStateManager.func_179121_F();
+         }
+
+         if (EmissiveTextures.isActive()) {
+            if (EmissiveTextures.hasEmissive()) {
+               this.renderLayersPushMatrix = true;
+               EmissiveTextures.beginRenderEmissive();
+               GlStateManager.func_179094_E();
+               layerrenderer.func_177141_a(p_177093_1_, p_177093_2_, p_177093_3_, p_177093_4_, p_177093_5_, p_177093_6_, p_177093_7_, p_177093_8_);
+               GlStateManager.func_179121_F();
+               EmissiveTextures.endRenderEmissive();
+            }
+
+            EmissiveTextures.endRender();
+         }
+
          if (flag) {
             this.func_177091_f();
          }

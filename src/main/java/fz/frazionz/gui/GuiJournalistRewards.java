@@ -1,21 +1,21 @@
 package fz.frazionz.gui;
 
-import fz.frazionz.api.HTTPFunctions;
+import java.awt.Color;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+
 import fz.frazionz.api.gsonObj.ShopItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiRoundedButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-
-import java.awt.*;
-import java.io.IOException;
-import java.util.*;
-import java.util.List;
-import java.util.concurrent.Executors;
 
 public class GuiJournalistRewards extends GuiScreen {
 
@@ -46,12 +46,6 @@ public class GuiJournalistRewards extends GuiScreen {
         int width = this.width/7;
         int height = this.height / 19;
 
-        if(height != this.mc.fontrenderer.getSize()) {
-            this.mc.fontrenderer = new fz.frazionz.gui.renderer.fonts.FontRenderer(this.mc.FONT_LOCATION, height);
-        }
-        if((int) (height*1.5) != this.mc.fontrendererTitle.getSize()) {
-            this.mc.fontrendererTitle = new fz.frazionz.gui.renderer.fonts.FontRenderer(this.mc.FONT_LOCATION, (float) (height*1.5));
-        }
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
@@ -66,7 +60,7 @@ public class GuiJournalistRewards extends GuiScreen {
 
     public void callbackAfterLoad(int width, int height){
         buttonList.clear();
-        buttonList.add(new GuiRoundedButton(0, this.width / 2 - width / 2, this.guiTop + this.ySize - 68, width, height, "Récuperer maintenant", false, this.mc.fontrenderer, 1));
+        buttonList.add(new GuiRoundedButton(0, this.width / 2 - width / 2, this.guiTop + this.ySize - 68, width, height, "Récuperer maintenant", false, this.mc.fzFontRenderers.get(24), 1));
     }
 
 
@@ -93,7 +87,7 @@ public class GuiJournalistRewards extends GuiScreen {
         this.drawModalRectWithCustomSizedTexture(x, y, 300, 364, 70, 64, 512, 512);
         GlStateManager.enableDepth();
 
-        this.mc.fontRendererObj.drawScaleString("Jour "+day, x + 26 - this.fontRendererObj.getStringWidth("Jour "+day) / 2, y-10, 1.2F, Color.WHITE);
+        this.mc.fontRenderer.drawScaleString("Jour "+day, x + 26 - this.fontRenderer.getStringWidth("Jour "+day) / 2, y-10, 1.2F, Color.WHITE);
 
         GlStateManager.pushMatrix();
         GlStateManager.translate(x, y, 0);
@@ -116,7 +110,7 @@ public class GuiJournalistRewards extends GuiScreen {
         GlStateManager.enableDepth();
 
 
-        this.mc.fontRendererObj.drawScaleString("Jour "+day, x + 26 - this.fontRendererObj.getStringWidth("Jour "+day) / 2, y-15, 1.6F, Color.WHITE);
+        this.mc.fontRenderer.drawScaleString("Jour "+day, x + 26 - this.fontRenderer.getStringWidth("Jour "+day) / 2, y-15, 1.6F, Color.WHITE);
 
         GlStateManager.pushMatrix();
         GlStateManager.translate(x, y, 0);
@@ -139,13 +133,13 @@ public class GuiJournalistRewards extends GuiScreen {
         drawBackgroundItemCurrent(ShopItem.getItemStack("diamond"), 2, this.width / 2 - 35, this.guiTop + this.ySize - 165);
         drawBackgroundItem(ShopItem.getItemStack("bauxite_sword"),3,this.width / 2 + 100, this.guiTop + this.ySize - 160);
         String title = "Récompense Journalière";
-        Minecraft.fontRendererObj.drawScaleString(title, this.width / 2 - this.fontRendererObj.getStringWidth(title) / 1 + 20, this.guiTop + 8, 1.6D, Color.WHITE);
-        String s = "Les récompenses sont récupérables une fois par jour.\nAucun remboursement n'est possible.";
+        this.mc.fontRenderer.drawScaleString(title, this.width / 2 - this.fontRenderer.getStringWidth(title) / 1 + 20, this.guiTop + 8, 1.6D, Color.WHITE);
+        String s = "Les récompenses sont récupérables une fois par jour.";
         String[] ss = s.split("\n");
         List<String> list = Arrays.asList(ss);
         Collections.reverse(list);
         for(int i=0; i<list.size();i++){
-            Minecraft.fontRendererObj.drawScaleString(list.get(i), this.width / 2 - this.fontRendererObj.getStringWidth(list.get(i)) / 2 + 30, this.guiTop + this.ySize - 22 + -10 * i, 0.8D, Color.GRAY);
+            this.mc.fontRenderer.drawScaleString(list.get(i), this.width / 2 - this.fontRenderer.getStringWidth(list.get(i)) / 2 + 30, this.guiTop + this.ySize - 22 + -10 * i, 0.8D, Color.GRAY);
         }
         super.drawScreen(mouseX, mouseY, partialTicks);
     }

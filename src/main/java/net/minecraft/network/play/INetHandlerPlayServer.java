@@ -1,5 +1,6 @@
 package net.minecraft.network.play;
 
+import fz.frazionz.packets.client.CPacketTrophyForge;
 import net.minecraft.network.INetHandler;
 import net.minecraft.network.play.client.CPacketAnimation;
 import net.minecraft.network.play.client.CPacketChatMessage;
@@ -28,7 +29,6 @@ import net.minecraft.network.play.client.CPacketSeenAdvancements;
 import net.minecraft.network.play.client.CPacketSpectate;
 import net.minecraft.network.play.client.CPacketSteerBoat;
 import net.minecraft.network.play.client.CPacketTabComplete;
-import net.minecraft.network.play.client.CPacketTrophyForge;
 import net.minecraft.network.play.client.CPacketUpdateSign;
 import net.minecraft.network.play.client.CPacketUseEntity;
 import net.minecraft.network.play.client.CPacketVehicleMove;
@@ -71,10 +71,12 @@ public interface INetHandlerPlayServer extends INetHandler
      * should/shouldn't be in use?)
      */
     void processEnchantItem(CPacketEnchantItem packetIn);
+
     
     
     void processStartTrophyForge(CPacketTrophyForge packetIn);
 
+    
     /**
      * Executes a container/inventory slot manipulation as indicated by the packet. Sends the serverside result if they
      * didn't match the indicated result and prevents further manipulation by the player until he confirms that it has
@@ -95,8 +97,7 @@ public interface INetHandlerPlayServer extends INetHandler
     void processCustomPayload(CPacketCustomPayload packetIn);
 
     /**
-     * Processes interactions ((un)leashing, opening command block GUI) and attacks on an entity with players currently
-     * equipped item
+     * Processes left and right clicks on entities
      */
     void processUseEntity(CPacketUseEntity packetIn);
 
@@ -116,9 +117,7 @@ public interface INetHandlerPlayServer extends INetHandler
     void processPlayerAbilities(CPacketPlayerAbilities packetIn);
 
     /**
-     * Processes the player initiating/stopping digging on a particular spot, as well as a player dropping items?. (0:
-     * initiated, 1: reinitiated, 2? , 3-4 drop item (respectively without or with player control), 5: stopped; x,y,z,
-     * side clicked on;)
+     * Processes the player initiating/stopping digging on a particular spot, as well as a player dropping items
      */
     void processPlayerDigging(CPacketPlayerDigging packetIn);
 
@@ -146,12 +145,12 @@ public interface INetHandlerPlayServer extends INetHandler
 
     void processUpdateSign(CPacketUpdateSign packetIn);
 
-    void processRightClickBlock(CPacketPlayerTryUseItemOnBlock packetIn);
+    void processTryUseItemOnBlock(CPacketPlayerTryUseItemOnBlock packetIn);
 
     /**
-     * Processes block placement and block activation (anvil, furnace, etc.)
+     * Called when a client is using an item while not pointing at a block, but simply using an item
      */
-    void processPlayerBlockPlacement(CPacketPlayerTryUseItem packetIn);
+    void processTryUseItem(CPacketPlayerTryUseItem packetIn);
 
     void handleSpectate(CPacketSpectate packetIn);
 
@@ -163,7 +162,7 @@ public interface INetHandlerPlayServer extends INetHandler
 
     void processConfirmTeleport(CPacketConfirmTeleport packetIn);
 
-    void func_191984_a(CPacketRecipeInfo p_191984_1_);
+    void handleRecipeBookUpdate(CPacketRecipeInfo p_191984_1_);
 
-    void func_194027_a(CPacketSeenAdvancements p_194027_1_);
+    void handleSeenAdvancements(CPacketSeenAdvancements p_194027_1_);
 }

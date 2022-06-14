@@ -48,7 +48,7 @@ public class GuiSleepMP extends GuiChat
     /**
      * Called by the controls from the buttonList when activated. (Mouse pressed for buttons)
      */
-    protected void actionPerformed(GuiButton button, int mouseButton) throws IOException
+    protected void actionPerformed(GuiButton button, int keyCode) throws IOException
     {
         if (button.id == 1)
         {
@@ -56,7 +56,7 @@ public class GuiSleepMP extends GuiChat
         }
         else
         {
-            super.actionPerformed(button, mouseButton);
+            super.actionPerformed(button, keyCode);
         }
     }
 

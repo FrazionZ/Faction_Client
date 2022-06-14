@@ -17,23 +17,30 @@ public interface IRecipe
      */
     ItemStack getCraftingResult(InventoryCrafting inv);
 
-    boolean func_194133_a(int p_194133_1_, int p_194133_2_);
+    /**
+     * Used to determine if this recipe can fit in a grid of the given width/height
+     */
+    boolean canFit(int width, int height);
 
+    /**
+     * Get the result of this recipe, usually for display purposes (e.g. recipe book). If your recipe has more than one
+     * possible result (e.g. it's dynamic and depends on its inputs), then return an empty stack.
+     */
     ItemStack getRecipeOutput();
 
     NonNullList<ItemStack> getRemainingItems(InventoryCrafting inv);
 
-default NonNullList<Ingredient> func_192400_c()
+default NonNullList<Ingredient> getIngredients()
     {
-        return NonNullList.<Ingredient>func_191196_a();
+        return NonNullList.<Ingredient>create();
     }
 
-default boolean func_192399_d()
+default boolean isDynamic()
     {
         return false;
     }
 
-default String func_193358_e()
+default String getGroup()
     {
         return "";
     }

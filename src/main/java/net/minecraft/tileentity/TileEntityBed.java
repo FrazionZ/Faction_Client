@@ -9,11 +9,11 @@ import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 
 public class TileEntityBed extends TileEntity
 {
-    private EnumDyeColor field_193053_a = EnumDyeColor.RED;
+    private EnumDyeColor color = EnumDyeColor.RED;
 
-    public void func_193051_a(ItemStack p_193051_1_)
+    public void setItemValues(ItemStack p_193051_1_)
     {
-        this.func_193052_a(EnumDyeColor.byMetadata(p_193051_1_.getMetadata()));
+        this.setColor(EnumDyeColor.byMetadata(p_193051_1_.getMetadata()));
     }
 
     public void readFromNBT(NBTTagCompound compound)
@@ -22,45 +22,53 @@ public class TileEntityBed extends TileEntity
 
         if (compound.hasKey("color"))
         {
-            this.field_193053_a = EnumDyeColor.byMetadata(compound.getInteger("color"));
+            this.color = EnumDyeColor.byMetadata(compound.getInteger("color"));
         }
     }
 
     public NBTTagCompound writeToNBT(NBTTagCompound compound)
     {
         super.writeToNBT(compound);
-        compound.setInteger("color", this.field_193053_a.getMetadata());
+        compound.setInteger("color", this.color.getMetadata());
         return compound;
     }
 
+    /**
+     * Get an NBT compound to sync to the client with SPacketChunkData, used for initial loading of the chunk or when
+     * many blocks change at once. This compound comes back to you clientside in {@link handleUpdateTag}
+     */
     public NBTTagCompound getUpdateTag()
     {
         return this.writeToNBT(new NBTTagCompound());
     }
 
+    /**
+     * Retrieves packet to send to the client whenever this Tile Entity is resynced via World.notifyBlockUpdate. For
+     * modded TE's, this packet comes back to you clientside in {@link #onDataPacket}
+     */
     public SPacketUpdateTileEntity getUpdatePacket()
     {
         return new SPacketUpdateTileEntity(this.pos, 11, this.getUpdateTag());
     }
 
-    public EnumDyeColor func_193048_a()
+    public EnumDyeColor getColor()
     {
-        return this.field_193053_a;
+        return this.color;
     }
 
-    public void func_193052_a(EnumDyeColor p_193052_1_)
+    public void setColor(EnumDyeColor color)
     {
-        this.field_193053_a = p_193052_1_;
+        this.color = color;
         this.markDirty();
     }
 
-    public boolean func_193050_e()
+    public boolean isHeadPiece()
     {
-        return BlockBed.func_193385_b(this.getBlockMetadata());
+        return BlockBed.isHeadPiece(this.getBlockMetadata());
     }
 
-    public ItemStack func_193049_f()
+    public ItemStack getItemStack()
     {
-        return new ItemStack(Items.BED, 1, this.field_193053_a.getMetadata());
+        return new ItemStack(Items.BED, 1, this.color.getMetadata());
     }
 }

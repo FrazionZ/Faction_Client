@@ -4,8 +4,6 @@ import java.util.Map;
 
 import javax.annotation.Nullable;
 
-import fz.frazionz.packets.server.SPacketUpdateSkin;
-import fz.frazionz.packets.server.*;
 import org.apache.logging.log4j.LogManager;
 
 import com.google.common.collect.BiMap;
@@ -14,6 +12,14 @@ import com.google.common.collect.Maps;
 
 import fz.frazionz.packets.client.CPacketServerSwitch;
 import fz.frazionz.packets.client.CPacketShopTrade;
+import fz.frazionz.packets.client.CPacketTrophyForge;
+import fz.frazionz.packets.server.SPacketGuiOpener;
+import fz.frazionz.packets.server.SPacketToast;
+import fz.frazionz.packets.server.SPacketUpdateInformation;
+import fz.frazionz.packets.server.SPacketUpdateSkin;
+import fz.frazionz.packets.server.SPacketUserDataBoolean;
+import fz.frazionz.packets.server.SPacketUserDataDouble;
+import fz.frazionz.packets.server.SPacketUserDataString;
 import net.minecraft.network.handshake.client.C00Handshake;
 import net.minecraft.network.login.client.CPacketEncryptionResponse;
 import net.minecraft.network.login.client.CPacketLoginStart;
@@ -47,7 +53,6 @@ import net.minecraft.network.play.client.CPacketSeenAdvancements;
 import net.minecraft.network.play.client.CPacketSpectate;
 import net.minecraft.network.play.client.CPacketSteerBoat;
 import net.minecraft.network.play.client.CPacketTabComplete;
-import net.minecraft.network.play.client.CPacketTrophyForge;
 import net.minecraft.network.play.client.CPacketUpdateSign;
 import net.minecraft.network.play.client.CPacketUseEntity;
 import net.minecraft.network.play.client.CPacketVehicleMove;
@@ -305,7 +310,7 @@ public enum EnumConnectionState
     protected EnumConnectionState registerPacket(EnumPacketDirection direction, Class <? extends Packet<? >> packetClass)
     {
         BiMap < Integer, Class <? extends Packet<? >>> bimap = (BiMap)this.directionMaps.get(direction);
-        
+
         if (bimap == null)
         {
             bimap = HashBiMap. < Integer, Class <? extends Packet<? >>> create();

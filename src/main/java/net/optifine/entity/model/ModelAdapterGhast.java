@@ -7,8 +7,8 @@ import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.entity.RenderGhast;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.monster.EntityGhast;
-import optifine.Config;
-import optifine.Reflector;
+import net.minecraft.src.Config;
+import net.optifine.reflect.Reflector;
 
 public class ModelAdapterGhast extends ModelAdapter
 {
@@ -62,6 +62,11 @@ public class ModelAdapterGhast extends ModelAdapter
                 }
             }
         }
+    }
+
+    public String[] getModelRendererNames()
+    {
+        return new String[] {"body", "tentacle1", "tentacle2", "tentacle3", "tentacle4", "tentacle5", "tentacle6", "tentacle7", "tentacle8", "tentacle9"};
     }
 
     public IEntityRenderer makeEntityRender(ModelBase modelBase, float shadowSize)

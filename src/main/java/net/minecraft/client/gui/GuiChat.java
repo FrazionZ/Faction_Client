@@ -1,8 +1,16 @@
 package net.minecraft.client.gui;
 
 import java.io.IOException;
+
 import javax.annotation.Nullable;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
+
+import fz.frazionz.gui.GuiChatTextField;
+import fz.frazionz.utils.FzTabCompleter;
 import fz.frazionz.utils.FzUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ChatAllowedCharacters;
@@ -13,10 +21,6 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
 
 public class GuiChat extends GuiScreen implements ITabCompleter
 {
@@ -28,7 +32,7 @@ public class GuiChat extends GuiScreen implements ITabCompleter
      * messages sent immediately after each other)
      */
     private int sentHistoryCursor = -1;
-    private TabCompleter tabCompleter;
+    private FzTabCompleter tabCompleter;
 
     /** Chat entry field */
     protected GuiChatTextField inputField;
@@ -42,6 +46,10 @@ public class GuiChat extends GuiScreen implements ITabCompleter
     private String showPasswordBtn = "AFF. LE MOT DE PASSE";
     private String hidePasswordBtn = "CACHER LE MOT DE PASSE";
 
+    private String pwordLogin = "";
+    private boolean showPassword = false;
+
+    
     public GuiChat()
     {
     }
@@ -59,14 +67,14 @@ public class GuiChat extends GuiScreen implements ITabCompleter
     {
         Keyboard.enableRepeatEvents(true);
         this.sentHistoryCursor = this.mc.ingameGUI.getChatGUI().getSentMessages().size();
-        this.inputField = new GuiChatTextField(0, this.fontRendererObj, 4, this.height - 12, this.width - 4, 12);
+        this.inputField = new GuiChatTextField(0, this.fontRenderer, 4, this.height - 12, this.width - 4, 12);
         this.inputField.setMaxStringLength(256);
         this.inputField.setEnableBackgroundDrawing(false);
         this.inputField.setFocused(true);
         this.inputField.setText(this.defaultInputFieldText);
         this.inputField.setCanLoseFocus(false);
         this.tabCompleter = new GuiChat.ChatTabCompleter(this.inputField);
-        // C DROLE CA MERCI FLO this.mc.func_193033_an().func_192988_a(new SystemToast(SystemToast.Type.NARRATOR_TOGGLE, new TextComponentString("OK MEK"), new TextComponentString("BRUH")));
+    
         guiButtonShowPassword = new GuiButton(10, 8, this.height - 37, 135, 20, showPasswordBtn);
         guiButtonShowPassword.visible = false;
         this.buttonList.add(guiButtonShowPassword);
@@ -89,17 +97,15 @@ public class GuiChat extends GuiScreen implements ITabCompleter
         this.inputField.updateCursorCounter();
     }
 
+    
     /**
      * Fired when a key is typed (except F11 which toggles full screen). This is the equivalent of
      * KeyListener.keyTyped(KeyEvent e). Args : character (character on the key), keyCode (lwjgl Keyboard key code)
      */
-
-    private String pwordLogin = "";
-    private boolean showPassword = false;
-
     protected void keyTyped(char typedChar, int keyCode) throws IOException
     {
         this.tabCompleter.resetRequested();
+
         if (keyCode == 15)
         {
             this.tabCompleter.complete();
@@ -135,19 +141,23 @@ public class GuiChat extends GuiScreen implements ITabCompleter
             {
                 if(this.inputField.getText().startsWith("/login ") || this.inputField.getText().startsWith("/register ")) {
                     guiButtonShowPassword.visible = true;
-                    if(this.showPassword)
-                        this.inputField.textboxKeyTyped(typedChar, keyCode, true);
-                    else
-                        this.inputField.textboxKeyTyped((keyCode == 57) ? " ".charAt(0) : "*".charAt(0), keyCode, true);
-                    if(keyCode == 211 || keyCode == 14) {
+	                if(this.showPassword)
+	                    this.inputField.textboxKeyTyped(typedChar, keyCode, true);
+	                else
+	                    this.inputField.textboxKeyTyped((keyCode == 57) ? " ".charAt(0) : "*".charAt(0), keyCode, true);
+                    
+                    if(keyCode == 211 || keyCode == 14) 
+                    {
                         if (pwordLogin.length() > 0) {
                             pwordLogin = FzUtils.removeLastChar(pwordLogin);
                         }
-                    }else{
+                    }
+                    else {
                         if(ChatAllowedCharacters.isAllowedCharacter(typedChar))
                             pwordLogin += Character.toString(typedChar);
                     }
-                }else {
+                }
+                else {
                     this.inputField.textboxKeyTyped(typedChar, keyCode, true);
                 }
 
@@ -161,10 +171,7 @@ public class GuiChat extends GuiScreen implements ITabCompleter
 
             if (!s.isEmpty())
             {
-                if(this.inputField.getText().startsWith("/login ") || this.inputField.getText().startsWith("/register "))
-                    this.sendChatMessage(this.inputField.getText().split(" ")[0]+" "+pwordLogin);
-                else
-                    this.sendChatMessage(s);
+                this.sendChatMessage(s);
             }
 
             this.mc.displayGuiScreen((GuiScreen)null);
@@ -188,6 +195,7 @@ public class GuiChat extends GuiScreen implements ITabCompleter
         }
     }
 
+    
     /**
      * Handles mouse input.
      */
@@ -314,9 +322,9 @@ public class GuiChat extends GuiScreen implements ITabCompleter
         this.tabCompleter.setCompletions(newCompletions);
     }
 
-    public static class ChatTabCompleter extends TabCompleter
+    public static class ChatTabCompleter extends FzTabCompleter
     {
-        private final Minecraft clientInstance = Minecraft.getMinecraft();
+        private final Minecraft client = Minecraft.getMinecraft();
 
         public ChatTabCompleter(GuiChatTextField p_i46749_1_)
         {
@@ -341,7 +349,7 @@ public class GuiChat extends GuiScreen implements ITabCompleter
                     stringbuilder.append(s);
                 }
 
-                this.clientInstance.ingameGUI.getChatGUI().printChatMessageWithOptionalDeletion(new TextComponentString(stringbuilder.toString()), 1);
+                this.client.ingameGUI.getChatGUI().printChatMessageWithOptionalDeletion(new TextComponentString(stringbuilder.toString()), 1);
             }
         }
 
@@ -350,9 +358,9 @@ public class GuiChat extends GuiScreen implements ITabCompleter
         {
             BlockPos blockpos = null;
 
-            if (this.clientInstance.objectMouseOver != null && this.clientInstance.objectMouseOver.typeOfHit == RayTraceResult.Type.BLOCK)
+            if (this.client.objectMouseOver != null && this.client.objectMouseOver.typeOfHit == RayTraceResult.Type.BLOCK)
             {
-                blockpos = this.clientInstance.objectMouseOver.getBlockPos();
+                blockpos = this.client.objectMouseOver.getBlockPos();
             }
 
             return blockpos;

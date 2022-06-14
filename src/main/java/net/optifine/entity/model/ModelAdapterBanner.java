@@ -6,9 +6,9 @@ import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityBannerRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.src.Config;
 import net.minecraft.tileentity.TileEntityBanner;
-import optifine.Config;
-import optifine.Reflector;
+import net.optifine.reflect.Reflector;
 
 public class ModelAdapterBanner extends ModelAdapter
 {
@@ -47,10 +47,15 @@ public class ModelAdapterBanner extends ModelAdapter
         }
     }
 
+    public String[] getModelRendererNames()
+    {
+        return new String[] {"slate", "stand", "top"};
+    }
+
     public IEntityRenderer makeEntityRender(ModelBase modelBase, float shadowSize)
     {
         TileEntityRendererDispatcher tileentityrendererdispatcher = TileEntityRendererDispatcher.instance;
-        TileEntitySpecialRenderer tileentityspecialrenderer = tileentityrendererdispatcher.getSpecialRendererByClass(TileEntityBanner.class);
+        TileEntitySpecialRenderer tileentityspecialrenderer = tileentityrendererdispatcher.getRenderer(TileEntityBanner.class);
 
         if (!(tileentityspecialrenderer instanceof TileEntityBannerRenderer))
         {

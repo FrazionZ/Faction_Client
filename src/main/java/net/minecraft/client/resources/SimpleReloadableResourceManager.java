@@ -6,9 +6,6 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-
-import fz.frazionz.AntiCheatResourcePack;
-
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
@@ -58,7 +55,7 @@ public class SimpleReloadableResourceManager implements IReloadableResourceManag
 
     public IResource getResource(ResourceLocation location) throws IOException
     {
-        IResourceManager iresourcemanager = this.domainResourceManagers.get(location.getResourceDomain());
+        IResourceManager iresourcemanager = this.domainResourceManagers.get(location.getNamespace());
 
         if (iresourcemanager != null)
         {
@@ -72,7 +69,7 @@ public class SimpleReloadableResourceManager implements IReloadableResourceManag
 
     public List<IResource> getAllResources(ResourceLocation location) throws IOException
     {
-        IResourceManager iresourcemanager = this.domainResourceManagers.get(location.getResourceDomain());
+        IResourceManager iresourcemanager = this.domainResourceManagers.get(location.getNamespace());
 
         if (iresourcemanager != null)
         {
@@ -90,6 +87,9 @@ public class SimpleReloadableResourceManager implements IReloadableResourceManag
         this.setResourceDomains.clear();
     }
 
+    /**
+     * Releases all current resource packs, loads the given list, then triggers all listeners
+     */
     public void reloadResources(List<IResourcePack> resourcesPacksList)
     {
         this.clearResources();
@@ -103,12 +103,16 @@ public class SimpleReloadableResourceManager implements IReloadableResourceManag
 
         for (IResourcePack iresourcepack : resourcesPacksList)
         {
-        	this.reloadResourcePack(iresourcepack);
+            this.reloadResourcePack(iresourcepack);
         }
 
         this.notifyReloadListeners();
     }
 
+    /**
+     * Registers a listener to be invoked every time the resource manager reloads. NOTE: The listener is immediately
+     * invoked once when it is registered.
+     */
     public void registerReloadListener(IResourceManagerReloadListener reloadListener)
     {
         this.reloadListeners.add(reloadListener);

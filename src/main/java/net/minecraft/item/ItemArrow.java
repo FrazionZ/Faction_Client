@@ -19,5 +19,4 @@ public class ItemArrow extends Item
         entitytippedarrow.setPotionEffect(stack);
         return entitytippedarrow;
     }
-    
 }

@@ -5,9 +5,9 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.entity.RenderEnderman;
 import net.minecraft.entity.monster.EntityEnderman;
+import net.minecraft.src.Config;
 import net.minecraft.util.ResourceLocation;
-import optifine.Config;
-import shadersmod.client.Shaders;
+import net.optifine.shaders.Shaders;
 
 public class LayerEndermanEyes implements LayerRenderer<EntityEnderman>
 {
@@ -33,7 +33,7 @@ public class LayerEndermanEyes implements LayerRenderer<EntityEnderman>
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 61680.0F, 0.0F);
         GlStateManager.enableLighting();
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-        Minecraft.getMinecraft().entityRenderer.func_191514_d(true);
+        Minecraft.getMinecraft().entityRenderer.setupFogColor(true);
 
         if (Config.isShaders())
         {
@@ -49,7 +49,7 @@ public class LayerEndermanEyes implements LayerRenderer<EntityEnderman>
             Shaders.endSpiderEyes();
         }
 
-        Minecraft.getMinecraft().entityRenderer.func_191514_d(false);
+        Minecraft.getMinecraft().entityRenderer.setupFogColor(false);
         this.endermanRenderer.setLightmap(entitylivingbaseIn);
         GlStateManager.depthMask(true);
         GlStateManager.disableBlend();

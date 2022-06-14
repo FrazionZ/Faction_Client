@@ -25,19 +25,19 @@ public class ItemColors
 {
     private final ObjectIntIdentityMap<IItemColor> mapItemColors = new ObjectIntIdentityMap<IItemColor>(32);
 
-    public static ItemColors init(final BlockColors p_186729_0_)
+    public static ItemColors init(final BlockColors colors)
     {
         ItemColors itemcolors = new ItemColors();
         itemcolors.registerItemColorHandler(new IItemColor()
         {
-            public int getColorFromItemstack(ItemStack stack, int tintIndex)
+            public int colorMultiplier(ItemStack stack, int tintIndex)
             {
                 return tintIndex > 0 ? -1 : ((ItemArmor)stack.getItem()).getColor(stack);
             }
         }, Items.LEATHER_HELMET, Items.LEATHER_CHESTPLATE, Items.LEATHER_LEGGINGS, Items.LEATHER_BOOTS);
         itemcolors.registerItemColorHandler(new IItemColor()
         {
-            public int getColorFromItemstack(ItemStack stack, int tintIndex)
+            public int colorMultiplier(ItemStack stack, int tintIndex)
             {
                 BlockDoublePlant.EnumPlantType blockdoubleplant$enumplanttype = BlockDoublePlant.EnumPlantType.byMetadata(stack.getMetadata());
                 return blockdoubleplant$enumplanttype != BlockDoublePlant.EnumPlantType.GRASS && blockdoubleplant$enumplanttype != BlockDoublePlant.EnumPlantType.FERN ? -1 : ColorizerGrass.getGrassColor(0.5D, 1.0D);
@@ -45,7 +45,7 @@ public class ItemColors
         }, Blocks.DOUBLE_PLANT);
         itemcolors.registerItemColorHandler(new IItemColor()
         {
-            public int getColorFromItemstack(ItemStack stack, int tintIndex)
+            public int colorMultiplier(ItemStack stack, int tintIndex)
             {
                 if (tintIndex != 1)
                 {
@@ -91,16 +91,16 @@ public class ItemColors
         }, Items.FIREWORK_CHARGE);
         itemcolors.registerItemColorHandler(new IItemColor()
         {
-            public int getColorFromItemstack(ItemStack stack, int tintIndex)
+            public int colorMultiplier(ItemStack stack, int tintIndex)
             {
-                return tintIndex > 0 ? -1 : PotionUtils.func_190932_c(stack);
+                return tintIndex > 0 ? -1 : PotionUtils.getColor(stack);
             }
         }, Items.POTIONITEM, Items.SPLASH_POTION, Items.LINGERING_POTION);
         itemcolors.registerItemColorHandler(new IItemColor()
         {
-            public int getColorFromItemstack(ItemStack stack, int tintIndex)
+            public int colorMultiplier(ItemStack stack, int tintIndex)
             {
-                EntityList.EntityEggInfo entitylist$entityegginfo = EntityList.ENTITY_EGGS.get(ItemMonsterPlacer.func_190908_h(stack));
+                EntityList.EntityEggInfo entitylist$entityegginfo = EntityList.ENTITY_EGGS.get(ItemMonsterPlacer.getNamedIdFrom(stack));
 
                 if (entitylist$entityegginfo == null)
                 {
@@ -114,33 +114,33 @@ public class ItemColors
         }, Items.SPAWN_EGG);
         itemcolors.registerItemColorHandler(new IItemColor()
         {
-            public int getColorFromItemstack(ItemStack stack, int tintIndex)
+            public int colorMultiplier(ItemStack stack, int tintIndex)
             {
                 IBlockState iblockstate = ((ItemBlock)stack.getItem()).getBlock().getStateFromMeta(stack.getMetadata());
-                return p_186729_0_.colorMultiplier(iblockstate, (IBlockAccess)null, (BlockPos)null, tintIndex);
+                return colors.colorMultiplier(iblockstate, (IBlockAccess)null, (BlockPos)null, tintIndex);
             }
         }, Blocks.GRASS, Blocks.TALLGRASS, Blocks.VINE, Blocks.LEAVES, Blocks.LEAVES2, Blocks.WATERLILY);
         itemcolors.registerItemColorHandler(new IItemColor()
         {
-            public int getColorFromItemstack(ItemStack stack, int tintIndex)
+            public int colorMultiplier(ItemStack stack, int tintIndex)
             {
-                return tintIndex == 0 ? PotionUtils.func_190932_c(stack) : -1;
+                return tintIndex == 0 ? PotionUtils.getColor(stack) : -1;
             }
         }, Items.TIPPED_ARROW);
         itemcolors.registerItemColorHandler(new IItemColor()
         {
-            public int getColorFromItemstack(ItemStack stack, int tintIndex)
+            public int colorMultiplier(ItemStack stack, int tintIndex)
             {
-                return tintIndex == 0 ? -1 : ItemMap.func_190907_h(stack);
+                return tintIndex == 0 ? -1 : ItemMap.getColor(stack);
             }
         }, Items.FILLED_MAP);
         return itemcolors;
     }
 
-    public int getColorFromItemstack(ItemStack stack, int tintIndex)
+    public int colorMultiplier(ItemStack stack, int tintIndex)
     {
         IItemColor iitemcolor = this.mapItemColors.getByValue(Item.REGISTRY.getIDForObject(stack.getItem()));
-        return iitemcolor == null ? -1 : iitemcolor.getColorFromItemstack(stack, tintIndex);
+        return iitemcolor == null ? -1 : iitemcolor.colorMultiplier(stack, tintIndex);
     }
 
     public void registerItemColorHandler(IItemColor itemColor, Block... blocksIn)

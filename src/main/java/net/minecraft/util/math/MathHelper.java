@@ -2,6 +2,7 @@ package net.minecraft.util.math;
 
 import java.util.Random;
 import java.util.UUID;
+import net.optifine.util.MathUtils;
 
 public class MathHelper
 {
@@ -9,14 +10,12 @@ public class MathHelper
     private static final int SIN_BITS = 12;
     private static final int SIN_MASK = 4095;
     private static final int SIN_COUNT = 4096;
-    public static final float PI = (float)Math.PI;
-    public static final float PI2 = ((float)Math.PI * 2F);
-    public static final float PId2 = ((float)Math.PI / 2F);
-    private static final float radFull = ((float)Math.PI * 2F);
-    private static final float degFull = 360.0F;
-    private static final float radToIndex = 651.8986F;
-    private static final float degToIndex = 11.377778F;
-    public static final float deg2Rad = 0.017453292F;
+    private static final int SIN_COUNT_D4 = 1024;
+    public static final float PI = MathUtils.roundToFloat(Math.PI);
+    public static final float PI2 = MathUtils.roundToFloat((Math.PI * 2D));
+    public static final float PId2 = MathUtils.roundToFloat((Math.PI / 2D));
+    private static final float radToIndex = MathUtils.roundToFloat(651.8986469044033D);
+    public static final float deg2Rad = MathUtils.roundToFloat(0.017453292519943295D);
     private static final float[] SIN_TABLE_FAST = new float[4096];
     public static boolean fastMath = false;
 
@@ -43,7 +42,7 @@ public class MathHelper
      */
     public static float sin(float value)
     {
-        return fastMath ? SIN_TABLE_FAST[(int)(value * 651.8986F) & 4095] : SIN_TABLE[(int)(value * 10430.378F) & 65535];
+        return fastMath ? SIN_TABLE_FAST[(int)(value * radToIndex) & 4095] : SIN_TABLE[(int)(value * 10430.378F) & 65535];
     }
 
     /**
@@ -51,7 +50,7 @@ public class MathHelper
      */
     public static float cos(float value)
     {
-        return fastMath ? SIN_TABLE_FAST[(int)((value + ((float)Math.PI / 2F)) * 651.8986F) & 4095] : SIN_TABLE[(int)(value * 10430.378F + 16384.0F) & 65535];
+        return fastMath ? SIN_TABLE_FAST[(int)(value * radToIndex + 1024.0F) & 4095] : SIN_TABLE[(int)(value * 10430.378F + 16384.0F) & 65535];
     }
 
     public static float sqrt(float value)
@@ -93,7 +92,7 @@ public class MathHelper
     /**
      * Long version of floor()
      */
-    public static long lFloor(double value)
+    public static long lfloor(double value)
     {
         long i = (long)value;
         return value < (double)i ? i - 1L : i;
@@ -253,9 +252,9 @@ public class MathHelper
         return (numerator % denominator + denominator) % denominator;
     }
 
-    public static double func_191273_b(double p_191273_0_, double p_191273_2_)
+    public static double positiveModulo(double numerator, double denominator)
     {
-        return (p_191273_0_ % p_191273_2_ + p_191273_2_) % p_191273_2_;
+        return (numerator % denominator + denominator) % denominator;
     }
 
     /**
@@ -301,7 +300,7 @@ public class MathHelper
     /**
      * Adjust the angle so that his value is in range [-180;180[
      */
-    public static int clampAngle(int angle)
+    public static int wrapDegrees(int angle)
     {
         angle = angle % 360;
 
@@ -405,7 +404,7 @@ public class MathHelper
 
     /**
      * Rounds the first parameter up to the next interval of the second parameter.
-     *
+     *  
      * For instance, {@code roundUp(1, 4)} returns 4; {@code roundUp(0, 4)} returns 0; and {@code roundUp(4, 4)} returns
      * 4.
      */
@@ -567,6 +566,10 @@ public class MathHelper
         }
     }
 
+    /**
+     * Computes 1/sqrt(n) using <a href="https://en.wikipedia.org/wiki/Fast_inverse_square_root">the fast inverse square
+     * root</a> with a constant of 0x5FE6EB50C7B537AA.
+     */
     public static double fastInvSqrt(double p_181161_0_)
     {
         double d0 = 0.5D * p_181161_0_;
@@ -653,14 +656,9 @@ public class MathHelper
             SIN_TABLE[i] = (float)Math.sin((double)i * Math.PI * 2.0D / 65536.0D);
         }
 
-        for (int j = 0; j < 4096; ++j)
+        for (int j = 0; j < SIN_TABLE_FAST.length; ++j)
         {
-            SIN_TABLE_FAST[j] = (float)Math.sin((double)(((float)j + 0.5F) / 4096.0F * ((float)Math.PI * 2F)));
-        }
-
-        for (int k = 0; k < 360; k += 90)
-        {
-            SIN_TABLE_FAST[(int)((float)k * 11.377778F) & 4095] = (float)Math.sin((double)((float)k * 0.017453292F));
+            SIN_TABLE_FAST[j] = MathUtils.roundToFloat(Math.sin((double)j * Math.PI * 2.0D / 4096.0D));
         }
 
         MULTIPLY_DE_BRUIJN_BIT_POSITION = new int[] {0, 1, 28, 2, 29, 14, 24, 3, 30, 22, 20, 15, 25, 17, 4, 8, 31, 27, 13, 23, 21, 19, 16, 7, 26, 12, 18, 6, 11, 5, 10, 9};
@@ -668,12 +666,12 @@ public class MathHelper
         ASINE_TAB = new double[257];
         COS_TAB = new double[257];
 
-        for (int l = 0; l < 257; ++l)
+        for (int k = 0; k < 257; ++k)
         {
-            double d0 = (double)l / 256.0D;
+            double d0 = (double)k / 256.0D;
             double d1 = Math.asin(d0);
-            COS_TAB[l] = Math.cos(d1);
-            ASINE_TAB[l] = d1;
+            COS_TAB[k] = Math.cos(d1);
+            ASINE_TAB[k] = d1;
         }
     }
 }

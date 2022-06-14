@@ -7,8 +7,8 @@ import net.minecraft.client.model.ModelSkeletonHead;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RenderWitherSkull;
 import net.minecraft.entity.projectile.EntityWitherSkull;
-import optifine.Config;
-import optifine.Reflector;
+import net.minecraft.src.Config;
+import net.optifine.reflect.Reflector;
 
 public class ModelAdapterWitherSkull extends ModelAdapter
 {
@@ -33,6 +33,11 @@ public class ModelAdapterWitherSkull extends ModelAdapter
             ModelSkeletonHead modelskeletonhead = (ModelSkeletonHead)model;
             return modelPart.equals("head") ? modelskeletonhead.skeletonHead : null;
         }
+    }
+
+    public String[] getModelRendererNames()
+    {
+        return new String[] {"head"};
     }
 
     public IEntityRenderer makeEntityRender(ModelBase modelBase, float shadowSize)

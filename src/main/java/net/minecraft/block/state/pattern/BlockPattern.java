@@ -128,8 +128,8 @@ public class BlockPattern
     {
         if (finger != thumb && finger != thumb.getOpposite())
         {
-            Vec3i vec3i = new Vec3i(finger.getFrontOffsetX(), finger.getFrontOffsetY(), finger.getFrontOffsetZ());
-            Vec3i vec3i1 = new Vec3i(thumb.getFrontOffsetX(), thumb.getFrontOffsetY(), thumb.getFrontOffsetZ());
+            Vec3i vec3i = new Vec3i(finger.getXOffset(), finger.getYOffset(), finger.getZOffset());
+            Vec3i vec3i1 = new Vec3i(thumb.getXOffset(), thumb.getYOffset(), thumb.getZOffset());
             Vec3i vec3i2 = vec3i.crossProduct(vec3i1);
             return pos.add(vec3i1.getX() * -thumbOffset + vec3i2.getX() * palmOffset + vec3i.getX() * fingerOffset, vec3i1.getY() * -thumbOffset + vec3i2.getY() * palmOffset + vec3i.getY() * fingerOffset, vec3i1.getZ() * -thumbOffset + vec3i2.getZ() * palmOffset + vec3i.getZ() * fingerOffset);
         }
@@ -166,15 +166,15 @@ public class BlockPattern
         private final int height;
         private final int depth;
 
-        public PatternHelper(BlockPos posIn, EnumFacing fingerIn, EnumFacing thumbIn, LoadingCache<BlockPos, BlockWorldState> lcacheIn, int p_i46378_5_, int p_i46378_6_, int p_i46378_7_)
+        public PatternHelper(BlockPos posIn, EnumFacing fingerIn, EnumFacing thumbIn, LoadingCache<BlockPos, BlockWorldState> lcacheIn, int widthIn, int heightIn, int depthIn)
         {
             this.frontTopLeft = posIn;
             this.forwards = fingerIn;
             this.up = thumbIn;
             this.lcache = lcacheIn;
-            this.width = p_i46378_5_;
-            this.height = p_i46378_6_;
-            this.depth = p_i46378_7_;
+            this.width = widthIn;
+            this.height = heightIn;
+            this.depth = depthIn;
         }
 
         public BlockPos getFrontTopLeft()

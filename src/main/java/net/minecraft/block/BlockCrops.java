@@ -1,8 +1,6 @@
 package net.minecraft.block;
 
 import java.util.Random;
-
-import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
@@ -33,6 +31,10 @@ public class BlockCrops extends BlockBush implements IGrowable
         this.disableStats();
     }
 
+    /**
+     * @deprecated call via {@link IBlockState#getBoundingBox(IBlockAccess,BlockPos)} whenever possible.
+     * Implementing/overriding is fine.
+     */
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
         return CROPS_AABB[((Integer)state.getValue(this.getAgeProperty())).intValue()];
@@ -133,16 +135,16 @@ public class BlockCrops extends BlockBush implements IGrowable
             
     	}
     	else {
-            int i = this.getAge(state) + this.getBonemealAgeIncrease(worldIn);
-            int j = this.getMaxAge();
-
-            if (i > j)
-            {
-                i = j;
-            }
-
-            worldIn.setBlockState(pos, this.withAge(i), 2);
-    	}
+	        int i = this.getAge(state) + this.getBonemealAgeIncrease(worldIn);
+	        int j = this.getMaxAge();
+	
+	        if (i > j)
+	        {
+	            i = j;
+	        }
+	
+	        worldIn.setBlockState(pos, this.withAge(i), 2);
+	    }
     }
 
     protected int getBonemealAgeIncrease(World worldIn)
@@ -297,5 +299,4 @@ public class BlockCrops extends BlockBush implements IGrowable
     {
         return new BlockStateContainer(this, new IProperty[] {AGE});
     }
-    
 }

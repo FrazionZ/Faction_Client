@@ -95,8 +95,8 @@ public class ServerPinger
 
                     if (serverstatusresponse.getPlayers() != null)
                     {
-                        server.populationInfo = ""+serverstatusresponse.getPlayers().getOnlinePlayerCount();
-                    	//server.populationInfo = TextFormatting.GRAY + "" + serverstatusresponse.getPlayers().getOnlinePlayerCount() + "" + TextFormatting.DARK_GRAY + "/" + TextFormatting.GRAY + serverstatusresponse.getPlayers().getMaxPlayers();
+                    	// Server Pinger Nb Joueurs
+                        server.populationInfo = TextFormatting.GRAY + "" + serverstatusresponse.getPlayers().getOnlinePlayerCount() + "" + TextFormatting.DARK_GRAY + "/" + TextFormatting.GRAY + serverstatusresponse.getPlayers().getMaxPlayers();
 
                         if (ArrayUtils.isNotEmpty(serverstatusresponse.getPlayers().getPlayers()))
                         {
@@ -127,7 +127,7 @@ public class ServerPinger
                     }
                     else
                     {
-                    	server.populationInfo = TextFormatting.DARK_GRAY + I18n.format("multiplayer.status.unknown");
+                        server.populationInfo = TextFormatting.DARK_GRAY + I18n.format("multiplayer.status.unknown");
                     }
 
                     if (serverstatusresponse.getFavicon() != null)
@@ -256,8 +256,7 @@ public class ServerPinger
                                 server.version = -1;
                                 server.gameVersion = s1;
                                 server.serverMOTD = s2;
-                                server.populationInfo = "" + j;
-                                //server.populationInfo = TextFormatting.GRAY + "" + j + "" + TextFormatting.DARK_GRAY + "/" + TextFormatting.GRAY + k;
+                                server.populationInfo = TextFormatting.GRAY + "" + j + "" + TextFormatting.DARK_GRAY + "/" + TextFormatting.GRAY + k;
                             }
                         }
 
@@ -289,7 +288,7 @@ public class ServerPinger
                 else
                 {
                     iterator.remove();
-                    networkmanager.checkDisconnected();
+                    networkmanager.handleDisconnection();
                 }
             }
         }

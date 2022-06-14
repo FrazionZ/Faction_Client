@@ -4,9 +4,14 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.IdentityHashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
@@ -14,10 +19,10 @@ import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.src.Config;
 import net.minecraft.util.ResourceLocation;
 import net.optifine.entity.model.anim.ModelResolver;
 import net.optifine.entity.model.anim.ModelUpdater;
-import optifine.Config;
 
 public class CustomEntityModels
 {
@@ -53,7 +58,7 @@ public class CustomEntityModels
                 for (int i = 0; i < aresourcelocation.length; ++i)
                 {
                     ResourceLocation resourcelocation = aresourcelocation[i];
-                    Config.dbg("CustomEntityModel: " + resourcelocation.getResourcePath());
+                    Config.dbg("CustomEntityModel: " + resourcelocation.getPath());
                     IEntityRenderer ientityrenderer = parseEntityRender(resourcelocation);
 
                     if (ientityrenderer != null)
@@ -105,7 +110,7 @@ public class CustomEntityModels
 
     private static Map<Class, TileEntitySpecialRenderer> getTileEntityRenderMap()
     {
-        Map<Class, TileEntitySpecialRenderer> map = TileEntityRendererDispatcher.instance.mapSpecialRenderers;
+        final Map<Class, TileEntitySpecialRenderer> map = TileEntityRendererDispatcher.instance.renderers;
 
         if (originalTileEntityRenderMap == null)
         {
@@ -143,7 +148,7 @@ public class CustomEntityModels
         try
         {
             JsonObject jsonobject = CustomEntityModelParser.loadJson(location);
-            IEntityRenderer ientityrenderer = parseEntityRender(jsonobject, location.getResourcePath());
+            IEntityRenderer ientityrenderer = parseEntityRender(jsonobject, location.getPath());
             return ientityrenderer;
         }
         catch (IOException ioexception)
@@ -271,7 +276,21 @@ public class CustomEntityModels
 
                 if (modelrenderer.childModels != null)
                 {
-                    modelrenderer.childModels.clear();
+                    ModelRenderer[] amodelrenderer = modelAdapter.getModelRenderers(model);
+                    Set<ModelRenderer> set = Collections.<ModelRenderer>newSetFromMap(new IdentityHashMap());
+                    set.addAll(Arrays.asList(amodelrenderer));
+                    List<ModelRenderer> list = modelrenderer.childModels;
+                    Iterator iterator = list.iterator();
+
+                    while (iterator.hasNext())
+                    {
+                        ModelRenderer modelrenderer1 = (ModelRenderer)iterator.next();
+
+                        if (!set.contains(modelrenderer1))
+                        {
+                            iterator.remove();
+                        }
+                    }
                 }
             }
 

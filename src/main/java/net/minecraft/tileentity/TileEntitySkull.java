@@ -126,11 +126,20 @@ public class TileEntitySkull extends TileEntity implements ITickable
     }
 
     @Nullable
+
+    /**
+     * Retrieves packet to send to the client whenever this Tile Entity is resynced via World.notifyBlockUpdate. For
+     * modded TE's, this packet comes back to you clientside in {@link #onDataPacket}
+     */
     public SPacketUpdateTileEntity getUpdatePacket()
     {
         return new SPacketUpdateTileEntity(this.pos, 4, this.getUpdateTag());
     }
 
+    /**
+     * Get an NBT compound to sync to the client with SPacketChunkData, used for initial loading of the chunk or when
+     * many blocks change at once. This compound comes back to you clientside in {@link handleUpdateTag}
+     */
     public NBTTagCompound getUpdateTag()
     {
         return this.writeToNBT(new NBTTagCompound());
@@ -152,11 +161,11 @@ public class TileEntitySkull extends TileEntity implements ITickable
 
     private void updatePlayerProfile()
     {
-        this.playerProfile = updateGameprofile(this.playerProfile);
+        this.playerProfile = updateGameProfile(this.playerProfile);
         this.markDirty();
     }
 
-    public static GameProfile updateGameprofile(GameProfile input)
+    public static GameProfile updateGameProfile(GameProfile input)
     {
         if (input != null && !StringUtils.isNullOrEmpty(input.getName()))
         {
@@ -210,19 +219,19 @@ public class TileEntitySkull extends TileEntity implements ITickable
         this.skullRotation = rotation;
     }
 
-    public void mirror(Mirror p_189668_1_)
+    public void mirror(Mirror mirrorIn)
     {
         if (this.world != null && this.world.getBlockState(this.getPos()).getValue(BlockSkull.FACING) == EnumFacing.UP)
         {
-            this.skullRotation = p_189668_1_.mirrorRotation(this.skullRotation, 16);
+            this.skullRotation = mirrorIn.mirrorRotation(this.skullRotation, 16);
         }
     }
 
-    public void rotate(Rotation p_189667_1_)
+    public void rotate(Rotation rotationIn)
     {
         if (this.world != null && this.world.getBlockState(this.getPos()).getValue(BlockSkull.FACING) == EnumFacing.UP)
         {
-            this.skullRotation = p_189667_1_.rotate(this.skullRotation, 16);
+            this.skullRotation = rotationIn.rotate(this.skullRotation, 16);
         }
     }
 }

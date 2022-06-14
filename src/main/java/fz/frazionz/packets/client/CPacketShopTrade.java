@@ -26,14 +26,14 @@ public class CPacketShopTrade implements Packet<INetHandlerPlayServer> {
 	
 	public void writePacketData(PacketBuffer buf) throws IOException {
 		buf.writeInt(this.boutiqueTypeId);
-		buf.writeUuid(this.playerUUID);
+		buf.writeUniqueId(this.playerUUID);
 		buf.writeInt(this.amount);
 		buf.writeInt(this.tradeType);
 	}
 
 	public void readPacketData(PacketBuffer buf) throws IOException {
 		this.boutiqueTypeId = buf.readInt();
-		this.playerUUID = buf.readUuid();
+		this.playerUUID = buf.readUniqueId();
 		this.amount = buf.readInt();
 		this.tradeType = buf.readInt();
 	}

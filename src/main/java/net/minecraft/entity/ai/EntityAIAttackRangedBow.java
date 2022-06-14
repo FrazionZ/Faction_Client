@@ -19,12 +19,12 @@ public class EntityAIAttackRangedBow<T extends EntityMob & IRangedAttackMob> ext
     private boolean strafingBackwards;
     private int strafingTime = -1;
 
-    public EntityAIAttackRangedBow(T p_i47515_1_, double p_i47515_2_, int p_i47515_4_, float p_i47515_5_)
+    public EntityAIAttackRangedBow(T mob, double moveSpeedAmpIn, int attackCooldownIn, float maxAttackDistanceIn)
     {
-        this.entity = p_i47515_1_;
-        this.moveSpeedAmp = p_i47515_2_;
-        this.attackCooldown = p_i47515_4_;
-        this.maxAttackDistance = p_i47515_5_ * p_i47515_5_;
+        this.entity = mob;
+        this.moveSpeedAmp = moveSpeedAmpIn;
+        this.attackCooldown = attackCooldownIn;
+        this.maxAttackDistance = maxAttackDistanceIn * maxAttackDistanceIn;
         this.setMutexBits(3);
     }
 
@@ -43,13 +43,13 @@ public class EntityAIAttackRangedBow<T extends EntityMob & IRangedAttackMob> ext
 
     protected boolean isBowInMainhand()
     {
-        return !this.entity.getHeldItemMainhand().func_190926_b() && this.entity.getHeldItemMainhand().getItem() == Items.BOW;
+        return !this.entity.getHeldItemMainhand().isEmpty() && this.entity.getHeldItemMainhand().getItem() == Items.BOW;
     }
 
     /**
      * Returns whether an in-progress EntityAIBase should continue executing
      */
-    public boolean continueExecuting()
+    public boolean shouldContinueExecuting()
     {
         return (this.shouldExecute() || !this.entity.getNavigator().noPath()) && this.isBowInMainhand();
     }
@@ -64,7 +64,7 @@ public class EntityAIAttackRangedBow<T extends EntityMob & IRangedAttackMob> ext
     }
 
     /**
-     * Resets the task
+     * Reset the task's internal state. Called when this task is interrupted by another one
      */
     public void resetTask()
     {
@@ -76,7 +76,7 @@ public class EntityAIAttackRangedBow<T extends EntityMob & IRangedAttackMob> ext
     }
 
     /**
-     * Updates the task
+     * Keep ticking a continuous task that has already been started
      */
     public void updateTask()
     {
@@ -104,7 +104,7 @@ public class EntityAIAttackRangedBow<T extends EntityMob & IRangedAttackMob> ext
 
             if (d0 <= (double)this.maxAttackDistance && this.seeTime >= 20)
             {
-                this.entity.getNavigator().clearPathEntity();
+                this.entity.getNavigator().clearPath();
                 ++this.strafingTime;
             }
             else

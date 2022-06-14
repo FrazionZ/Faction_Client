@@ -15,9 +15,9 @@ public class GuiShareToLan extends GuiScreen
     private String gameMode = "survival";
     private boolean allowCheats;
 
-    public GuiShareToLan(GuiScreen p_i1055_1_)
+    public GuiShareToLan(GuiScreen lastScreenIn)
     {
-        this.lastScreen = p_i1055_1_;
+        this.lastScreen = lastScreenIn;
     }
 
     /**
@@ -52,7 +52,7 @@ public class GuiShareToLan extends GuiScreen
     /**
      * Called by the controls from the buttonList when activated. (Mouse pressed for buttons)
      */
-    protected void actionPerformed(GuiButton button, int mouseButton) throws IOException
+    protected void actionPerformed(GuiButton button, int keyCode) throws IOException
     {
         if (button.id == 102)
         {
@@ -109,8 +109,8 @@ public class GuiShareToLan extends GuiScreen
     public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
         this.drawDefaultBackground();
-        this.drawCenteredString(this.fontRendererObj, I18n.format("lanServer.title"), this.width / 2, 50, 16777215);
-        this.drawCenteredString(this.fontRendererObj, I18n.format("lanServer.otherPlayers"), this.width / 2, 82, 16777215);
+        this.drawCenteredString(this.fontRenderer, I18n.format("lanServer.title"), this.width / 2, 50, 16777215);
+        this.drawCenteredString(this.fontRenderer, I18n.format("lanServer.otherPlayers"), this.width / 2, 82, 16777215);
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
 }

@@ -111,6 +111,7 @@ public class SpawnEggNames implements IFixableData
         astring[101] = "Rabbit";
         astring[120] = "Villager";
         astring[200] = "EnderCrystal";
+        
         astring[210] = "PrimedZTnt";
         astring[211] = "nether_spider";
         astring[212] = "big_xp";

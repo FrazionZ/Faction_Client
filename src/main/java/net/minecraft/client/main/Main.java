@@ -22,7 +22,6 @@ public class Main
 {
     public static void main(String[] p_main_0_)
     {
-    	System.setProperty("http.agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
         OptionParser optionparser = new OptionParser();
         optionparser.allowsUnrecognizedOptions();
         optionparser.accepts("demo");
@@ -41,14 +40,15 @@ public class Main
         OptionSpec<String> optionspec10 = optionparser.accepts("uuid").withRequiredArg();
         OptionSpec<String> optionspec11 = optionparser.accepts("accessToken").withRequiredArg().required();
         OptionSpec<String> optionspec12 = optionparser.accepts("version").withRequiredArg().required();
-        OptionSpec<Integer> optionspec13 = optionparser.accepts("width").withRequiredArg().<Integer>ofType(Integer.class).defaultsTo(Integer.valueOf(854));
-        OptionSpec<Integer> optionspec14 = optionparser.accepts("height").withRequiredArg().<Integer>ofType(Integer.class).defaultsTo(Integer.valueOf(480));
+        OptionSpec<Integer> optionspec13 = optionparser.accepts("width").withRequiredArg().<Integer>ofType(Integer.class).defaultsTo(Integer.valueOf(1280));
+        OptionSpec<Integer> optionspec14 = optionparser.accepts("height").withRequiredArg().<Integer>ofType(Integer.class).defaultsTo(Integer.valueOf(720));
         OptionSpec<String> optionspec15 = optionparser.accepts("userProperties").withRequiredArg().defaultsTo("{}");
         OptionSpec<String> optionspec16 = optionparser.accepts("profileProperties").withRequiredArg().defaultsTo("{}");
         OptionSpec<String> optionspec17 = optionparser.accepts("assetIndex").withRequiredArg();
         OptionSpec<String> optionspec18 = optionparser.accepts("userType").withRequiredArg().defaultsTo("legacy");
         OptionSpec<String> optionspec19 = optionparser.accepts("versionType").withRequiredArg().defaultsTo("release");
-        OptionSpec<String> optionspec41 = optionparser.accepts("discordRPC").withOptionalArg().defaultsTo("true");
+		OptionSpec<String> optionspec41 = optionparser.accepts("discordRPC").withOptionalArg().defaultsTo("true");
+        OptionSpec<String> optionspec42 = optionparser.accepts("dev-debug").withOptionalArg().defaultsTo("false");
         OptionSpec<String> optionspec20 = optionparser.nonOptions();
         OptionSet optionset = optionparser.parse(p_main_0_);
         List<String> list = optionset.valuesOf(optionspec20);
@@ -76,7 +76,7 @@ public class Main
         final String s1 = (String)optionset.valueOf(optionspec7);
         final String s2 = (String)optionset.valueOf(optionspec8);
 
-        if (!proxy.equals(Proxy.NO_PROXY) && isNullOrEmpty(s1) && isNullOrEmpty(s2))
+        if (!proxy.equals(Proxy.NO_PROXY) && isNotEmpty(s1) && isNotEmpty(s2))
         {
             Authenticator.setDefault(new Authenticator()
             {
@@ -104,7 +104,7 @@ public class Main
         String s6 = optionset.has(optionspec17) ? (String)optionspec17.value(optionset) : null;
         String s7 = (String)optionset.valueOf(optionspec);
         Integer integer = (Integer)optionset.valueOf(optionspec1);
-        Session session = new Session(optionspec9.value(optionset), s5, optionspec11.value(optionset), optionspec18.value(optionset), Boolean.parseBoolean(optionspec41.value(optionset)));
+        Session session = new Session(optionspec9.value(optionset), s5, optionspec11.value(optionset), optionspec18.value(optionset), Boolean.parseBoolean(optionspec41.value(optionset)), Boolean.parseBoolean(optionspec42.value(optionset)));
         GameConfiguration gameconfiguration = new GameConfiguration(new GameConfiguration.UserInformation(session, propertymap, propertymap1, proxy), new GameConfiguration.DisplayInformation(i, j, flag, flag1), new GameConfiguration.FolderInformation(file1, file3, file2, s6), new GameConfiguration.GameInformation(flag2, s3, s4), new GameConfiguration.ServerInformation(s7, integer.intValue()));
         Runtime.getRuntime().addShutdownHook(new Thread("Client Shutdown Thread")
         {
@@ -118,9 +118,9 @@ public class Main
     }
 
     /**
-     * Returns whether a string is either null or empty.
+     * Returns true if the given string is neither null nor empty.
      */
-    private static boolean isNullOrEmpty(String str)
+    private static boolean isNotEmpty(String str)
     {
         return str != null && !str.isEmpty();
     }

@@ -183,7 +183,7 @@ public class StructureStrongholdPieces
 
                     if (i < 0)
                     {
-                        if (!structurestrongholdpieces$pieceweight.canSpawnMoreStructuresOfType(p_175955_7_) || structurestrongholdpieces$pieceweight == p_175955_0_.strongholdPieceWeight)
+                        if (!structurestrongholdpieces$pieceweight.canSpawnMoreStructuresOfType(p_175955_7_) || structurestrongholdpieces$pieceweight == p_175955_0_.lastPlaced)
                         {
                             break;
                         }
@@ -193,7 +193,7 @@ public class StructureStrongholdPieces
                         if (structurestrongholdpieces$stronghold1 != null)
                         {
                             ++structurestrongholdpieces$pieceweight.instancesSpawned;
-                            p_175955_0_.strongholdPieceWeight = structurestrongholdpieces$pieceweight;
+                            p_175955_0_.lastPlaced = structurestrongholdpieces$pieceweight;
 
                             if (!structurestrongholdpieces$pieceweight.canSpawnMoreStructures())
                             {
@@ -665,7 +665,7 @@ public class StructureStrongholdPieces
 
                 this.fillWithRandomizedBlocks(worldIn, structureBoundingBoxIn, 0, 0, 0, 13, i - 1, 14, true, randomIn, StructureStrongholdPieces.STRONGHOLD_STONES);
                 this.placeDoor(worldIn, randomIn, structureBoundingBoxIn, this.entryDoor, 4, 1, 0);
-                this.func_189914_a(worldIn, structureBoundingBoxIn, randomIn, 0.07F, 2, 1, 1, 11, 4, 13, Blocks.WEB.getDefaultState(), Blocks.WEB.getDefaultState(), false, 0);
+                this.generateMaybeBox(worldIn, structureBoundingBoxIn, randomIn, 0.07F, 2, 1, 1, 11, 4, 13, Blocks.WEB.getDefaultState(), Blocks.WEB.getDefaultState(), false, 0);
                 int j = 1;
                 int k = 12;
 
@@ -922,7 +922,7 @@ public class StructureStrongholdPieces
 
                     if (tileentity instanceof TileEntityMobSpawner)
                     {
-                        ((TileEntityMobSpawner)tileentity).getSpawnerBaseLogic().func_190894_a(EntityList.func_191306_a(EntitySilverfish.class));
+                        ((TileEntityMobSpawner)tileentity).getSpawnerBaseLogic().setEntityId(EntityList.getKey(EntitySilverfish.class));
                     }
                 }
             }
@@ -1276,7 +1276,7 @@ public class StructureStrongholdPieces
 
     public static class Stairs2 extends StructureStrongholdPieces.Stairs
     {
-        public StructureStrongholdPieces.PieceWeight strongholdPieceWeight;
+        public StructureStrongholdPieces.PieceWeight lastPlaced;
         public StructureStrongholdPieces.PortalRoom strongholdPortalRoom;
         public List<StructureComponent> pendingChildren = Lists.<StructureComponent>newArrayList();
 
@@ -1353,9 +1353,9 @@ public class StructureStrongholdPieces
         {
         }
 
-        public void selectBlocks(Random rand, int x, int y, int z, boolean p_75062_5_)
+        public void selectBlocks(Random rand, int x, int y, int z, boolean wall)
         {
-            if (p_75062_5_)
+            if (wall)
             {
                 float f = rand.nextFloat();
 

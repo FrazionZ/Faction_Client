@@ -5,9 +5,9 @@ import fz.frazionz.api.data.SuccessAPIDataStocker;
 import fz.frazionz.api.gsonObj.ShopType;
 import fz.frazionz.data.FzUserData;
 import fz.frazionz.gui.GuiButtonOnlyImage;
-import fz.frazionz.gui.GuiShopButton;
-import fz.frazionz.gui.GuiShopCategoryList;
-import fz.frazionz.gui.GuiShopItems;
+import fz.frazionz.gui.shop.GuiListItemButton;
+import fz.frazionz.gui.shop.GuiShopCategoryList;
+import fz.frazionz.gui.shop.GuiShopItems;
 import fz.frazionz.utils.MathUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
@@ -84,10 +84,10 @@ public class GuiSuccessType extends GuiScreen {
         this.successTypeList.drawScreen(mouseX, mouseY, partialTicks);
         this.drawTopList();
 
-        this.fontRendererObj.drawScaleString("Mes succès", this.guiLeft + 40, this.guiTop + 8, 2F, Color.white);
+        this.fontRenderer.drawScaleString("Mes succès", this.guiLeft + 40, this.guiTop + 8, 2F, Color.white);
         
         String s = "Progression : {PROGRESS_GETTING}";
-        this.fontRendererObj.drawString(s, this.width / 2 - this.fontRendererObj.getStringWidth(s) / 2, this.guiTop + this.ySize - 22, 16777215, true);
+        this.fontRenderer.drawString(s, this.width / 2 - this.fontRenderer.getStringWidth(s) / 2, this.guiTop + this.ySize - 22, 16777215, true);
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
 

@@ -16,22 +16,12 @@ import java.util.List;
 import org.apache.commons.io.IOUtils;
 
 import com.google.common.base.Splitter;
-import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 
 import fz.frazionz.gui.hud.ScreenPosition;
-import net.minecraft.client.settings.GameSettings;
 import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.client.tutorial.TutorialSteps;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EnumPlayerModelParts;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumHandSide;
-import net.minecraft.util.JsonUtils;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.datafix.FixTypes;
-import net.minecraft.world.EnumDifficulty;
-import optifine.Reflector;
+import net.optifine.reflect.Reflector;
 
 public class FileManager {
 

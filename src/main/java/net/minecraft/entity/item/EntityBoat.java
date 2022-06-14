@@ -49,11 +49,11 @@ public class EntityBoat extends Entity
     private float outOfControlTicks;
     private float deltaRotation;
     private int lerpSteps;
-    private double boatPitch;
+    private double lerpX;
     private double lerpY;
     private double lerpZ;
-    private double boatYaw;
-    private double lerpXRot;
+    private double lerpYaw;
+    private double lerpPitch;
     private boolean leftInputDown;
     private boolean rightInputDown;
     private boolean forwardInputDown;
@@ -125,7 +125,12 @@ public class EntityBoat extends Entity
     @Nullable
 
     /**
-     * Returns the collision bounding box for this entity
+     * Returns the <b>solid</b> collision bounding box for this entity. Used to make (e.g.) boats solid. Return null if
+     * this entity is not solid.
+     *  
+     * For general purposes, use {@link #width} and {@link #height}.
+     *  
+     * @see getEntityBoundingBox
      */
     public AxisAlignedBB getCollisionBoundingBox()
     {
@@ -159,7 +164,7 @@ public class EntityBoat extends Entity
         }
         else if (!this.world.isRemote && !this.isDead)
         {
-            if (source instanceof EntityDamageSourceIndirect && source.getEntity() != null && this.isPassenger(source.getEntity()))
+            if (source instanceof EntityDamageSourceIndirect && source.getTrueSource() != null && this.isPassenger(source.getTrueSource()))
             {
                 return false;
             }
@@ -168,8 +173,8 @@ public class EntityBoat extends Entity
                 this.setForwardDirection(-this.getForwardDirection());
                 this.setTimeSinceHit(10);
                 this.setDamageTaken(this.getDamageTaken() + amount * 10.0F);
-                this.setBeenAttacked();
-                boolean flag = source.getEntity() instanceof EntityPlayer && ((EntityPlayer)source.getEntity()).capabilities.isCreativeMode;
+                this.markVelocityChanged();
+                boolean flag = source.getTrueSource() instanceof EntityPlayer && ((EntityPlayer)source.getTrueSource()).capabilities.isCreativeMode;
 
                 if (flag || this.getDamageTaken() > 40.0F)
                 {
@@ -252,15 +257,15 @@ public class EntityBoat extends Entity
     }
 
     /**
-     * Set the position and rotation values directly without any clamping.
+     * Sets a target for the client to interpolate towards over the next few ticks
      */
     public void setPositionAndRotationDirect(double x, double y, double z, float yaw, float pitch, int posRotationIncrements, boolean teleport)
     {
-        this.boatPitch = x;
+        this.lerpX = x;
         this.lerpY = y;
         this.lerpZ = z;
-        this.boatYaw = (double)yaw;
-        this.lerpXRot = (double)pitch;
+        this.lerpYaw = (double)yaw;
+        this.lerpPitch = (double)pitch;
         this.lerpSteps = 10;
     }
 
@@ -326,7 +331,7 @@ public class EntityBoat extends Entity
                 this.world.sendPacketToServer(new CPacketSteerBoat(this.getPaddleState(0), this.getPaddleState(1)));
             }
 
-            this.moveEntity(MoverType.SELF, this.motionX, this.motionY, this.motionZ);
+            this.move(MoverType.SELF, this.motionX, this.motionY, this.motionZ);
         }
         else
         {
@@ -341,13 +346,13 @@ public class EntityBoat extends Entity
             {
                 if (!this.isSilent() && (double)(this.paddlePositions[i] % ((float)Math.PI * 2F)) <= (Math.PI / 4D) && ((double)this.paddlePositions[i] + 0.39269909262657166D) % (Math.PI * 2D) >= (Math.PI / 4D))
                 {
-                    SoundEvent soundevent = this.func_193047_k();
+                    SoundEvent soundevent = this.getPaddleSound();
 
                     if (soundevent != null)
                     {
                         Vec3d vec3d = this.getLook(1.0F);
-                        double d0 = i == 1 ? -vec3d.zCoord : vec3d.zCoord;
-                        double d1 = i == 1 ? vec3d.xCoord : -vec3d.xCoord;
+                        double d0 = i == 1 ? -vec3d.z : vec3d.z;
+                        double d1 = i == 1 ? vec3d.x : -vec3d.x;
                         this.world.playSound((EntityPlayer)null, this.posX + d0, this.posY, this.posZ + d1, soundevent, this.getSoundCategory(), 1.0F, 0.8F + 0.4F * this.rand.nextFloat());
                     }
                 }
@@ -361,7 +366,7 @@ public class EntityBoat extends Entity
         }
 
         this.doBlockCollisions();
-        List<Entity> list = this.world.getEntitiesInAABBexcluding(this, this.getEntityBoundingBox().expand(0.20000000298023224D, -0.009999999776482582D, 0.20000000298023224D), EntitySelectors.getTeamCollisionPredicate(this));
+        List<Entity> list = this.world.getEntitiesInAABBexcluding(this, this.getEntityBoundingBox().grow(0.20000000298023224D, -0.009999999776482582D, 0.20000000298023224D), EntitySelectors.getTeamCollisionPredicate(this));
 
         if (!list.isEmpty())
         {
@@ -387,17 +392,17 @@ public class EntityBoat extends Entity
     }
 
     @Nullable
-    protected SoundEvent func_193047_k()
+    protected SoundEvent getPaddleSound()
     {
         switch (this.getBoatStatus())
         {
             case IN_WATER:
             case UNDER_WATER:
             case UNDER_FLOWING_WATER:
-                return SoundEvents.field_193779_I;
+                return SoundEvents.ENTITY_BOAT_PADDLE_WATER;
 
             case ON_LAND:
-                return SoundEvents.field_193778_H;
+                return SoundEvents.ENTITY_BOAT_PADDLE_LAND;
 
             case IN_AIR:
             default:
@@ -409,27 +414,27 @@ public class EntityBoat extends Entity
     {
         if (this.lerpSteps > 0 && !this.canPassengerSteer())
         {
-            double d0 = this.posX + (this.boatPitch - this.posX) / (double)this.lerpSteps;
+            double d0 = this.posX + (this.lerpX - this.posX) / (double)this.lerpSteps;
             double d1 = this.posY + (this.lerpY - this.posY) / (double)this.lerpSteps;
             double d2 = this.posZ + (this.lerpZ - this.posZ) / (double)this.lerpSteps;
-            double d3 = MathHelper.wrapDegrees(this.boatYaw - (double)this.rotationYaw);
+            double d3 = MathHelper.wrapDegrees(this.lerpYaw - (double)this.rotationYaw);
             this.rotationYaw = (float)((double)this.rotationYaw + d3 / (double)this.lerpSteps);
-            this.rotationPitch = (float)((double)this.rotationPitch + (this.lerpXRot - (double)this.rotationPitch) / (double)this.lerpSteps);
+            this.rotationPitch = (float)((double)this.rotationPitch + (this.lerpPitch - (double)this.rotationPitch) / (double)this.lerpSteps);
             --this.lerpSteps;
             this.setPosition(d0, d1, d2);
             this.setRotation(this.rotationYaw, this.rotationPitch);
         }
     }
 
-    public void setPaddleState(boolean p_184445_1_, boolean p_184445_2_)
+    public void setPaddleState(boolean left, boolean right)
     {
-        this.dataManager.set(DATA_ID_PADDLE[0], Boolean.valueOf(p_184445_1_));
-        this.dataManager.set(DATA_ID_PADDLE[1], Boolean.valueOf(p_184445_2_));
+        this.dataManager.set(DATA_ID_PADDLE[0], Boolean.valueOf(left));
+        this.dataManager.set(DATA_ID_PADDLE[1], Boolean.valueOf(right));
     }
 
-    public float getRowingTime(int p_184448_1_, float limbSwing)
+    public float getRowingTime(int side, float limbSwing)
     {
-        return this.getPaddleState(p_184448_1_) ? (float)MathHelper.clampedLerp((double)this.paddlePositions[p_184448_1_] - 0.39269909262657166D, (double)this.paddlePositions[p_184448_1_], (double)limbSwing) : 0.0F;
+        return this.getPaddleState(side) ? (float)MathHelper.clampedLerp((double)this.paddlePositions[side] - 0.39269909262657166D, (double)this.paddlePositions[side], (double)limbSwing) : 0.0F;
     }
 
     /**
@@ -504,7 +509,7 @@ public class EntityBoat extends Entity
 
                         if (iblockstate.getMaterial() == Material.WATER)
                         {
-                            f = Math.max(f, BlockLiquid.func_190973_f(iblockstate, this.world, blockpos$pooledmutableblockpos));
+                            f = Math.max(f, BlockLiquid.getBlockLiquidHeight(iblockstate, this.world, blockpos$pooledmutableblockpos));
                         }
 
                         if (f >= 1.0F)
@@ -609,7 +614,7 @@ public class EntityBoat extends Entity
 
                         if (iblockstate.getMaterial() == Material.WATER)
                         {
-                            float f = BlockLiquid.func_190972_g(iblockstate, this.world, blockpos$pooledmutableblockpos);
+                            float f = BlockLiquid.getLiquidHeight(iblockstate, this.world, blockpos$pooledmutableblockpos);
                             this.waterLevel = Math.max((double)f, this.waterLevel);
                             flag |= axisalignedbb.minY < (double)f;
                         }
@@ -654,7 +659,7 @@ public class EntityBoat extends Entity
                         blockpos$pooledmutableblockpos.setPos(k1, l1, i2);
                         IBlockState iblockstate = this.world.getBlockState(blockpos$pooledmutableblockpos);
 
-                        if (iblockstate.getMaterial() == Material.WATER && d0 < (double)BlockLiquid.func_190972_g(iblockstate, this.world, blockpos$pooledmutableblockpos))
+                        if (iblockstate.getMaterial() == Material.WATER && d0 < (double)BlockLiquid.getLiquidHeight(iblockstate, this.world, blockpos$pooledmutableblockpos))
                         {
                             if (((Integer)iblockstate.getValue(BlockLiquid.LEVEL)).intValue() != 0)
                             {
@@ -806,7 +811,7 @@ public class EntityBoat extends Entity
             }
 
             Vec3d vec3d = (new Vec3d((double)f, 0.0D, 0.0D)).rotateYaw(-this.rotationYaw * 0.017453292F - ((float)Math.PI / 2F));
-            passenger.setPosition(this.posX + vec3d.xCoord, this.posY + (double)f1, this.posZ + vec3d.zCoord);
+            passenger.setPosition(this.posX + vec3d.x, this.posY + (double)f1, this.posZ + vec3d.z);
             passenger.rotationYaw += this.deltaRotation;
             passenger.setRotationYawHead(passenger.getRotationYawHead() + this.deltaRotation);
             this.applyYawToEntity(passenger);
@@ -860,7 +865,7 @@ public class EntityBoat extends Entity
         }
     }
 
-    public boolean processInitialInteract(EntityPlayer player, EnumHand stack)
+    public boolean processInitialInteract(EntityPlayer player, EnumHand hand)
     {
         if (player.isSneaking())
         {
@@ -923,9 +928,9 @@ public class EntityBoat extends Entity
         }
     }
 
-    public boolean getPaddleState(int p_184457_1_)
+    public boolean getPaddleState(int side)
     {
-        return ((Boolean)this.dataManager.get(DATA_ID_PADDLE[p_184457_1_])).booleanValue() && this.getControllingPassenger() != null;
+        return ((Boolean)this.dataManager.get(DATA_ID_PADDLE[side])).booleanValue() && this.getControllingPassenger() != null;
     }
 
     /**

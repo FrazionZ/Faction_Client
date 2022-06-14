@@ -175,7 +175,7 @@ public class CompressedStreamTools
         else
         {
             input.readUTF();
-            NBTBase nbtbase = NBTBase.createNewByType(b0);
+            NBTBase nbtbase = NBTBase.create(b0);
 
             try
             {

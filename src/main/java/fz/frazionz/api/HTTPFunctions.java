@@ -4,14 +4,20 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import fz.frazionz.api.data.FZProfile;
-import fz.frazionz.api.data.FactionProfile;
-import fz.frazionz.api.gsonObj.*;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
 import com.google.gson.Gson;
 
+import fz.frazionz.api.data.FactionProfile;
+import fz.frazionz.api.gsonObj.BoutiqueItem;
+import fz.frazionz.api.gsonObj.BoutiqueType;
+import fz.frazionz.api.gsonObj.ObjPlayerSkinsInfo;
+import fz.frazionz.api.gsonObj.ServerData;
+import fz.frazionz.api.gsonObj.ShopItem;
+import fz.frazionz.api.gsonObj.ShopType;
+import fz.frazionz.api.gsonObj.SuccessObj;
+import fz.frazionz.api.gsonObj.SuccessType;
 import net.minecraft.client.Minecraft;
 
 public class HTTPFunctions {
@@ -75,30 +81,17 @@ public class HTTPFunctions {
 		return lst;
 	}
 
-	/*public static FactionProfile getFactionProfile()
+	public static FactionProfile getFactionProfile()
 	{
 		FactionProfile factionProfile = null;
 
-		HTTPReply reply = HTTPUtils.sendGet(HTTPEndpoints.FACTION_PROFILE+Minecraft.getMinecraft().getSession().getPlayerID());
+		HTTPReply reply = HTTPUtils.sendGet(HTTPEndpoints.FACTION_PROFILE + Minecraft.getMinecraft().getSession().getPlayerID());
 
 		if(reply.getStatusCode() == 200)
 		{
 			factionProfile = gson.fromJson(reply.getBody(), FactionProfile.class);
 		}
 		return factionProfile;
-	}*/
-
-	public static FZProfile getFZProfile(String s)
-	{
-		FZProfile fzProfile = null;
-
-		HTTPReply reply = HTTPUtils.sendGet(HTTPEndpoints.FZ_PROFILE_DATA+s);
-
-		if(reply.getStatusCode() == 200)
-		{
-			fzProfile = gson.fromJson(reply.getBody(), FZProfile.class);
-		}
-		return fzProfile;
 	}
 	
 	public static List<BoutiqueItem> getAllBoutiqueItems()

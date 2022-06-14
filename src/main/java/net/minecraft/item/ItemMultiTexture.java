@@ -4,13 +4,13 @@ import net.minecraft.block.Block;
 
 public class ItemMultiTexture extends ItemBlock
 {
-    protected final Block theBlock;
+    protected final Block unused;
     protected final ItemMultiTexture.Mapper nameFunction;
 
     public ItemMultiTexture(Block p_i47262_1_, Block p_i47262_2_, ItemMultiTexture.Mapper p_i47262_3_)
     {
         super(p_i47262_1_);
-        this.theBlock = p_i47262_2_;
+        this.unused = p_i47262_2_;
         this.nameFunction = p_i47262_3_;
         this.setMaxDamage(0);
         this.setHasSubtypes(true);
@@ -47,9 +47,9 @@ public class ItemMultiTexture extends ItemBlock
      * Returns the unlocalized name of this item. This version accepts an ItemStack so different stacks can have
      * different names based on their damage or NBT.
      */
-    public String getUnlocalizedName(ItemStack stack)
+    public String getTranslationKey(ItemStack stack)
     {
-        return super.getUnlocalizedName() + "." + this.nameFunction.apply(stack);
+        return super.getTranslationKey() + "." + this.nameFunction.apply(stack);
     }
 
     public interface Mapper

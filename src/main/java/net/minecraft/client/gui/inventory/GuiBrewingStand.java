@@ -16,11 +16,11 @@ public class GuiBrewingStand extends GuiContainer
     private final InventoryPlayer playerInventory;
     private final IInventory tileBrewingStand;
 
-    public GuiBrewingStand(InventoryPlayer playerInv, IInventory p_i45506_2_)
+    public GuiBrewingStand(InventoryPlayer playerInv, IInventory inventoryIn)
     {
-        super(new ContainerBrewingStand(playerInv, p_i45506_2_));
+        super(new ContainerBrewingStand(playerInv, inventoryIn));
         this.playerInventory = playerInv;
-        this.tileBrewingStand = p_i45506_2_;
+        this.tileBrewingStand = inventoryIn;
     }
 
     /**
@@ -30,7 +30,7 @@ public class GuiBrewingStand extends GuiContainer
     {
         this.drawDefaultBackground();
         super.drawScreen(mouseX, mouseY, partialTicks);
-        this.func_191948_b(mouseX, mouseY);
+        this.renderHoveredToolTip(mouseX, mouseY);
     }
 
     /**
@@ -40,8 +40,8 @@ public class GuiBrewingStand extends GuiContainer
     {
         String s = "Potion";
         String p = this.playerInventory.getDisplayName().getUnformattedText();
-        this.fontRendererObj.drawString(s, this.xSize / 2 - this.fontRendererObj.getStringWidth(s) / 2, 6, 16777067, true);
-        this.fontRendererObj.drawString(p, 11, this.ySize - 118 + 2, 16777067, true);
+        this.fontRenderer.drawString(s, this.xSize / 2 - this.fontRenderer.getStringWidth(s) / 2, 6, 16777067, true);
+        this.fontRenderer.drawString(p, 8, this.ySize - 96 + 2, 16777067, true);
     }
 
     /**
@@ -59,7 +59,7 @@ public class GuiBrewingStand extends GuiContainer
 
         if (l > 0)
         {
-            this.drawTexturedModalRect(i + 65, j + 66, 186, 29, l, 4);
+            this.drawTexturedModalRect(i + 60, j + 44, 176, 29, l, 4);
         }
 
         int i1 = this.tileBrewingStand.getField(0);
@@ -70,14 +70,14 @@ public class GuiBrewingStand extends GuiContainer
 
             if (j1 > 0)
             {
-                this.drawTexturedModalRect(i + 102, j + 38, 186, 0, 9, j1);
+                this.drawTexturedModalRect(i + 97, j + 16, 176, 0, 9, j1);
             }
 
             j1 = BUBBLELENGTHS[i1 / 2 % 7];
 
             if (j1 > 0)
             {
-                this.drawTexturedModalRect(i + 68, j + 36 + 29 - j1, 195, 29 - j1, 12, j1);
+                this.drawTexturedModalRect(i + 63, j + 14 + 29 - j1, 185, 29 - j1, 12, j1);
             }
         }
     }

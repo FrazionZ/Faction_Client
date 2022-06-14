@@ -71,29 +71,29 @@ public class BlockOnyxLadder extends Block
      */
     public boolean canPlaceBlockOnSide(World worldIn, BlockPos pos, EnumFacing side)
     {
-        if (this.func_193392_c(worldIn, pos.west(), side))
+        if (this.canAttachTo(worldIn, pos.west(), side))
         {
             return true;
         }
-        else if (this.func_193392_c(worldIn, pos.east(), side))
+        else if (this.canAttachTo(worldIn, pos.east(), side))
         {
             return true;
         }
-        else if (this.func_193392_c(worldIn, pos.north(), side))
+        else if (this.canAttachTo(worldIn, pos.north(), side))
         {
             return true;
         }
         else
         {
-            return this.func_193392_c(worldIn, pos.south(), side);
+            return this.canAttachTo(worldIn, pos.south(), side);
         }
     }
 
-    private boolean func_193392_c(World p_193392_1_, BlockPos p_193392_2_, EnumFacing p_193392_3_)
+    private boolean canAttachTo(World p_193392_1_, BlockPos p_193392_2_, EnumFacing p_193392_3_)
     {
         IBlockState iblockstate = p_193392_1_.getBlockState(p_193392_2_);
-        boolean flag = func_193382_c(iblockstate.getBlock());
-        return !flag && iblockstate.func_193401_d(p_193392_1_, p_193392_2_, p_193392_3_) == BlockFaceShape.SOLID && !iblockstate.canProvidePower();
+        boolean flag = isExceptBlockForAttachWithPiston(iblockstate.getBlock());
+        return !flag && iblockstate.getBlockFaceShape(p_193392_1_, p_193392_2_, p_193392_3_) == BlockFaceShape.SOLID && !iblockstate.canProvidePower();
     }
 
     /**
@@ -102,7 +102,7 @@ public class BlockOnyxLadder extends Block
      */
     public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
-        if (facing.getAxis().isHorizontal() && this.func_193392_c(worldIn, pos.offset(facing.getOpposite()), facing))
+        if (facing.getAxis().isHorizontal() && this.canAttachTo(worldIn, pos.offset(facing.getOpposite()), facing))
         {
             return this.getDefaultState().withProperty(FACING, facing);
         }
@@ -110,7 +110,7 @@ public class BlockOnyxLadder extends Block
         {
             for (EnumFacing enumfacing : EnumFacing.Plane.HORIZONTAL)
             {
-                if (this.func_193392_c(worldIn, pos.offset(enumfacing.getOpposite()), enumfacing))
+                if (this.canAttachTo(worldIn, pos.offset(enumfacing.getOpposite()), enumfacing))
                 {
                     return this.getDefaultState().withProperty(FACING, enumfacing);
                 }
@@ -129,7 +129,7 @@ public class BlockOnyxLadder extends Block
     {
         EnumFacing enumfacing = (EnumFacing)state.getValue(FACING);
 
-        if (!this.func_193392_c(worldIn, pos.offset(enumfacing.getOpposite()), enumfacing))
+        if (!this.canAttachTo(worldIn, pos.offset(enumfacing.getOpposite()), enumfacing))
         {
             this.dropBlockAsItem(worldIn, pos, state, 0);
             worldIn.setBlockToAir(pos);
@@ -148,7 +148,7 @@ public class BlockOnyxLadder extends Block
      */
     public IBlockState getStateFromMeta(int meta)
     {
-        EnumFacing enumfacing = EnumFacing.getFront(meta);
+        EnumFacing enumfacing = EnumFacing.byIndex(meta);
 
         if (enumfacing.getAxis() == EnumFacing.Axis.Y)
         {

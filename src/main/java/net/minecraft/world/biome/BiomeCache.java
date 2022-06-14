@@ -9,22 +9,22 @@ import net.minecraft.server.MinecraftServer;
 public class BiomeCache
 {
     /** Reference to the WorldChunkManager */
-    private final BiomeProvider chunkManager;
+    private final BiomeProvider provider;
 
     /** The last time this BiomeCache was cleaned, in milliseconds. */
     private long lastCleanupTime;
     private final Long2ObjectMap<BiomeCache.Block> cacheMap = new Long2ObjectOpenHashMap<BiomeCache.Block>(4096);
     private final List<BiomeCache.Block> cache = Lists.<BiomeCache.Block>newArrayList();
 
-    public BiomeCache(BiomeProvider chunkManagerIn)
+    public BiomeCache(BiomeProvider provider)
     {
-        this.chunkManager = chunkManagerIn;
+        this.provider = provider;
     }
 
     /**
      * Returns a biome cache block at location specified.
      */
-    public BiomeCache.Block getBiomeCacheBlock(int x, int z)
+    public BiomeCache.Block getEntry(int x, int z)
     {
         x = x >> 4;
         z = z >> 4;
@@ -44,7 +44,7 @@ public class BiomeCache
 
     public Biome getBiome(int x, int z, Biome defaultValue)
     {
-        Biome biome = this.getBiomeCacheBlock(x, z).getBiome(x, z);
+        Biome biome = this.getEntry(x, z).getBiome(x, z);
         return biome == null ? defaultValue : biome;
     }
 
@@ -68,7 +68,7 @@ public class BiomeCache
                 if (l > 30000L || l < 0L)
                 {
                     this.cache.remove(k--);
-                    long i1 = (long)biomecache$block.xPosition & 4294967295L | ((long)biomecache$block.zPosition & 4294967295L) << 32;
+                    long i1 = (long)biomecache$block.x & 4294967295L | ((long)biomecache$block.z & 4294967295L) << 32;
                     this.cacheMap.remove(i1);
                 }
             }
@@ -80,21 +80,21 @@ public class BiomeCache
      */
     public Biome[] getCachedBiomes(int x, int z)
     {
-        return this.getBiomeCacheBlock(x, z).biomes;
+        return this.getEntry(x, z).biomes;
     }
 
     public class Block
     {
         public Biome[] biomes = new Biome[256];
-        public int xPosition;
-        public int zPosition;
+        public int x;
+        public int z;
         public long lastAccessTime;
 
         public Block(int x, int z)
         {
-            this.xPosition = x;
-            this.zPosition = z;
-            BiomeCache.this.chunkManager.getBiomes(this.biomes, x << 4, z << 4, 16, 16, false);
+            this.x = x;
+            this.z = z;
+            BiomeCache.this.provider.getBiomes(this.biomes, x << 4, z << 4, 16, 16, false);
         }
 
         public Biome getBiome(int x, int z)

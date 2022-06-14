@@ -1,15 +1,12 @@
 package net.minecraft.client.renderer.block.statemap;
 
-import java.util.Collections;
-import java.util.Map;
-import java.util.Set;
-
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-
+import java.util.Collections;
+import java.util.Map;
+import java.util.Set;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockStone;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.util.ResourceLocation;
@@ -61,7 +58,7 @@ public class BlockStateMapper
 
                 for (ModelResourceLocation modelresourcelocation : istatemapper.putStateModelLocations(blockIn).values())
                 {
-                    set.add(new ResourceLocation(modelresourcelocation.getResourceDomain(), modelresourcelocation.getResourcePath()));
+                    set.add(new ResourceLocation(modelresourcelocation.getNamespace(), modelresourcelocation.getPath()));
                 }
 
                 return set;

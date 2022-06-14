@@ -27,7 +27,7 @@ public class ItemNameTag extends Item
                 ((EntityLiving)target).enablePersistence();
             }
 
-            stack.substract(1);
+            stack.shrink(1);
             return true;
         }
         else

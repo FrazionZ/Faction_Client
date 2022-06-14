@@ -72,7 +72,7 @@ public abstract class Enchantment
         {
             ItemStack itemstack = entityIn.getItemStackFromSlot(entityequipmentslot);
 
-            if (!itemstack.func_190926_b())
+            if (!itemstack.isEmpty())
             {
                 list.add(itemstack);
             }
@@ -139,7 +139,7 @@ public abstract class Enchantment
         return 0.0F;
     }
 
-    public final boolean func_191560_c(Enchantment p_191560_1_)
+    public final boolean isCompatibleWith(Enchantment p_191560_1_)
     {
         return this.canApplyTogether(p_191560_1_) && p_191560_1_.canApplyTogether(this);
     }
@@ -176,7 +176,7 @@ public abstract class Enchantment
     {
         String s = I18n.translateToLocal(this.getName());
 
-        if (this.func_190936_d())
+        if (this.isCurse())
         {
             s = TextFormatting.RED + s;
         }
@@ -212,7 +212,7 @@ public abstract class Enchantment
         return false;
     }
 
-    public boolean func_190936_d()
+    public boolean isCurse()
     {
         return false;
     }
@@ -240,6 +240,7 @@ public abstract class Enchantment
         REGISTRY.register(19, new ResourceLocation("knockback"), new EnchantmentKnockback(Enchantment.Rarity.UNCOMMON, new EntityEquipmentSlot[] {EntityEquipmentSlot.MAINHAND}));
         REGISTRY.register(20, new ResourceLocation("fire_aspect"), new EnchantmentFireAspect(Enchantment.Rarity.RARE, new EntityEquipmentSlot[] {EntityEquipmentSlot.MAINHAND}));
         REGISTRY.register(21, new ResourceLocation("looting"), new EnchantmentLootBonus(Enchantment.Rarity.RARE, EnumEnchantmentType.WEAPON, new EntityEquipmentSlot[] {EntityEquipmentSlot.MAINHAND}));
+        //REGISTRY.register(22, new ResourceLocation("sweeping"), new EnchantmentSweepingEdge(Enchantment.Rarity.RARE, new EntityEquipmentSlot[] {EntityEquipmentSlot.MAINHAND}));
         REGISTRY.register(32, new ResourceLocation("efficiency"), new EnchantmentDigging(Enchantment.Rarity.COMMON, new EntityEquipmentSlot[] {EntityEquipmentSlot.MAINHAND}));
         REGISTRY.register(33, new ResourceLocation("silk_touch"), new EnchantmentUntouching(Enchantment.Rarity.VERY_RARE, new EntityEquipmentSlot[] {EntityEquipmentSlot.MAINHAND}));
         REGISTRY.register(34, new ResourceLocation("unbreaking"), new EnchantmentDurability(Enchantment.Rarity.UNCOMMON, new EntityEquipmentSlot[] {EntityEquipmentSlot.MAINHAND}));

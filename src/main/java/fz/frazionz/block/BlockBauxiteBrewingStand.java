@@ -2,8 +2,10 @@ package fz.frazionz.block;
 
 import java.util.List;
 import java.util.Random;
+
 import javax.annotation.Nullable;
 
+import fz.frazionz.tileentity.TileEntityBauxiteBrewingStand;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -21,7 +23,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.StatList;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityBauxiteBrewingStand;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;

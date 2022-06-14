@@ -47,7 +47,7 @@ public class BlockCauldron extends Block
         this.setDefaultState(this.blockState.getBaseState().withProperty(LEVEL, Integer.valueOf(0)));
     }
 
-    public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn, boolean p_185477_7_)
+    public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn, boolean isActualState)
     {
         addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_LEGS);
         addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_WALL_WEST);
@@ -56,6 +56,10 @@ public class BlockCauldron extends Block
         addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB_WALL_SOUTH);
     }
 
+    /**
+     * @deprecated call via {@link IBlockState#getBoundingBox(IBlockAccess,BlockPos)} whenever possible.
+     * Implementing/overriding is fine.
+     */
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
         return FULL_BLOCK_AABB;
@@ -63,12 +67,16 @@ public class BlockCauldron extends Block
 
     /**
      * Used to determine ambient occlusion and culling when rebuilding chunks for render
+     * @deprecated call via {@link IBlockState#isOpaqueCube()} whenever possible. Implementing/overriding is fine.
      */
     public boolean isOpaqueCube(IBlockState state)
     {
         return false;
     }
 
+    /**
+     * @deprecated call via {@link IBlockState#isFullCube()} whenever possible. Implementing/overriding is fine.
+     */
     public boolean isFullCube(IBlockState state)
     {
         return false;
@@ -77,7 +85,7 @@ public class BlockCauldron extends Block
     /**
      * Called When an Entity Collided with the Block
      */
-    public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn)
+    public void onEntityCollision(World worldIn, BlockPos pos, IBlockState state, Entity entityIn)
     {
         int i = ((Integer)state.getValue(LEVEL)).intValue();
         float f = (float)pos.getY() + (6.0F + (float)(3 * i)) / 16.0F;
@@ -89,11 +97,14 @@ public class BlockCauldron extends Block
         }
     }
 
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing heldItem, float side, float hitX, float hitY)
+    /**
+     * Called when the block is right clicked by a player.
+     */
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
         ItemStack itemstack = playerIn.getHeldItem(hand);
 
-        if (itemstack.func_190926_b())
+        if (itemstack.isEmpty())
         {
             return true;
         }
@@ -124,9 +135,9 @@ public class BlockCauldron extends Block
                 {
                     if (!playerIn.capabilities.isCreativeMode)
                     {
-                        itemstack.substract(1);
+                        itemstack.shrink(1);
 
-                        if (itemstack.func_190926_b())
+                        if (itemstack.isEmpty())
                         {
                             playerIn.setHeldItem(hand, new ItemStack(Items.WATER_BUCKET));
                         }
@@ -151,9 +162,9 @@ public class BlockCauldron extends Block
                     {
                         ItemStack itemstack3 = PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), PotionTypes.WATER);
                         playerIn.addStat(StatList.CAULDRON_USED);
-                        itemstack.substract(1);
+                        itemstack.shrink(1);
 
-                        if (itemstack.func_190926_b())
+                        if (itemstack.isEmpty())
                         {
                             playerIn.setHeldItem(hand, itemstack3);
                         }
@@ -189,7 +200,7 @@ public class BlockCauldron extends Block
                         }
                     }
 
-                    worldIn.playSound((EntityPlayer)null, pos, SoundEvents.field_191241_J, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                    worldIn.playSound((EntityPlayer)null, pos, SoundEvents.ITEM_BOTTLE_EMPTY, SoundCategory.BLOCKS, 1.0F, 1.0F);
                     this.setWaterLevel(worldIn, pos, state, i + 1);
                 }
 
@@ -215,17 +226,17 @@ public class BlockCauldron extends Block
                     if (TileEntityBanner.getPatterns(itemstack) > 0 && !worldIn.isRemote)
                     {
                         ItemStack itemstack1 = itemstack.copy();
-                        itemstack1.func_190920_e(1);
+                        itemstack1.setCount(1);
                         TileEntityBanner.removeBannerData(itemstack1);
                         playerIn.addStat(StatList.BANNER_CLEANED);
 
                         if (!playerIn.capabilities.isCreativeMode)
                         {
-                            itemstack.substract(1);
+                            itemstack.shrink(1);
                             this.setWaterLevel(worldIn, pos, state, i - 1);
                         }
 
-                        if (itemstack.func_190926_b())
+                        if (itemstack.isEmpty())
                         {
                             playerIn.setHeldItem(hand, itemstack1);
                         }
@@ -262,7 +273,7 @@ public class BlockCauldron extends Block
     {
         if (worldIn.rand.nextInt(20) == 1)
         {
-            float f = worldIn.getBiome(pos).getFloatTemperature(pos);
+            float f = worldIn.getBiome(pos).getTemperature(pos);
 
             if (worldIn.getBiomeProvider().getTemperatureAtHeight(f, pos.getY()) >= 0.15F)
             {
@@ -289,11 +300,19 @@ public class BlockCauldron extends Block
         return new ItemStack(Items.CAULDRON);
     }
 
+    /**
+     * @deprecated call via {@link IBlockState#hasComparatorInputOverride()} whenever possible. Implementing/overriding
+     * is fine.
+     */
     public boolean hasComparatorInputOverride(IBlockState state)
     {
         return true;
     }
 
+    /**
+     * @deprecated call via {@link IBlockState#getComparatorInputOverride(World,BlockPos)} whenever possible.
+     * Implementing/overriding is fine.
+     */
     public int getComparatorInputOverride(IBlockState blockState, World worldIn, BlockPos pos)
     {
         return ((Integer)blockState.getValue(LEVEL)).intValue();
@@ -320,20 +339,34 @@ public class BlockCauldron extends Block
         return new BlockStateContainer(this, new IProperty[] {LEVEL});
     }
 
+    /**
+     * Determines if an entity can path through this block
+     */
     public boolean isPassable(IBlockAccess worldIn, BlockPos pos)
     {
         return true;
     }
 
-    public BlockFaceShape func_193383_a(IBlockAccess p_193383_1_, IBlockState p_193383_2_, BlockPos p_193383_3_, EnumFacing p_193383_4_)
+    /**
+     * Get the geometry of the queried face at the given position and state. This is used to decide whether things like
+     * buttons are allowed to be placed on the face, or how glass panes connect to the face, among other things.
+     * <p>
+     * Common values are {@code SOLID}, which is the default, and {@code UNDEFINED}, which represents something that
+     * does not fit the other descriptions and will generally cause other things not to connect to the face.
+
+     * @return an approximation of the form of the given face
+     * @deprecated call via {@link IBlockState#getBlockFaceShape(IBlockAccess,BlockPos,EnumFacing)} whenever possible.
+     * Implementing/overriding is fine.
+     */
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
     {
-        if (p_193383_4_ == EnumFacing.UP)
+        if (face == EnumFacing.UP)
         {
             return BlockFaceShape.BOWL;
         }
         else
         {
-            return p_193383_4_ == EnumFacing.DOWN ? BlockFaceShape.UNDEFINED : BlockFaceShape.SOLID;
+            return face == EnumFacing.DOWN ? BlockFaceShape.UNDEFINED : BlockFaceShape.SOLID;
         }
     }
 }

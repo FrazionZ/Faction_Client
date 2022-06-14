@@ -8,10 +8,11 @@ import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.src.Config;
 import net.minecraft.util.ResourceLocation;
 import net.optifine.entity.model.anim.ModelUpdater;
-import optifine.Config;
-import optifine.ModelSprite;
+import net.optifine.model.ModelSprite;
+import net.optifine.shaders.Shaders;
 
 public class ModelRenderer
 {
@@ -53,7 +54,7 @@ public class ModelRenderer
     public float scaleX;
     public float scaleY;
     public float scaleZ;
-    private float savedScale;
+    private int countResetDisplayList;
     private ResourceLocation textureLocation;
     private String id;
     private ModelUpdater modelUpdater;
@@ -150,6 +151,8 @@ public class ModelRenderer
     {
         if (!this.isHidden && this.showModel)
         {
+            this.checkResetDisplayList();
+
             if (!this.compiled)
             {
                 this.compileDisplayList(scale);
@@ -278,6 +281,8 @@ public class ModelRenderer
     {
         if (!this.isHidden && this.showModel)
         {
+            this.checkResetDisplayList();
+
             if (!this.compiled)
             {
                 this.compileDisplayList(scale);
@@ -351,6 +356,8 @@ public class ModelRenderer
     {
         if (!this.isHidden && this.showModel)
         {
+            this.checkResetDisplayList();
+
             if (!this.compiled)
             {
                 this.compileDisplayList(scale);
@@ -392,7 +399,6 @@ public class ModelRenderer
     {
         if (this.displayList == 0)
         {
-            this.savedScale = scale;
             this.displayList = GLAllocation.generateDisplayLists(1);
         }
 
@@ -439,12 +445,12 @@ public class ModelRenderer
         return this.displayList;
     }
 
-    public void resetDisplayList()
+    private void checkResetDisplayList()
     {
-        if (this.compiled)
+        if (this.countResetDisplayList != Shaders.countResetDisplayLists)
         {
             this.compiled = false;
-            this.compileDisplayList(this.savedScale);
+            this.countResetDisplayList = Shaders.countResetDisplayLists;
         }
     }
 

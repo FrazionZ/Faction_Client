@@ -4,16 +4,17 @@ import java.util.Arrays;
 import java.util.List;
 
 import fz.frazionz.gui.GuiClassement;
+import fz.frazionz.gui.GuiMacro;
+import fz.frazionz.gui.GuiModsConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.achievement.GuiStats;
 import net.minecraft.client.gui.advancements.GuiScreenAdvancements;
 import net.minecraft.util.math.MathHelper;
-import optifine.GuiAnimationSettingsOF;
-import optifine.GuiDetailSettingsOF;
-import optifine.GuiModsConfig;
-import optifine.GuiOtherSettingsOF;
-import optifine.GuiPerformanceSettingsOF;
-import optifine.GuiQualitySettingsOF;
+import net.optifine.gui.GuiAnimationSettingsOF;
+import net.optifine.gui.GuiDetailSettingsOF;
+import net.optifine.gui.GuiOtherSettingsOF;
+import net.optifine.gui.GuiPerformanceSettingsOF;
+import net.optifine.gui.GuiQualitySettingsOF;
 
 public class ScaledResolution
 {
@@ -23,28 +24,6 @@ public class ScaledResolution
     private int scaledHeight;
     private int scaleFactor;
     
-    private List<Class<?>> screens = Arrays.<Class<?>>asList(
-    		GuiOptions.class,
-    		GuiScreenOptionsSounds.class,
-    		GuiCustomizeSkin.class,
-    		GuiVideoSettings.class,
-    		GuiControls.class,
-    		GuiLanguage.class,
-    		ScreenChatOptions.class,
-    		GuiSnooper.class,
-    		GuiScreenResourcePacks.class,
-    		GuiMacro.class,
-    		GuiDetailSettingsOF.class,
-    		GuiQualitySettingsOF.class,
-    		GuiAnimationSettingsOF.class,
-    		GuiPerformanceSettingsOF.class,
-    		GuiOtherSettingsOF.class,
-    		GuiScreenAdvancements.class,
-    		GuiStats.class,
-    		GuiModsConfig.class,
-    		GuiClassement.class
-    		);
-
     public ScaledResolution(Minecraft minecraftClient)
     {
         this.scaledWidth = minecraftClient.displayWidth;
@@ -57,17 +36,6 @@ public class ScaledResolution
         {
             i = 1000;
         }
-        
-        if(minecraftClient.currentScreen != null && minecraftClient.gameSettings.frazionz_ui) {
-            for(Class classe : this.screens) {
-            	if(minecraftClient.currentScreen.getClass() == classe) {
-            		i = 2;
-            	}
-            }
-        }
-        
-        if(minecraftClient.currentScreen instanceof GuiMainMenu || minecraftClient.currentScreen instanceof GuiIngameMenu)
-        	i = 2;
 
         while (this.scaleFactor < i && this.scaledWidth / (this.scaleFactor + 1) >= 320 && this.scaledHeight / (this.scaleFactor + 1) >= 240)
         {

@@ -20,7 +20,6 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GLContext;
-import org.lwjgl.util.glu.GLU;
 import org.lwjgl.util.glu.Project;
 
 import com.google.common.base.Predicate;
@@ -36,6 +35,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.GuiDownloadTerrain;
 import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.gui.GuiScreen;
@@ -78,6 +78,7 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.integrated.IntegratedServer;
+import net.minecraft.src.Config;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.EnumFacing;
@@ -92,20 +93,26 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.event.ClickEvent;
 import net.minecraft.world.GameType;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.biome.Biome;
-import optifine.Config;
-import optifine.CustomColors;
-import optifine.Lagometer;
-import optifine.RandomMobs;
-import optifine.Reflector;
-import optifine.ReflectorForge;
-import optifine.TextureUtils;
-import shadersmod.client.Shaders;
-import shadersmod.client.ShadersRender;
+import net.optifine.CustomColors;
+import net.optifine.GlErrors;
+import net.optifine.Lagometer;
+import net.optifine.RandomEntities;
+import net.optifine.gui.GuiChatOF;
+import net.optifine.reflect.Reflector;
+import net.optifine.reflect.ReflectorForge;
+import net.optifine.reflect.ReflectorResolver;
+import net.optifine.shaders.Shaders;
+import net.optifine.shaders.ShadersRender;
+import net.optifine.util.MemoryMonitor;
+import net.optifine.util.TextureUtils;
+import net.optifine.util.TimedEvent;
 
 public class EntityRenderer implements IResourceManagerReloadListener
 {
@@ -123,10 +130,10 @@ public class EntityRenderer implements IResourceManagerReloadListener
     private final Random random = new Random();
     private float farPlaneDistance;
     public ItemRenderer itemRenderer;
-    private final MapItemRenderer theMapItemRenderer;
-
-    private RayTraceResult moving;
+    private final MapItemRenderer mapItemRenderer;
     
+    private RayTraceResult moving;
+
     /** Entity renderer update count */
     private int rendererUpdateCount;
 
@@ -215,11 +222,11 @@ public class EntityRenderer implements IResourceManagerReloadListener
     private double cameraZoom = 1.0D;
     private double cameraYaw;
     private double cameraPitch;
-    private ItemStack field_190566_ab;
-    private int field_190567_ac;
-    private float field_190568_ad;
-    private float field_190569_ae;
-    private ShaderGroup theShaderGroup;
+    private ItemStack itemActivationItem;
+    private int itemActivationTicks;
+    private float itemActivationOffX;
+    private float itemActivationOffY;
+    private ShaderGroup shaderGroup;
     private static final ResourceLocation[] SHADERS_TEXTURES = new ResourceLocation[] {new ResourceLocation("shaders/post/notch.json"), new ResourceLocation("shaders/post/fxaa.json"), new ResourceLocation("shaders/post/art.json"), new ResourceLocation("shaders/post/bumpy.json"), new ResourceLocation("shaders/post/blobs2.json"), new ResourceLocation("shaders/post/pencil.json"), new ResourceLocation("shaders/post/color_convolve.json"), new ResourceLocation("shaders/post/deconverge.json"), new ResourceLocation("shaders/post/flip.json"), new ResourceLocation("shaders/post/invert.json"), new ResourceLocation("shaders/post/ntsc.json"), new ResourceLocation("shaders/post/outline.json"), new ResourceLocation("shaders/post/phosphor.json"), new ResourceLocation("shaders/post/scan_pincushion.json"), new ResourceLocation("shaders/post/sobel.json"), new ResourceLocation("shaders/post/bits.json"), new ResourceLocation("shaders/post/desaturate.json"), new ResourceLocation("shaders/post/green.json"), new ResourceLocation("shaders/post/blur.json"), new ResourceLocation("shaders/post/wobble.json"), new ResourceLocation("shaders/post/blobs.json"), new ResourceLocation("shaders/post/antialias.json"), new ResourceLocation("shaders/post/creeper.json"), new ResourceLocation("shaders/post/spider.json")};
     public static final int SHADER_COUNT = SHADERS_TEXTURES.length;
     private int shaderIndex;
@@ -235,21 +242,20 @@ public class EntityRenderer implements IResourceManagerReloadListener
     private int serverWaitTimeCurrent = 0;
     private float avgServerTimeDiff = 0.0F;
     private float avgServerTickDiff = 0.0F;
-    private long lastErrorCheckTimeMs = 0L;
     private ShaderGroup[] fxaaShaders = new ShaderGroup[10];
     private boolean loadVisibleChunks = false;
-    
+
     public EntityRenderer(Minecraft mcIn, IResourceManager resourceManagerIn)
     {
         this.shaderIndex = SHADER_COUNT;
         this.mc = mcIn;
         this.resourceManager = resourceManagerIn;
         this.itemRenderer = mcIn.getItemRenderer();
-        this.theMapItemRenderer = new MapItemRenderer(mcIn.getTextureManager());
+        this.mapItemRenderer = new MapItemRenderer(mcIn.getTextureManager());
         this.lightmapTexture = new DynamicTexture(16, 16);
         this.locationLightMap = mcIn.getTextureManager().getDynamicTextureLocation("lightMap", this.lightmapTexture);
         this.lightmapColors = this.lightmapTexture.getTextureData();
-        this.theShaderGroup = null;
+        this.shaderGroup = null;
 
         for (int i = 0; i < 32; ++i)
         {
@@ -266,17 +272,17 @@ public class EntityRenderer implements IResourceManagerReloadListener
 
     public boolean isShaderActive()
     {
-        return OpenGlHelper.shadersSupported && this.theShaderGroup != null;
+        return OpenGlHelper.shadersSupported && this.shaderGroup != null;
     }
 
     public void stopUseShader()
     {
-        if (this.theShaderGroup != null)
+        if (this.shaderGroup != null)
         {
-            this.theShaderGroup.deleteShaderGroup();
+            this.shaderGroup.deleteShaderGroup();
         }
 
-        this.theShaderGroup = null;
+        this.shaderGroup = null;
         this.shaderIndex = SHADER_COUNT;
     }
 
@@ -292,12 +298,12 @@ public class EntityRenderer implements IResourceManagerReloadListener
     {
         if (OpenGlHelper.shadersSupported)
         {
-            if (this.theShaderGroup != null)
+            if (this.shaderGroup != null)
             {
-                this.theShaderGroup.deleteShaderGroup();
+                this.shaderGroup.deleteShaderGroup();
             }
 
-            this.theShaderGroup = null;
+            this.shaderGroup = null;
 
             if (entityIn instanceof EntityCreeper)
             {
@@ -324,8 +330,8 @@ public class EntityRenderer implements IResourceManagerReloadListener
         {
             try
             {
-                this.theShaderGroup = new ShaderGroup(this.mc.getTextureManager(), this.resourceManager, this.mc.getFramebuffer(), resourceLocationIn);
-                this.theShaderGroup.createBindFramebuffers(this.mc.displayWidth, this.mc.displayHeight);
+                this.shaderGroup = new ShaderGroup(this.mc.getTextureManager(), this.resourceManager, this.mc.getFramebuffer(), resourceLocationIn);
+                this.shaderGroup.createBindFramebuffers(this.mc.displayWidth, this.mc.displayHeight);
                 this.useShader = true;
             }
             catch (IOException ioexception)
@@ -345,12 +351,12 @@ public class EntityRenderer implements IResourceManagerReloadListener
 
     public void onResourceManagerReload(IResourceManager resourceManager)
     {
-        if (this.theShaderGroup != null)
+        if (this.shaderGroup != null)
         {
-            this.theShaderGroup.deleteShaderGroup();
+            this.shaderGroup.deleteShaderGroup();
         }
 
-        this.theShaderGroup = null;
+        this.shaderGroup = null;
 
         if (this.shaderIndex == SHADER_COUNT)
         {
@@ -365,7 +371,6 @@ public class EntityRenderer implements IResourceManagerReloadListener
     /**
      * Updates the entity renderer
      */
-    
     public void updateRenderer()
     {
         if (OpenGlHelper.shadersSupported && ShaderLinkHelper.getStaticShaderLinkHelper() == null)
@@ -429,29 +434,29 @@ public class EntityRenderer implements IResourceManagerReloadListener
             this.bossColorModifier -= 0.0125F;
         }
 
-        if (this.field_190567_ac > 0)
+        if (this.itemActivationTicks > 0)
         {
-            --this.field_190567_ac;
+            --this.itemActivationTicks;
 
-            if (this.field_190567_ac == 0)
+            if (this.itemActivationTicks == 0)
             {
-                this.field_190566_ab = null;
+                this.itemActivationItem = null;
             }
         }
     }
 
     public ShaderGroup getShaderGroup()
     {
-        return this.theShaderGroup;
+        return this.shaderGroup;
     }
 
     public void updateShaderGroupSize(int width, int height)
     {
         if (OpenGlHelper.shadersSupported)
         {
-            if (this.theShaderGroup != null)
+            if (this.shaderGroup != null)
             {
-                this.theShaderGroup.createBindFramebuffers(width, height);
+                this.shaderGroup.createBindFramebuffers(width, height);
             }
 
             this.mc.renderGlobal.createBindEntityOutlineFbs(width, height);
@@ -464,12 +469,13 @@ public class EntityRenderer implements IResourceManagerReloadListener
     public void getMouseOver(float partialTicks)
     {
         Entity entity = this.mc.getRenderViewEntity();
-
+        
         if (entity != null && this.mc.world != null)
         {
-            this.mc.mcProfiler.startSection("pick");
+            this.mc.profiler.startSection("pick");
             this.mc.pointedEntity = null;
             double d0 = (double)this.mc.playerController.getBlockReachDistance();
+            
             boolean isAxe = false;
             boolean isDagger = false;
             if(this.mc.player.getHeldItemMainhand().getItem().equals(Items.LEGENDARY_DAGGER) || this.mc.player.getHeldItemMainhand().getItem().equals(Items.FRAZION_DAGGER)) {
@@ -480,11 +486,13 @@ public class EntityRenderer implements IResourceManagerReloadListener
             	isAxe = true;
             	d0 = 4.40F;
             }
+            
             this.mc.objectMouseOver = entity.rayTrace(d0, partialTicks);
             Vec3d vec3d = entity.getPositionEyes(partialTicks);
             boolean flag = false;
+            //int i = 3;
             double d1 = d0;
-            
+
             if (this.mc.playerController.extendedReach())
             {
                 d1 = 6.0D;
@@ -501,11 +509,11 @@ public class EntityRenderer implements IResourceManagerReloadListener
             }
 
             Vec3d vec3d1 = entity.getLook(1.0F);
-            Vec3d vec3d2 = vec3d.addVector(vec3d1.xCoord * d0, vec3d1.yCoord * d0, vec3d1.zCoord * d0);
+            Vec3d vec3d2 = vec3d.add(vec3d1.x * d0, vec3d1.y * d0, vec3d1.z * d0);
             this.pointedEntity = null;
             Vec3d vec3d3 = null;
             double f = 1.0D;
-            List<Entity> list = this.mc.world.getEntitiesInAABBexcluding(entity, entity.getEntityBoundingBox().addCoord(vec3d1.xCoord * d0, vec3d1.yCoord * d0, vec3d1.zCoord * d0).expand(f, f, f), Predicates.and(EntitySelectors.NOT_SPECTATING, new Predicate<Entity>()
+            List<Entity> list = this.mc.world.getEntitiesInAABBexcluding(entity, entity.getEntityBoundingBox().expand(vec3d1.x * d0, vec3d1.y * d0, vec3d1.z * d0).grow(f, f, f), Predicates.and(EntitySelectors.NOT_SPECTATING, new Predicate<Entity>()
             {
                 public boolean apply(@Nullable Entity p_apply_1_)
                 {
@@ -517,10 +525,10 @@ public class EntityRenderer implements IResourceManagerReloadListener
             for (int j = 0; j < list.size(); ++j)
             {
                 Entity entity1 = list.get(j);
-                AxisAlignedBB axisalignedbb = entity1.getEntityBoundingBox().expandXyz((double)entity1.getCollisionBorderSize());
+                AxisAlignedBB axisalignedbb = entity1.getEntityBoundingBox().grow((double)entity1.getCollisionBorderSize());
                 RayTraceResult raytraceresult = axisalignedbb.calculateIntercept(vec3d, vec3d2);
 
-                if (axisalignedbb.isVecInside(vec3d))
+                if (axisalignedbb.contains(vec3d))
                 {
                     if (d2 >= 0.0D)
                     {
@@ -559,10 +567,10 @@ public class EntityRenderer implements IResourceManagerReloadListener
                     }
                 }
             }
-
+            
             if (isAxe || isDagger)
             {
-            	if ((this.pointedEntity != null && flag && vec3d.distanceTo(vec3d3) > 4.0D && isAxe))
+            	if (this.pointedEntity != null && flag && vec3d.distanceTo(vec3d3) > 4.0D && isAxe)
                 {
                     this.pointedEntity = null;
                     this.mc.objectMouseOver = new RayTraceResult(RayTraceResult.Type.MISS, vec3d3, (EnumFacing)null, new BlockPos(vec3d3));
@@ -582,14 +590,14 @@ public class EntityRenderer implements IResourceManagerReloadListener
             if (this.pointedEntity != null && (d2 < d1 || this.mc.objectMouseOver == null))
             {
                 this.mc.objectMouseOver = new RayTraceResult(this.pointedEntity, vec3d3);
-            
+
                 if (this.pointedEntity instanceof EntityLivingBase || this.pointedEntity instanceof EntityItemFrame)
                 {
                     this.mc.pointedEntity = this.pointedEntity;
                 }
             }
-            
-            this.mc.mcProfiler.endSection();
+
+            this.mc.profiler.endSection();
         }
     }
 
@@ -657,6 +665,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
                 if (!Config.zoomMode)
                 {
                     Config.zoomMode = true;
+                    Config.zoomSmoothCamera = this.mc.gameSettings.smoothCamera;
                     this.mc.gameSettings.smoothCamera = true;
                     this.mc.renderGlobal.displayListEntitiesDirty = true;
                 }
@@ -669,7 +678,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
             else if (Config.zoomMode)
             {
                 Config.zoomMode = false;
-                this.mc.gameSettings.smoothCamera = false;
+                this.mc.gameSettings.smoothCamera = Config.zoomSmoothCamera;
                 this.mouseFilterXAxis = new MouseFilter();
                 this.mouseFilterYAxis = new MouseFilter();
                 this.mc.renderGlobal.displayListEntitiesDirty = true;
@@ -722,7 +731,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
     /**
      * Updates the bobbing render effect of the player.
      */
-    private void setupViewBobbing(float partialTicks)
+    private void applyBobbing(float partialTicks)
     {
         if (this.mc.getRenderViewEntity() instanceof EntityPlayer)
         {
@@ -737,7 +746,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
             GlStateManager.rotate(f3, 1.0F, 0.0F, 0.0F);
         }
     }
-    
+
     /**
      * sets up player's eye (or camera in third person mode)
      */
@@ -939,7 +948,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
 
         if (this.mc.gameSettings.viewBobbing)
         {
-            this.setupViewBobbing(partialTicks);
+            this.applyBobbing(partialTicks);
         }
 
         float f1 = this.mc.player.prevTimeInPortal + (this.mc.player.timeInPortal - this.mc.player.prevTimeInPortal) * partialTicks;
@@ -1032,7 +1041,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
 
                 if (this.mc.gameSettings.viewBobbing)
                 {
-                    this.setupViewBobbing(p_renderHand_1_);
+                    this.applyBobbing(p_renderHand_1_);
                 }
 
                 flag = this.mc.getRenderViewEntity() instanceof EntityLivingBase && ((EntityLivingBase)this.mc.getRenderViewEntity()).isPlayerSleeping();
@@ -1072,7 +1081,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
 
             if (this.mc.gameSettings.viewBobbing)
             {
-                this.setupViewBobbing(p_renderHand_1_);
+                this.applyBobbing(p_renderHand_1_);
             }
         }
     }
@@ -1101,8 +1110,8 @@ public class EntityRenderer implements IResourceManagerReloadListener
         this.mc.getTextureManager().bindTexture(this.locationLightMap);
         GlStateManager.glTexParameteri(3553, 10241, 9729);
         GlStateManager.glTexParameteri(3553, 10240, 9729);
-        GlStateManager.glTexParameteri(3553, 10242, 10496);
-        GlStateManager.glTexParameteri(3553, 10243, 10496);
+        GlStateManager.glTexParameteri(3553, 10242, 33071);
+        GlStateManager.glTexParameteri(3553, 10243, 33071);
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         GlStateManager.enableTexture2D();
         GlStateManager.setActiveTexture(OpenGlHelper.defaultTexUnit);
@@ -1128,16 +1137,16 @@ public class EntityRenderer implements IResourceManagerReloadListener
     {
         if (this.lightmapUpdateNeeded)
         {
-            this.mc.mcProfiler.startSection("lightTex");
+            this.mc.profiler.startSection("lightTex");
             World world = this.mc.world;
 
             if (world != null)
             {
-                if (Config.isCustomColors() && CustomColors.updateLightmap(world, this.torchFlickerX, this.lightmapColors, this.mc.player.isPotionActive(MobEffects.NIGHT_VISION)))
+                if (Config.isCustomColors() && CustomColors.updateLightmap(world, this.torchFlickerX, this.lightmapColors, this.mc.player.isPotionActive(MobEffects.NIGHT_VISION), partialTicks))
                 {
                     this.lightmapTexture.updateDynamicTexture();
                     this.lightmapUpdateNeeded = false;
-                    this.mc.mcProfiler.endSection();
+                    this.mc.profiler.endSection();
                     return;
                 }
 
@@ -1281,7 +1290,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
 
                 this.lightmapTexture.updateDynamicTexture();
                 this.lightmapUpdateNeeded = false;
-                this.mc.mcProfiler.endSection();
+                this.mc.profiler.endSection();
             }
         }
     }
@@ -1309,7 +1318,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
             this.prevFrameTime = Minecraft.getSystemTime();
         }
 
-        this.mc.mcProfiler.startSection("mouse");
+        this.mc.profiler.startSection("mouse");
 
         if (flag && Minecraft.IS_RUNNING_ON_MAC && this.mc.inGameHasFocus && !Mouse.isInsideWindow())
         {
@@ -1321,7 +1330,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
         if (this.mc.inGameHasFocus && flag)
         {
             this.mc.mouseHelper.mouseXYChange();
-            this.mc.func_193032_ao().func_193299_a(this.mc.mouseHelper);
+            this.mc.getTutorial().handleMouse(this.mc.mouseHelper);
             float f = this.mc.gameSettings.mouseSensitivity * 0.6F + 0.2F;
             float f1 = f * f * f * 8.0F;
             float f2 = (float)this.mc.mouseHelper.deltaX * f1;
@@ -1341,17 +1350,17 @@ public class EntityRenderer implements IResourceManagerReloadListener
                 this.smoothCamPartialTicks = partialTicks;
                 f2 = this.smoothCamFilterX * f4;
                 f3 = this.smoothCamFilterY * f4;
-                this.mc.player.setAngles(f2, f3 * (float)i);
+                this.mc.player.turn(f2, f3 * (float)i);
             }
             else
             {
                 this.smoothCamYaw = 0.0F;
                 this.smoothCamPitch = 0.0F;
-                this.mc.player.setAngles(f2, f3 * (float)i);
+                this.mc.player.turn(f2, f3 * (float)i);
             }
         }
 
-        this.mc.mcProfiler.endSection();
+        this.mc.profiler.endSection();
 
         if (!this.mc.skipRenderWorld)
         {
@@ -1373,11 +1382,11 @@ public class EntityRenderer implements IResourceManagerReloadListener
                 this.setupOverlayRendering();
                 this.renderEndNanoTime = System.nanoTime();
                 TileEntityRendererDispatcher.instance.renderEngine = this.mc.getTextureManager();
-                TileEntityRendererDispatcher.instance.fontRenderer = this.mc.fontRendererObj;
+                TileEntityRendererDispatcher.instance.fontRenderer = this.mc.fontRenderer;
             }
             else
             {
-                this.mc.mcProfiler.startSection("level");
+                this.mc.profiler.startSection("level");
                 int j = Math.min(Minecraft.getDebugFPS(), i2);
                 j = Math.max(j, 60);
                 long k = System.nanoTime() - nanoTime;
@@ -1398,12 +1407,12 @@ public class EntityRenderer implements IResourceManagerReloadListener
                 {
                     this.mc.renderGlobal.renderEntityOutlineFramebuffer();
 
-                    if (this.theShaderGroup != null && this.useShader)
+                    if (this.shaderGroup != null && this.useShader)
                     {
                         GlStateManager.matrixMode(5890);
                         GlStateManager.pushMatrix();
                         GlStateManager.loadIdentity();
-                        this.theShaderGroup.loadShaderGroup(partialTicks);
+                        this.shaderGroup.render(partialTicks);
                         GlStateManager.popMatrix();
                     }
 
@@ -1411,13 +1420,13 @@ public class EntityRenderer implements IResourceManagerReloadListener
                 }
 
                 this.renderEndNanoTime = System.nanoTime();
-                this.mc.mcProfiler.endStartSection("gui");
+                this.mc.profiler.endStartSection("gui");
 
                 if (!this.mc.gameSettings.hideGUI || this.mc.currentScreen != null)
                 {
                     GlStateManager.alphaFunc(516, 0.1F);
                     this.setupOverlayRendering();
-                    this.func_190563_a(i1, j1, partialTicks);
+                    this.renderItemActivation(i1, j1, partialTicks);
                     this.mc.ingameGUI.renderGameOverlay(partialTicks);
 
                     if (this.mc.gameSettings.ofShowFps && !this.mc.gameSettings.showDebugInfo)
@@ -1431,7 +1440,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
                     }
                 }
 
-                this.mc.mcProfiler.endSection();
+                this.mc.profiler.endSection();
             }
 
             if (this.mc.currentScreen != null)
@@ -1442,32 +1451,32 @@ public class EntityRenderer implements IResourceManagerReloadListener
                 {
                     if (Reflector.ForgeHooksClient_drawScreen.exists())
                     {
-                        Reflector.callVoid(Reflector.ForgeHooksClient_drawScreen, this.mc.currentScreen, k1, l1, this.mc.func_193989_ak());
+                        Reflector.callVoid(Reflector.ForgeHooksClient_drawScreen, this.mc.currentScreen, k1, l1, this.mc.getTickLength());
                     }
                     else
                     {
-                        this.mc.currentScreen.drawScreen(k1, l1, this.mc.func_193989_ak());
+                        this.mc.currentScreen.drawScreen(k1, l1, this.mc.getTickLength());
                     }
                 }
                 catch (Throwable throwable1)
                 {
                     CrashReport crashreport = CrashReport.makeCrashReport(throwable1, "Rendering screen");
                     CrashReportCategory crashreportcategory = crashreport.makeCategory("Screen render details");
-                    crashreportcategory.setDetail("Screen name", new ICrashReportDetail<String>()
+                    crashreportcategory.addDetail("Screen name", new ICrashReportDetail<String>()
                     {
                         public String call() throws Exception
                         {
                             return EntityRenderer.this.mc.currentScreen.getClass().getCanonicalName();
                         }
                     });
-                    crashreportcategory.setDetail("Mouse location", new ICrashReportDetail<String>()
+                    crashreportcategory.addDetail("Mouse location", new ICrashReportDetail<String>()
                     {
                         public String call() throws Exception
                         {
                             return String.format("Scaled: (%d, %d). Absolute: (%d, %d)", k1, l1, Mouse.getX(), Mouse.getY());
                         }
                     });
-                    crashreportcategory.setDetail("Screen size", new ICrashReportDetail<String>()
+                    crashreportcategory.addDetail("Screen size", new ICrashReportDetail<String>()
                     {
                         public String call() throws Exception
                         {
@@ -1483,6 +1492,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
 
         this.frameFinish();
         this.waitForServerThread();
+        MemoryMonitor.update();
         Lagometer.updateLagometer();
 
         if (this.mc.gameSettings.ofProfiler)
@@ -1558,7 +1568,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
                     }
                     else
                     {
-                        flag = !itemstack.func_190926_b() && (itemstack.canDestroy(block) || itemstack.canPlaceOn(block));
+                        flag = !itemstack.isEmpty() && (itemstack.canDestroy(block) || itemstack.canPlaceOn(block));
                     }
                 }
             }
@@ -1586,7 +1596,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
         GlStateManager.enableDepth();
         GlStateManager.enableAlpha();
         GlStateManager.alphaFunc(516, 0.1F);
-        this.mc.mcProfiler.startSection("center");
+        this.mc.profiler.startSection("center");
 
         if (this.mc.gameSettings.anaglyph)
         {
@@ -1603,7 +1613,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
             this.renderWorldPass(2, partialTicks, finishTimeNano);
         }
 
-        this.mc.mcProfiler.endSection();
+        this.mc.profiler.endSection();
     }
 
     private void renderWorldPass(int pass, float partialTicks, long finishTimeNano)
@@ -1619,7 +1629,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
         ParticleManager particlemanager = this.mc.effectRenderer;
         boolean flag1 = this.isDrawBlockOutline();
         GlStateManager.enableCull();
-        this.mc.mcProfiler.endStartSection("clear");
+        this.mc.profiler.endStartSection("clear");
 
         if (flag)
         {
@@ -1638,7 +1648,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
             Shaders.clearRenderBuffer();
         }
 
-        this.mc.mcProfiler.endStartSection("camera");
+        this.mc.profiler.endStartSection("camera");
         this.setupCameraTransform(partialTicks, pass);
 
         if (flag)
@@ -1646,10 +1656,19 @@ public class EntityRenderer implements IResourceManagerReloadListener
             Shaders.setCamera(partialTicks);
         }
 
-        ActiveRenderInfo.updateRenderInfo(this.mc.player, this.mc.gameSettings.thirdPersonView == 2);
-        this.mc.mcProfiler.endStartSection("frustum");
+        if (Reflector.ActiveRenderInfo_updateRenderInfo2.exists())
+        {
+            Reflector.call(Reflector.ActiveRenderInfo_updateRenderInfo2, this.mc.getRenderViewEntity(), this.mc.gameSettings.thirdPersonView == 2);
+        }
+        else
+        {
+            ActiveRenderInfo.updateRenderInfo(this.mc.player, this.mc.gameSettings.thirdPersonView == 2);
+        }
+
+        this.mc.profiler.endStartSection("frustum");
         ClippingHelper clippinghelper = ClippingHelperImpl.getInstance();
-        this.mc.mcProfiler.endStartSection("culling");
+        this.mc.profiler.endStartSection("culling");
+        clippinghelper.disabled = Config.isShaders() && !Shaders.isFrustumCulling();
         ICamera icamera = new Frustum(clippinghelper);
         Entity entity = this.mc.getRenderViewEntity();
         double d0 = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * (double)partialTicks;
@@ -1668,7 +1687,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
         if ((Config.isSkyEnabled() || Config.isSunMoonEnabled() || Config.isStarsEnabled()) && !Shaders.isShadowPass)
         {
             this.setupFog(-1, partialTicks);
-            this.mc.mcProfiler.endStartSection("sky");
+            this.mc.profiler.endStartSection("sky");
             GlStateManager.matrixMode(5889);
             GlStateManager.loadIdentity();
             Project.gluPerspective(this.getFOVModifier(partialTicks, true), (float)this.mc.displayWidth / (float)this.mc.displayHeight, 0.05F, this.clipDistance);
@@ -1704,11 +1723,11 @@ public class EntityRenderer implements IResourceManagerReloadListener
             this.renderCloudsCheck(renderglobal, partialTicks, pass, d0, d1, d2);
         }
 
-        this.mc.mcProfiler.endStartSection("prepareterrain");
+        this.mc.profiler.endStartSection("prepareterrain");
         this.setupFog(0, partialTicks);
         this.mc.getTextureManager().bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
         RenderHelper.disableStandardItemLighting();
-        this.mc.mcProfiler.endStartSection("terrain_setup");
+        this.mc.profiler.endStartSection("terrain_setup");
         this.checkLoadVisibleChunks(entity, partialTicks, icamera, this.mc.player.isSpectator());
 
         if (flag)
@@ -1722,20 +1741,20 @@ public class EntityRenderer implements IResourceManagerReloadListener
 
         if (pass == 0 || pass == 2)
         {
-            this.mc.mcProfiler.endStartSection("updatechunks");
+            this.mc.profiler.endStartSection("updatechunks");
             Lagometer.timerChunkUpload.start();
             this.mc.renderGlobal.updateChunks(finishTimeNano);
             Lagometer.timerChunkUpload.end();
         }
 
-        this.mc.mcProfiler.endStartSection("terrain");
+        this.mc.profiler.endStartSection("terrain");
         Lagometer.timerTerrain.start();
 
         if (this.mc.gameSettings.ofSmoothFps && pass > 0)
         {
-            this.mc.mcProfiler.endStartSection("finish");
+            this.mc.profiler.endStartSection("finish");
             GL11.glFinish();
-            this.mc.mcProfiler.endStartSection("terrain");
+            this.mc.profiler.endStartSection("terrain");
         }
 
         GlStateManager.matrixMode(5888);
@@ -1755,7 +1774,9 @@ public class EntityRenderer implements IResourceManagerReloadListener
             ShadersRender.beginTerrainCutoutMipped();
         }
 
+        this.mc.getTextureManager().getTexture(TextureMap.LOCATION_BLOCKS_TEXTURE).setBlurMipmap(false, this.mc.gameSettings.mipmapLevels > 0);
         renderglobal.renderBlockLayer(BlockRenderLayer.CUTOUT_MIPPED, (double)partialTicks, pass, entity);
+        this.mc.getTextureManager().getTexture(TextureMap.LOCATION_BLOCKS_TEXTURE).restoreLastBlurMipmap();
         this.mc.getTextureManager().getTexture(TextureMap.LOCATION_BLOCKS_TEXTURE).setBlurMipmap(false, false);
 
         if (flag)
@@ -1781,7 +1802,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
             GlStateManager.popMatrix();
             GlStateManager.pushMatrix();
             RenderHelper.enableStandardItemLighting();
-            this.mc.mcProfiler.endStartSection("entities");
+            this.mc.profiler.endStartSection("entities");
 
             if (Reflector.ForgeHooksClient_setRenderPass.exists())
             {
@@ -1806,7 +1827,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
         {
             EntityPlayer entityplayer = (EntityPlayer)entity;
             GlStateManager.disableAlpha();
-            this.mc.mcProfiler.endStartSection("outline");
+            this.mc.profiler.endStartSection("outline");
 
             if (!Reflector.ForgeHooksClient_onDrawBlockHighlight.exists() || !Reflector.callBoolean(Reflector.ForgeHooksClient_onDrawBlockHighlight, renderglobal, entityplayer, this.mc.objectMouseOver, Integer.valueOf(0), partialTicks))
             {
@@ -1826,7 +1847,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
 
         if (!renderglobal.damagedBlocks.isEmpty())
         {
-            this.mc.mcProfiler.endStartSection("destroyProgress");
+            this.mc.profiler.endStartSection("destroyProgress");
             GlStateManager.enableBlend();
             GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
             this.mc.getTextureManager().getTexture(TextureMap.LOCATION_BLOCKS_TEXTURE).setBlurMipmap(false, false);
@@ -1841,7 +1862,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
         if (!this.debugView)
         {
             this.enableLightmap();
-            this.mc.mcProfiler.endStartSection("litParticles");
+            this.mc.profiler.endStartSection("litParticles");
 
             if (flag)
             {
@@ -1851,7 +1872,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
             particlemanager.renderLitParticles(entity, partialTicks);
             RenderHelper.disableStandardItemLighting();
             this.setupFog(0, partialTicks);
-            this.mc.mcProfiler.endStartSection("particles");
+            this.mc.profiler.endStartSection("particles");
 
             if (flag)
             {
@@ -1869,8 +1890,14 @@ public class EntityRenderer implements IResourceManagerReloadListener
         }
 
         GlStateManager.depthMask(false);
+
+        if (Config.isShaders())
+        {
+            GlStateManager.depthMask(Shaders.isRainDepth());
+        }
+
         GlStateManager.enableCull();
-        this.mc.mcProfiler.endStartSection("weather");
+        this.mc.profiler.endStartSection("weather");
 
         if (flag)
         {
@@ -1902,7 +1929,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
         GlStateManager.depthMask(false);
         this.mc.getTextureManager().bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
         GlStateManager.shadeModel(7425);
-        this.mc.mcProfiler.endStartSection("translucent");
+        this.mc.profiler.endStartSection("translucent");
 
         if (flag)
         {
@@ -1919,7 +1946,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
         if (Reflector.ForgeHooksClient_setRenderPass.exists() && !this.debugView)
         {
             RenderHelper.enableStandardItemLighting();
-            this.mc.mcProfiler.endStartSection("entities");
+            this.mc.profiler.endStartSection("entities");
             Reflector.callVoid(Reflector.ForgeHooksClient_setRenderPass, Integer.valueOf(1));
             this.mc.renderGlobal.renderEntities(entity, icamera, partialTicks);
             GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
@@ -1935,17 +1962,17 @@ public class EntityRenderer implements IResourceManagerReloadListener
 
         if (entity.posY + (double)entity.getEyeHeight() >= 128.0D + (double)(this.mc.gameSettings.ofCloudsHeight * 128.0F))
         {
-            this.mc.mcProfiler.endStartSection("aboveClouds");
+            this.mc.profiler.endStartSection("aboveClouds");
             this.renderCloudsCheck(renderglobal, partialTicks, pass, d0, d1, d2);
         }
 
         if (Reflector.ForgeHooksClient_dispatchRenderLast.exists())
         {
-            this.mc.mcProfiler.endStartSection("forge_render_last");
+            this.mc.profiler.endStartSection("forge_render_last");
             Reflector.callVoid(Reflector.ForgeHooksClient_dispatchRenderLast, renderglobal, partialTicks);
         }
 
-        this.mc.mcProfiler.endStartSection("hand");
+        this.mc.profiler.endStartSection("hand");
 
         if (this.renderHand && !Shaders.isShadowPass)
         {
@@ -1973,18 +2000,18 @@ public class EntityRenderer implements IResourceManagerReloadListener
         }
     }
 
-    private void renderCloudsCheck(RenderGlobal renderGlobalIn, float partialTicks, int pass, double p_180437_4_, double p_180437_6_, double p_180437_8_)
+    private void renderCloudsCheck(RenderGlobal renderGlobalIn, float partialTicks, int pass, double x, double y, double z)
     {
         if (this.mc.gameSettings.renderDistanceChunks >= 4 && !Config.isCloudsOff() && Shaders.shouldRenderClouds(this.mc.gameSettings))
         {
-            this.mc.mcProfiler.endStartSection("clouds");
+            this.mc.profiler.endStartSection("clouds");
             GlStateManager.matrixMode(5889);
             GlStateManager.loadIdentity();
             Project.gluPerspective(this.getFOVModifier(partialTicks, true), (float)this.mc.displayWidth / (float)this.mc.displayHeight, 0.05F, this.clipDistance * 4.0F);
             GlStateManager.matrixMode(5888);
             GlStateManager.pushMatrix();
             this.setupFog(0, partialTicks);
-            renderGlobalIn.renderClouds(partialTicks, pass, p_180437_4_, p_180437_6_, p_180437_8_);
+            renderGlobalIn.renderClouds(partialTicks, pass, x, y, z);
             GlStateManager.disableFog();
             GlStateManager.popMatrix();
             GlStateManager.matrixMode(5889);
@@ -2032,7 +2059,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
                 BlockPos blockpos2 = blockpos1.down();
                 IBlockState iblockstate = world.getBlockState(blockpos2);
 
-                if (blockpos1.getY() <= blockpos.getY() + 10 && blockpos1.getY() >= blockpos.getY() - 10 && biome.canRain() && biome.getFloatTemperature(blockpos1) >= 0.15F)
+                if (blockpos1.getY() <= blockpos.getY() + 10 && blockpos1.getY() >= blockpos.getY() - 10 && biome.canRain() && biome.getTemperature(blockpos1) >= 0.15F)
                 {
                     double d3 = this.random.nextDouble();
                     double d4 = this.random.nextDouble();
@@ -2170,7 +2197,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
                         {
                             this.random.setSeed((long)(l1 * l1 * 3121 + l1 * 45238971 ^ k1 * k1 * 418711 + k1 * 13761));
                             blockpos$mutableblockpos.setPos(l1, k2, k1);
-                            float f1 = biome.getFloatTemperature(blockpos$mutableblockpos);
+                            float f1 = biome.getTemperature(blockpos$mutableblockpos);
 
                             if (world.getBiomeProvider().getTemperatureAtHeight(f1, j2) >= 0.15F)
                             {
@@ -2274,14 +2301,14 @@ public class EntityRenderer implements IResourceManagerReloadListener
         f = 1.0F - (float)Math.pow((double)f, 0.25D);
         Vec3d vec3d = world.getSkyColor(this.mc.getRenderViewEntity(), partialTicks);
         vec3d = CustomColors.getWorldSkyColor(vec3d, world, this.mc.getRenderViewEntity(), partialTicks);
-        float f1 = (float)vec3d.xCoord;
-        float f2 = (float)vec3d.yCoord;
-        float f3 = (float)vec3d.zCoord;
+        float f1 = (float)vec3d.x;
+        float f2 = (float)vec3d.y;
+        float f3 = (float)vec3d.z;
         Vec3d vec3d1 = world.getFogColor(partialTicks);
         vec3d1 = CustomColors.getWorldFogColor(vec3d1, world, this.mc.getRenderViewEntity(), partialTicks);
-        this.fogColorRed = (float)vec3d1.xCoord;
-        this.fogColorGreen = (float)vec3d1.yCoord;
-        this.fogColorBlue = (float)vec3d1.zCoord;
+        this.fogColorRed = (float)vec3d1.x;
+        this.fogColorGreen = (float)vec3d1.y;
+        this.fogColorBlue = (float)vec3d1.z;
 
         if (this.mc.gameSettings.renderDistanceChunks >= 4)
         {
@@ -2337,9 +2364,9 @@ public class EntityRenderer implements IResourceManagerReloadListener
         if (this.cloudFog)
         {
             Vec3d vec3d4 = world.getCloudColour(partialTicks);
-            this.fogColorRed = (float)vec3d4.xCoord;
-            this.fogColorGreen = (float)vec3d4.yCoord;
-            this.fogColorBlue = (float)vec3d4.zCoord;
+            this.fogColorRed = (float)vec3d4.x;
+            this.fogColorGreen = (float)vec3d4.y;
+            this.fogColorBlue = (float)vec3d4.z;
         }
         else if (Reflector.ForgeBlock_getFogColor.exists())
         {
@@ -2347,9 +2374,9 @@ public class EntityRenderer implements IResourceManagerReloadListener
             BlockPos blockpos = new BlockPos(vec3d5);
             IBlockState iblockstate = this.mc.world.getBlockState(blockpos);
             Vec3d vec3d3 = (Vec3d)Reflector.call(iblockstate.getBlock(), Reflector.ForgeBlock_getFogColor, this.mc.world, blockpos, iblockstate, entity, new Vec3d((double)this.fogColorRed, (double)this.fogColorGreen, (double)this.fogColorBlue), partialTicks);
-            this.fogColorRed = (float)vec3d3.xCoord;
-            this.fogColorGreen = (float)vec3d3.yCoord;
-            this.fogColorBlue = (float)vec3d3.zCoord;
+            this.fogColorRed = (float)vec3d3.x;
+            this.fogColorGreen = (float)vec3d3.y;
+            this.fogColorBlue = (float)vec3d3.z;
         }
         else if (iblockstate1.getMaterial() == Material.WATER)
         {
@@ -2358,6 +2385,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
             if (entity instanceof EntityLivingBase)
             {
                 f12 = (float)EnchantmentHelper.getRespirationModifier((EntityLivingBase)entity) * 0.2F;
+                f12 = Config.limit(f12, 0.0F, 0.6F);
 
                 if (((EntityLivingBase)entity).isPotionActive(MobEffects.WATER_BREATHING))
                 {
@@ -2368,27 +2396,34 @@ public class EntityRenderer implements IResourceManagerReloadListener
             this.fogColorRed = 0.02F + f12;
             this.fogColorGreen = 0.02F + f12;
             this.fogColorBlue = 0.2F + f12;
-            Vec3d vec3d7 = CustomColors.getUnderwaterColor(this.mc.world, this.mc.getRenderViewEntity().posX, this.mc.getRenderViewEntity().posY + 1.0D, this.mc.getRenderViewEntity().posZ);
-
-            if (vec3d7 != null)
-            {
-                this.fogColorRed = (float)vec3d7.xCoord;
-                this.fogColorGreen = (float)vec3d7.yCoord;
-                this.fogColorBlue = (float)vec3d7.zCoord;
-            }
         }
         else if (iblockstate1.getMaterial() == Material.LAVA)
         {
             this.fogColorRed = 0.6F;
             this.fogColorGreen = 0.1F;
             this.fogColorBlue = 0.0F;
-            Vec3d vec3d6 = CustomColors.getUnderlavaColor(this.mc.world, this.mc.getRenderViewEntity().posX, this.mc.getRenderViewEntity().posY + 1.0D, this.mc.getRenderViewEntity().posZ);
+        }
+
+        if (iblockstate1.getMaterial() == Material.WATER)
+        {
+            Vec3d vec3d6 = CustomColors.getUnderwaterColor(this.mc.world, this.mc.getRenderViewEntity().posX, this.mc.getRenderViewEntity().posY + 1.0D, this.mc.getRenderViewEntity().posZ);
 
             if (vec3d6 != null)
             {
-                this.fogColorRed = (float)vec3d6.xCoord;
-                this.fogColorGreen = (float)vec3d6.yCoord;
-                this.fogColorBlue = (float)vec3d6.zCoord;
+                this.fogColorRed = (float)vec3d6.x;
+                this.fogColorGreen = (float)vec3d6.y;
+                this.fogColorBlue = (float)vec3d6.z;
+            }
+        }
+        else if (iblockstate1.getMaterial() == Material.LAVA)
+        {
+            Vec3d vec3d7 = CustomColors.getUnderlavaColor(this.mc.world, this.mc.getRenderViewEntity().posX, this.mc.getRenderViewEntity().posY + 1.0D, this.mc.getRenderViewEntity().posZ);
+
+            if (vec3d7 != null)
+            {
+                this.fogColorRed = (float)vec3d7.x;
+                this.fogColorGreen = (float)vec3d7.y;
+                this.fogColorBlue = (float)vec3d7.z;
             }
         }
 
@@ -2448,6 +2483,11 @@ public class EntityRenderer implements IResourceManagerReloadListener
                 f6 = 1.0F / this.fogColorBlue;
             }
 
+            if (Float.isInfinite(f6))
+            {
+                f6 = Math.nextAfter(f6, 0.0D);
+            }
+
             this.fogColorRed = this.fogColorRed * (1.0F - f15) + this.fogColorRed * f6 * f15;
             this.fogColorGreen = this.fogColorGreen * (1.0F - f15) + this.fogColorGreen * f6 * f15;
             this.fogColorBlue = this.fogColorBlue * (1.0F - f15) + this.fogColorBlue * f6 * f15;
@@ -2483,7 +2523,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
     {
         this.fogStandard = false;
         Entity entity = this.mc.getRenderViewEntity();
-        this.func_191514_d(false);
+        this.setupFogColor(false);
         GlStateManager.glNormal3f(0.0F, -1.0F, 0.0F);
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         IBlockState iblockstate = ActiveRenderInfo.getBlockStateAtEntityViewpoint(this.mc.world, entity, partialTicks);
@@ -2500,32 +2540,25 @@ public class EntityRenderer implements IResourceManagerReloadListener
         }
         else if (entity instanceof EntityLivingBase && ((EntityLivingBase)entity).isPotionActive(MobEffects.BLINDNESS))
         {
-            float f2 = 5.0F;
+            float f4 = 5.0F;
             int i = ((EntityLivingBase)entity).getActivePotionEffect(MobEffects.BLINDNESS).getDuration();
 
             if (i < 20)
             {
-                f2 = 5.0F + (this.farPlaneDistance - 5.0F) * (1.0F - (float)i / 20.0F);
+                f4 = 5.0F + (this.farPlaneDistance - 5.0F) * (1.0F - (float)i / 20.0F);
             }
 
-            if (Config.isShaders())
-            {
-                Shaders.setFog(GlStateManager.FogMode.LINEAR);
-            }
-            else
-            {
-                GlStateManager.setFog(GlStateManager.FogMode.LINEAR);
-            }
+            GlStateManager.setFog(GlStateManager.FogMode.LINEAR);
 
             if (startCoords == -1)
             {
                 GlStateManager.setFogStart(0.0F);
-                GlStateManager.setFogEnd(f2 * 0.8F);
+                GlStateManager.setFogEnd(f4 * 0.8F);
             }
             else
             {
-                GlStateManager.setFogStart(f2 * 0.25F);
-                GlStateManager.setFogEnd(f2);
+                GlStateManager.setFogStart(f4 * 0.25F);
+                GlStateManager.setFogEnd(f4);
             }
 
             if (GLContext.getCapabilities().GL_NV_fog_distance && Config.isFogFancy())
@@ -2535,27 +2568,13 @@ public class EntityRenderer implements IResourceManagerReloadListener
         }
         else if (this.cloudFog)
         {
-            if (Config.isShaders())
-            {
-                Shaders.setFog(GlStateManager.FogMode.EXP);
-            }
-            else
-            {
-                GlStateManager.setFog(GlStateManager.FogMode.EXP);
-            }
-
+            GlStateManager.setFog(GlStateManager.FogMode.EXP);
             GlStateManager.setFogDensity(0.1F);
         }
         else if (iblockstate.getMaterial() == Material.WATER)
         {
-            if (Config.isShaders())
-            {
-                Shaders.setFog(GlStateManager.FogMode.EXP);
-            }
-            else
-            {
-                GlStateManager.setFog(GlStateManager.FogMode.EXP);
-            }
+            GlStateManager.setFog(GlStateManager.FogMode.EXP);
+            float f1 = Config.isClearWater() ? 0.02F : 0.1F;
 
             if (entity instanceof EntityLivingBase)
             {
@@ -2565,55 +2584,35 @@ public class EntityRenderer implements IResourceManagerReloadListener
                 }
                 else
                 {
-                    GlStateManager.setFogDensity(0.1F - (float)EnchantmentHelper.getRespirationModifier((EntityLivingBase)entity) * 0.03F);
+                    float f2 = 0.1F - (float)EnchantmentHelper.getRespirationModifier((EntityLivingBase)entity) * 0.03F;
+                    GlStateManager.setFogDensity(Config.limit(f2, 0.0F, f1));
                 }
             }
             else
             {
-                GlStateManager.setFogDensity(0.1F);
-            }
-
-            if (Config.isClearWater())
-            {
-                GlStateManager.setFogDensity(0.02F);
+                GlStateManager.setFogDensity(f1);
             }
         }
         else if (iblockstate.getMaterial() == Material.LAVA)
         {
-            if (Config.isShaders())
-            {
-                Shaders.setFog(GlStateManager.FogMode.EXP);
-            }
-            else
-            {
-                GlStateManager.setFog(GlStateManager.FogMode.EXP);
-            }
-
+            GlStateManager.setFog(GlStateManager.FogMode.EXP);
             GlStateManager.setFogDensity(2.0F);
         }
         else
         {
-            float f1 = this.farPlaneDistance;
+            float f3 = this.farPlaneDistance;
             this.fogStandard = true;
-
-            if (Config.isShaders())
-            {
-                Shaders.setFog(GlStateManager.FogMode.LINEAR);
-            }
-            else
-            {
-                GlStateManager.setFog(GlStateManager.FogMode.LINEAR);
-            }
+            GlStateManager.setFog(GlStateManager.FogMode.LINEAR);
 
             if (startCoords == -1)
             {
                 GlStateManager.setFogStart(0.0F);
-                GlStateManager.setFogEnd(f1);
+                GlStateManager.setFogEnd(f3);
             }
             else
             {
-                GlStateManager.setFogStart(f1 * Config.getFogStart());
-                GlStateManager.setFogEnd(f1);
+                GlStateManager.setFogStart(f3 * Config.getFogStart());
+                GlStateManager.setFogEnd(f3);
             }
 
             if (GLContext.getCapabilities().GL_NV_fog_distance)
@@ -2631,13 +2630,13 @@ public class EntityRenderer implements IResourceManagerReloadListener
 
             if (this.mc.world.provider.doesXZShowFog((int)entity.posX, (int)entity.posZ) || this.mc.ingameGUI.getBossOverlay().shouldCreateFog())
             {
-                GlStateManager.setFogStart(f1 * 0.05F);
-                GlStateManager.setFogEnd(f1);
+                GlStateManager.setFogStart(f3 * 0.05F);
+                GlStateManager.setFogEnd(f3);
             }
 
             if (Reflector.ForgeHooksClient_onFogRender.exists())
             {
-                Reflector.callVoid(Reflector.ForgeHooksClient_onFogRender, this, entity, iblockstate, partialTicks, startCoords, f1);
+                Reflector.callVoid(Reflector.ForgeHooksClient_onFogRender, this, entity, iblockstate, partialTicks, startCoords, f3);
             }
         }
 
@@ -2646,9 +2645,9 @@ public class EntityRenderer implements IResourceManagerReloadListener
         GlStateManager.colorMaterial(1028, 4608);
     }
 
-    public void func_191514_d(boolean p_191514_1_)
+    public void setupFogColor(boolean black)
     {
-        if (p_191514_1_)
+        if (black)
         {
             GlStateManager.glFog(2918, this.setFogColorBuffer(0.0F, 0.0F, 0.0F, 1.0F));
         }
@@ -2674,15 +2673,15 @@ public class EntityRenderer implements IResourceManagerReloadListener
         return this.fogColorBuffer;
     }
 
-    public void func_190564_k()
+    public void resetData()
     {
-        this.field_190566_ab = null;
-        this.theMapItemRenderer.clearLoadedMaps();
+        this.itemActivationItem = null;
+        this.mapItemRenderer.clearLoadedMaps();
     }
 
     public MapItemRenderer getMapItemRenderer()
     {
-        return this.theMapItemRenderer;
+        return this.mapItemRenderer;
     }
 
     private void waitForServerThread()
@@ -2776,8 +2775,11 @@ public class EntityRenderer implements IResourceManagerReloadListener
 
     private void frameInit()
     {
+        GlErrors.frameStart();
+
         if (!this.initialized)
         {
+            ReflectorResolver.resolve();
             TextureUtils.registerResourceListener();
 
             if (Config.getBitsOs() == 64 && Config.getBitsJre() == 32)
@@ -2797,7 +2799,8 @@ public class EntityRenderer implements IResourceManagerReloadListener
             {
                 String s = "HD_U".replace("HD_U", "HD Ultra").replace("L", "Light");
                 String s1 = s + " " + Config.getNewRelease();
-                TextComponentString textcomponentstring = new TextComponentString(I18n.format("of.message.newVersion", s1));
+                TextComponentString textcomponentstring = new TextComponentString(I18n.format("of.message.newVersion", "\u00a7n" + s1 + "\u00a7r"));
+                textcomponentstring.setStyle((new Style()).setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://optifine.net/downloads")));
                 this.mc.ingameGUI.getChatGUI().printChatMessage(textcomponentstring);
                 Config.setNewRelease((String)null);
             }
@@ -2817,7 +2820,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
 
         if (this.updatedWorld != world)
         {
-            RandomMobs.worldChanged(this.updatedWorld, world);
+            RandomEntities.worldChanged(this.updatedWorld, world);
             Config.updateThreadPriorities();
             this.lastServerTime = 0L;
             this.lastServerTicks = 0;
@@ -2828,25 +2831,24 @@ public class EntityRenderer implements IResourceManagerReloadListener
         {
             Shaders.configAntialiasingLevel = 0;
         }
+
+        if (this.mc.currentScreen != null && this.mc.currentScreen.getClass() == GuiChat.class)
+        {
+            this.mc.displayGuiScreen(new GuiChatOF((GuiChat)this.mc.currentScreen));
+        }
     }
 
     private void frameFinish()
     {
-        if (this.mc.world != null)
+        if (this.mc.world != null && Config.isShowGlErrors() && TimedEvent.isActive("CheckGlErrorFrameFinish", 10000L))
         {
-            long i = System.currentTimeMillis();
+            int i = GlStateManager.glGetError();
 
-            if (i > this.lastErrorCheckTimeMs + 10000L)
+            if (i != 0 && GlErrors.isEnabled(i))
             {
-                this.lastErrorCheckTimeMs = i;
-                int j = GlStateManager.glGetError();
-
-                if (j != 0)
-                {
-                    String s = GLU.gluErrorString(j);
-                    TextComponentString textcomponentstring = new TextComponentString(I18n.format("of.message.openglError", j, s));
-                    this.mc.ingameGUI.getChatGUI().printChatMessage(textcomponentstring);
-                }
+                String s = Config.getGlErrorString(i);
+                TextComponentString textcomponentstring = new TextComponentString(I18n.format("of.message.openglError", i, s));
+                this.mc.ingameGUI.getChatGUI().printChatMessage(textcomponentstring);
             }
         }
     }
@@ -2890,24 +2892,24 @@ public class EntityRenderer implements IResourceManagerReloadListener
         {
             return false;
         }
-        else if (this.theShaderGroup != null && this.theShaderGroup != this.fxaaShaders[2] && this.theShaderGroup != this.fxaaShaders[4])
+        else if (this.shaderGroup != null && this.shaderGroup != this.fxaaShaders[2] && this.shaderGroup != this.fxaaShaders[4])
         {
             return true;
         }
         else if (p_setFxaaShader_1_ != 2 && p_setFxaaShader_1_ != 4)
         {
-            if (this.theShaderGroup == null)
+            if (this.shaderGroup == null)
             {
                 return true;
             }
             else
             {
-                this.theShaderGroup.deleteShaderGroup();
-                this.theShaderGroup = null;
+                this.shaderGroup.deleteShaderGroup();
+                this.shaderGroup = null;
                 return true;
             }
         }
-        else if (this.theShaderGroup != null && this.theShaderGroup == this.fxaaShaders[p_setFxaaShader_1_])
+        else if (this.shaderGroup != null && this.shaderGroup == this.fxaaShaders[p_setFxaaShader_1_])
         {
             return true;
         }
@@ -2918,7 +2920,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
         else
         {
             this.loadShader(new ResourceLocation("shaders/post/fxaa_of_" + p_setFxaaShader_1_ + "x.json"));
-            this.fxaaShaders[p_setFxaaShader_1_] = this.theShaderGroup;
+            this.fxaaShaders[p_setFxaaShader_1_] = this.shaderGroup;
             return this.useShader;
         }
     }
@@ -2936,7 +2938,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
 
         if (Keyboard.isKeyDown(61) && Keyboard.isKeyDown(38))
         {
-            if (this.mc.gameSettings.field_194146_ao.getKeyCode() == 38)
+            if (this.mc.gameSettings.keyBindAdvancements.getKeyCode() == 38)
             {
                 if (this.mc.currentScreen instanceof GuiScreenAdvancements)
                 {
@@ -2963,54 +2965,77 @@ public class EntityRenderer implements IResourceManagerReloadListener
 
     private void loadAllVisibleChunks(Entity p_loadAllVisibleChunks_1_, double p_loadAllVisibleChunks_2_, ICamera p_loadAllVisibleChunks_4_, boolean p_loadAllVisibleChunks_5_)
     {
-        RenderGlobal renderglobal = Config.getRenderGlobal();
-        int i = renderglobal.getCountLoadedChunks();
-        long j = System.currentTimeMillis();
-        Config.dbg("Loading visible chunks");
-        long k = System.currentTimeMillis() + 5000L;
-        int l = 0;
-        boolean flag = false;
+        int i = this.mc.gameSettings.ofChunkUpdates;
+        boolean flag = this.mc.gameSettings.ofLazyChunkLoading;
 
-        while (true)
+        try
         {
-            flag = false;
+            this.mc.gameSettings.ofChunkUpdates = 1000;
+            this.mc.gameSettings.ofLazyChunkLoading = false;
+            RenderGlobal renderglobal = Config.getRenderGlobal();
+            int j = renderglobal.getCountLoadedChunks();
+            long k = System.currentTimeMillis();
+            Config.dbg("Loading visible chunks");
+            long l = System.currentTimeMillis() + 5000L;
+            int i1 = 0;
+            boolean flag1 = false;
 
-            for (int i1 = 0; i1 < 100; ++i1)
+            while (true)
             {
-                renderglobal.displayListEntitiesDirty = true;
-                renderglobal.setupTerrain(p_loadAllVisibleChunks_1_, p_loadAllVisibleChunks_2_, p_loadAllVisibleChunks_4_, this.frameCount++, p_loadAllVisibleChunks_5_);
+                flag1 = false;
 
-                if (!renderglobal.hasNoChunkUpdates())
+                for (int j1 = 0; j1 < 100; ++j1)
                 {
-                    flag = true;
+                    renderglobal.displayListEntitiesDirty = true;
+                    renderglobal.setupTerrain(p_loadAllVisibleChunks_1_, p_loadAllVisibleChunks_2_, p_loadAllVisibleChunks_4_, this.frameCount++, p_loadAllVisibleChunks_5_);
+
+                    if (!renderglobal.hasNoChunkUpdates())
+                    {
+                        flag1 = true;
+                    }
+
+                    i1 = i1 + renderglobal.getCountChunksToUpdate();
+
+                    while (!renderglobal.hasNoChunkUpdates())
+                    {
+                        renderglobal.updateChunks(System.nanoTime() + 1000000000L);
+                    }
+
+                    i1 = i1 - renderglobal.getCountChunksToUpdate();
+
+                    if (!flag1)
+                    {
+                        break;
+                    }
                 }
 
-                l = l + renderglobal.getCountChunksToUpdate();
-                renderglobal.updateChunks(System.nanoTime() + 1000000000L);
-                l = l - renderglobal.getCountChunksToUpdate();
+                if (renderglobal.getCountLoadedChunks() != j)
+                {
+                    flag1 = true;
+                    j = renderglobal.getCountLoadedChunks();
+                }
+
+                if (System.currentTimeMillis() > l)
+                {
+                    Config.log("Chunks loaded: " + i1);
+                    l = System.currentTimeMillis() + 5000L;
+                }
+
+                if (!flag1)
+                {
+                    break;
+                }
             }
 
-            if (renderglobal.getCountLoadedChunks() != i)
-            {
-                flag = true;
-                i = renderglobal.getCountLoadedChunks();
-            }
-
-            if (System.currentTimeMillis() > k)
-            {
-                Config.log("Chunks loaded: " + l);
-                k = System.currentTimeMillis() + 5000L;
-            }
-
-            if (!flag)
-            {
-                break;
-            }
+            Config.log("Chunks loaded: " + i1);
+            Config.log("Finished loading visible chunks");
+            RenderChunk.renderChunksUpdated = 0;
         }
-
-        Config.log("Chunks loaded: " + l);
-        Config.log("Finished loading visible chunks");
-        RenderChunk.renderChunksUpdated = 0;
+        finally
+        {
+            this.mc.gameSettings.ofChunkUpdates = i;
+            this.mc.gameSettings.ofLazyChunkLoading = flag;
+        }
     }
 
     public static void drawNameplate(FontRenderer fontRendererIn, String str, float x, float y, float z, int verticalShift, float viewerYaw, float viewerPitch, boolean isThirdPersonFrontal, boolean isSneaking)
@@ -3036,10 +3061,10 @@ public class EntityRenderer implements IResourceManagerReloadListener
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder bufferbuilder = tessellator.getBuffer();
         bufferbuilder.begin(7, DefaultVertexFormats.POSITION_COLOR);
-        bufferbuilder.pos((double)(-i - 2), (double)(-2 + verticalShift), 0.0D).color(0.0F, 0.0F, 0.0F, 0.45F).endVertex();
-        bufferbuilder.pos((double)(-i - 2), (double)(9 + verticalShift), 0.0D).color(0.0F, 0.0F, 0.0F, 0.45F).endVertex();
-        bufferbuilder.pos((double)(i + 2), (double)(9 + verticalShift), 0.0D).color(0.0F, 0.0F, 0.0F, 0.45F).endVertex();
-        bufferbuilder.pos((double)(i + 2), (double)(-2 + verticalShift), 0.0D).color(0.0F, 0.0F, 0.0F, 0.45F).endVertex();
+        bufferbuilder.pos((double)(-i - 1), (double)(-1 + verticalShift), 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
+        bufferbuilder.pos((double)(-i - 1), (double)(8 + verticalShift), 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
+        bufferbuilder.pos((double)(i + 1), (double)(8 + verticalShift), 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
+        bufferbuilder.pos((double)(i + 1), (double)(-1 + verticalShift), 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
         tessellator.draw();
         GlStateManager.enableTexture2D();
 
@@ -3057,26 +3082,26 @@ public class EntityRenderer implements IResourceManagerReloadListener
         GlStateManager.popMatrix();
     }
 
-    public void func_190565_a(ItemStack p_190565_1_)
+    public void displayItemActivation(ItemStack stack)
     {
-        this.field_190566_ab = p_190565_1_;
-        this.field_190567_ac = 40;
-        this.field_190568_ad = this.random.nextFloat() * 2.0F - 1.0F;
-        this.field_190569_ae = this.random.nextFloat() * 2.0F - 1.0F;
+        this.itemActivationItem = stack;
+        this.itemActivationTicks = 40;
+        this.itemActivationOffX = this.random.nextFloat() * 2.0F - 1.0F;
+        this.itemActivationOffY = this.random.nextFloat() * 2.0F - 1.0F;
     }
 
-    private void func_190563_a(int p_190563_1_, int p_190563_2_, float p_190563_3_)
+    private void renderItemActivation(int p_190563_1_, int p_190563_2_, float p_190563_3_)
     {
-        if (this.field_190566_ab != null && this.field_190567_ac > 0)
+        if (this.itemActivationItem != null && this.itemActivationTicks > 0)
         {
-            int i = 40 - this.field_190567_ac;
+            int i = 40 - this.itemActivationTicks;
             float f = ((float)i + p_190563_3_) / 40.0F;
             float f1 = f * f;
             float f2 = f * f1;
             float f3 = 10.25F * f2 * f1 + -24.95F * f1 * f1 + 25.5F * f2 + -13.8F * f1 + 4.0F * f;
             float f4 = f3 * (float)Math.PI;
-            float f5 = this.field_190568_ad * (float)(p_190563_1_ / 4);
-            float f6 = this.field_190569_ae * (float)(p_190563_2_ / 4);
+            float f5 = this.itemActivationOffX * (float)(p_190563_1_ / 4);
+            float f6 = this.itemActivationOffY * (float)(p_190563_2_ / 4);
             GlStateManager.enableAlpha();
             GlStateManager.pushMatrix();
             GlStateManager.pushAttrib();
@@ -3089,7 +3114,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
             GlStateManager.rotate(900.0F * MathHelper.abs(MathHelper.sin(f4)), 0.0F, 1.0F, 0.0F);
             GlStateManager.rotate(6.0F * MathHelper.cos(f * 8.0F), 1.0F, 0.0F, 0.0F);
             GlStateManager.rotate(6.0F * MathHelper.cos(f * 8.0F), 0.0F, 0.0F, 1.0F);
-            this.mc.getRenderItem().renderItem(this.field_190566_ab, ItemCameraTransforms.TransformType.FIXED);
+            this.mc.getRenderItem().renderItem(this.itemActivationItem, ItemCameraTransforms.TransformType.FIXED);
             GlStateManager.popAttrib();
             GlStateManager.popMatrix();
             RenderHelper.disableStandardItemLighting();

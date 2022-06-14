@@ -9,7 +9,7 @@ import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RenderRabbit;
 import net.minecraft.entity.passive.EntityRabbit;
-import optifine.Reflector;
+import net.optifine.reflect.Reflector;
 
 public class ModelAdapterRabbit extends ModelAdapter
 {
@@ -46,6 +46,11 @@ public class ModelAdapterRabbit extends ModelAdapter
                 return null;
             }
         }
+    }
+
+    public String[] getModelRendererNames()
+    {
+        return new String[] {"left_foot", "right_foot", "left_thigh", "right_thigh", "body", "left_arm", "right_arm", "head", "right_ear", "left_ear", "tail", "nose"};
     }
 
     private static Map<String, Integer> getMapPartFields()

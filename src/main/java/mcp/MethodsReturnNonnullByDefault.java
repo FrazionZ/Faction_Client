@@ -1,5 +1,4 @@
 package mcp;
-
 import javax.annotation.Nonnull;
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;

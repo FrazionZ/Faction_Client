@@ -16,7 +16,7 @@ public class MobEffects
     public static final Potion JUMP_BOOST;
     public static final Potion NAUSEA;
 
-    /** The regeneration Potion object. */
+    /** None */
     public static final Potion REGENERATION;
     public static final Potion RESISTANCE;
 

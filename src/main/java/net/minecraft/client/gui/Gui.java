@@ -1,11 +1,17 @@
 package net.minecraft.client.gui;
 
-import java.awt.Color;
 import java.awt.image.BufferedImage;
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 
-import fz.frazionz.utils.FzUtils;
+import javax.imageio.ImageIO;
+
 import org.lwjgl.opengl.GL11;
 
 import net.minecraft.client.Minecraft;
@@ -16,16 +22,23 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
 
-import javax.imageio.ImageIO;
-
 public class Gui
 {
-	public static int BACKGROUND_COLOR = 0xFF181818;
-	public static int FIRST_GRADIENT_COLOR = 0xFFFF7A00;
-	public static int SECOND_GRADIENT_COLOR = 0xFFFEA801;
+	
+	public static final int BLACK_1 = 0xFF24262B;
+	public static final int BLACK_2 = 0xFF1C1F23;
+	public static final int BLACK_3 = 0xFF15171B;
+	public static final int BLACK_4 = 0xFF0E1014;
+	
+	public static final int COLOR_1 = 0xFFF1B53F;
+	public static final int COLOR_2 = 0xFFE48515;
+	public static final int COLOR_3 = 0xFFDF5D14;
 	
     public static final ResourceLocation OPTIONS_BACKGROUND = new ResourceLocation("textures/gui/options_background.png");
     public static final ResourceLocation FZ_OPTIONS_BACKGROUND = new ResourceLocation("textures/gui/title/background/fz_background.png");
+    public static final ResourceLocation INTERFACE_BACKGROUND_1 = new ResourceLocation("textures/gui/frazionz/interface_background.png");
+    public static final ResourceLocation INTERFACE_BACKGROUND_2 = new ResourceLocation("textures/gui/frazionz/interface_background_2.png");
+
     public static final ResourceLocation STAT_ICONS = new ResourceLocation("textures/gui/container/stats_icons.png");
     public static final ResourceLocation ICONS = new ResourceLocation("textures/gui/icons.png");
     protected static float zLevel;
@@ -91,7 +104,7 @@ public class Gui
         GlStateManager.color(f, f1, f2, f3);
         bufferbuilder.begin(7, DefaultVertexFormats.POSITION);
         bufferbuilder.pos((double)left, (double)bottom, 0.0D).endVertex();
-        bufferbuilder.pos((double)right, (double)bottom, 0.0D).endVertex();  
+        bufferbuilder.pos((double)right, (double)bottom, 0.0D).endVertex();
         bufferbuilder.pos((double)right, (double)top, 0.0D).endVertex();
         bufferbuilder.pos((double)left, (double)top, 0.0D).endVertex();
         tessellator.draw();
@@ -347,7 +360,7 @@ public class Gui
         GlStateManager.enableTexture2D();
     }
     
-    public static void drawRoundedRectWithContent(int left, int top, int width, int height, int color, int radius, fz.frazionz.gui.renderer.fonts.FontRenderer fontrenderer, String content)
+    public static void drawRoundedRectWithContent(int left, int top, int width, int height, int color, int radius, fz.frazionz.gui.renderer.fonts.FzFontRenderer fontrenderer, String content)
     {
         GL11.glPushMatrix();
         GL11.glEnable(3042);
@@ -622,35 +635,6 @@ public class Gui
         GlStateManager.enableTexture2D();
         GlStateManager.disableBlend();
     }
-    
-    public static void drawChromaRect(int left, int top, int right, int bottom)
-    {
-    	
-    	int xTmp = left;
-    	
-    	long l = System.currentTimeMillis() - (xTmp * 10 - top * 10);
-        int i3 = Color.HSBtoRGB(l % (int) 2000.0F / 2000.0F, 0.8F, 0.8F);
-
-        float f3 = (float)(i3 >> 24 & 255) / 255.0F;
-        float f = (float)(i3 >> 16 & 255) / 255.0F;
-        float f1 = (float)(i3 >> 8 & 255) / 255.0F;
-        float f2 = (float)(i3 & 255) / 255.0F;
-        Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder bufferbuilder = tessellator.getBuffer();
-        GlStateManager.enableBlend();
-        GlStateManager.disableTexture2D();
-        GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-        GlStateManager.color(f, f1, f2, f3);
-        GlStateManager.shadeModel(7425);
-        bufferbuilder.begin(7, DefaultVertexFormats.POSITION);
-        bufferbuilder.pos((double)left, (double)bottom, 0.0D).endVertex();
-        bufferbuilder.pos((double)right, (double)bottom, 0.0D).endVertex();
-        bufferbuilder.pos((double)right, (double)top, 0.0D).endVertex();
-        bufferbuilder.pos((double)left, (double)top, 0.0D).endVertex();
-        tessellator.draw();
-        GlStateManager.enableTexture2D();
-        GlStateManager.disableBlend();
-    }
 
     /**
      * Draws a rectangle with a vertical gradient between the specified colors (ARGB format). Args : x1, y1, x2, y2,
@@ -674,9 +658,9 @@ public class Gui
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder bufferbuilder = tessellator.getBuffer();
         bufferbuilder.begin(7, DefaultVertexFormats.POSITION_COLOR);
-        bufferbuilder.pos((double)right, (double)top, (double)zLevel).color(f5, f6, f7, f4).endVertex();
+        bufferbuilder.pos((double)right, (double)top, (double)zLevel).color(f1, f2, f3, f).endVertex();
         bufferbuilder.pos((double)left, (double)top, (double)zLevel).color(f1, f2, f3, f).endVertex();
-        bufferbuilder.pos((double)left, (double)bottom, (double)zLevel).color(f1, f2, f3, f).endVertex();
+        bufferbuilder.pos((double)left, (double)bottom, (double)zLevel).color(f5, f6, f7, f4).endVertex();
         bufferbuilder.pos((double)right, (double)bottom, (double)zLevel).color(f5, f6, f7, f4).endVertex();
         tessellator.draw();
         GlStateManager.shadeModel(7424);
@@ -716,10 +700,10 @@ public class Gui
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder bufferbuilder = tessellator.getBuffer();
         bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
-        bufferbuilder.pos((double)(x + 0), (double)(y + height), (double)zLevel).tex((double)((float)(textureX + 0) * 0.00390625F), (double)((float)(textureY + height) * 0.00390625F)).endVertex();
-        bufferbuilder.pos((double)(x + width), (double)(y + height), (double)zLevel).tex((double)((float)(textureX + width) * 0.00390625F), (double)((float)(textureY + height) * 0.00390625F)).endVertex();
-        bufferbuilder.pos((double)(x + width), (double)(y + 0), (double)zLevel).tex((double)((float)(textureX + width) * 0.00390625F), (double)((float)(textureY + 0) * 0.00390625F)).endVertex();
-        bufferbuilder.pos((double)(x + 0), (double)(y + 0), (double)zLevel).tex((double)((float)(textureX + 0) * 0.00390625F), (double)((float)(textureY + 0) * 0.00390625F)).endVertex();
+        bufferbuilder.pos((double)(x + 0), (double)(y + height), (double)this.zLevel).tex((double)((float)(textureX + 0) * 0.00390625F), (double)((float)(textureY + height) * 0.00390625F)).endVertex();
+        bufferbuilder.pos((double)(x + width), (double)(y + height), (double)this.zLevel).tex((double)((float)(textureX + width) * 0.00390625F), (double)((float)(textureY + height) * 0.00390625F)).endVertex();
+        bufferbuilder.pos((double)(x + width), (double)(y + 0), (double)this.zLevel).tex((double)((float)(textureX + width) * 0.00390625F), (double)((float)(textureY + 0) * 0.00390625F)).endVertex();
+        bufferbuilder.pos((double)(x + 0), (double)(y + 0), (double)this.zLevel).tex((double)((float)(textureX + 0) * 0.00390625F), (double)((float)(textureY + 0) * 0.00390625F)).endVertex();
         tessellator.draw();
     }
     
@@ -736,7 +720,7 @@ public class Gui
         bufferbuilder.pos((double)(x + 0), (double)(y + 0), (double)this.zLevel).tex((double)((float)(textureX + 0) * f), (double)((float)(textureY + 0) * f)).endVertex();
         tessellator.draw();
     }
-    
+
     /**
      * Draws a textured rectangle using the texture currently bound to the TextureManager
      */
@@ -788,6 +772,15 @@ public class Gui
 
     /**
      * Draws a scaled, textured, tiled modal rect at z = 0. This method isn't used anywhere in vanilla code.
+     *  
+     * @param u Texture U (or x) coordinate, in pixels
+     * @param v Texture V (or y) coordinate, in pixels
+     * @param uWidth Width of the rendered part of the texture, in pixels. Parts of the texture outside of it will wrap
+     * around
+     * @param vHeight Height of the rendered part of the texture, in pixels. Parts of the texture outside of it will
+     * wrap around
+     * @param tileWidth total width of the texture
+     * @param tileHeight total height of the texture
      */
     public static void drawScaledCustomSizeModalRect(int x, int y, float u, float v, int uWidth, int vHeight, int width, int height, float tileWidth, float tileHeight)
     {
@@ -803,40 +796,22 @@ public class Gui
         tessellator.draw();
     }
     
-    public static void setUIColor(int background_color, int first_gradient_color, int second_gradient_color) {
-		BACKGROUND_COLOR = background_color;
-		FIRST_GRADIENT_COLOR = first_gradient_color;
-		SECOND_GRADIENT_COLOR = second_gradient_color;
-	}
-    
-    public static void setBackgroundUIColor(int background_color) {
-    	BACKGROUND_COLOR = background_color;
-    }
-    
-    public static void setFirstGradientUIColor(int first_gradient_color) {
-    	FIRST_GRADIENT_COLOR = first_gradient_color;
-    }
-    
-    public static void setSecondGradientUIColor(int second_gradient_color) {
-    	SECOND_GRADIENT_COLOR = second_gradient_color;
-    }
-    
 	public static void drawFzCustomBackgroundSize(Minecraft mc, int x, int y, int widthIn, int heightIn) {
 		ResourceLocation background = new ResourceLocation("textures/gui/frazionz/interface_background.png");
 		mc.getTextureManager().bindTexture(background);
-		GlStateManager.enableBlend();
-		// HG : 0 - 361
-		// HD : 292 - 361
-		// BG : 0 - 504
-		// BD : 292 - 504
-		widthIn -= 7;
-		heightIn -= 7;
+		// HG : 0 - 358
+		// HD : 290 - 358
+		// BG : 0 - 498
+		// BD : 290 - 498
+		widthIn -= 8;
+		heightIn -= 8;
 		
+		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 		GlStateManager.enableBlend();
-        drawModalRectWithCustomSizedTexture(x, y, 0, 361, widthIn, heightIn, 512.0F, 512.0F);
-        drawModalRectWithCustomSizedTexture(x + widthIn, y, 292, 361, 7, heightIn, 512.0F, 512.0F);
-        drawModalRectWithCustomSizedTexture(x, y + heightIn, 0, 504, widthIn, 7, 512.0F, 512.0F);
-        drawModalRectWithCustomSizedTexture(x + widthIn, y + heightIn, 292, 504, 7, 7, 512.0F, 512.0F);
+        drawModalRectWithCustomSizedTexture(x, y, 0, 358, widthIn, heightIn, 512.0F, 512.0F);
+        drawModalRectWithCustomSizedTexture(x + widthIn, y, 290, 358, 4, heightIn, 512.0F, 512.0F);
+        drawModalRectWithCustomSizedTexture(x, y + heightIn, 0, 498, widthIn, 4, 512.0F, 512.0F);
+        drawModalRectWithCustomSizedTexture(x + widthIn, y + heightIn, 290, 498, 4, 4, 512.0F, 512.0F);
 	}
 
     public BufferedImage getDynamicTextureFromUrl(File file) throws IOException {
@@ -870,6 +845,4 @@ public class Gui
         BufferedImage read = ImageIO.read(inByte);
         return read;
     }
-
-    //getDynamicTextureFromUrl
 }

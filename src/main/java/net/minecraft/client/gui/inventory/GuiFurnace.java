@@ -29,7 +29,7 @@ public class GuiFurnace extends GuiContainer
     {
         this.drawDefaultBackground();
         super.drawScreen(mouseX, mouseY, partialTicks);
-        this.func_191948_b(mouseX, mouseY);
+        this.renderHoveredToolTip(mouseX, mouseY);
     }
 
     /**
@@ -39,8 +39,8 @@ public class GuiFurnace extends GuiContainer
     {
         String s = this.tileFurnace.getDisplayName().getUnformattedText();
         String p = this.playerInventory.getDisplayName().getUnformattedText();
-        this.fontRendererObj.drawString(s, this.xSize / 2 - this.fontRendererObj.getStringWidth(s) / 2, 8, 16777215, true);
-        this.fontRendererObj.drawString(p, this.xSize / 2 - this.fontRendererObj.getStringWidth(p) / 2, this.ySize - 118 + 2, 16777215, true);
+        this.fontRenderer.drawString(s, this.xSize / 2 - this.fontRenderer.getStringWidth(s) / 2, 8, 16777215, true);
+        this.fontRenderer.drawString(p, this.xSize / 2 - this.fontRenderer.getStringWidth(p) / 2, this.ySize - 96 + 2, 16777215, true);
     }
 
     /**
@@ -57,11 +57,11 @@ public class GuiFurnace extends GuiContainer
         if (TileEntityFurnace.isBurning(this.tileFurnace))
         {
             int k = this.getBurnLeftScaled(13);
-            this.drawTexturedModalRect(i + 50, j + 56 + 12 - k, 186, 14 - k, 14, k + 1);
+            this.drawTexturedModalRect(i + 45, j + 34 + 12 - k, 186, 14 - k, 14, k + 1);
         }
 
         int l = this.getCookProgressScaled(24);
-        this.drawTexturedModalRect(i + 82, j + 55, 186, 14, l + 1, 16);
+        this.drawTexturedModalRect(i + 77, j + 33, 186, 14, l + 1, 16);
     }
 
     private int getCookProgressScaled(int pixels)

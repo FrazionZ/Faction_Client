@@ -1,6 +1,6 @@
 package net.minecraft.init;
 
-import net.minecraft.item.FzItemUltraBow;
+import fz.frazionz.item.ItemUltraBow;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemArmorStand;
@@ -14,7 +14,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class Items
 {
-    public static final Item field_190931_a;
+    public static final Item AIR;
     public static final Item IRON_SHOVEL;
     public static final Item IRON_PICKAXE;
     public static final Item IRON_AXE;
@@ -222,9 +222,9 @@ public class Items
     public static final Item BEETROOT_SOUP;
     public static final Item TOTEM_OF_UNDYING;
     public static final Item SHULKER_SHELL;
-    public static final Item field_191525_da;
-    public static final Item field_192397_db;
-
+    public static final Item IRON_NUGGET;
+    public static final Item KNOWLEDGE_BOOK;
+    
     public static final Item YELLITE;
     public static final ItemArmor YELLITE_HELMET;
     public static final ItemArmor YELLITE_CHESTPLATE;
@@ -303,7 +303,7 @@ public class Items
     public static final Item LEGENDARY_DAGGER;
     public static final Item LEGENDARY_SCYTHE;
     
-    public static final FzItemUltraBow ULTRA_BOW;
+    public static final ItemUltraBow ULTRA_BOW;
 
     public static final Item TRPOHY_BAT;
     public static final Item TROPHY_BLAZE;
@@ -386,7 +386,7 @@ public class Items
     
     public static final Item BOTTLEXP;
     public static final Item FACTION_TOKEN;
-    
+
     private static Item getRegisteredItem(String name)
     {
         Item item = Item.REGISTRY.getObject(new ResourceLocation(name));
@@ -409,7 +409,7 @@ public class Items
         }
         else
         {
-            field_190931_a = getRegisteredItem("air");
+            AIR = getRegisteredItem("air");
             IRON_SHOVEL = getRegisteredItem("iron_shovel");
             IRON_PICKAXE = getRegisteredItem("iron_pickaxe");
             IRON_AXE = getRegisteredItem("iron_axe");
@@ -617,9 +617,9 @@ public class Items
             BEETROOT_SOUP = getRegisteredItem("beetroot_soup");
             TOTEM_OF_UNDYING = getRegisteredItem("totem_of_undying");
             SHULKER_SHELL = getRegisteredItem("shulker_shell");
-            field_191525_da = getRegisteredItem("iron_nugget");
-            field_192397_db = getRegisteredItem("knowledge_book");
-            
+            IRON_NUGGET = getRegisteredItem("iron_nugget");
+            KNOWLEDGE_BOOK = getRegisteredItem("knowledge_book");
+        
             YELLITE = getRegisteredItem("yellite");
             YELLITE_HELMET = (ItemArmor)getRegisteredItem("yellite_helmet");
             YELLITE_CHESTPLATE = (ItemArmor)getRegisteredItem("yellite_chestplate");
@@ -696,7 +696,7 @@ public class Items
             LEGENDARY_DAGGER = getRegisteredItem("legendary_dagger");
             LEGENDARY_SCYTHE = getRegisteredItem("legendary_scythe");
             
-            ULTRA_BOW = (FzItemUltraBow)getRegisteredItem("ultra_bow");
+            ULTRA_BOW = (ItemUltraBow)getRegisteredItem("ultra_bow");
             
             TRPOHY_BAT = getRegisteredItem("trophy_bat");
             TROPHY_BLAZE = getRegisteredItem("trophy_blaze");

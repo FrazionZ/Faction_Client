@@ -47,7 +47,7 @@ public class TileEntitySign extends TileEntity
 
     protected void setWorldCreate(World worldIn)
     {
-        this.setWorldObj(worldIn);
+        this.setWorld(worldIn);
     }
 
     public void readFromNBT(NBTTagCompound compound)
@@ -60,7 +60,7 @@ public class TileEntitySign extends TileEntity
             {
                 return "Sign";
             }
-            public boolean canCommandSenderUseCommand(int permLevel, String commandName)
+            public boolean canUseCommand(int permLevel, String commandName)
             {
                 return true;
             }
@@ -101,11 +101,20 @@ public class TileEntitySign extends TileEntity
     }
 
     @Nullable
+
+    /**
+     * Retrieves packet to send to the client whenever this Tile Entity is resynced via World.notifyBlockUpdate. For
+     * modded TE's, this packet comes back to you clientside in {@link #onDataPacket}
+     */
     public SPacketUpdateTileEntity getUpdatePacket()
     {
         return new SPacketUpdateTileEntity(this.pos, 9, this.getUpdateTag());
     }
 
+    /**
+     * Get an NBT compound to sync to the client with SPacketChunkData, used for initial loading of the chunk or when
+     * many blocks change at once. This compound comes back to you clientside in {@link handleUpdateTag}
+     */
     public NBTTagCompound getUpdateTag()
     {
         return this.writeToNBT(new NBTTagCompound());
@@ -156,10 +165,10 @@ public class TileEntitySign extends TileEntity
             {
                 return playerIn.getDisplayName();
             }
-            public void addChatMessage(ITextComponent component)
+            public void sendMessage(ITextComponent component)
             {
             }
-            public boolean canCommandSenderUseCommand(int permLevel, String commandName)
+            public boolean canUseCommand(int permLevel, String commandName)
             {
                 return permLevel <= 2;
             }

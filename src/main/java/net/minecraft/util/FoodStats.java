@@ -59,7 +59,19 @@ public class FoodStats
 
         boolean flag = player.world.getGameRules().getBoolean("naturalRegeneration");
 
-        if (flag && this.foodLevel >= 18 && player.shouldHeal())
+        /*if (flag && this.foodSaturationLevel > 0.0F && player.shouldHeal() && this.foodLevel >= 20)
+        {
+            ++this.foodTimer;
+
+            if (this.foodTimer >= 10)
+            {
+                float f = Math.min(this.foodSaturationLevel, 6.0F);
+                player.heal(f / 6.0F);
+                this.addExhaustion(f);
+                this.foodTimer = 0;
+            }
+        }
+        else*/ if (flag && this.foodLevel >= 18 && player.shouldHeal())
         {
             ++this.foodTimer;
 
@@ -78,7 +90,7 @@ public class FoodStats
             {
                 if (player.getHealth() > 10.0F || enumdifficulty == EnumDifficulty.HARD || player.getHealth() > 1.0F && enumdifficulty == EnumDifficulty.NORMAL)
                 {
-                    player.attackEntityFrom(DamageSource.starve, 1.0F);
+                    player.attackEntityFrom(DamageSource.STARVE, 1.0F);
                 }
 
                 this.foodTimer = 0;

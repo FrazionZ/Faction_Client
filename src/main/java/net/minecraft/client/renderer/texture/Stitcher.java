@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Set;
 import net.minecraft.client.renderer.StitcherException;
 import net.minecraft.util.math.MathHelper;
-import optifine.MathUtils;
+import net.optifine.util.MathUtils;
 
 public class Stitcher
 {
@@ -187,7 +187,7 @@ public class Stitcher
 
     public static class Holder implements Comparable<Stitcher.Holder>
     {
-        private final TextureAtlasSprite theTexture;
+        private final TextureAtlasSprite sprite;
         private final int width;
         private final int height;
         private final int mipmapLevelHolder;
@@ -196,7 +196,7 @@ public class Stitcher
 
         public Holder(TextureAtlasSprite theTextureIn, int mipmapLevelHolderIn)
         {
-            this.theTexture = theTextureIn;
+            this.sprite = theTextureIn;
             this.width = theTextureIn.getIconWidth();
             this.height = theTextureIn.getIconHeight();
             this.mipmapLevelHolder = mipmapLevelHolderIn;
@@ -205,7 +205,7 @@ public class Stitcher
 
         public TextureAtlasSprite getAtlasSprite()
         {
-            return this.theTexture;
+            return this.sprite;
         }
 
         public int getWidth()
@@ -240,7 +240,7 @@ public class Stitcher
 
         public String toString()
         {
-            return "Holder{width=" + this.width + ", height=" + this.height + ", name=" + this.theTexture.getIconName() + '}';
+            return "Holder{width=" + this.width + ", height=" + this.height + ", name=" + this.sprite.getIconName() + '}';
         }
 
         public int compareTo(Stitcher.Holder p_compareTo_1_)
@@ -251,12 +251,12 @@ public class Stitcher
             {
                 if (this.getWidth() == p_compareTo_1_.getWidth())
                 {
-                    if (this.theTexture.getIconName() == null)
+                    if (this.sprite.getIconName() == null)
                     {
-                        return p_compareTo_1_.theTexture.getIconName() == null ? 0 : -1;
+                        return p_compareTo_1_.sprite.getIconName() == null ? 0 : -1;
                     }
 
-                    return this.theTexture.getIconName().compareTo(p_compareTo_1_.theTexture.getIconName());
+                    return this.sprite.getIconName().compareTo(p_compareTo_1_.sprite.getIconName());
                 }
 
                 i = this.getWidth() < p_compareTo_1_.getWidth() ? 1 : -1;

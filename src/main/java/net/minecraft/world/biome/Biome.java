@@ -109,8 +109,8 @@ public abstract class Biome
     public IBlockState fillerBlock = Blocks.DIRT.getDefaultState();
 
     /** The biome decorator. */
-    public BiomeDecorator theBiomeDecorator;
-    public BiomeHellDecorator theBiomeHellDecorator;
+    public BiomeDecorator decorator;
+    public BiomeHellDecorator hellDecorator;
     protected List<Biome.SpawnListEntry> spawnableMonsterList = Lists.<Biome.SpawnListEntry>newArrayList();
     protected List<Biome.SpawnListEntry> spawnableCreatureList = Lists.<Biome.SpawnListEntry>newArrayList();
     protected List<Biome.SpawnListEntry> spawnableWaterCreatureList = Lists.<Biome.SpawnListEntry>newArrayList();
@@ -144,8 +144,8 @@ public abstract class Biome
         this.enableSnow = properties.enableSnow;
         this.enableRain = properties.enableRain;
         this.baseBiomeRegName = properties.baseBiomeRegName;
-        this.theBiomeDecorator = this.createBiomeDecorator();
-        this.theBiomeHellDecorator = this.createBiomeHellDecorator();
+        this.decorator = this.createBiomeDecorator();
+        this.hellDecorator = this.createBiomeHellDecorator();
         this.spawnableCreatureList.add(new Biome.SpawnListEntry(EntitySheep.class, 12, 4, 4));
         this.spawnableCreatureList.add(new Biome.SpawnListEntry(EntityPig.class, 10, 4, 4));
         this.spawnableCreatureList.add(new Biome.SpawnListEntry(EntityChicken.class, 10, 4, 4));
@@ -180,7 +180,7 @@ public abstract class Biome
         return this.baseBiomeRegName != null;
     }
 
-    public WorldGenAbstractTree genBigTreeChance(Random rand)
+    public WorldGenAbstractTree getRandomTreeFeature(Random rand)
     {
         return (WorldGenAbstractTree)(rand.nextInt(10) == 0 ? BIG_TREE_FEATURE : TREE_FEATURE);
     }
@@ -262,41 +262,42 @@ public abstract class Biome
     }
 
     /**
-     * Gets a floating point representation of this biome's temperature
+     * Gets the current temperature at the given location, based off of the default for this biome, the elevation of the
+     * position, and {@linkplain #TEMPERATURE_NOISE} some random perlin noise.
      */
-    public final float getFloatTemperature(BlockPos pos)
+    public final float getTemperature(BlockPos pos)
     {
         if (pos.getY() > 64)
         {
             float f = (float)(TEMPERATURE_NOISE.getValue((double)((float)pos.getX() / 8.0F), (double)((float)pos.getZ() / 8.0F)) * 4.0D);
-            return this.getTemperature() - (f + (float)pos.getY() - 64.0F) * 0.05F / 30.0F;
+            return this.getDefaultTemperature() - (f + (float)pos.getY() - 64.0F) * 0.05F / 30.0F;
         }
         else
         {
-            return this.getTemperature();
+            return this.getDefaultTemperature();
         }
     }
 
     public void decorate(World worldIn, Random rand, BlockPos pos)
     {
-        this.theBiomeDecorator.decorate(worldIn, rand, this, pos);
-    }
-    
-    public void netherDecorate(World worldIn, Random rand, BlockPos pos)
-    {
-        this.theBiomeHellDecorator.decorate(worldIn, rand, this, pos);
+        this.decorator.decorate(worldIn, rand, this, pos);
     }
 
+    public void netherDecorate(World worldIn, Random rand, BlockPos pos)
+    {
+        this.hellDecorator.decorate(worldIn, rand, this, pos);
+    }
+    
     public int getGrassColorAtPos(BlockPos pos)
     {
-        double d0 = (double)MathHelper.clamp(this.getFloatTemperature(pos), 0.0F, 1.0F);
+        double d0 = (double)MathHelper.clamp(this.getTemperature(pos), 0.0F, 1.0F);
         double d1 = (double)MathHelper.clamp(this.getRainfall(), 0.0F, 1.0F);
         return ColorizerGrass.getGrassColor(d0, d1);
     }
 
     public int getFoliageColorAtPos(BlockPos pos)
     {
-        double d0 = (double)MathHelper.clamp(this.getFloatTemperature(pos), 0.0F, 1.0F);
+        double d0 = (double)MathHelper.clamp(this.getTemperature(pos), 0.0F, 1.0F);
         double d1 = (double)MathHelper.clamp(this.getRainfall(), 0.0F, 1.0F);
         return ColorizerFoliage.getFoliageColor(d0, d1);
     }
@@ -311,9 +312,9 @@ public abstract class Biome
      * non-air block, we replace it with this.topBlock (default grass, descendants may set otherwise), and then a
      * relatively shallow layer of blocks of type this.fillerBlock (default dirt). A random set of blocks below y == 5
      * (but always including y == 0) is replaced with bedrock.
-     *
+     *  
      * If we don't hit non-air until somewhat below sea level, we top with gravel and fill down with stone.
-     *
+     *  
      * If this.fillerBlock is red sand, we replace some of that with red sandstone.
      */
     public final void generateBiomeTerrain(World worldIn, Random rand, ChunkPrimer chunkPrimerIn, int x, int z, double noiseVal)
@@ -358,7 +359,7 @@ public abstract class Biome
 
                         if (j1 < i && (iblockstate == null || iblockstate.getMaterial() == Material.AIR))
                         {
-                            if (this.getFloatTemperature(blockpos$mutableblockpos.setPos(x, j1, z)) < 0.15F)
+                            if (this.getTemperature(blockpos$mutableblockpos.setPos(x, j1, z)) < 0.15F)
                             {
                                 iblockstate = ICE;
                             }
@@ -408,13 +409,13 @@ public abstract class Biome
 
     public Biome.TempCategory getTempCategory()
     {
-        if ((double)this.getTemperature() < 0.2D)
+        if ((double)this.getDefaultTemperature() < 0.2D)
         {
             return Biome.TempCategory.COLD;
         }
         else
         {
-            return (double)this.getTemperature() < 1.0D ? Biome.TempCategory.MEDIUM : Biome.TempCategory.WARM;
+            return (double)this.getDefaultTemperature() < 1.0D ? Biome.TempCategory.MEDIUM : Biome.TempCategory.WARM;
         }
     }
 
@@ -462,7 +463,10 @@ public abstract class Biome
         return this.heightVariation;
     }
 
-    public final float getTemperature()
+    /**
+     * Gets the constant default temperature for this biome.
+     */
+    public final float getDefaultTemperature()
     {
         return this.temperature;
     }

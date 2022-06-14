@@ -7,8 +7,8 @@ import net.minecraft.client.model.ModelSquid;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RenderSquid;
 import net.minecraft.entity.passive.EntitySquid;
-import optifine.Config;
-import optifine.Reflector;
+import net.minecraft.src.Config;
+import net.optifine.reflect.Reflector;
 
 public class ModelAdapterSquid extends ModelAdapter
 {
@@ -62,6 +62,11 @@ public class ModelAdapterSquid extends ModelAdapter
                 }
             }
         }
+    }
+
+    public String[] getModelRendererNames()
+    {
+        return new String[] {"body", "tentacle1", "tentacle2", "tentacle3", "tentacle4", "tentacle5", "tentacle6", "tentacle7", "tentacle8"};
     }
 
     public IEntityRenderer makeEntityRender(ModelBase modelBase, float shadowSize)

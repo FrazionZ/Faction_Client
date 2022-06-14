@@ -11,8 +11,6 @@ public class DefaultPlayerSkin
     /** The default skin for the Alex model. */
     private static final ResourceLocation TEXTURE_ALEX = new ResourceLocation("textures/entity/alex.png");
 
-    
-    
     /**
      * Returns the default skind for versions prior to 1.8, which is always the Steve texture.
      */

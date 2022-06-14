@@ -8,8 +8,8 @@ import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderEnderCrystal;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.item.EntityEnderCrystal;
-import optifine.Config;
-import optifine.Reflector;
+import net.minecraft.src.Config;
+import net.optifine.reflect.Reflector;
 
 public class ModelAdapterEnderCrystal extends ModelAdapter
 {
@@ -51,6 +51,11 @@ public class ModelAdapterEnderCrystal extends ModelAdapter
                 return modelPart.equals("base") ? (ModelRenderer)Reflector.getFieldValue(modelendercrystal, Reflector.ModelEnderCrystal_ModelRenderers, 2) : null;
             }
         }
+    }
+
+    public String[] getModelRendererNames()
+    {
+        return new String[] {"cube", "glass", "base"};
     }
 
     public IEntityRenderer makeEntityRender(ModelBase modelBase, float shadowSize)

@@ -47,7 +47,7 @@ public class ItemArmor extends Item
         protected ItemStack dispenseStack(IBlockSource source, ItemStack stack)
         {
             ItemStack itemstack = ItemArmor.dispenseArmor(source, stack);
-            return itemstack.func_190926_b() ? super.dispenseStack(source, stack) : itemstack;
+            return itemstack.isEmpty() ? super.dispenseStack(source, stack) : itemstack;
         }
     };
 
@@ -76,7 +76,7 @@ public class ItemArmor extends Item
 
         if (list.isEmpty())
         {
-            return ItemStack.field_190927_a;
+            return ItemStack.EMPTY;
         }
         else
         {
@@ -227,22 +227,25 @@ public class ItemArmor extends Item
 
     /**
      * Return whether this item is repairable in an anvil.
+     *  
+     * @param toRepair the {@code ItemStack} being repaired
+     * @param repair the {@code ItemStack} being used to perform the repair
      */
     public boolean getIsRepairable(ItemStack toRepair, ItemStack repair)
     {
         return this.material.getRepairItem() == repair.getItem() ? true : super.getIsRepairable(toRepair, repair);
     }
 
-    public ActionResult<ItemStack> onItemRightClick(World itemStackIn, EntityPlayer worldIn, EnumHand playerIn)
+    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn)
     {
-        ItemStack itemstack = worldIn.getHeldItem(playerIn);
+        ItemStack itemstack = playerIn.getHeldItem(handIn);
         EntityEquipmentSlot entityequipmentslot = EntityLiving.getSlotForItemStack(itemstack);
-        ItemStack itemstack1 = worldIn.getItemStackFromSlot(entityequipmentslot);
+        ItemStack itemstack1 = playerIn.getItemStackFromSlot(entityequipmentslot);
 
-        if (itemstack1.func_190926_b())
+        if (itemstack1.isEmpty())
         {
-            worldIn.setItemStackToSlot(entityequipmentslot, itemstack.copy());
-            itemstack.func_190920_e(0);
+            playerIn.setItemStackToSlot(entityequipmentslot, itemstack.copy());
+            itemstack.setCount(0);
             return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemstack);
         }
         else
@@ -257,11 +260,48 @@ public class ItemArmor extends Item
 
         if (equipmentSlot == this.armorType)
         {
-            multimap.put(SharedMonsterAttributes.ARMOR.getAttributeUnlocalizedName(), new AttributeModifier(ARMOR_MODIFIERS[equipmentSlot.getIndex()], "Armor modifier", (double)this.damageReduceAmount, 0));
-            multimap.put(SharedMonsterAttributes.ARMOR_TOUGHNESS.getAttributeUnlocalizedName(), new AttributeModifier(ARMOR_MODIFIERS[equipmentSlot.getIndex()], "Armor toughness", (double)this.toughness, 0));
+            multimap.put(SharedMonsterAttributes.ARMOR.getName(), new AttributeModifier(ARMOR_MODIFIERS[equipmentSlot.getIndex()], "Armor modifier", (double)this.damageReduceAmount, 0));
+            multimap.put(SharedMonsterAttributes.ARMOR_TOUGHNESS.getName(), new AttributeModifier(ARMOR_MODIFIERS[equipmentSlot.getIndex()], "Armor toughness", (double)this.toughness, 0));
         }
 
         return multimap;
+    }
+    
+    @Override
+    public void addInformation(ItemStack stack, World playerIn, List<String> tooltip, ITooltipFlag advanced) {
+    	
+    	if(this.getArmorMaterial() == ArmorMaterial.TRAVELERS) {
+        	tooltip.add(" ");
+        	tooltip.add("\u00A76\u00bb \u00A7eEffects Full Armure :");
+        	tooltip.add("\u00A76\u00bb \u00A7eSpeed 3");
+        	tooltip.add("\u00A76\u00bb \u00A7eHaste 1");
+        	tooltip.add("\u00A76\u00bb \u00A7eFire Resistance 1");
+        	tooltip.add("\u00A76\u00bb \u00A7eNo Fall");
+        	tooltip.add("\u00A76\u00bb \u00A7eSaturation 1");
+        	tooltip.add(" ");
+    	}
+    	else if(this.getArmorMaterial() == ArmorMaterial.FRAZION_100) {
+        	tooltip.add(" ");
+        	tooltip.add("\u00A76\u00bb \u00A7eEffects Full Armure :");
+        	tooltip.add("\u00A76\u00bb \u00A7eSpeed 1");
+        	tooltip.add("\u00A76\u00bb \u00A7eForce 1");
+        	tooltip.add("\u00A76\u00bb \u00A7eResistance 1");
+        	tooltip.add("\u00A76\u00bb \u00A7eFire Resistance 1");
+        	tooltip.add(" ");
+        	tooltip.add("\u00A76\u00bb \u00A7eAnti Blindness");
+        	tooltip.add("\u00A76\u00bb \u00A7eAnti Slowness");
+        	tooltip.add("\u00A76\u00bb \u00A7eAnti Poison");
+        	tooltip.add(" ");
+    	}
+    	else if(this.getArmorMaterial() == ArmorMaterial.FRAZION_70) {
+        	tooltip.add(" ");
+        	tooltip.add("\u00A76\u00bb \u00A7eEffects Full Armure :");
+        	tooltip.add("\u00A76\u00bb \u00A7eSpeed 1");
+        	tooltip.add("\u00A76\u00bb \u00A7eFire Resistance 1");
+        	tooltip.add(" ");
+        	tooltip.add("\u00A76\u00bb \u00A7eAnti Poison");
+        	tooltip.add(" ");
+    	}
     }
 
     public static enum ArmorMaterial
@@ -300,7 +340,7 @@ public class ItemArmor extends Item
         				new EffectItem(MobEffects.SATURATION, 200000, 0))
         		),
         ;
-
+    	
         private final String name;
         private final int maxDamageFactor;
         private final int[] damageReductionAmountArray;
@@ -440,42 +480,5 @@ public class ItemArmor extends Item
         {
             return this.toughness;
         }
-    }
-    
-    @Override
-    public void addInformation(ItemStack stack, World playerIn, List<String> tooltip, ITooltipFlag advanced) {
-    	
-    	if(this.getArmorMaterial() == ArmorMaterial.TRAVELERS) {
-        	tooltip.add(" ");
-        	tooltip.add("\u00A76\u00bb \u00A7eEffects Full Armure :");
-        	tooltip.add("\u00A76\u00bb \u00A7eSpeed 3");
-        	tooltip.add("\u00A76\u00bb \u00A7eHaste 1");
-        	tooltip.add("\u00A76\u00bb \u00A7eFire Resistance 1");
-        	tooltip.add("\u00A76\u00bb \u00A7eNo Fall");
-        	tooltip.add("\u00A76\u00bb \u00A7eSaturation 1");
-        	tooltip.add(" ");
-    	}
-    	else if(this.getArmorMaterial() == ArmorMaterial.FRAZION_100) {
-        	tooltip.add(" ");
-        	tooltip.add("\u00A76\u00bb \u00A7eEffects Full Armure :");
-        	tooltip.add("\u00A76\u00bb \u00A7eSpeed 1");
-        	tooltip.add("\u00A76\u00bb \u00A7eForce 1");
-        	tooltip.add("\u00A76\u00bb \u00A7eResistance 1");
-        	tooltip.add("\u00A76\u00bb \u00A7eFire Resistance 1");
-        	tooltip.add(" ");
-        	tooltip.add("\u00A76\u00bb \u00A7eAnti Blindness");
-        	tooltip.add("\u00A76\u00bb \u00A7eAnti Slowness");
-        	tooltip.add("\u00A76\u00bb \u00A7eAnti Poison");
-        	tooltip.add(" ");
-    	}
-    	else if(this.getArmorMaterial() == ArmorMaterial.FRAZION_70) {
-        	tooltip.add(" ");
-        	tooltip.add("\u00A76\u00bb \u00A7eEffects Full Armure :");
-        	tooltip.add("\u00A76\u00bb \u00A7eSpeed 1");
-        	tooltip.add("\u00A76\u00bb \u00A7eFire Resistance 1");
-        	tooltip.add(" ");
-        	tooltip.add("\u00A76\u00bb \u00A7eAnti Poison");
-        	tooltip.add(" ");
-    	}
     }
 }

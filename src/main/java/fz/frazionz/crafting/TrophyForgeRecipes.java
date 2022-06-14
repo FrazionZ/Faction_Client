@@ -67,9 +67,9 @@ public class TrophyForgeRecipes
      
             ItemStack s2 = key2[i];
      
-            if(s1.func_190926_b() && !s2.func_190926_b()) return false;
+            if(s1.isEmpty() && !s2.isEmpty()) return false;
      
-            if(!s1.func_190926_b() && s2.func_190926_b()) return false;
+            if(!s1.isEmpty() && s2.isEmpty()) return false;
      
             if(s1.getItem() != s2.getItem()) return false;
      
@@ -108,9 +108,9 @@ public class TrophyForgeRecipes
      
             ItemStack s2 = key2[i];
      
-            if(s1.func_190926_b() && !s2.func_190926_b()) return false;
+            if(s1.isEmpty() && !s2.isEmpty()) return false;
      
-            if(!s1.func_190926_b() && s2.func_190926_b()) return false;
+            if(!s1.isEmpty() && s2.isEmpty()) return false;
      
             if(s1.getItem() != s2.getItem()) return false;
      

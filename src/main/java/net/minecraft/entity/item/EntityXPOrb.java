@@ -120,7 +120,7 @@ public class EntityXPOrb extends Entity
 
         if (this.xpTargetColor < this.xpColor - 20 + this.getEntityId() % 100)
         {
-            if (this.closestPlayer == null || this.closestPlayer.getDistanceSqToEntity(this) > 64.0D)
+            if (this.closestPlayer == null || this.closestPlayer.getDistanceSq(this) > 64.0D)
             {
                 this.closestPlayer = this.world.getClosestPlayerToEntity(this, 8.0D);
             }
@@ -150,7 +150,7 @@ public class EntityXPOrb extends Entity
             }
         }
 
-        this.moveEntity(MoverType.SELF, this.motionX, this.motionY, this.motionZ);
+        this.move(MoverType.SELF, this.motionX, this.motionY, this.motionZ);
         float f = 0.98F;
 
         if (this.onGround)
@@ -189,7 +189,7 @@ public class EntityXPOrb extends Entity
      */
     protected void dealFireDamage(int amount)
     {
-        this.attackEntityFrom(DamageSource.inFire, (float)amount);
+        this.attackEntityFrom(DamageSource.IN_FIRE, (float)amount);
     }
 
     /**
@@ -203,7 +203,7 @@ public class EntityXPOrb extends Entity
         }
         else
         {
-            this.setBeenAttacked();
+            this.markVelocityChanged();
             this.xpOrbHealth = (int)((float)this.xpOrbHealth - amount);
 
             if (this.xpOrbHealth <= 0)
@@ -248,7 +248,7 @@ public class EntityXPOrb extends Entity
                 entityIn.onItemPickup(this, 1);
                 ItemStack itemstack = EnchantmentHelper.getEnchantedItem(Enchantments.MENDING, entityIn);
 
-                if (!itemstack.func_190926_b() && itemstack.isItemDamaged() && !(itemstack.getItem() instanceof ItemSpawnerPickaxe))
+                if (!itemstack.isEmpty() && itemstack.isItemDamaged() && !(itemstack.getItem() instanceof ItemSpawnerPickaxe))
                 {
                     int i = Math.min(this.xpToDurability(this.xpValue), itemstack.getItemDamage());
                     this.xpValue -= this.durabilityToXp(i);

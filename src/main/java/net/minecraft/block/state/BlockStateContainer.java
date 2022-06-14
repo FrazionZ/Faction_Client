@@ -42,8 +42,8 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.property.IUnlistedProperty;
-import optifine.BlockModelUtils;
-import optifine.Reflector;
+import net.optifine.model.BlockModelUtils;
+import net.optifine.reflect.Reflector;
 
 public class BlockStateContainer
 {
@@ -70,14 +70,14 @@ public class BlockStateContainer
         return new BlockStateContainer.StateImplementation(p_createState_1_, p_createState_2_);
     }
 
-    protected BlockStateContainer(Block p_i9_1_, IProperty<?>[] p_i9_2_, ImmutableMap < IUnlistedProperty<?>, Optional<? >> p_i9_3_)
+    protected BlockStateContainer(Block p_i10_1_, IProperty<?>[] p_i10_2_, ImmutableMap < IUnlistedProperty<?>, Optional<? >> p_i10_3_)
     {
-        this.block = p_i9_1_;
+        this.block = p_i10_1_;
         Map < String, IProperty<? >> map = Maps. < String, IProperty<? >> newHashMap();
 
-        for (IProperty<?> iproperty : p_i9_2_)
+        for (IProperty<?> iproperty : p_i10_2_)
         {
-            validateProperty(p_i9_1_, iproperty);
+            validateProperty(p_i10_1_, iproperty);
             map.put(iproperty.getName(), iproperty);
         }
 
@@ -88,7 +88,7 @@ public class BlockStateContainer
         for (List < Comparable<? >> list1 : Cartesian.cartesianProduct(this.getAllowedValues()))
         {
             Map < IProperty<?>, Comparable<? >> map1 = MapPopulator. < IProperty<?>, Comparable<? >> createMap(this.properties.values(), list1);
-            BlockStateContainer.StateImplementation blockstatecontainer$stateimplementation = this.createState(p_i9_1_, ImmutableMap.copyOf(map1), p_i9_3_);
+            BlockStateContainer.StateImplementation blockstatecontainer$stateimplementation = this.createState(p_i10_1_, ImmutableMap.copyOf(map1), p_i10_3_);
             map2.put(map1, blockstatecontainer$stateimplementation);
             list.add(blockstatecontainer$stateimplementation);
         }
@@ -232,14 +232,14 @@ public class BlockStateContainer
             this.properties = propertiesIn;
         }
 
-        protected StateImplementation(Block p_i8_1_, ImmutableMap < IProperty<?>, Comparable<? >> p_i8_2_, ImmutableTable < IProperty<?>, Comparable<?>, IBlockState > p_i8_3_)
+        protected StateImplementation(Block p_i9_1_, ImmutableMap < IProperty<?>, Comparable<? >> p_i9_2_, ImmutableTable < IProperty<?>, Comparable<?>, IBlockState > p_i9_3_)
         {
-            this.block = p_i8_1_;
-            this.properties = p_i8_2_;
-            this.propertyValueTable = p_i8_3_;
+            this.block = p_i9_1_;
+            this.properties = p_i9_2_;
+            this.propertyValueTable = p_i9_3_;
         }
 
-        public Collection < IProperty<? >> getPropertyNames()
+        public Collection < IProperty<? >> getPropertyKeys()
         {
             return Collections. < IProperty<? >> unmodifiableCollection(this.properties.keySet());
         }
@@ -396,9 +396,9 @@ public class BlockStateContainer
             return this.block.isFullCube(this);
         }
 
-        public boolean func_191057_i()
+        public boolean hasCustomBreakingProgress()
         {
-            return this.block.func_190946_v(this);
+            return this.block.hasCustomBreakingProgress(this);
         }
 
         public EnumBlockRenderType getRenderType()
@@ -461,9 +461,9 @@ public class BlockStateContainer
             return this.block.getStrongPower(this, blockAccess, pos, side);
         }
 
-        public EnumPushReaction getMobilityFlag()
+        public EnumPushReaction getPushReaction()
         {
-            return this.block.getMobilityFlag(this);
+            return this.block.getPushReaction(this);
         }
 
         public IBlockState getActualState(IBlockAccess blockAccess, BlockPos pos)
@@ -492,9 +492,9 @@ public class BlockStateContainer
             return this.block.getCollisionBoundingBox(this, worldIn, pos);
         }
 
-        public void addCollisionBoxToList(World worldIn, BlockPos pos, AxisAlignedBB p_185908_3_, List<AxisAlignedBB> p_185908_4_, @Nullable Entity p_185908_5_, boolean p_185908_6_)
+        public void addCollisionBoxToList(World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn, boolean p_185908_6_)
         {
-            this.block.addCollisionBoxToList(this, worldIn, pos, p_185908_3_, p_185908_4_, p_185908_5_, p_185908_6_);
+            this.block.addCollisionBoxToList(this, worldIn, pos, entityBox, collidingBoxes, entityIn, p_185908_6_);
         }
 
         public AxisAlignedBB getBoundingBox(IBlockAccess blockAccess, BlockPos pos)
@@ -518,14 +518,14 @@ public class BlockStateContainer
             return this.block.collisionRayTrace(this, worldIn, pos, start, end);
         }
 
-        public boolean isFullyOpaque()
+        public boolean isTopSolid()
         {
-            return this.block.isFullyOpaque(this);
+            return this.block.isTopSolid(this);
         }
 
-        public Vec3d func_191059_e(IBlockAccess p_191059_1_, BlockPos p_191059_2_)
+        public Vec3d getOffset(IBlockAccess access, BlockPos pos)
         {
-            return this.block.func_190949_e(this, p_191059_1_, p_191059_2_);
+            return this.block.getOffset(this, access, pos);
         }
 
         public boolean onBlockEventReceived(World worldIn, BlockPos pos, int id, int param)
@@ -533,12 +533,12 @@ public class BlockStateContainer
             return this.block.eventReceived(this, worldIn, pos, id, param);
         }
 
-        public void neighborChanged(World worldIn, BlockPos pos, Block blockIn, BlockPos p_189546_4_)
+        public void neighborChanged(World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
         {
-            this.block.neighborChanged(this, worldIn, pos, blockIn, p_189546_4_);
+            this.block.neighborChanged(this, worldIn, pos, blockIn, fromPos);
         }
 
-        public boolean func_191058_s()
+        public boolean causesSuffocation()
         {
             return this.block.causesSuffocation(this);
         }
@@ -563,14 +563,19 @@ public class BlockStateContainer
             return Reflector.callBoolean(this.block, Reflector.ForgeBlock_isSideSolid, this, p_isSideSolid_1_, p_isSideSolid_2_, p_isSideSolid_3_);
         }
 
+        public boolean doesSideBlockChestOpening(IBlockAccess p_doesSideBlockChestOpening_1_, BlockPos p_doesSideBlockChestOpening_2_, EnumFacing p_doesSideBlockChestOpening_3_)
+        {
+            return Reflector.callBoolean(this.block, Reflector.ForgeBlock_doesSideBlockChestOpening, this, p_doesSideBlockChestOpening_1_, p_doesSideBlockChestOpening_2_, p_doesSideBlockChestOpening_3_);
+        }
+
         public boolean doesSideBlockRendering(IBlockAccess p_doesSideBlockRendering_1_, BlockPos p_doesSideBlockRendering_2_, EnumFacing p_doesSideBlockRendering_3_)
         {
             return Reflector.callBoolean(this.block, Reflector.ForgeBlock_doesSideBlockRendering, this, p_doesSideBlockRendering_1_, p_doesSideBlockRendering_2_, p_doesSideBlockRendering_3_);
         }
 
-        public BlockFaceShape func_193401_d(IBlockAccess p_193401_1_, BlockPos p_193401_2_, EnumFacing p_193401_3_)
+        public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockPos pos, EnumFacing facing)
         {
-            return this.block.func_193383_a(p_193401_1_, this, p_193401_2_, p_193401_3_);
+            return this.block.getBlockFaceShape(worldIn, this, pos, facing);
         }
     }
 }

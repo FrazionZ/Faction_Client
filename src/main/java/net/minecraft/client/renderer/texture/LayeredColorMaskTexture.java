@@ -9,8 +9,11 @@ import java.util.List;
 import net.minecraft.client.resources.IResource;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.item.EnumDyeColor;
+import net.minecraft.src.Config;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
+import net.optifine.reflect.Reflector;
+import net.optifine.shaders.ShadersTex;
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -18,7 +21,7 @@ import org.apache.logging.log4j.Logger;
 public class LayeredColorMaskTexture extends AbstractTexture
 {
     /** Access to the Logger, for all your logging needs. */
-    private static final Logger LOG = LogManager.getLogger();
+    private static final Logger LOGGER = LogManager.getLogger();
 
     /** The location of the texture. */
     private final ResourceLocation textureLocation;
@@ -37,7 +40,7 @@ public class LayeredColorMaskTexture extends AbstractTexture
         this.deleteGlTexture();
         IResource iresource = null;
         BufferedImage bufferedimage;
-        label255:
+        label267:
         {
             try
             {
@@ -59,7 +62,7 @@ public class LayeredColorMaskTexture extends AbstractTexture
                 {
                     if (j >= 17 || j >= this.listTextures.size() || j >= this.listDyeColors.size())
                     {
-                        break label255;
+                        break label267;
                     }
 
                     IResource iresource1 = null;
@@ -67,12 +70,12 @@ public class LayeredColorMaskTexture extends AbstractTexture
                     try
                     {
                         String s = this.listTextures.get(j);
-                        int k = ((EnumDyeColor)this.listDyeColors.get(j)).func_193350_e();
+                        int k = ((EnumDyeColor)this.listDyeColors.get(j)).getColorValue();
 
                         if (s != null)
                         {
                             iresource1 = resourceManager.getResource(new ResourceLocation(s));
-                            BufferedImage bufferedimage2 = TextureUtil.readBufferedImage(iresource1.getInputStream());
+                            BufferedImage bufferedimage2 = Reflector.MinecraftForgeClient_getImageLayer.exists() ? (BufferedImage)Reflector.call(Reflector.MinecraftForgeClient_getImageLayer, new ResourceLocation(s), resourceManager) : TextureUtil.readBufferedImage(iresource1.getInputStream());
 
                             if (bufferedimage2.getWidth() == bufferedimage.getWidth() && bufferedimage2.getHeight() == bufferedimage.getHeight() && bufferedimage2.getType() == 6)
                             {
@@ -104,9 +107,9 @@ public class LayeredColorMaskTexture extends AbstractTexture
                     ++j;
                 }
             }
-            catch (IOException ioexception)
+            catch (IOException ioexception1)
             {
-                LOG.error("Couldn't load layered image", (Throwable)ioexception);
+                LOGGER.error("Couldn't load layered image", (Throwable)ioexception1);
             }
             finally
             {
@@ -115,6 +118,14 @@ public class LayeredColorMaskTexture extends AbstractTexture
 
             return;
         }
-        TextureUtil.uploadTextureImage(this.getGlTextureId(), bufferedimage);
+
+        if (Config.isShaders())
+        {
+            ShadersTex.loadSimpleTexture(this.getGlTextureId(), bufferedimage, false, false, resourceManager, this.textureLocation, this.getMultiTexID());
+        }
+        else
+        {
+            TextureUtil.uploadTextureImage(this.getGlTextureId(), bufferedimage);
+        }
     }
 }

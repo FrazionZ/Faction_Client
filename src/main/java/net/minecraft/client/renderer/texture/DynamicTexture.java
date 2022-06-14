@@ -3,8 +3,8 @@ package net.minecraft.client.renderer.texture;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import net.minecraft.client.resources.IResourceManager;
-import optifine.Config;
-import shadersmod.client.ShadersTex;
+import net.minecraft.src.Config;
+import net.optifine.shaders.ShadersTex;
 
 public class DynamicTexture extends AbstractTexture
 {
@@ -16,10 +16,12 @@ public class DynamicTexture extends AbstractTexture
     /** height of this icon in pixels */
     private final int height;
     private boolean shadersInitialized;
+    private BufferedImage bufferImage;
 
     public DynamicTexture(BufferedImage bufferedImage)
     {
         this(bufferedImage.getWidth(), bufferedImage.getHeight());
+    	this.bufferImage = bufferedImage;
         bufferedImage.getRGB(0, 0, bufferedImage.getWidth(), bufferedImage.getHeight(), this.dynamicTextureData, 0, bufferedImage.getWidth());
         this.updateDynamicTexture();
     }
@@ -68,4 +70,8 @@ public class DynamicTexture extends AbstractTexture
     {
         return this.dynamicTextureData;
     }
+    
+    public BufferedImage getBufferImage() {
+		return bufferImage;
+	}
 }

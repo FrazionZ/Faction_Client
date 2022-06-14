@@ -4589,6 +4589,86 @@
       }
     ]
   },
+    "record.fz1": {
+    "sounds": [
+      {
+        "name": "records/fz1",
+        "stream": true
+      }
+    ]
+  },
+    "record.fz2": {
+    "sounds": [
+      {
+        "name": "records/fz2",
+        "stream": true
+      }
+    ]
+  },
+    "record.fz3": {
+    "sounds": [
+      {
+        "name": "records/fz3",
+        "stream": true
+      }
+    ]
+  },
+    "record.fz4": {
+    "sounds": [
+      {
+        "name": "records/fz4",
+        "stream": true
+      }
+    ]
+  },
+    "record.fz5": {
+    "sounds": [
+      {
+        "name": "records/fz5",
+        "stream": true
+      }
+    ]
+  },
+    "record.fz6": {
+    "sounds": [
+      {
+        "name": "records/fz6",
+        "stream": true
+      }
+    ]
+  },
+    "record.fz7": {
+    "sounds": [
+      {
+        "name": "records/fz7",
+        "stream": true
+      }
+    ]
+  },
+    "record.fz8": {
+    "sounds": [
+      {
+        "name": "records/fz8",
+        "stream": true
+      }
+    ]
+  },
+    "record.fz9": {
+    "sounds": [
+      {
+        "name": "records/fz9",
+        "stream": true
+      }
+    ]
+  },
+    "record.fz10": {
+    "sounds": [
+      {
+        "name": "records/fz10",
+        "stream": true
+      }
+    ]
+  },
   "record.13": {
     "sounds": [
       {

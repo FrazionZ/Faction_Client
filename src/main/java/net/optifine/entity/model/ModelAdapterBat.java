@@ -7,7 +7,7 @@ import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.entity.RenderBat;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.passive.EntityBat;
-import optifine.Reflector;
+import net.optifine.reflect.Reflector;
 
 public class ModelAdapterBat extends ModelAdapter
 {
@@ -56,6 +56,11 @@ public class ModelAdapterBat extends ModelAdapter
                 return modelPart.equals("outer_left_wing") ? (ModelRenderer)Reflector.getFieldValue(modelbat, Reflector.ModelBat_ModelRenderers, 5) : null;
             }
         }
+    }
+
+    public String[] getModelRendererNames()
+    {
+        return new String[] {"head", "body", "right_wing", "left_wing", "outer_right_wing", "outer_left_wing"};
     }
 
     public IEntityRenderer makeEntityRender(ModelBase modelBase, float shadowSize)

@@ -30,6 +30,10 @@ public class BlockNetherWart extends BlockBush
         this.setCreativeTab((CreativeTabs)null);
     }
 
+    /**
+     * @deprecated call via {@link IBlockState#getBoundingBox(IBlockAccess,BlockPos)} whenever possible.
+     * Implementing/overriding is fine.
+     */
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
         return NETHER_WART_AABB[((Integer)state.getValue(AGE)).intValue()];
@@ -92,7 +96,7 @@ public class BlockNetherWart extends BlockBush
      */
     public Item getItemDropped(IBlockState state, Random rand, int fortune)
     {
-        return Items.field_190931_a;
+        return Items.AIR;
     }
 
     /**

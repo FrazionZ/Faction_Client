@@ -33,6 +33,10 @@ public class BlockTallGrass extends BlockBush implements IGrowable
         this.setDefaultState(this.blockState.getBaseState().withProperty(TYPE, BlockTallGrass.EnumType.DEAD_BUSH));
     }
 
+    /**
+     * @deprecated call via {@link IBlockState#getBoundingBox(IBlockAccess,BlockPos)} whenever possible.
+     * Implementing/overriding is fine.
+     */
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
         return TALL_GRASS_AABB;
@@ -56,7 +60,7 @@ public class BlockTallGrass extends BlockBush implements IGrowable
      */
     public Item getItemDropped(IBlockState state, Random rand, int fortune)
     {
-        return rand.nextInt(8) == 0 ? Items.WHEAT_SEEDS : Items.field_190931_a;
+        return rand.nextInt(8) == 0 ? Items.WHEAT_SEEDS : Items.AIR;
     }
 
     /**
@@ -67,6 +71,10 @@ public class BlockTallGrass extends BlockBush implements IGrowable
         return 1 + random.nextInt(fortune * 2 + 1);
     }
 
+    /**
+     * Spawns the block's drops in the world. By the time this is called the Block has possibly been set to air via
+     * Block.removedByPlayer
+     */
     public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, ItemStack stack)
     {
         if (!worldIn.isRemote && stack.getItem() == Items.SHEARS)
@@ -88,11 +96,11 @@ public class BlockTallGrass extends BlockBush implements IGrowable
     /**
      * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
      */
-    public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> tab)
+    public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items)
     {
         for (int i = 1; i < 3; ++i)
         {
-            tab.add(new ItemStack(this, 1, i));
+            items.add(new ItemStack(this, 1, i));
         }
     }
 

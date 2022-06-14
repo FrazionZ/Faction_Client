@@ -23,25 +23,25 @@ public class ContainerTrophyForge extends Container
         this.tileTrophyForge = furnaceInventory;
         for(int i = 0; i < 3; ++i) {
         	for(int j = 0; j < 3; ++j) {
-        		this.addSlotToContainer(new Slot(furnaceInventory, j + i * 3, 14 + i*22, 29 + j*22));
+        		this.addSlotToContainer(new Slot(furnaceInventory, j + i * 3, 44 + i*22, 24 + j*22));
         	}
         }
         
         for(int i = 0; i < 3; i++) {
-        	this.addSlotToContainer(new Slot(furnaceInventory, 9 + i, 108, 29 + i*22));
+        	this.addSlotToContainer(new Slot(furnaceInventory, 9 + i, 138, 24 + i*22));
         }
         
         for (int i = 0; i < 3; ++i)
         {
             for (int j = 0; j < 9; ++j)
             {
-                this.addSlotToContainer(new Slot(playerInventory, j + i * 9 + 9, 14 + j * 18, 123 + i * 18));
+                this.addSlotToContainer(new Slot(playerInventory, j + i * 9 + 9, 44 + j * 18, 118 + i * 18));
             }
         }
 
         for (int k = 0; k < 9; ++k)
         {
-            this.addSlotToContainer(new Slot(playerInventory, k, 14 + k * 18, 181));
+            this.addSlotToContainer(new Slot(playerInventory, k, 44 + k * 18, 176));
         }
     }
 	
@@ -61,17 +61,17 @@ public class ContainerTrophyForge extends Container
 
             if (this.forgeTime != this.tileTrophyForge.getField(0))
             {
-                icontainerlistener.sendProgressBarUpdate(this, 0, this.tileTrophyForge.getField(0));
+                icontainerlistener.sendWindowProperty(this, 0, this.tileTrophyForge.getField(0));
             }
 
             if (this.totalForgeTime != this.tileTrophyForge.getField(1))
             {
-                icontainerlistener.sendProgressBarUpdate(this, 1, this.tileTrophyForge.getField(1));
+                icontainerlistener.sendWindowProperty(this, 1, this.tileTrophyForge.getField(1));
             }
             
             if (this.isForging != this.tileTrophyForge.getField(2))
             {
-                icontainerlistener.sendProgressBarUpdate(this, 2, this.tileTrophyForge.getField(2));
+                icontainerlistener.sendWindowProperty(this, 2, this.tileTrophyForge.getField(2));
             }
         }
 
@@ -94,7 +94,7 @@ public class ContainerTrophyForge extends Container
 	
     public ItemStack transferStackInSlot(EntityPlayer playerIn, int index)
     {
-        ItemStack itemstack = ItemStack.field_190927_a;
+        ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = this.inventorySlots.get(index);
 
         if (slot != null && slot.getHasStack())
@@ -106,49 +106,49 @@ public class ContainerTrophyForge extends Container
             {
                 if (!this.mergeItemStack(itemstack1, 12, 48, false))
                 {
-                    return ItemStack.field_190927_a;
+                    return ItemStack.EMPTY;
                 }
             }
             
             else if (!this.mergeItemStack(itemstack1, 0, 9, false))
             {
-                        return ItemStack.field_190927_a;
+                        return ItemStack.EMPTY;
             }
             else if (index >= 12 && index < 39)
                 {
                     if (!this.mergeItemStack(itemstack1, 39, 48, false))
                     {
-                        return ItemStack.field_190927_a;
+                        return ItemStack.EMPTY;
                     }
                 }
             else if (index >= 39 && index < 48)
             {
                  if (!this.mergeItemStack(itemstack1, 12, 39, false))
                  {
-                        return ItemStack.field_190927_a;
+                        return ItemStack.EMPTY;
                  }
             }
             
             else if (!this.mergeItemStack(itemstack1, 12, 48, false))
             {
-                return ItemStack.field_190927_a;
+                return ItemStack.EMPTY;
             }
 
-            if (itemstack1.func_190926_b())
+            if (itemstack1.isEmpty())
             {
-                slot.putStack(ItemStack.field_190927_a);
+                slot.putStack(ItemStack.EMPTY);
             }
             else
             {
                 slot.onSlotChanged();
             }
 
-            if (itemstack1.func_190916_E() == itemstack.func_190916_E())
+            if (itemstack1.getCount() == itemstack.getCount())
             {
-                return ItemStack.field_190927_a;
+                return ItemStack.EMPTY;
             }
 
-            slot.func_190901_a(playerIn, itemstack1);
+            slot.onTake(playerIn, itemstack1);
         }
 
         return itemstack;

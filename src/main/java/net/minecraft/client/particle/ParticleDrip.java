@@ -47,9 +47,9 @@ public class ParticleDrip extends Particle
         this.motionZ = 0.0D;
     }
 
-    public int getBrightnessForRender(float p_189214_1_)
+    public int getBrightnessForRender(float partialTick)
     {
-        return this.materialType == Material.WATER ? super.getBrightnessForRender(p_189214_1_) : 257;
+        return this.materialType == Material.WATER ? super.getBrightnessForRender(partialTick) : 257;
     }
 
     public void onUpdate()
@@ -85,7 +85,7 @@ public class ParticleDrip extends Particle
             this.setParticleTextureIndex(112);
         }
 
-        this.moveEntity(this.motionX, this.motionY, this.motionZ);
+        this.move(this.motionX, this.motionY, this.motionZ);
         this.motionX *= 0.9800000190734863D;
         this.motionY *= 0.9800000190734863D;
         this.motionZ *= 0.9800000190734863D;
@@ -95,12 +95,12 @@ public class ParticleDrip extends Particle
             this.setExpired();
         }
 
-        if (this.isCollided)
+        if (this.onGround)
         {
             if (this.materialType == Material.WATER)
             {
                 this.setExpired();
-                this.worldObj.spawnParticle(EnumParticleTypes.WATER_SPLASH, this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
+                this.world.spawnParticle(EnumParticleTypes.WATER_SPLASH, this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
             }
             else
             {
@@ -112,7 +112,7 @@ public class ParticleDrip extends Particle
         }
 
         BlockPos blockpos = new BlockPos(this.posX, this.posY, this.posZ);
-        IBlockState iblockstate = this.worldObj.getBlockState(blockpos);
+        IBlockState iblockstate = this.world.getBlockState(blockpos);
         Material material = iblockstate.getMaterial();
 
         if (material.isLiquid() || material.isSolid())

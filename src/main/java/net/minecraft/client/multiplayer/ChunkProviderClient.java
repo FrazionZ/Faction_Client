@@ -22,7 +22,7 @@ public class ChunkProviderClient implements IChunkProvider
      * coordinates.
      */
     private final Chunk blankChunk;
-    private final Long2ObjectMap<Chunk> chunkMapping = new Long2ObjectOpenHashMap<Chunk>(8192)
+    private final Long2ObjectMap<Chunk> loadedChunks = new Long2ObjectOpenHashMap<Chunk>(8192)
     {
         protected void rehash(int p_rehash_1_)
         {
@@ -34,12 +34,12 @@ public class ChunkProviderClient implements IChunkProvider
     };
 
     /** Reference to the World object. */
-    private final World worldObj;
+    private final World world;
 
     public ChunkProviderClient(World worldIn)
     {
         this.blankChunk = new EmptyChunk(worldIn, 0, 0);
-        this.worldObj = worldIn;
+        this.world = worldIn;
     }
 
     /**
@@ -52,16 +52,16 @@ public class ChunkProviderClient implements IChunkProvider
 
         if (!chunk.isEmpty())
         {
-            chunk.onChunkUnload();
+            chunk.onUnload();
         }
 
-        this.chunkMapping.remove(ChunkPos.asLong(x, z));
+        this.loadedChunks.remove(ChunkPos.asLong(x, z));
     }
 
     @Nullable
     public Chunk getLoadedChunk(int x, int z)
     {
-        return (Chunk)this.chunkMapping.get(ChunkPos.asLong(x, z));
+        return (Chunk)this.loadedChunks.get(ChunkPos.asLong(x, z));
     }
 
     /**
@@ -69,9 +69,9 @@ public class ChunkProviderClient implements IChunkProvider
      */
     public Chunk loadChunk(int chunkX, int chunkZ)
     {
-        Chunk chunk = new Chunk(this.worldObj, chunkX, chunkZ);
-        this.chunkMapping.put(ChunkPos.asLong(chunkX, chunkZ), chunk);
-        chunk.setChunkLoaded(true);
+        Chunk chunk = new Chunk(this.world, chunkX, chunkZ);
+        this.loadedChunks.put(ChunkPos.asLong(chunkX, chunkZ), chunk);
+        chunk.markLoaded(true);
         return chunk;
     }
 
@@ -83,10 +83,10 @@ public class ChunkProviderClient implements IChunkProvider
     /**
      * Unloads chunks that are marked to be unloaded. This is not guaranteed to unload every such chunk.
      */
-    public boolean unloadQueuedChunks()
+    public boolean tick()
     {
         long i = System.currentTimeMillis();
-        ObjectIterator objectiterator = this.chunkMapping.values().iterator();
+        ObjectIterator objectiterator = this.loadedChunks.values().iterator();
 
         while (objectiterator.hasNext())
         {
@@ -107,11 +107,11 @@ public class ChunkProviderClient implements IChunkProvider
      */
     public String makeString()
     {
-        return "MultiplayerChunkCache: " + this.chunkMapping.size() + ", " + this.chunkMapping.size();
+        return "MultiplayerChunkCache: " + this.loadedChunks.size() + ", " + this.loadedChunks.size();
     }
 
-    public boolean func_191062_e(int p_191062_1_, int p_191062_2_)
+    public boolean isChunkGeneratedAt(int x, int z)
     {
-        return this.chunkMapping.containsKey(ChunkPos.asLong(p_191062_1_, p_191062_2_));
+        return this.loadedChunks.containsKey(ChunkPos.asLong(x, z));
     }
 }

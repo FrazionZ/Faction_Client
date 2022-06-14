@@ -6,16 +6,18 @@ import java.net.URI;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.settings.GameSettings;
+import net.minecraft.src.Config;
 import net.minecraft.util.Util;
-import optifine.Config;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.Sys;
+import org.lwjgl.opengl.ARBCopyBuffer;
 import org.lwjgl.opengl.ARBFramebufferObject;
 import org.lwjgl.opengl.ARBMultitexture;
 import org.lwjgl.opengl.ARBShaderObjects;
@@ -30,6 +32,7 @@ import org.lwjgl.opengl.GL14;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
+import org.lwjgl.opengl.GL31;
 import org.lwjgl.opengl.GLContext;
 import oshi.SystemInfo;
 import oshi.hardware.Processor;
@@ -104,6 +107,12 @@ public class OpenGlHelper
     public static int GL_STATIC_DRAW;
     public static float lastBrightnessX = 0.0F;
     public static float lastBrightnessY = 0.0F;
+    public static boolean openGL31;
+    public static boolean vboRegions;
+    public static int GL_COPY_READ_BUFFER;
+    public static int GL_COPY_WRITE_BUFFER;
+    public static final int GL_QUADS = 7;
+    public static final int GL_TRIANGLES = 4;
 
     /**
      * Initializes the texture constants to be used when rendering lightmap values
@@ -114,6 +123,41 @@ public class OpenGlHelper
         ContextCapabilities contextcapabilities = GLContext.getCapabilities();
         arbMultitexture = contextcapabilities.GL_ARB_multitexture && !contextcapabilities.OpenGL13;
         arbTextureEnvCombine = contextcapabilities.GL_ARB_texture_env_combine && !contextcapabilities.OpenGL13;
+        openGL31 = contextcapabilities.OpenGL31;
+
+        if (openGL31)
+        {
+            GL_COPY_READ_BUFFER = 36662;
+            GL_COPY_WRITE_BUFFER = 36663;
+        }
+        else
+        {
+            GL_COPY_READ_BUFFER = 36662;
+            GL_COPY_WRITE_BUFFER = 36663;
+        }
+
+        boolean flag = openGL31 || contextcapabilities.GL_ARB_copy_buffer;
+        boolean flag1 = contextcapabilities.OpenGL14;
+        vboRegions = flag && flag1;
+
+        if (!vboRegions)
+        {
+            List<String> list = new ArrayList<String>();
+
+            if (!flag)
+            {
+                list.add("OpenGL 1.3, ARB_copy_buffer");
+            }
+
+            if (!flag1)
+            {
+                list.add("OpenGL 1.4");
+            }
+
+            String s = "VboRegions not supported, missing: " + Config.listToString(list);
+            Config.dbg(s);
+            logText = logText + s + "\n";
+        }
 
         if (arbMultitexture)
         {
@@ -272,8 +316,8 @@ public class OpenGlHelper
         }
 
         shadersSupported = framebufferSupported && shadersAvailable;
-        String s = GL11.glGetString(GL11.GL_VENDOR).toLowerCase(Locale.ROOT);
-        nvidia = s.contains("nvidia");
+        String s1 = GL11.glGetString(GL11.GL_VENDOR).toLowerCase(Locale.ROOT);
+        nvidia = s1.contains("nvidia");
         arbVbo = !contextcapabilities.OpenGL15 && contextcapabilities.GL_ARB_vertex_buffer_object;
         vboSupported = contextcapabilities.OpenGL15 || arbVbo;
         logText = logText + "VBOs are " + (vboSupported ? "" : "not ") + "available because ";
@@ -294,7 +338,7 @@ public class OpenGlHelper
             }
         }
 
-        ati = s.contains("ati");
+        ati = s1.contains("ati");
 
         if (ati)
         {
@@ -313,7 +357,7 @@ public class OpenGlHelper
             Processor[] aprocessor = (new SystemInfo()).getHardware().getProcessors();
             cpu = String.format("%dx %s", aprocessor.length, aprocessor[0]).replaceAll("\\s+", " ");
         }
-        catch (Throwable var3)
+        catch (Throwable var5)
         {
             ;
         }
@@ -647,6 +691,10 @@ public class OpenGlHelper
         {
             return false;
         }
+        else if (Config.isRenderRegions() && !vboRegions)
+        {
+            return false;
+        }
         else
         {
             return vboSupported && Minecraft.getMinecraft().gameSettings.useVbo;
@@ -904,21 +952,21 @@ public class OpenGlHelper
     /**
      * Sets the current coordinates of the given lightmap texture
      */
-    public static void setLightmapTextureCoords(int target, float p_77475_1_, float t)
+    public static void setLightmapTextureCoords(int target, float x, float y)
     {
         if (arbMultitexture)
         {
-            ARBMultitexture.glMultiTexCoord2fARB(target, p_77475_1_, t);
+            ARBMultitexture.glMultiTexCoord2fARB(target, x, y);
         }
         else
         {
-            GL13.glMultiTexCoord2f(target, p_77475_1_, t);
+            GL13.glMultiTexCoord2f(target, x, y);
         }
 
         if (target == lightmapTexUnit)
         {
-            lastBrightnessX = p_77475_1_;
-            lastBrightnessY = t;
+            lastBrightnessX = x;
+            lastBrightnessY = y;
         }
     }
 
@@ -954,6 +1002,42 @@ public class OpenGlHelper
         else
         {
             return framebufferSupported && Minecraft.getMinecraft().gameSettings.fboEnable;
+        }
+    }
+
+    public static void glBufferData(int p_glBufferData_0_, long p_glBufferData_1_, int p_glBufferData_3_)
+    {
+        if (arbVbo)
+        {
+            ARBVertexBufferObject.glBufferDataARB(p_glBufferData_0_, p_glBufferData_1_, p_glBufferData_3_);
+        }
+        else
+        {
+            GL15.glBufferData(p_glBufferData_0_, p_glBufferData_1_, p_glBufferData_3_);
+        }
+    }
+
+    public static void glBufferSubData(int p_glBufferSubData_0_, long p_glBufferSubData_1_, ByteBuffer p_glBufferSubData_3_)
+    {
+        if (arbVbo)
+        {
+            ARBVertexBufferObject.glBufferSubDataARB(p_glBufferSubData_0_, p_glBufferSubData_1_, p_glBufferSubData_3_);
+        }
+        else
+        {
+            GL15.glBufferSubData(p_glBufferSubData_0_, p_glBufferSubData_1_, p_glBufferSubData_3_);
+        }
+    }
+
+    public static void glCopyBufferSubData(int p_glCopyBufferSubData_0_, int p_glCopyBufferSubData_1_, long p_glCopyBufferSubData_2_, long p_glCopyBufferSubData_4_, long p_glCopyBufferSubData_6_)
+    {
+        if (openGL31)
+        {
+            GL31.glCopyBufferSubData(p_glCopyBufferSubData_0_, p_glCopyBufferSubData_1_, p_glCopyBufferSubData_2_, p_glCopyBufferSubData_4_, p_glCopyBufferSubData_6_);
+        }
+        else
+        {
+            ARBCopyBuffer.glCopyBufferSubData(p_glCopyBufferSubData_0_, p_glCopyBufferSubData_1_, p_glCopyBufferSubData_2_, p_glCopyBufferSubData_4_, p_glCopyBufferSubData_6_);
         }
     }
 

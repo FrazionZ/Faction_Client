@@ -10,8 +10,8 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityHanging;
 import net.minecraft.entity.EntityLiving;
-import optifine.Config;
-import shadersmod.client.Shaders;
+import net.minecraft.src.Config;
+import net.optifine.shaders.Shaders;
 
 public abstract class RenderLiving<T extends EntityLiving> extends RenderLivingBase<T>
 {
@@ -31,9 +31,9 @@ public abstract class RenderLiving<T extends EntityLiving> extends RenderLivingB
         {
             return true;
         }
-        else if (livingEntity.getLeashed() && livingEntity.getLeashedToEntity() != null)
+        else if (livingEntity.getLeashed() && livingEntity.getLeashHolder() != null)
         {
-            Entity entity = livingEntity.getLeashedToEntity();
+            Entity entity = livingEntity.getLeashHolder();
             return camera.isBoundingBoxInFrustum(entity.getRenderBoundingBox());
         }
         else
@@ -75,7 +75,7 @@ public abstract class RenderLiving<T extends EntityLiving> extends RenderLivingB
     {
         if (!Config.isShaders() || !Shaders.isShadowPass)
         {
-            Entity entity = entityLivingIn.getLeashedToEntity();
+            Entity entity = entityLivingIn.getLeashHolder();
 
             if (entity != null)
             {

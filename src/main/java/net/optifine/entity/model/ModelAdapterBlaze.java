@@ -7,8 +7,8 @@ import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.entity.RenderBlaze;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.monster.EntityBlaze;
-import optifine.Config;
-import optifine.Reflector;
+import net.minecraft.src.Config;
+import net.optifine.reflect.Reflector;
 
 public class ModelAdapterBlaze extends ModelAdapter
 {
@@ -62,6 +62,11 @@ public class ModelAdapterBlaze extends ModelAdapter
                 }
             }
         }
+    }
+
+    public String[] getModelRendererNames()
+    {
+        return new String[] {"head", "stick1", "stick2", "stick3", "stick4", "stick5", "stick6", "stick7", "stick8", "stick9", "stick10", "stick11", "stick12"};
     }
 
     public IEntityRenderer makeEntityRender(ModelBase modelBase, float shadowSize)

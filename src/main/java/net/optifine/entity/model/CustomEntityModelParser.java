@@ -14,13 +14,13 @@ import java.util.Map;
 import java.util.Map.Entry;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.src.Config;
 import net.minecraft.util.ResourceLocation;
+import net.optifine.config.ConnectedParser;
 import net.optifine.entity.model.anim.ModelUpdater;
 import net.optifine.entity.model.anim.ModelVariableUpdater;
-import optifine.Config;
-import optifine.ConnectedParser;
-import optifine.Json;
-import optifine.PlayerItemParser;
+import net.optifine.player.PlayerItemParser;
+import net.optifine.util.Json;
 
 public class CustomEntityModelParser
 {

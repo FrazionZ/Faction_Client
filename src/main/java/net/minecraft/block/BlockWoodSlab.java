@@ -36,8 +36,10 @@ public abstract class BlockWoodSlab extends BlockSlab
 
     /**
      * Get the MapColor for this Block and the given BlockState
+     * @deprecated call via {@link IBlockState#getMapColor(IBlockAccess,BlockPos)} whenever possible.
+     * Implementing/overriding is fine.
      */
-    public MapColor getMapColor(IBlockState state, IBlockAccess p_180659_2_, BlockPos p_180659_3_)
+    public MapColor getMapColor(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
         return ((BlockPlanks.EnumType)state.getValue(VARIANT)).getMapColor();
     }
@@ -58,9 +60,9 @@ public abstract class BlockWoodSlab extends BlockSlab
     /**
      * Returns the slab block name with the type associated with it
      */
-    public String getUnlocalizedName(int meta)
+    public String getTranslationKey(int meta)
     {
-        return super.getUnlocalizedName() + "." + BlockPlanks.EnumType.byMetadata(meta).getUnlocalizedName();
+        return super.getTranslationKey() + "." + BlockPlanks.EnumType.byMetadata(meta).getTranslationKey();
     }
 
     public IProperty<?> getVariantProperty()
@@ -76,11 +78,11 @@ public abstract class BlockWoodSlab extends BlockSlab
     /**
      * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
      */
-    public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> tab)
+    public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items)
     {
         for (BlockPlanks.EnumType blockplanks$enumtype : BlockPlanks.EnumType.values())
         {
-            tab.add(new ItemStack(this, 1, blockplanks$enumtype.getMetadata()));
+            items.add(new ItemStack(this, 1, blockplanks$enumtype.getMetadata()));
         }
     }
 

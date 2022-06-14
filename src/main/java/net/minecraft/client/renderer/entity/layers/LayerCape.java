@@ -51,6 +51,11 @@ public class LayerCape implements LayerRenderer<AbstractClientPlayer>
                     f2 = 165.0F;
                 }
 
+                if (f1 < -5.0F)
+                {
+                    f1 = -5.0F;
+                }
+
                 float f4 = entitylivingbaseIn.prevCameraYaw + (entitylivingbaseIn.cameraYaw - entitylivingbaseIn.prevCameraYaw) * partialTicks;
                 f1 = f1 + MathHelper.sin((entitylivingbaseIn.prevDistanceWalkedModified + (entitylivingbaseIn.distanceWalkedModified - entitylivingbaseIn.prevDistanceWalkedModified) * partialTicks) * 6.0F) * 32.0F * f4;
 

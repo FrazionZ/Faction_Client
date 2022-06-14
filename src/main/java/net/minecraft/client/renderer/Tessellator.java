@@ -1,8 +1,10 @@
 package net.minecraft.client.renderer;
 
+import net.optifine.SmartAnimations;
+
 public class Tessellator
 {
-    private final BufferBuilder worldRenderer;
+    private final BufferBuilder buffer;
     private final WorldVertexBufferUploader vboUploader = new WorldVertexBufferUploader();
 
     /** The static instance of the Tessellator. */
@@ -15,7 +17,7 @@ public class Tessellator
 
     public Tessellator(int bufferSize)
     {
-        this.worldRenderer = new BufferBuilder(bufferSize);
+        this.buffer = new BufferBuilder(bufferSize);
     }
 
     /**
@@ -23,12 +25,17 @@ public class Tessellator
      */
     public void draw()
     {
-        this.worldRenderer.finishDrawing();
-        this.vboUploader.draw(this.worldRenderer);
+        if (this.buffer.animatedSprites != null)
+        {
+            SmartAnimations.spritesRendered(this.buffer.animatedSprites);
+        }
+
+        this.buffer.finishDrawing();
+        this.vboUploader.draw(this.buffer);
     }
 
     public BufferBuilder getBuffer()
     {
-        return this.worldRenderer;
+        return this.buffer;
     }
 }

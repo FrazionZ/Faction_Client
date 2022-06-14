@@ -187,5 +187,4 @@ public class IntIdentityHashBiMap<K> implements IObjectIntIterable<K>
     {
         return this.mapSize;
     }
-
 }

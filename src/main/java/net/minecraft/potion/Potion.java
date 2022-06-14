@@ -90,7 +90,7 @@ public class Potion
         return this;
     }
 
-    public void performEffect(EntityLivingBase entityLivingBaseIn, int p_76394_2_)
+    public void performEffect(EntityLivingBase entityLivingBaseIn, int amplifier)
     {
         if (this == MobEffects.REGENERATION)
         {
@@ -103,34 +103,34 @@ public class Potion
         {
             if (entityLivingBaseIn.getHealth() > 1.0F)
             {
-                entityLivingBaseIn.attackEntityFrom(DamageSource.magic, 1.0F);
+                entityLivingBaseIn.attackEntityFrom(DamageSource.MAGIC, 1.0F);
             }
         }
         else if (this == MobEffects.WITHER)
         {
-            entityLivingBaseIn.attackEntityFrom(DamageSource.wither, 1.0F);
+            entityLivingBaseIn.attackEntityFrom(DamageSource.WITHER, 1.0F);
         }
         else if (this == MobEffects.HUNGER && entityLivingBaseIn instanceof EntityPlayer)
         {
-            ((EntityPlayer)entityLivingBaseIn).addExhaustion(0.005F * (float)(p_76394_2_ + 1));
+            ((EntityPlayer)entityLivingBaseIn).addExhaustion(0.005F * (float)(amplifier + 1));
         }
         else if (this == MobEffects.SATURATION && entityLivingBaseIn instanceof EntityPlayer)
         {
             if (!entityLivingBaseIn.world.isRemote)
             {
-                ((EntityPlayer)entityLivingBaseIn).getFoodStats().addStats(p_76394_2_ + 1, 1.0F);
+                ((EntityPlayer)entityLivingBaseIn).getFoodStats().addStats(amplifier + 1, 1.0F);
             }
         }
         else if ((this != MobEffects.INSTANT_HEALTH || entityLivingBaseIn.isEntityUndead()) && (this != MobEffects.INSTANT_DAMAGE || !entityLivingBaseIn.isEntityUndead()))
         {
             if (this == MobEffects.INSTANT_DAMAGE && !entityLivingBaseIn.isEntityUndead() || this == MobEffects.INSTANT_HEALTH && entityLivingBaseIn.isEntityUndead())
             {
-                entityLivingBaseIn.attackEntityFrom(DamageSource.magic, (float)(6 << p_76394_2_));
+                entityLivingBaseIn.attackEntityFrom(DamageSource.MAGIC, (float)(6 << amplifier));
             }
         }
         else
         {
-            entityLivingBaseIn.heal((float)Math.max(4 << p_76394_2_, 0));
+            entityLivingBaseIn.heal((float)Math.max(4 << amplifier, 0));
         }
     }
 
@@ -144,7 +144,7 @@ public class Potion
 
                 if (source == null)
                 {
-                    entityLivingBaseIn.attackEntityFrom(DamageSource.magic, (float)j);
+                    entityLivingBaseIn.attackEntityFrom(DamageSource.MAGIC, (float)j);
                 }
                 else
                 {
@@ -258,15 +258,15 @@ public class Potion
         return this.isBadEffect;
     }
 
-    public static String getPotionDurationString(PotionEffect p_188410_0_, float p_188410_1_)
+    public static String getPotionDurationString(PotionEffect effect, float durationFactor)
     {
-        if (p_188410_0_.getIsPotionDurationMax())
+        if (effect.getIsPotionDurationMax())
         {
             return "**:**";
         }
         else
         {
-            int i = MathHelper.floor((float)p_188410_0_.getDuration() * p_188410_1_);
+            int i = MathHelper.floor((float)effect.getDuration() * durationFactor);
             return StringUtils.ticksToElapsedTime(i);
         }
     }
@@ -380,6 +380,5 @@ public class Potion
         REGISTRY.register(26, new ResourceLocation("luck"), (new Potion(false, 3381504)).setPotionName("effect.luck").setIconIndex(5, 2).setBeneficial().registerPotionAttributeModifier(SharedMonsterAttributes.LUCK, "03C3C89D-7037-4B42-869F-B146BCB64D2E", 1.0D, 0));
         REGISTRY.register(27, new ResourceLocation("unluck"), (new Potion(true, 12624973)).setPotionName("effect.unluck").setIconIndex(6, 2).registerPotionAttributeModifier(SharedMonsterAttributes.LUCK, "CC5AF142-2BD2-4215-B636-2605AED11727", -1.0D, 0));
         REGISTRY.register(28, new ResourceLocation("nofall"), (new Potion(false, 12624973)).setPotionName("effect.noFall").setIconIndex(3, 2).setBeneficial());
-        
     }
 }

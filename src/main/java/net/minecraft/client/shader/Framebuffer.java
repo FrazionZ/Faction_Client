@@ -278,7 +278,6 @@ public class Framebuffer
         this.unbindFramebuffer();
     }
     
-    
     public boolean enableStencil()
     {
     	if(!OpenGlHelper.isFramebufferEnabled()) return false;
@@ -290,5 +289,4 @@ public class Framebuffer
     public boolean isStencilEnabled() {
 		return stencilEnabled;
 	}
-    
 }

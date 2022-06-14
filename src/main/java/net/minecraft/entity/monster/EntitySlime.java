@@ -66,7 +66,7 @@ public class EntitySlime extends EntityLiving implements IMob
         this.dataManager.register(SLIME_SIZE, Integer.valueOf(1));
     }
 
-    protected void setSlimeSize(int size, boolean p_70799_2_)
+    protected void setSlimeSize(int size, boolean resetHealth)
     {
         this.dataManager.set(SLIME_SIZE, Integer.valueOf(size));
         this.setSize(0.51000005F * (float)size, 0.51000005F * (float)size);
@@ -74,7 +74,7 @@ public class EntitySlime extends EntityLiving implements IMob
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue((double)(size * size));
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue((double)(0.2F + 0.1F * (float)size));
 
-        if (p_70799_2_)
+        if (resetHealth)
         {
             this.setHealth(this.getMaxHealth());
         }
@@ -204,7 +204,7 @@ public class EntitySlime extends EntityLiving implements IMob
 
             if (this.isInWater() && this.rand.nextInt(20) == 0)
             {
-                this.resetHeight();
+                this.doWaterSplashEffect();
             }
         }
 
@@ -240,7 +240,7 @@ public class EntitySlime extends EntityLiving implements IMob
 
                 entityslime.setSlimeSize(i / 2, true);
                 entityslime.setLocationAndAngles(this.posX + (double)f, this.posY + 0.5D, this.posZ + (double)f1, this.rand.nextFloat() * 360.0F, 0.0F);
-                this.world.spawnEntityInWorld(entityslime);
+                this.world.spawnEntity(entityslime);
             }
         }
 
@@ -275,7 +275,7 @@ public class EntitySlime extends EntityLiving implements IMob
     {
         int i = this.getSlimeSize();
 
-        if (this.canEntityBeSeen(entityIn) && this.getDistanceSqToEntity(entityIn) < 0.6D * (double)i * 0.6D * (double)i && entityIn.attackEntityFrom(DamageSource.causeMobDamage(this), (float)this.getAttackStrength()))
+        if (this.canEntityBeSeen(entityIn) && this.getDistanceSq(entityIn) < 0.6D * (double)i * 0.6D * (double)i && entityIn.attackEntityFrom(DamageSource.causeMobDamage(this), (float)this.getAttackStrength()))
         {
             this.playSound(SoundEvents.ENTITY_SLIME_ATTACK, 1.0F, (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
             this.applyEnchantments(this, entityIn);
@@ -303,7 +303,7 @@ public class EntitySlime extends EntityLiving implements IMob
         return this.getSlimeSize();
     }
 
-    protected SoundEvent getHurtSound(DamageSource p_184601_1_)
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn)
     {
         return this.isSmallSlime() ? SoundEvents.ENTITY_SMALL_SLIME_HURT : SoundEvents.ENTITY_SLIME_HURT;
     }
@@ -335,7 +335,7 @@ public class EntitySlime extends EntityLiving implements IMob
     public boolean getCanSpawnHere()
     {
         BlockPos blockpos = new BlockPos(MathHelper.floor(this.posX), 0, MathHelper.floor(this.posZ));
-        Chunk chunk = this.world.getChunkFromBlockCoords(blockpos);
+        Chunk chunk = this.world.getChunk(blockpos);
 
         if (this.world.getWorldInfo().getTerrainType() == WorldType.FLAT && this.rand.nextInt(4) != 1)
         {
@@ -400,7 +400,17 @@ public class EntitySlime extends EntityLiving implements IMob
 
     /**
      * Called only once on an entity when first time spawned, via egg, mob spawner, natural spawning etc, but not called
-     * when entity is reloaded from nbt. Mainly used for initializing attributes and inventory
+     * when entity is reloaded from nbt. Mainly used for initializing attributes and inventory.
+     *  
+     * The livingdata parameter is used to pass data between all instances during a pack spawn. It will be null on the
+     * first call. Subclasses may check if it's null, and then create a new one and return it if so, initializing all
+     * entities in the pack with the contained data.
+     *  
+     * @return The IEntityLivingData to pass to this method for other instances of this entity class within the same
+     * pack
+     *  
+     * @param difficulty The current local difficulty
+     * @param livingdata Shared spawn data. Will usually be null. (See return value for more information)
      */
     public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData livingdata)
     {
@@ -456,7 +466,7 @@ public class EntitySlime extends EntityLiving implements IMob
             super.startExecuting();
         }
 
-        public boolean continueExecuting()
+        public boolean shouldContinueExecuting()
         {
             EntityLivingBase entitylivingbase = this.slime.getAttackTarget();
 
@@ -596,7 +606,7 @@ public class EntitySlime extends EntityLiving implements IMob
 
             if (this.action != EntityMoveHelper.Action.MOVE_TO)
             {
-                this.entity.func_191989_p(0.0F);
+                this.entity.setMoveForward(0.0F);
             }
             else
             {
@@ -625,7 +635,7 @@ public class EntitySlime extends EntityLiving implements IMob
                     else
                     {
                         this.slime.moveStrafing = 0.0F;
-                        this.slime.field_191988_bg = 0.0F;
+                        this.slime.moveForward = 0.0F;
                         this.entity.setAIMoveSpeed(0.0F);
                     }
                 }

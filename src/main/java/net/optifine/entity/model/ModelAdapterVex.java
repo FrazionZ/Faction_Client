@@ -7,7 +7,8 @@ import net.minecraft.client.model.ModelVex;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RenderVex;
 import net.minecraft.entity.monster.EntityVex;
-import optifine.Reflector;
+import net.minecraft.src.Config;
+import net.optifine.reflect.Reflector;
 
 public class ModelAdapterVex extends ModelAdapterBiped
 {
@@ -44,6 +45,13 @@ public class ModelAdapterVex extends ModelAdapterBiped
                 }
             }
         }
+    }
+
+    public String[] getModelRendererNames()
+    {
+        String[] astring = super.getModelRendererNames();
+        astring = (String[])Config.addObjectsToArray(astring, new String[] {"left_wing", "right_wing"});
+        return astring;
     }
 
     public ModelBase makeModel()

@@ -4,7 +4,6 @@ import com.google.common.collect.Lists;
 import java.util.List;
 import javax.annotation.Nullable;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiChatTextField;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.network.play.client.CPacketTabComplete;
 import net.minecraft.util.math.BlockPos;
@@ -12,14 +11,14 @@ import net.minecraft.util.math.BlockPos;
 public abstract class TabCompleter
 {
     /** The {@link GuiTextField} that is backing this {@link TabCompleter} */
-    protected final GuiChatTextField textField;
+    protected final GuiTextField textField;
     protected final boolean hasTargetBlock;
     protected boolean didComplete;
     protected boolean requestedCompletions;
     protected int completionIdx;
     protected List<String> completions = Lists.<String>newArrayList();
 
-    public TabCompleter(GuiChatTextField textFieldIn, boolean hasTargetBlockIn)
+    public TabCompleter(GuiTextField textFieldIn, boolean hasTargetBlockIn)
     {
         this.textField = textFieldIn;
         this.hasTargetBlock = hasTargetBlockIn;
@@ -58,7 +57,7 @@ public abstract class TabCompleter
             this.textField.deleteFromCursor(i - this.textField.getCursorPosition());
         }
 
-        this.textField.writeText(this.completions.get(this.completionIdx++), true);
+        this.textField.writeText(this.completions.get(this.completionIdx++));
     }
 
     private void requestCompletions(String prefix)
@@ -98,7 +97,7 @@ public abstract class TabCompleter
             {
                 this.textField.deleteFromCursor(0);
                 this.textField.deleteFromCursor(this.textField.getNthWordFromPosWS(-1, this.textField.getCursorPosition(), false) - this.textField.getCursorPosition());
-                this.textField.writeText(s2, true);
+                this.textField.writeText(s2);
             }
             else if (!this.completions.isEmpty())
             {

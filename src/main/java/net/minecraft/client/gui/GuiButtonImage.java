@@ -6,42 +6,45 @@ import net.minecraft.util.ResourceLocation;
 
 public class GuiButtonImage extends GuiButton
 {
-    private final ResourceLocation ressourceLocation;
-    private final int textureX;
-    private final int textureY;
-    private final int field_191749_r;
+    private final ResourceLocation resourceLocation;
+    private final int xTexStart;
+    private final int yTexStart;
+    private final int yDiffText;
 
-    public GuiButtonImage(int buttonId, int x, int y, int widthIn, int heightIn, int textureX, int textureY, int p_i47392_8_, ResourceLocation ressourceLocation)
+    public GuiButtonImage(int buttonId, int xIn, int yIn, int widthIn, int heightIn, int textureOffestX, int textureOffestY, int yDiffText, ResourceLocation resource)
     {
-        super(buttonId, x, y, widthIn, heightIn, "");
-        this.textureX = textureX;
-        this.textureY = textureY;
-        this.field_191749_r = p_i47392_8_;
-        this.ressourceLocation = ressourceLocation;
+        super(buttonId, xIn, yIn, widthIn, heightIn, "");
+        this.xTexStart = textureOffestX;
+        this.yTexStart = textureOffestY;
+        this.yDiffText = yDiffText;
+        this.resourceLocation = resource;
     }
 
-    public void func_191746_c(int p_191746_1_, int p_191746_2_)
+    public void setPosition(int x, int y)
     {
-        this.xPosition = p_191746_1_;
-        this.yPosition = p_191746_2_;
+        this.x = x;
+        this.y = y;
     }
 
-    public void func_191745_a(Minecraft p_191745_1_, int p_191745_2_, int p_191745_3_, float p_191745_4_)
+    /**
+     * Draws this button to the screen.
+     */
+    public void drawButton(Minecraft mc, int mouseX, int mouseY, float partialTicks)
     {
         if (this.visible)
         {
-            this.hovered = p_191745_2_ >= this.xPosition && p_191745_3_ >= this.yPosition && p_191745_2_ < this.xPosition + this.width && p_191745_3_ < this.yPosition + this.height;
-            p_191745_1_.getTextureManager().bindTexture(this.ressourceLocation);
+            this.hovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
+            mc.getTextureManager().bindTexture(this.resourceLocation);
             GlStateManager.disableDepth();
-            int i = this.textureX;
-            int j = this.textureY;
+            int i = this.xTexStart;
+            int j = this.yTexStart;
 
             if (this.hovered)
             {
-                j += this.field_191749_r;
+                j += this.yDiffText;
             }
 
-            this.drawTexturedModalRect(this.xPosition, this.yPosition, i, j, this.width, this.height);
+            this.drawTexturedModalRect(this.x, this.y, i, j, this.width, this.height);
             GlStateManager.enableDepth();
         }
     }

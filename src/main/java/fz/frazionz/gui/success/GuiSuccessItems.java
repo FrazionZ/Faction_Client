@@ -78,7 +78,7 @@ public class GuiSuccessItems extends GuiScreen {
         this.successItemsList.drawScreen(mouseX, mouseY, partialTicks);
         this.drawTopList();
 
-        this.fontRendererObj.drawScaleString("Mes succès", this.guiLeft + 40, this.guiTop + 8, 2F, Color.white);
+        this.fontRenderer.drawScaleString("Mes succès", this.guiLeft + 40, this.guiTop + 8, 2F, Color.white);
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
 

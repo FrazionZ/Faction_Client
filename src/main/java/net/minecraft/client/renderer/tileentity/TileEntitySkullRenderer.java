@@ -1,31 +1,30 @@
 package net.minecraft.client.renderer.tileentity;
 
-import com.mojang.authlib.GameProfile;
-import com.mojang.authlib.minecraft.MinecraftProfileTexture;
-import com.mojang.authlib.minecraft.MinecraftProfileTexture.Type;
-
 import java.io.File;
 import java.util.Map;
 import java.util.UUID;
+
 import javax.annotation.Nullable;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.mojang.authlib.GameProfile;
+import com.mojang.authlib.minecraft.MinecraftProfileTexture;
+import com.mojang.authlib.minecraft.MinecraftProfileTexture.Type;
+
+import fz.frazionz.utils.SkinUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelDragonHead;
 import net.minecraft.client.model.ModelHumanoidHead;
 import net.minecraft.client.model.ModelSkeletonHead;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.ThreadDownloadImageData;
 import net.minecraft.client.resources.DefaultPlayerSkin;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntitySkull;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
-import optifine.SkinImageBuffer;
-import optifine.SkinUtils;
 
 public class TileEntitySkullRenderer extends TileEntitySpecialRenderer<TileEntitySkull>
 {
@@ -39,11 +38,11 @@ public class TileEntitySkullRenderer extends TileEntitySpecialRenderer<TileEntit
     private final ModelSkeletonHead skeletonHead = new ModelSkeletonHead(0, 0, 64, 32);
     private final ModelSkeletonHead humanoidHead = new ModelHumanoidHead();
 
-    public void func_192841_a(TileEntitySkull p_192841_1_, double p_192841_2_, double p_192841_4_, double p_192841_6_, float p_192841_8_, int p_192841_9_, float p_192841_10_)
+    public void render(TileEntitySkull te, double x, double y, double z, float partialTicks, int destroyStage, float alpha)
     {
-        EnumFacing enumfacing = EnumFacing.getFront(p_192841_1_.getBlockMetadata() & 7);
-        float f = p_192841_1_.getAnimationProgress(p_192841_8_);
-        this.renderSkull((float)p_192841_2_, (float)p_192841_4_, (float)p_192841_6_, enumfacing, (float)(p_192841_1_.getSkullRotation() * 360) / 16.0F, p_192841_1_.getSkullType(), p_192841_1_.getPlayerProfile(), p_192841_9_, f);
+        EnumFacing enumfacing = EnumFacing.byIndex(te.getBlockMetadata() & 7);
+        float f = te.getAnimationProgress(partialTicks);
+        this.renderSkull((float)x, (float)y, (float)z, enumfacing, (float)(te.getSkullRotation() * 360) / 16.0F, te.getSkullType(), te.getPlayerProfile(), destroyStage, f);
     }
 
     public void setRendererDispatcher(TileEntityRendererDispatcher rendererDispatcherIn)
@@ -52,7 +51,7 @@ public class TileEntitySkullRenderer extends TileEntitySpecialRenderer<TileEntit
         instance = this;
     }
 
-    public void renderSkull(float x, float y, float z, EnumFacing facing, float p_188190_5_, int skullType, @Nullable GameProfile profile, int destroyStage, float animateTicks)
+    public void renderSkull(float x, float y, float z, EnumFacing facing, float rotationIn, int skullType, @Nullable GameProfile profile, int destroyStage, float animateTicks)
     {
         ModelBase modelbase = this.skeletonHead;
 
@@ -123,7 +122,7 @@ public class TileEntitySkullRenderer extends TileEntitySpecialRenderer<TileEntit
                     if (profile != null)
                     {
                         resourcelocation1 = SkinUtils.loadSkin(profile);
-                        File cacheFile = new File(Minecraft.getMinecraft().mcDataDir, "assets/frazionz/skins/" + StringUtils.lowerCase(profile.getName()));
+                        File cacheFile = new File(Minecraft.getMinecraft().gameDir, "assets/frazionz/skins/" + StringUtils.lowerCase(profile.getName()));
                         if(cacheFile.exists() && cacheFile.length() < 100)
                         	resourcelocation1 = DefaultPlayerSkin.getDefaultSkinLegacy();
                     }
@@ -150,18 +149,18 @@ public class TileEntitySkullRenderer extends TileEntitySpecialRenderer<TileEntit
 
                 case SOUTH:
                     GlStateManager.translate(x + 0.5F, y + 0.25F, z + 0.26F);
-                    p_188190_5_ = 180.0F;
+                    rotationIn = 180.0F;
                     break;
 
                 case WEST:
                     GlStateManager.translate(x + 0.74F, y + 0.25F, z + 0.5F);
-                    p_188190_5_ = 270.0F;
+                    rotationIn = 270.0F;
                     break;
 
                 case EAST:
                 default:
                     GlStateManager.translate(x + 0.26F, y + 0.25F, z + 0.5F);
-                    p_188190_5_ = 90.0F;
+                    rotationIn = 90.0F;
             }
         }
 
@@ -174,13 +173,8 @@ public class TileEntitySkullRenderer extends TileEntitySpecialRenderer<TileEntit
         {
             GlStateManager.enableBlendProfile(GlStateManager.Profile.PLAYER_SKIN);
         }
-        
-        if (skullType == 6)
-        {
-            GlStateManager.enableBlendProfile(GlStateManager.Profile.PLAYER_SKIN);
-        }
 
-        modelbase.render((Entity)null, animateTicks, 0.0F, 0.0F, p_188190_5_, 0.0F, 0.0625F);
+        modelbase.render((Entity)null, animateTicks, 0.0F, 0.0F, rotationIn, 0.0F, 0.0625F);
         GlStateManager.popMatrix();
 
         if (destroyStage >= 0)

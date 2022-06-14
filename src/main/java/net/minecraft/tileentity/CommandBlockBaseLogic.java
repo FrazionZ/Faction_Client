@@ -21,8 +21,8 @@ public abstract class CommandBlockBaseLogic implements ICommandSender
 {
     /** The formatting for the timestamp on commands run. */
     private static final SimpleDateFormat TIMESTAMP_FORMAT = new SimpleDateFormat("HH:mm:ss");
-    private long field_193041_b = -1L;
-    private boolean field_193042_c = true;
+    private long lastExecution = -1L;
+    private boolean updateLastExecution = true;
 
     /** The number of successful commands run. (used for redstone output) */
     private int successCount;
@@ -71,11 +71,11 @@ public abstract class CommandBlockBaseLogic implements ICommandSender
             p_189510_1_.setString("LastOutput", ITextComponent.Serializer.componentToJson(this.lastOutput));
         }
 
-        p_189510_1_.setBoolean("UpdateLastExecution", this.field_193042_c);
+        p_189510_1_.setBoolean("UpdateLastExecution", this.updateLastExecution);
 
-        if (this.field_193042_c && this.field_193041_b > 0L)
+        if (this.updateLastExecution && this.lastExecution > 0L)
         {
-            p_189510_1_.setLong("LastExecution", this.field_193041_b);
+            p_189510_1_.setLong("LastExecution", this.lastExecution);
         }
 
         this.resultStats.writeStatsToNBT(p_189510_1_);
@@ -118,16 +118,16 @@ public abstract class CommandBlockBaseLogic implements ICommandSender
 
         if (nbt.hasKey("UpdateLastExecution"))
         {
-            this.field_193042_c = nbt.getBoolean("UpdateLastExecution");
+            this.updateLastExecution = nbt.getBoolean("UpdateLastExecution");
         }
 
-        if (this.field_193042_c && nbt.hasKey("LastExecution"))
+        if (this.updateLastExecution && nbt.hasKey("LastExecution"))
         {
-            this.field_193041_b = nbt.getLong("LastExecution");
+            this.lastExecution = nbt.getLong("LastExecution");
         }
         else
         {
-            this.field_193041_b = -1L;
+            this.lastExecution = -1L;
         }
 
         this.resultStats.readStatsFromNBT(nbt);
@@ -136,7 +136,7 @@ public abstract class CommandBlockBaseLogic implements ICommandSender
     /**
      * Returns {@code true} if the CommandSender is allowed to execute the command, {@code false} if not
      */
-    public boolean canCommandSenderUseCommand(int permLevel, String commandName)
+    public boolean canUseCommand(int permLevel, String commandName)
     {
         return permLevel <= 2;
     }
@@ -160,7 +160,7 @@ public abstract class CommandBlockBaseLogic implements ICommandSender
 
     public boolean trigger(World worldIn)
     {
-        if (!worldIn.isRemote && worldIn.getTotalWorldTime() != this.field_193041_b)
+        if (!worldIn.isRemote && worldIn.getTotalWorldTime() != this.lastExecution)
         {
             if ("Searge".equalsIgnoreCase(this.commandStored))
             {
@@ -183,14 +183,14 @@ public abstract class CommandBlockBaseLogic implements ICommandSender
                     {
                         CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Executing command block");
                         CrashReportCategory crashreportcategory = crashreport.makeCategory("Command to be executed");
-                        crashreportcategory.setDetail("Command", new ICrashReportDetail<String>()
+                        crashreportcategory.addDetail("Command", new ICrashReportDetail<String>()
                         {
                             public String call() throws Exception
                             {
                                 return CommandBlockBaseLogic.this.getCommand();
                             }
                         });
-                        crashreportcategory.setDetail("Name", new ICrashReportDetail<String>()
+                        crashreportcategory.addDetail("Name", new ICrashReportDetail<String>()
                         {
                             public String call() throws Exception
                             {
@@ -205,13 +205,13 @@ public abstract class CommandBlockBaseLogic implements ICommandSender
                     this.successCount = 0;
                 }
 
-                if (this.field_193042_c)
+                if (this.updateLastExecution)
                 {
-                    this.field_193041_b = worldIn.getTotalWorldTime();
+                    this.lastExecution = worldIn.getTotalWorldTime();
                 }
                 else
                 {
-                    this.field_193041_b = -1L;
+                    this.lastExecution = -1L;
                 }
 
                 return true;
@@ -224,7 +224,39 @@ public abstract class CommandBlockBaseLogic implements ICommandSender
     }
 
     /**
-     * Get the name of this object. For players this returns their username
+     * Gets the name of this thing. This method has slightly different behavior depending on the interface (for <a
+     * href="https://github.com/ModCoderPack/MCPBot-Issues/issues/14">technical reasons</a> the same method is used for
+     * both IWorldNameable and ICommandSender):
+     *  
+     * <dl>
+     * <dt>{@link net.minecraft.util.INameable#getName() INameable.getName()}</dt>
+     * <dd>Returns the name of this inventory. If this {@linkplain net.minecraft.inventory#hasCustomName() has a custom
+     * name} then this <em>should</em> be a direct string; otherwise it <em>should</em> be a valid translation
+     * string.</dd>
+     * <dd>However, note that <strong>the translation string may be invalid</strong>, as is the case for {@link
+     * net.minecraft.tileentity.TileEntityBanner TileEntityBanner} (always returns nonexistent translation code
+     * <code>banner</code> without a custom name), {@link net.minecraft.block.BlockAnvil.Anvil BlockAnvil$Anvil} (always
+     * returns <code>anvil</code>), {@link net.minecraft.block.BlockWorkbench.InterfaceCraftingTable
+     * BlockWorkbench$InterfaceCraftingTable} (always returns <code>crafting_table</code>), {@link
+     * net.minecraft.inventory.InventoryCraftResult InventoryCraftResult} (always returns <code>Result</code>) and the
+     * {@link net.minecraft.entity.item.EntityMinecart EntityMinecart} family (uses the entity definition). This is not
+     * an exaustive list.</dd>
+     * <dd>In general, this method should be safe to use on tile entities that implement IInventory.</dd>
+     * <dt>{@link net.minecraft.command.ICommandSender#getName() ICommandSender.getName()} and {@link
+     * net.minecraft.entity.Entity#getName() Entity.getName()}</dt>
+     * <dd>Returns a valid, displayable name (which may be localized). For most entities, this is the translated version
+     * of its translation string (obtained via {@link net.minecraft.entity.EntityList#getEntityString
+     * EntityList.getEntityString}).</dd>
+     * <dd>If this entity has a custom name set, this will return that name.</dd>
+     * <dd>For some entities, this will attempt to translate a nonexistent translation string; see <a
+     * href="https://bugs.mojang.com/browse/MC-68446">MC-68446</a>. For {@linkplain
+     * net.minecraft.entity.player.EntityPlayer#getName() players} this returns the player's name. For {@linkplain
+     * net.minecraft.entity.passive.EntityOcelot ocelots} this may return the translation of
+     * <code>entity.Cat.name</code> if it is tamed. For {@linkplain net.minecraft.entity.item.EntityItem#getName() item
+     * entities}, this will attempt to return the name of the item in that item entity. In all cases other than players,
+     * the custom name will overrule this.</dd>
+     * <dd>For non-entity command senders, this will return some arbitrary name, such as "Rcon" or "Server".</dd>
+     * </dl>
      */
     public String getName()
     {
@@ -239,7 +271,7 @@ public abstract class CommandBlockBaseLogic implements ICommandSender
     /**
      * Send a chat message to the CommandSender
      */
-    public void addChatMessage(ITextComponent component)
+    public void sendMessage(ITextComponent component)
     {
         if (this.trackOutput && this.getEntityWorld() != null && !this.getEntityWorld().isRemote)
         {
@@ -254,7 +286,7 @@ public abstract class CommandBlockBaseLogic implements ICommandSender
     public boolean sendCommandFeedback()
     {
         MinecraftServer minecraftserver = this.getServer();
-        return minecraftserver == null || !minecraftserver.isAnvilFileSet() || minecraftserver.worldServers[0].getGameRules().getBoolean("commandBlockOutput");
+        return minecraftserver == null || !minecraftserver.isAnvilFileSet() || minecraftserver.worlds[0].getGameRules().getBoolean("commandBlockOutput");
     }
 
     public void setCommandStat(CommandResultStats.Type type, int amount)
@@ -270,7 +302,7 @@ public abstract class CommandBlockBaseLogic implements ICommandSender
     public abstract int getCommandBlockType();
 
     /**
-     * Fills in information about the command block for the packet. X/Y/Z for the minecart version, and entityId for the
+     * Fills in information about the command block for the packet. entityId for the minecart version, and X/Y/Z for the
      * traditional version
      */
     public abstract void fillInInfo(ByteBuf buf);

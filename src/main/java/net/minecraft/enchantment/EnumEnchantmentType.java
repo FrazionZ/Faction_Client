@@ -1,8 +1,6 @@
 package net.minecraft.enchantment;
 
-import fz.frazionz.item.ItemWeaponEffects;
 import net.minecraft.block.BlockPumpkin;
-import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
@@ -69,7 +67,7 @@ public enum EnumEnchantmentType
     DIGGER {
         public boolean canEnchantItem(Item itemIn)
         {
-            return itemIn instanceof ItemTool /*&& itemIn != Items.z_hammer*/;
+            return itemIn instanceof ItemTool;
         }
     },
     FISHING_ROD {

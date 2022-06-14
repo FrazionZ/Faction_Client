@@ -18,6 +18,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.scoreboard.ScorePlayerTeam;
+import net.minecraft.src.Config;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -25,8 +27,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.optifine.entity.model.IEntityRenderer;
-import optifine.Config;
-import shadersmod.client.Shaders;
+import net.optifine.shaders.Shaders;
 
 public abstract class Render<T extends Entity> implements IEntityRenderer
 {
@@ -54,7 +55,7 @@ public abstract class Render<T extends Entity> implements IEntityRenderer
 
     public boolean shouldRender(T livingEntity, ICamera camera, double camX, double camY, double camZ)
     {
-        AxisAlignedBB axisalignedbb = livingEntity.getRenderBoundingBox().expandXyz(0.5D);
+        AxisAlignedBB axisalignedbb = livingEntity.getRenderBoundingBox().grow(0.5D);
 
         if (axisalignedbb.hasNaN() || axisalignedbb.getAverageEdgeLength() == 0.0D)
         {
@@ -76,7 +77,6 @@ public abstract class Render<T extends Entity> implements IEntityRenderer
             if(entity instanceof EntityPlayerSP) {
                 this.renderLivingLabel(entity, Minecraft.getMinecraft().player.getDisplayName().getFormattedText(), x, y, z, 64);
             }
-            
         }
     }
 
@@ -87,7 +87,7 @@ public abstract class Render<T extends Entity> implements IEntityRenderer
 
         if (scoreplayerteam != null)
         {
-            String s = FontRenderer.getFormatFromString(scoreplayerteam.getColorPrefix());
+            String s = FontRenderer.getFormatFromString(scoreplayerteam.getPrefix());
 
             if (s.length() >= 2)
             {
@@ -172,11 +172,19 @@ public abstract class Render<T extends Entity> implements IEntityRenderer
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         float f5 = 0.0F;
         int i = 0;
+        boolean flag = Config.isMultiTexture();
+
+        if (flag)
+        {
+            bufferbuilder.setBlockLayer(BlockRenderLayer.SOLID);
+        }
+
         bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
 
         while (f3 > 0.0F)
         {
             TextureAtlasSprite textureatlassprite2 = i % 2 == 0 ? textureatlassprite : textureatlassprite1;
+            bufferbuilder.setSprite(textureatlassprite2);
             this.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
             float f6 = textureatlassprite2.getMinU();
             float f7 = textureatlassprite2.getMinV();
@@ -202,6 +210,13 @@ public abstract class Render<T extends Entity> implements IEntityRenderer
         }
 
         tessellator.draw();
+
+        if (flag)
+        {
+            bufferbuilder.setBlockLayer((BlockRenderLayer)null);
+            GlStateManager.bindCurrentTexture();
+        }
+
         GlStateManager.popMatrix();
         GlStateManager.enableLighting();
     }
@@ -269,7 +284,7 @@ public abstract class Render<T extends Entity> implements IEntityRenderer
      */
     private World getWorldFromRenderManager()
     {
-        return this.renderManager.worldObj;
+        return this.renderManager.world;
     }
 
     private void renderShadowSingle(IBlockState state, double p_188299_2_, double p_188299_4_, double p_188299_6_, BlockPos p_188299_8_, float p_188299_9_, float p_188299_10_, double p_188299_11_, double p_188299_13_, double p_188299_15_)
@@ -383,7 +398,7 @@ public abstract class Render<T extends Entity> implements IEntityRenderer
      */
     protected void renderLivingLabel(T entityIn, String str, double x, double y, double z, int maxDistance)
     {
-        double d0 = entityIn.getDistanceSqToEntity(this.renderManager.renderViewEntity);
+        double d0 = entityIn.getDistanceSq(this.renderManager.renderViewEntity);
 
         if (d0 <= (double)(maxDistance * maxDistance))
         {
@@ -407,7 +422,7 @@ public abstract class Render<T extends Entity> implements IEntityRenderer
         return false;
     }
 
-    public void renderMultipass(T p_188300_1_, double p_188300_2_, double p_188300_4_, double p_188300_6_, float p_188300_8_, float p_188300_9_)
+    public void renderMultipass(T entityIn, double x, double y, double z, float entityYaw, float partialTicks)
     {
     }
 

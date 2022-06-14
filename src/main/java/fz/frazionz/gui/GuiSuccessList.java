@@ -23,7 +23,7 @@ public class GuiSuccessList extends GuiListExtended
 
     public GuiSuccessList(GuiScreen lastScreen, SuccessType type, Minecraft mcIn, int left, int right, int top, int bottom, int slotHeight, int spaceBetween)
     {
-        super(mcIn, left, right, top, bottom, slotHeight, true, spaceBetween);
+        super(mcIn, left, right, top, bottom, slotHeight, spaceBetween);
         this.mc = mcIn;
         this.type = type;
         this.lastScreen = lastScreen;
@@ -52,9 +52,6 @@ public class GuiSuccessList extends GuiListExtended
 
     protected int getScrollBarX()
     {
-    	if(this.mc.gameSettings.frazionz_ui) {
-            return super.getScrollBarX();
-    	}
         return super.getScrollBarX();
     }
 
@@ -97,7 +94,7 @@ public class GuiSuccessList extends GuiListExtended
                 this.drawListHeader(k, l, tessellator);
             }
             
-            this.func_192638_a(k, l, mouseXIn, mouseYIn, partialTicks);
+            this.drawSelectionBox(k, l, mouseXIn, mouseYIn, partialTicks);
             GlStateManager.disableDepth();
             this.overlayBackground(0, this.top, 255, 255);
             this.overlayBackground(this.bottom, this.height, 255, 255);
@@ -132,25 +129,25 @@ public class GuiSuccessList extends GuiListExtended
     public class SuccessEntry implements IGuiListEntry
     {
         private final SuccessObj item;
-        private final GuiButton shopItemButton;
+        private final GuiButton successItemButton;
         private final ResourceLocation background = new ResourceLocation("textures/gui/frazionz/interface_background.png");	
         
         private SuccessEntry(SuccessObj item)
         {
             this.item = item;
-            this.shopItemButton = new GuiSuccessButton("test");
+            this.successItemButton = new GuiSuccessButton("test");
         }
         
-        public void func_192634_a(int p_192634_1_, int p_192634_2_, int p_192634_3_, int p_192634_4_, int p_192634_5_, int p_192634_6_, int p_192634_7_, boolean p_192634_8_, float p_192634_9_)
+        public void drawEntry(int slotIndex, int x, int y, int listWidth, int slotHeight, int mouseX, int mouseY, boolean isSelected, float partialTicks)
         {
-            this.shopItemButton.xPosition = p_192634_2_ - 3;
-            this.shopItemButton.yPosition = p_192634_3_;
-            this.shopItemButton.func_191745_a(GuiSuccessList.this.mc, p_192634_6_, p_192634_7_, p_192634_9_);
+            this.successItemButton.x = x - 3;
+            this.successItemButton.y = y;
+            this.successItemButton.drawButton(GuiSuccessList.this.mc, mouseX, mouseY, partialTicks);
         }
         
         public boolean mousePressed(int slotIndex, int mouseX, int mouseY, int mouseEvent, int relativeX, int relativeY)
         {
-        	if(this.shopItemButton.mousePressed(GuiSuccessList.this.mc, mouseX, mouseY)) {
+        	if(this.successItemButton.mousePressed(GuiSuccessList.this.mc, mouseX, mouseY)) {
         		return true;
         	}
         	return false;
@@ -158,15 +155,14 @@ public class GuiSuccessList extends GuiListExtended
         
         public void mouseReleased(int slotIndex, int x, int y, int mouseEvent, int relativeX, int relativeY)
         {
-            this.shopItemButton.mouseReleased(x, y);
+            this.successItemButton.mouseReleased(x, y);
         }
         
-        public void func_192633_a(int p_192633_1_, int p_192633_2_, int p_192633_3_, float p_192633_4_)
-        {
-        }
+		public void updatePosition(int slotIndex, int x, int y, float partialTicks) {
+		}
         
         public GuiButton getShopItemButton() {
-			return shopItemButton;
+			return successItemButton;
 		}
     }
     
@@ -180,7 +176,7 @@ public class GuiSuccessList extends GuiListExtended
             this.title = title;
         }
 
-        public void func_191745_a(Minecraft mc, int mouseX, int mouseY, float p_191745_4_)
+        public void drawButton(Minecraft mc, int mouseX, int mouseY, float p_191745_4_)
         {
             if (this.visible)
             {
@@ -192,8 +188,8 @@ public class GuiSuccessList extends GuiListExtended
                 GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
                 
                 
-            	FontRenderer fontrenderer = mc.fontRendererObj;
-            	this.hovered = mouseX >= this.xPosition && mouseY >= this.yPosition && mouseX < this.xPosition + this.width && mouseY < this.yPosition + this.height;
+            	FontRenderer fontrenderer = mc.fontRenderer;
+            	this.hovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
                 //mc.getTextureManager().bindTexture(this.resourceLocation);
                 GlStateManager.disableDepth();
                 //int i = this.textureX;
@@ -203,7 +199,7 @@ public class GuiSuccessList extends GuiListExtended
                 GlStateManager.enableRescaleNormal();
                 renderItem.zLevel = 100F;
                 renderItem.renderItemIntoGUI(this.itemToDisplay, this.xPosition + 12, this.yPosition + (this.height / 2) - 8);*/
-                this.drawString(mc.fontRendererObj, this.title, this.xPosition + 36, this.yPosition + (this.height / 2) - 3, 0xFFFFFFFF);
+                this.drawString(mc.fontRenderer, this.title, this.x + 36, this.y + (this.height / 2) - 3, 0xFFFFFFFF);
                 //this.drawString(mc.fontRendererObj, this.price, this.xPosition + this.width - 12 - mc.fontRendererObj.getStringWidth(this.price), this.yPosition + (this.height / 2) - 3, 0xFFFFFFFF);
                 
             }

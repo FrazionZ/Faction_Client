@@ -50,6 +50,12 @@ public class Util
         catch (ExecutionException executionexception)
         {
             logger.fatal("Error executing task", (Throwable)executionexception);
+
+            if (executionexception.getCause() instanceof OutOfMemoryError)
+            {
+                OutOfMemoryError outofmemoryerror = (OutOfMemoryError)executionexception.getCause();
+                throw outofmemoryerror;
+            }
         }
         catch (InterruptedException interruptedexception)
         {

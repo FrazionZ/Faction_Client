@@ -27,7 +27,7 @@ public class GuiMerchant extends GuiContainer
 
     /** The GUI texture for the villager merchant GUI. */
     private static final ResourceLocation MERCHANT_GUI_TEXTURE = new ResourceLocation("textures/gui/frazionz/container/villager.png");
-
+    
     /** The current IMerchant instance in use for this specific merchant. */
     private final IMerchant merchant;
 
@@ -45,11 +45,11 @@ public class GuiMerchant extends GuiContainer
     /** The chat component utilized by this GuiMerchant instance. */
     private final ITextComponent chatComponent;
 
-    public GuiMerchant(InventoryPlayer p_i45500_1_, IMerchant p_i45500_2_, World worldIn)
+    public GuiMerchant(InventoryPlayer playerInventoryIn, IMerchant merchantIn, World worldIn)
     {
-        super(new ContainerMerchant(p_i45500_1_, p_i45500_2_, worldIn));
-        this.merchant = p_i45500_2_;
-        this.chatComponent = p_i45500_2_.getDisplayName();
+        super(new ContainerMerchant(playerInventoryIn, merchantIn, worldIn));
+        this.merchant = merchantIn;
+        this.chatComponent = merchantIn.getDisplayName();
     }
 
     /**
@@ -61,8 +61,8 @@ public class GuiMerchant extends GuiContainer
         super.initGui();
         int i = (this.width - this.xSize) / 2;
         int j = (this.height - this.ySize) / 2;
-        this.nextButton = (GuiMerchant.MerchantButton)this.addButton(new GuiMerchant.MerchantButton(1, i + 125 + 27, j + 46 - 1, true));
-        this.previousButton = (GuiMerchant.MerchantButton)this.addButton(new GuiMerchant.MerchantButton(2, i + 41 - 19, j + 46 - 1, false));
+        this.nextButton = (GuiMerchant.MerchantButton)this.addButton(new GuiMerchant.MerchantButton(1, i + 125 + 22, j + 24 - 1, true));
+        this.previousButton = (GuiMerchant.MerchantButton)this.addButton(new GuiMerchant.MerchantButton(2, i + 36 - 19, j + 24 - 1, false));
         this.nextButton.enabled = false;
         this.previousButton.enabled = false;
     }
@@ -73,8 +73,8 @@ public class GuiMerchant extends GuiContainer
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
     {
         String s = this.chatComponent.getUnformattedText();
-        this.fontRendererObj.drawString(s, this.xSize / 2 - this.fontRendererObj.getStringWidth(s) / 2, 6, 16777067, true);
-        this.fontRendererObj.drawString(I18n.format("container.inventory"), 13, this.ySize - 118 + 2, 16777067, true);
+        this.fontRenderer.drawString(s, this.xSize / 2 - this.fontRenderer.getStringWidth(s) / 2, 6, 16777067, true);
+        this.fontRenderer.drawString(I18n.format("container.inventory"), 13, this.ySize - 96 + 2, 16777067, true);
     }
 
     /**
@@ -95,7 +95,7 @@ public class GuiMerchant extends GuiContainer
     /**
      * Called by the controls from the buttonList when activated. (Mouse pressed for buttons)
      */
-    protected void actionPerformed(GuiButton button, int mouseButton) throws IOException
+    protected void actionPerformed(GuiButton button, int keyCode) throws IOException
     {
         boolean flag = false;
 
@@ -191,35 +191,35 @@ public class GuiMerchant extends GuiContainer
             GlStateManager.enableColorMaterial();
             GlStateManager.enableLighting();
             this.itemRender.zLevel = 100.0F;
-            this.itemRender.renderItemAndEffectIntoGUI(itemstack, i + 41, j + 46);
-            this.itemRender.renderItemOverlays(this.fontRendererObj, itemstack, i + 41, j + 46);
+            this.itemRender.renderItemAndEffectIntoGUI(itemstack, i + 36, j + 24);
+            this.itemRender.renderItemOverlays(this.fontRenderer, itemstack, i + 36, j + 24);
 
-            if (!itemstack1.func_190926_b())
+            if (!itemstack1.isEmpty())
             {
-                this.itemRender.renderItemAndEffectIntoGUI(itemstack1, i + 67, j + 46);
-                this.itemRender.renderItemOverlays(this.fontRendererObj, itemstack1, i + 67, j + 46);
+                this.itemRender.renderItemAndEffectIntoGUI(itemstack1, i + 62, j + 24);
+                this.itemRender.renderItemOverlays(this.fontRenderer, itemstack1, i + 62, j + 24);
             }
 
-            this.itemRender.renderItemAndEffectIntoGUI(itemstack2, i + 125, j + 46);
-            this.itemRender.renderItemOverlays(this.fontRendererObj, itemstack2, i + 125, j + 46);
+            this.itemRender.renderItemAndEffectIntoGUI(itemstack2, i + 120, j + 24);
+            this.itemRender.renderItemOverlays(this.fontRenderer, itemstack2, i + 120, j + 24);
             this.itemRender.zLevel = 0.0F;
             GlStateManager.disableLighting();
 
-            if (this.isPointInRegion(41, 46, 16, 16, mouseX, mouseY) && !itemstack.func_190926_b())
+            if (this.isPointInRegion(36, 24, 16, 16, mouseX, mouseY) && !itemstack.isEmpty())
             {
                 this.renderToolTip(itemstack, mouseX, mouseY);
             }
-            else if (!itemstack1.func_190926_b() && this.isPointInRegion(67, 46, 16, 16, mouseX, mouseY) && !itemstack1.func_190926_b())
+            else if (!itemstack1.isEmpty() && this.isPointInRegion(62, 24, 16, 16, mouseX, mouseY) && !itemstack1.isEmpty())
             {
                 this.renderToolTip(itemstack1, mouseX, mouseY);
             }
-            else if (!itemstack2.func_190926_b() && this.isPointInRegion(125, 46, 16, 16, mouseX, mouseY) && !itemstack2.func_190926_b())
+            else if (!itemstack2.isEmpty() && this.isPointInRegion(120, 24, 16, 16, mouseX, mouseY) && !itemstack2.isEmpty())
             {
                 this.renderToolTip(itemstack2, mouseX, mouseY);
             }
             else if (merchantrecipe.isRecipeDisabled() && (this.isPointInRegion(88, 43, 28, 21, mouseX, mouseY) || this.isPointInRegion(88, 73, 28, 21, mouseX, mouseY)))
             {
-                this.drawCreativeTabHoveringText(I18n.format("merchant.deprecated"), mouseX, mouseY);
+                this.drawHoveringText(I18n.format("merchant.deprecated"), mouseX, mouseY);
             }
 
             GlStateManager.popMatrix();
@@ -228,7 +228,7 @@ public class GuiMerchant extends GuiContainer
             RenderHelper.enableStandardItemLighting();
         }
 
-        this.func_191948_b(mouseX, mouseY);
+        this.renderHoveredToolTip(mouseX, mouseY);
     }
 
     public IMerchant getMerchant()
@@ -246,13 +246,13 @@ public class GuiMerchant extends GuiContainer
             this.forward = p_i1095_4_;
         }
 
-        public void func_191745_a(Minecraft p_191745_1_, int p_191745_2_, int p_191745_3_, float p_191745_4_)
+        public void drawButton(Minecraft mc, int mouseX, int mouseY, float partialTicks)
         {
             if (this.visible)
             {
-                p_191745_1_.getTextureManager().bindTexture(GuiMerchant.MERCHANT_GUI_TEXTURE);
+                mc.getTextureManager().bindTexture(GuiMerchant.MERCHANT_GUI_TEXTURE);
                 GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-                boolean flag = p_191745_2_ >= this.xPosition && p_191745_3_ >= this.yPosition && p_191745_2_ < this.xPosition + this.width && p_191745_3_ < this.yPosition + this.height;
+                boolean flag = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
                 int i = 0;
                 int j = 186;
 
@@ -270,7 +270,7 @@ public class GuiMerchant extends GuiContainer
                     i += this.height;
                 }
 
-                this.drawTexturedModalRect(this.xPosition, this.yPosition, j, i, this.width, this.height);
+                this.drawTexturedModalRect(this.x, this.y, j, i, this.width, this.height);
             }
         }
     }

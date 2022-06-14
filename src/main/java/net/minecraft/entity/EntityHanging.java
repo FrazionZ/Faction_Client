@@ -77,12 +77,12 @@ public abstract class EntityHanging extends Entity
             double d3 = 0.46875D;
             double d4 = this.offs(this.getWidthPixels());
             double d5 = this.offs(this.getHeightPixels());
-            d0 = d0 - (double)this.facingDirection.getFrontOffsetX() * 0.46875D;
-            d2 = d2 - (double)this.facingDirection.getFrontOffsetZ() * 0.46875D;
+            d0 = d0 - (double)this.facingDirection.getXOffset() * 0.46875D;
+            d2 = d2 - (double)this.facingDirection.getZOffset() * 0.46875D;
             d1 = d1 + d5;
             EnumFacing enumfacing = this.facingDirection.rotateYCCW();
-            d0 = d0 + d4 * (double)enumfacing.getFrontOffsetX();
-            d2 = d2 + d4 * (double)enumfacing.getFrontOffsetZ();
+            d0 = d0 + d4 * (double)enumfacing.getXOffset();
+            d2 = d2 + d4 * (double)enumfacing.getZOffset();
             this.posX = d0;
             this.posY = d1;
             this.posZ = d2;
@@ -207,8 +207,8 @@ public abstract class EntityHanging extends Entity
             if (!this.isDead && !this.world.isRemote)
             {
                 this.setDead();
-                this.setBeenAttacked();
-                this.onBroken(source.getEntity());
+                this.markVelocityChanged();
+                this.onBroken(source.getTrueSource());
             }
 
             return true;
@@ -218,9 +218,9 @@ public abstract class EntityHanging extends Entity
     /**
      * Tries to move the entity towards the specified location.
      */
-    public void moveEntity(MoverType x, double p_70091_2_, double p_70091_4_, double p_70091_6_)
+    public void move(MoverType type, double x, double y, double z)
     {
-        if (!this.world.isRemote && !this.isDead && p_70091_2_ * p_70091_2_ + p_70091_4_ * p_70091_4_ + p_70091_6_ * p_70091_6_ > 0.0D)
+        if (!this.world.isRemote && !this.isDead && x * x + y * y + z * z > 0.0D)
         {
             this.setDead();
             this.onBroken((Entity)null);
@@ -228,7 +228,7 @@ public abstract class EntityHanging extends Entity
     }
 
     /**
-     * Adds to the current velocity of the entity.
+     * Adds to the current velocity of the entity, and sets {@link #isAirBorne} to true.
      */
     public void addVelocity(double x, double y, double z)
     {
@@ -257,7 +257,7 @@ public abstract class EntityHanging extends Entity
     public void readEntityFromNBT(NBTTagCompound compound)
     {
         this.hangingPosition = new BlockPos(compound.getInteger("TileX"), compound.getInteger("TileY"), compound.getInteger("TileZ"));
-        this.updateFacingWithBoundingBox(EnumFacing.getHorizontal(compound.getByte("Facing")));
+        this.updateFacingWithBoundingBox(EnumFacing.byHorizontalIndex(compound.getByte("Facing")));
     }
 
     public abstract int getWidthPixels();
@@ -276,9 +276,9 @@ public abstract class EntityHanging extends Entity
      */
     public EntityItem entityDropItem(ItemStack stack, float offsetY)
     {
-        EntityItem entityitem = new EntityItem(this.world, this.posX + (double)((float)this.facingDirection.getFrontOffsetX() * 0.15F), this.posY + (double)offsetY, this.posZ + (double)((float)this.facingDirection.getFrontOffsetZ() * 0.15F), stack);
+        EntityItem entityitem = new EntityItem(this.world, this.posX + (double)((float)this.facingDirection.getXOffset() * 0.15F), this.posY + (double)offsetY, this.posZ + (double)((float)this.facingDirection.getZOffset() * 0.15F), stack);
         entityitem.setDefaultPickupDelay();
-        this.world.spawnEntityInWorld(entityitem);
+        this.world.spawnEntity(entityitem);
         return entityitem;
     }
 

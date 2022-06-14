@@ -42,7 +42,7 @@ public class ChunkGeneratorSettings
     public final boolean useMineShafts;
     public final boolean useTemples;
     public final boolean useMonuments;
-    public final boolean field_191077_z;
+    public final boolean useMansions;
     public final boolean useRavines;
     public final boolean useWaterLakes;
     public final int waterLakeChance;
@@ -90,13 +90,13 @@ public class ChunkGeneratorSettings
     public final int redstoneMaxHeight;
     public final int diamondSize;
     public final int diamondCount;
-    public final int zCount;
     public final int diamondMinHeight;
     public final int diamondMaxHeight;
     public final int lapisSize;
     public final int lapisCount;
     public final int lapisCenterHeight;
     public final int lapisSpread;
+    public final int frazionCount;
 
     private ChunkGeneratorSettings(ChunkGeneratorSettings.Factory settingsFactory)
     {
@@ -125,7 +125,7 @@ public class ChunkGeneratorSettings
         this.useMineShafts = settingsFactory.useMineShafts;
         this.useTemples = settingsFactory.useTemples;
         this.useMonuments = settingsFactory.useMonuments;
-        this.field_191077_z = settingsFactory.field_191076_A;
+        this.useMansions = settingsFactory.useMansions;
         this.useRavines = settingsFactory.useRavines;
         this.useWaterLakes = settingsFactory.useWaterLakes;
         this.waterLakeChance = settingsFactory.waterLakeChance;
@@ -173,13 +173,13 @@ public class ChunkGeneratorSettings
         this.redstoneMaxHeight = settingsFactory.redstoneMaxHeight;
         this.diamondSize = settingsFactory.diamondSize;
         this.diamondCount = settingsFactory.diamondCount;
-        this.zCount = settingsFactory.zCount;
         this.diamondMinHeight = settingsFactory.diamondMinHeight;
         this.diamondMaxHeight = settingsFactory.diamondMaxHeight;
         this.lapisSize = settingsFactory.lapisSize;
         this.lapisCount = settingsFactory.lapisCount;
         this.lapisCenterHeight = settingsFactory.lapisCenterHeight;
         this.lapisSpread = settingsFactory.lapisSpread;
+        this.frazionCount = settingsFactory.frazionCount;
     }
 
     public static class Factory
@@ -211,7 +211,7 @@ public class ChunkGeneratorSettings
         public boolean useMineShafts = true;
         public boolean useTemples = true;
         public boolean useMonuments = true;
-        public boolean field_191076_A = true;
+        public boolean useMansions = true;
         public boolean useRavines = true;
         public boolean useWaterLakes = true;
         public int waterLakeChance = 4;
@@ -259,13 +259,13 @@ public class ChunkGeneratorSettings
         public int redstoneMaxHeight = 16;
         public int diamondSize = 8;
         public int diamondCount = 2;
-        public int zCount = 1;
         public int diamondMinHeight;
         public int diamondMaxHeight = 16;
         public int lapisSize = 7;
         public int lapisCount = 1;
         public int lapisCenterHeight = 16;
         public int lapisSpread = 16;
+        public int frazionCount = 1;
 
         public static ChunkGeneratorSettings.Factory jsonToFactory(String p_177865_0_)
         {
@@ -323,7 +323,7 @@ public class ChunkGeneratorSettings
             this.useMineShafts = true;
             this.useTemples = true;
             this.useMonuments = true;
-            this.field_191076_A = true;
+            this.useMansions = true;
             this.useRavines = true;
             this.useWaterLakes = true;
             this.waterLakeChance = 4;
@@ -371,13 +371,13 @@ public class ChunkGeneratorSettings
             this.redstoneMaxHeight = 16;
             this.diamondSize = 8;
             this.diamondCount = 2;
-            this.zCount = 1;
             this.diamondMinHeight = 0;
             this.diamondMaxHeight = 16;
             this.lapisSize = 7;
             this.lapisCount = 1;
             this.lapisCenterHeight = 16;
             this.lapisSpread = 16;
+            this.frazionCount = 1;
         }
 
         public boolean equals(Object p_equals_1_)
@@ -463,10 +463,6 @@ public class ChunkGeneratorSettings
                     return false;
                 }
                 else if (this.diamondCount != chunkgeneratorsettings$factory.diamondCount)
-                {
-                    return false;
-                }
-                else if (this.zCount != chunkgeneratorsettings$factory.zCount)
                 {
                     return false;
                 }
@@ -694,7 +690,7 @@ public class ChunkGeneratorSettings
                 {
                     return false;
                 }
-                else if (this.field_191076_A != chunkgeneratorsettings$factory.field_191076_A)
+                else if (this.useMansions != chunkgeneratorsettings$factory.useMansions)
                 {
                     return false;
                 }
@@ -703,6 +699,10 @@ public class ChunkGeneratorSettings
                     return false;
                 }
                 else if (this.useWaterLakes != chunkgeneratorsettings$factory.useWaterLakes)
+                {
+                    return false;
+                }
+                else if (this.frazionCount != chunkgeneratorsettings$factory.frazionCount)
                 {
                     return false;
                 }
@@ -744,7 +744,7 @@ public class ChunkGeneratorSettings
             i = 31 * i + (this.useMineShafts ? 1 : 0);
             i = 31 * i + (this.useTemples ? 1 : 0);
             i = 31 * i + (this.useMonuments ? 1 : 0);
-            i = 31 * i + (this.field_191076_A ? 1 : 0);
+            i = 31 * i + (this.useMansions ? 1 : 0);
             i = 31 * i + (this.useRavines ? 1 : 0);
             i = 31 * i + (this.useWaterLakes ? 1 : 0);
             i = 31 * i + this.waterLakeChance;
@@ -792,13 +792,13 @@ public class ChunkGeneratorSettings
             i = 31 * i + this.redstoneMaxHeight;
             i = 31 * i + this.diamondSize;
             i = 31 * i + this.diamondCount;
-            i = 31 * i + this.zCount;
             i = 31 * i + this.diamondMinHeight;
             i = 31 * i + this.diamondMaxHeight;
             i = 31 * i + this.lapisSize;
             i = 31 * i + this.lapisCount;
             i = 31 * i + this.lapisCenterHeight;
             i = 31 * i + this.lapisSpread;
+            i = 31 * i + this.frazionCount;
             return i;
         }
 
@@ -842,7 +842,7 @@ public class ChunkGeneratorSettings
                 chunkgeneratorsettings$factory.useMineShafts = JsonUtils.getBoolean(jsonobject, "useMineShafts", chunkgeneratorsettings$factory.useMineShafts);
                 chunkgeneratorsettings$factory.useTemples = JsonUtils.getBoolean(jsonobject, "useTemples", chunkgeneratorsettings$factory.useTemples);
                 chunkgeneratorsettings$factory.useMonuments = JsonUtils.getBoolean(jsonobject, "useMonuments", chunkgeneratorsettings$factory.useMonuments);
-                chunkgeneratorsettings$factory.field_191076_A = JsonUtils.getBoolean(jsonobject, "useMansions", chunkgeneratorsettings$factory.field_191076_A);
+                chunkgeneratorsettings$factory.useMansions = JsonUtils.getBoolean(jsonobject, "useMansions", chunkgeneratorsettings$factory.useMansions);
                 chunkgeneratorsettings$factory.useRavines = JsonUtils.getBoolean(jsonobject, "useRavines", chunkgeneratorsettings$factory.useRavines);
                 chunkgeneratorsettings$factory.useWaterLakes = JsonUtils.getBoolean(jsonobject, "useWaterLakes", chunkgeneratorsettings$factory.useWaterLakes);
                 chunkgeneratorsettings$factory.waterLakeChance = JsonUtils.getInt(jsonobject, "waterLakeChance", chunkgeneratorsettings$factory.waterLakeChance);
@@ -903,13 +903,14 @@ public class ChunkGeneratorSettings
                 chunkgeneratorsettings$factory.redstoneMaxHeight = JsonUtils.getInt(jsonobject, "redstoneMaxHeight", chunkgeneratorsettings$factory.redstoneMaxHeight);
                 chunkgeneratorsettings$factory.diamondSize = JsonUtils.getInt(jsonobject, "diamondSize", chunkgeneratorsettings$factory.diamondSize);
                 chunkgeneratorsettings$factory.diamondCount = JsonUtils.getInt(jsonobject, "diamondCount", chunkgeneratorsettings$factory.diamondCount);
-                chunkgeneratorsettings$factory.zCount = JsonUtils.getInt(jsonobject, "zCount", chunkgeneratorsettings$factory.zCount);
                 chunkgeneratorsettings$factory.diamondMinHeight = JsonUtils.getInt(jsonobject, "diamondMinHeight", chunkgeneratorsettings$factory.diamondMinHeight);
                 chunkgeneratorsettings$factory.diamondMaxHeight = JsonUtils.getInt(jsonobject, "diamondMaxHeight", chunkgeneratorsettings$factory.diamondMaxHeight);
                 chunkgeneratorsettings$factory.lapisSize = JsonUtils.getInt(jsonobject, "lapisSize", chunkgeneratorsettings$factory.lapisSize);
                 chunkgeneratorsettings$factory.lapisCount = JsonUtils.getInt(jsonobject, "lapisCount", chunkgeneratorsettings$factory.lapisCount);
                 chunkgeneratorsettings$factory.lapisCenterHeight = JsonUtils.getInt(jsonobject, "lapisCenterHeight", chunkgeneratorsettings$factory.lapisCenterHeight);
                 chunkgeneratorsettings$factory.lapisSpread = JsonUtils.getInt(jsonobject, "lapisSpread", chunkgeneratorsettings$factory.lapisSpread);
+                chunkgeneratorsettings$factory.frazionCount = JsonUtils.getInt(jsonobject, "frazionCount", chunkgeneratorsettings$factory.frazionCount);
+
             }
             catch (Exception var7)
             {
@@ -947,7 +948,7 @@ public class ChunkGeneratorSettings
             jsonobject.addProperty("useMineShafts", Boolean.valueOf(p_serialize_1_.useMineShafts));
             jsonobject.addProperty("useTemples", Boolean.valueOf(p_serialize_1_.useTemples));
             jsonobject.addProperty("useMonuments", Boolean.valueOf(p_serialize_1_.useMonuments));
-            jsonobject.addProperty("useMansions", Boolean.valueOf(p_serialize_1_.field_191076_A));
+            jsonobject.addProperty("useMansions", Boolean.valueOf(p_serialize_1_.useMansions));
             jsonobject.addProperty("useRavines", Boolean.valueOf(p_serialize_1_.useRavines));
             jsonobject.addProperty("useWaterLakes", Boolean.valueOf(p_serialize_1_.useWaterLakes));
             jsonobject.addProperty("waterLakeChance", Integer.valueOf(p_serialize_1_.waterLakeChance));
@@ -995,13 +996,13 @@ public class ChunkGeneratorSettings
             jsonobject.addProperty("redstoneMaxHeight", Integer.valueOf(p_serialize_1_.redstoneMaxHeight));
             jsonobject.addProperty("diamondSize", Integer.valueOf(p_serialize_1_.diamondSize));
             jsonobject.addProperty("diamondCount", Integer.valueOf(p_serialize_1_.diamondCount));
-            jsonobject.addProperty("zCount", Integer.valueOf(p_serialize_1_.zCount));
             jsonobject.addProperty("diamondMinHeight", Integer.valueOf(p_serialize_1_.diamondMinHeight));
             jsonobject.addProperty("diamondMaxHeight", Integer.valueOf(p_serialize_1_.diamondMaxHeight));
             jsonobject.addProperty("lapisSize", Integer.valueOf(p_serialize_1_.lapisSize));
             jsonobject.addProperty("lapisCount", Integer.valueOf(p_serialize_1_.lapisCount));
             jsonobject.addProperty("lapisCenterHeight", Integer.valueOf(p_serialize_1_.lapisCenterHeight));
             jsonobject.addProperty("lapisSpread", Integer.valueOf(p_serialize_1_.lapisSpread));
+            jsonobject.addProperty("frazionCount", Integer.valueOf(p_serialize_1_.frazionCount));
             return jsonobject;
         }
     }

@@ -1,15 +1,18 @@
 package net.minecraft.client.particle;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Queues;
 import java.util.ArrayDeque;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.Random;
+
 import javax.annotation.Nullable;
+
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Queues;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -24,6 +27,7 @@ import net.minecraft.crash.CrashReport;
 import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.crash.ICrashReportDetail;
 import net.minecraft.entity.Entity;
+import net.minecraft.src.Config;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
@@ -34,15 +38,14 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
-import optifine.Config;
-import optifine.Reflector;
+import net.optifine.reflect.Reflector;
 
 public class ParticleManager
 {
     private static final ResourceLocation PARTICLE_TEXTURES = new ResourceLocation("textures/particle/particles.png");
 
     /** Reference to the World object. */
-    protected World worldObj;
+    protected World world;
     private final ArrayDeque<Particle>[][] fxLayers = new ArrayDeque[4][];
     private final Queue<ParticleEmitter> particleEmitters = Queues.<ParticleEmitter>newArrayDeque();
     private final TextureManager renderer;
@@ -50,11 +53,11 @@ public class ParticleManager
     /** RNG. */
     private final Random rand = new Random();
     private final Map<Integer, IParticleFactory> particleTypes = Maps.<Integer, IParticleFactory>newHashMap();
-    private final Queue<Particle> queueEntityFX = Queues.<Particle>newArrayDeque();
+    private final Queue<Particle> queue = Queues.<Particle>newArrayDeque();
 
     public ParticleManager(World worldIn, TextureManager rendererIn)
     {
-        this.worldObj = worldIn;
+        this.world = worldIn;
         this.renderer = rendererIn;
 
         for (int i = 0; i < 4; ++i)
@@ -128,12 +131,12 @@ public class ParticleManager
 
     public void emitParticleAtEntity(Entity entityIn, EnumParticleTypes particleTypes)
     {
-        this.particleEmitters.add(new ParticleEmitter(this.worldObj, entityIn, particleTypes));
+        this.particleEmitters.add(new ParticleEmitter(this.world, entityIn, particleTypes));
     }
 
-    public void func_191271_a(Entity p_191271_1_, EnumParticleTypes p_191271_2_, int p_191271_3_)
+    public void emitParticleAtEntity(Entity p_191271_1_, EnumParticleTypes p_191271_2_, int p_191271_3_)
     {
-        this.particleEmitters.add(new ParticleEmitter(this.worldObj, p_191271_1_, p_191271_2_, p_191271_3_));
+        this.particleEmitters.add(new ParticleEmitter(this.world, p_191271_1_, p_191271_2_, p_191271_3_));
     }
 
     @Nullable
@@ -147,7 +150,7 @@ public class ParticleManager
 
         if (iparticlefactory != null)
         {
-            Particle particle = iparticlefactory.createParticle(particleId, this.worldObj, xCoord, yCoord, zCoord, xSpeed, ySpeed, zSpeed, parameters);
+            Particle particle = iparticlefactory.createParticle(particleId, this.world, xCoord, yCoord, zCoord, xSpeed, ySpeed, zSpeed, parameters);
 
             if (particle != null)
             {
@@ -165,7 +168,7 @@ public class ParticleManager
         {
             if (!(effect instanceof ParticleFirework.Spark) || Config.isFireworkParticles())
             {
-                this.queueEntityFX.add(effect);
+                this.queue.add(effect);
             }
         }
     }
@@ -194,12 +197,12 @@ public class ParticleManager
             this.particleEmitters.removeAll(list);
         }
 
-        if (!this.queueEntityFX.isEmpty())
+        if (!this.queue.isEmpty())
         {
-            for (Particle particle = this.queueEntityFX.poll(); particle != null; particle = this.queueEntityFX.poll())
+            for (Particle particle = this.queue.poll(); particle != null; particle = this.queue.poll())
             {
                 int j = particle.getFXLayer();
-                int k = particle.isTransparent() ? 0 : 1;
+                int k = particle.shouldDisableDepth() ? 0 : 1;
 
                 if (this.fxLayers[j][k].size() >= 16384)
                 {
@@ -216,23 +219,23 @@ public class ParticleManager
 
     private void updateEffectLayer(int layer)
     {
-        this.worldObj.theProfiler.startSection(String.valueOf(layer));
+        this.world.profiler.startSection(String.valueOf(layer));
 
         for (int i = 0; i < 2; ++i)
         {
-            this.worldObj.theProfiler.startSection(String.valueOf(i));
+            this.world.profiler.startSection(String.valueOf(i));
             this.tickParticleList(this.fxLayers[layer][i]);
-            this.worldObj.theProfiler.endSection();
+            this.world.profiler.endSection();
         }
 
-        this.worldObj.theProfiler.endSection();
+        this.world.profiler.endSection();
     }
 
-    private void tickParticleList(Queue<Particle> p_187240_1_)
+    private void tickParticleList(Queue<Particle> param1)
     {
-        if (!p_187240_1_.isEmpty())
+        if (!param1.isEmpty())
         {
-            Iterator<Particle> iterator = p_187240_1_.iterator();
+            Iterator<Particle> iterator = param1.iterator();
 
             while (iterator.hasNext())
             {
@@ -258,14 +261,14 @@ public class ParticleManager
             CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Ticking Particle");
             CrashReportCategory crashreportcategory = crashreport.makeCategory("Particle being ticked");
             final int i = particle.getFXLayer();
-            crashreportcategory.setDetail("Particle", new ICrashReportDetail<String>()
+            crashreportcategory.addDetail("Particle", new ICrashReportDetail<String>()
             {
                 public String call() throws Exception
                 {
                     return particle.toString();
                 }
             });
-            crashreportcategory.setDetail("Particle Type", new ICrashReportDetail<String>()
+            crashreportcategory.addDetail("Particle Type", new ICrashReportDetail<String>()
             {
                 public String call() throws Exception
                 {
@@ -304,6 +307,8 @@ public class ParticleManager
         GlStateManager.enableBlend();
         GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
         GlStateManager.alphaFunc(516, 0.003921569F);
+        IBlockState iblockstate = ActiveRenderInfo.getBlockStateAtEntityViewpoint(this.world, entityIn, partialTicks);
+        boolean flag = iblockstate.getMaterial() == Material.WATER;
 
         for (int i = 0; i < 3; ++i)
         {
@@ -343,20 +348,23 @@ public class ParticleManager
                     {
                         try
                         {
-                            particle.renderParticle(bufferbuilder, entityIn, partialTicks, f, f4, f1, f2, f3);
+                            if (flag || !(particle instanceof ParticleSuspend))
+                            {
+                                particle.renderParticle(bufferbuilder, entityIn, partialTicks, f, f4, f1, f2, f3);
+                            }
                         }
                         catch (Throwable throwable)
                         {
                             CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Rendering Particle");
                             CrashReportCategory crashreportcategory = crashreport.makeCategory("Particle being rendered");
-                            crashreportcategory.setDetail("Particle", new ICrashReportDetail<String>()
+                            crashreportcategory.addDetail("Particle", new ICrashReportDetail<String>()
                             {
                                 public String call() throws Exception
                                 {
                                     return particle.toString();
                                 }
                             });
-                            crashreportcategory.setDetail("Particle Type", new ICrashReportDetail<String>()
+                            crashreportcategory.addDetail("Particle Type", new ICrashReportDetail<String>()
                             {
                                 public String call() throws Exception
                                 {
@@ -416,7 +424,7 @@ public class ParticleManager
 
     public void clearEffects(@Nullable World worldIn)
     {
-        this.worldObj = worldIn;
+        this.world = worldIn;
 
         for (int i = 0; i < 4; ++i)
         {
@@ -436,7 +444,7 @@ public class ParticleManager
         if (Reflector.ForgeBlock_addDestroyEffects.exists() && Reflector.ForgeBlock_isAir.exists())
         {
             Block block = state.getBlock();
-            flag = !Reflector.callBoolean(block, Reflector.ForgeBlock_isAir, state, this.worldObj, pos) && !Reflector.callBoolean(block, Reflector.ForgeBlock_addDestroyEffects, this.worldObj, pos, this);
+            flag = !Reflector.callBoolean(block, Reflector.ForgeBlock_isAir, state, this.world, pos) && !Reflector.callBoolean(block, Reflector.ForgeBlock_addDestroyEffects, this.world, pos, this);
         }
         else
         {
@@ -445,7 +453,7 @@ public class ParticleManager
 
         if (flag)
         {
-            state = state.getActualState(this.worldObj, pos);
+            state = state.getActualState(this.world, pos);
             int l = 4;
 
             for (int i = 0; i < 4; ++i)
@@ -457,7 +465,7 @@ public class ParticleManager
                         double d0 = ((double)i + 0.5D) / 4.0D;
                         double d1 = ((double)j + 0.5D) / 4.0D;
                         double d2 = ((double)k + 0.5D) / 4.0D;
-                        this.addEffect((new ParticleDigging(this.worldObj, (double)pos.getX() + d0, (double)pos.getY() + d1, (double)pos.getZ() + d2, d0 - 0.5D, d1 - 0.5D, d2 - 0.5D, state)).setBlockPos(pos));
+                        this.addEffect((new ParticleDigging(this.world, (double)pos.getX() + d0, (double)pos.getY() + d1, (double)pos.getZ() + d2, d0 - 0.5D, d1 - 0.5D, d2 - 0.5D, state)).setBlockPos(pos));
                     }
                 }
             }
@@ -469,7 +477,7 @@ public class ParticleManager
      */
     public void addBlockHitEffects(BlockPos pos, EnumFacing side)
     {
-        IBlockState iblockstate = this.worldObj.getBlockState(pos);
+        IBlockState iblockstate = this.world.getBlockState(pos);
 
         if (iblockstate.getRenderType() != EnumBlockRenderType.INVISIBLE)
         {
@@ -477,7 +485,7 @@ public class ParticleManager
             int j = pos.getY();
             int k = pos.getZ();
             float f = 0.1F;
-            AxisAlignedBB axisalignedbb = iblockstate.getBoundingBox(this.worldObj, pos);
+            AxisAlignedBB axisalignedbb = iblockstate.getBoundingBox(this.world, pos);
             double d0 = (double)i + this.rand.nextDouble() * (axisalignedbb.maxX - axisalignedbb.minX - 0.20000000298023224D) + 0.10000000149011612D + axisalignedbb.minX;
             double d1 = (double)j + this.rand.nextDouble() * (axisalignedbb.maxY - axisalignedbb.minY - 0.20000000298023224D) + 0.10000000149011612D + axisalignedbb.minY;
             double d2 = (double)k + this.rand.nextDouble() * (axisalignedbb.maxZ - axisalignedbb.minZ - 0.20000000298023224D) + 0.10000000149011612D + axisalignedbb.minZ;
@@ -512,7 +520,7 @@ public class ParticleManager
                 d0 = (double)i + axisalignedbb.maxX + 0.10000000149011612D;
             }
 
-            this.addEffect((new ParticleDigging(this.worldObj, d0, d1, d2, 0.0D, 0.0D, 0.0D, iblockstate)).setBlockPos(pos).multiplyVelocity(0.2F).multipleParticleScaleBy(0.6F));
+            this.addEffect((new ParticleDigging(this.world, d0, d1, d2, 0.0D, 0.0D, 0.0D, iblockstate)).setBlockPos(pos).multiplyVelocity(0.2F).multipleParticleScaleBy(0.6F));
         }
     }
 
@@ -547,11 +555,11 @@ public class ParticleManager
 
     public void addBlockHitEffects(BlockPos p_addBlockHitEffects_1_, RayTraceResult p_addBlockHitEffects_2_)
     {
-        IBlockState iblockstate = this.worldObj.getBlockState(p_addBlockHitEffects_1_);
+        IBlockState iblockstate = this.world.getBlockState(p_addBlockHitEffects_1_);
 
         if (iblockstate != null)
         {
-            boolean flag = Reflector.callBoolean(iblockstate.getBlock(), Reflector.ForgeBlock_addHitEffects, iblockstate, this.worldObj, p_addBlockHitEffects_2_, this);
+            boolean flag = Reflector.callBoolean(iblockstate.getBlock(), Reflector.ForgeBlock_addHitEffects, iblockstate, this.world, p_addBlockHitEffects_2_, this);
 
             if (iblockstate != null && !flag)
             {

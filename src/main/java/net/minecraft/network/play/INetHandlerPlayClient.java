@@ -130,7 +130,7 @@ public interface INetHandlerPlayClient extends INetHandler
      */
     void handleStatistics(SPacketStatistics packetIn);
 
-    void func_191980_a(SPacketRecipeBook p_191980_1_);
+    void handleRecipeBook(SPacketRecipeBook packetIn);
 
     /**
      * Updates all registered IWorldAccess instances with destroyBlockInWorldPartially
@@ -379,25 +379,26 @@ public interface INetHandlerPlayClient extends INetHandler
 
     void handleTitle(SPacketTitle packetIn);
 
-    void handleToast(SPacketToast packetIn);
-
     void handlePlayerListHeaderFooter(SPacketPlayerListHeaderFooter packetIn);
 
     void handleResourcePack(SPacketResourcePackSend packetIn);
 
-    void handleUpdateEntityNBT(SPacketUpdateBossInfo packetIn);
+    void handleUpdateBossInfo(SPacketUpdateBossInfo packetIn);
 
     void handleCooldown(SPacketCooldown packetIn);
 
     void handleMoveVehicle(SPacketMoveVehicle packetIn);
 
-    void func_191981_a(SPacketAdvancementInfo p_191981_1_);
+    void handleAdvancementInfo(SPacketAdvancementInfo packetIn);
 
-    void func_194022_a(SPacketSelectAdvancementsTab p_194022_1_);
+    void handleSelectAdvancementsTab(SPacketSelectAdvancementsTab packetIn);
 
     void func_194307_a(SPacketPlaceGhostRecipe p_194307_1_);
 
+    void handleToast(SPacketToast packetIn);
+    
     void handleUpdateSkin(SPacketUpdateSkin handler);
 
     //void handleOpenGuiBoutique(SPacketOpenGuiBoutique packetIn);
+
 }

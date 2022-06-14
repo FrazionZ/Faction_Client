@@ -52,6 +52,7 @@ public enum EnumParticleTypes
     DRAGON_BREATH("dragonbreath", 42, false),
     END_ROD("endRod", 43, false),
     DAMAGE_INDICATOR("damageIndicator", 44, true),
+    //SWEEP_ATTACK("sweepAttack", 45, true),
     FALLING_DUST("fallingdust", 46, false, 1),
     TOTEM("totem", 47, false),
     SPIT("spit", 48, true);

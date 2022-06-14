@@ -45,7 +45,7 @@ public class BlockRendererDispatcher implements IResourceManagerReloadListener
         }
     }
 
-    public boolean renderBlock(IBlockState state, BlockPos pos, IBlockAccess blockAccess, BufferBuilder worldRendererIn)
+    public boolean renderBlock(IBlockState state, BlockPos pos, IBlockAccess blockAccess, BufferBuilder bufferBuilderIn)
     {
         try
         {
@@ -57,7 +57,7 @@ public class BlockRendererDispatcher implements IResourceManagerReloadListener
             }
             else
             {
-                if (blockAccess.getWorldType() != WorldType.DEBUG_WORLD)
+                if (blockAccess.getWorldType() != WorldType.DEBUG_ALL_BLOCK_STATES)
                 {
                     try
                     {
@@ -72,13 +72,13 @@ public class BlockRendererDispatcher implements IResourceManagerReloadListener
                 switch (enumblockrendertype)
                 {
                     case MODEL:
-                        return this.blockModelRenderer.renderModel(blockAccess, this.getModelForState(state), state, pos, worldRendererIn, true);
+                        return this.blockModelRenderer.renderModel(blockAccess, this.getModelForState(state), state, pos, bufferBuilderIn, true);
 
                     case ENTITYBLOCK_ANIMATED:
                         return false;
 
                     case LIQUID:
-                        return this.fluidRenderer.renderFluid(blockAccess, state, pos, worldRendererIn);
+                        return this.fluidRenderer.renderFluid(blockAccess, state, pos, bufferBuilderIn);
 
                     default:
                         return false;

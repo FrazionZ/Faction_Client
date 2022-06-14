@@ -25,13 +25,15 @@ public class BlockGravel extends BlockFalling
 
     /**
      * Get the MapColor for this Block and the given BlockState
+     * @deprecated call via {@link IBlockState#getMapColor(IBlockAccess,BlockPos)} whenever possible.
+     * Implementing/overriding is fine.
      */
-    public MapColor getMapColor(IBlockState state, IBlockAccess p_180659_2_, BlockPos p_180659_3_)
+    public MapColor getMapColor(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
         return MapColor.STONE;
     }
 
-    public int getDustColor(IBlockState p_189876_1_)
+    public int getDustColor(IBlockState state)
     {
         return -8356741;
     }

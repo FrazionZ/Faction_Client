@@ -5,6 +5,8 @@ import java.util.Random;
 
 import javax.annotation.Nullable;
 
+import fz.frazionz.world.gen.feature.WorldGenNetherTrees;
+import fz.frazionz.world.gen.feature.WorldGenObsidianNether;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -24,14 +26,11 @@ import net.minecraft.world.gen.feature.WorldGenGlowStone1;
 import net.minecraft.world.gen.feature.WorldGenGlowStone2;
 import net.minecraft.world.gen.feature.WorldGenHellLava;
 import net.minecraft.world.gen.feature.WorldGenMinable;
-import net.minecraft.world.gen.feature.WorldGenNetherTrees;
-import net.minecraft.world.gen.feature.WorldGenObsidianNether;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraft.world.gen.structure.MapGenNetherBridge;
 
 public class ChunkGeneratorHell implements IChunkGenerator
 {
-	
     protected static final IBlockState AIR = Blocks.AIR.getDefaultState();
     protected static final IBlockState NETHERRACK = Blocks.NETHERRACK.getDefaultState();
     protected static final IBlockState NETHERRACK_NYLIUM = Blocks.NETHERRACK.getStateFromMeta(1);
@@ -44,6 +43,7 @@ public class ChunkGeneratorHell implements IChunkGenerator
     private final Random rand;
 
     protected BlockPos chunkPos;
+
     /**
      * Holds the noise used to determine whether slowsand can be generated at a location
      */
@@ -265,7 +265,10 @@ public class ChunkGeneratorHell implements IChunkGenerator
         }
     }
 
-    public Chunk provideChunk(int x, int z)
+    /**
+     * Generates the chunk at the specified position, from scratch
+     */
+    public Chunk generateChunk(int x, int z)
     {
         this.rand.setSeed((long)x * 341873128712L + (long)z * 132897987541L);
         ChunkPrimer chunkprimer = new ChunkPrimer();
@@ -376,10 +379,16 @@ public class ChunkGeneratorHell implements IChunkGenerator
         return p_185938_1_;
     }
 
+    /**
+     * Generate initial structures in this chunk, e.g. mineshafts, temples, lakes, and dungeons
+     *  
+     * @param x Chunk x coordinate
+     * @param z Chunk z coordinate
+     */
     public void populate(int x, int z)
     {
     	Random rand = new Random();
-    	
+
         BlockFalling.fallInstantly = true;
         int i = x * 16;
         int j = z * 16;
@@ -454,7 +463,6 @@ public class ChunkGeneratorHell implements IChunkGenerator
             }
         	
         }
-        
 
         for (int j2 = 0; j2 < 16; ++j2)
         {
@@ -462,10 +470,12 @@ public class ChunkGeneratorHell implements IChunkGenerator
         }
 
         biome.decorate(this.world, this.rand, new BlockPos(i, 0, j));
-        //biome.netherDecorate(this.world, this.rand, new BlockPos(i, 0, j));
         BlockFalling.fallInstantly = false;
     }
 
+    /**
+     * Called to generate additional structures after initial worldgen, used by ocean monuments
+     */
     public boolean generateStructures(Chunk chunkIn, int x, int z)
     {
         return false;
@@ -491,16 +501,21 @@ public class ChunkGeneratorHell implements IChunkGenerator
     }
 
     @Nullable
-    public BlockPos getStrongholdGen(World worldIn, String structureName, BlockPos position, boolean p_180513_4_)
+    public BlockPos getNearestStructurePos(World worldIn, String structureName, BlockPos position, boolean findUnexplored)
     {
-        return "Fortress".equals(structureName) && this.genNetherBridge != null ? this.genNetherBridge.getClosestStrongholdPos(worldIn, position, p_180513_4_) : null;
+        return "Fortress".equals(structureName) && this.genNetherBridge != null ? this.genNetherBridge.getNearestStructurePos(worldIn, position, findUnexplored) : null;
     }
 
-    public boolean func_193414_a(World p_193414_1_, String p_193414_2_, BlockPos p_193414_3_)
+    public boolean isInsideStructure(World worldIn, String structureName, BlockPos pos)
     {
-        return "Fortress".equals(p_193414_2_) && this.genNetherBridge != null ? this.genNetherBridge.isInsideStructure(p_193414_3_) : false;
+        return "Fortress".equals(structureName) && this.genNetherBridge != null ? this.genNetherBridge.isInsideStructure(pos) : false;
     }
 
+    /**
+     * Recreates data about structures intersecting given chunk (used for example by getPossibleCreatures), without
+     * placing any blocks. When called for the first time before any chunk is generated - also initializes the internal
+     * state needed by getPossibleCreatures.
+     */
     public void recreateStructures(Chunk chunkIn, int x, int z)
     {
         this.genNetherBridge.generate(this.world, x, z, (ChunkPrimer)null);

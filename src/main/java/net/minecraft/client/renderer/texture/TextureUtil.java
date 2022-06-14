@@ -11,11 +11,10 @@ import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.IResource;
 import net.minecraft.client.resources.IResourceManager;
+import net.minecraft.src.Config;
 import net.minecraft.util.ResourceLocation;
-import optifine.Config;
-import optifine.Mipmaps;
-import optifine.Reflector;
-
+import net.optifine.Mipmaps;
+import net.optifine.reflect.Reflector;
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -28,6 +27,7 @@ public class TextureUtil
     public static final int[] MISSING_TEXTURE_DATA = MISSING_TEXTURE.getTextureData();
     private static final float[] COLOR_GAMMAS;
     private static final int[] MIPMAP_BUFFER;
+    private static int[] dataArray = new int[4194304];
 
     private static float getColorGamma(int p_188543_0_)
     {
@@ -64,7 +64,7 @@ public class TextureUtil
         {
             boolean flag = false;
 
-            for (int i = 0; i < p_147949_2_.length; ++i)
+            for (int i = 0; i < p_147949_2_[0].length; ++i)
             {
                 if (p_147949_2_[0][i] >> 24 == 0)
                 {
@@ -197,7 +197,7 @@ public class TextureUtil
         int i = p_110993_0_.getWidth();
         int j = p_110993_0_.getHeight();
         int k = 4194304 / i;
-        int[] aint = new int[k * i];
+        int[] aint = dataArray;
         setTextureBlurred(p_110993_3_);
         setTextureClamped(p_110993_4_);
 

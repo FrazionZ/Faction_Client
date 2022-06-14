@@ -1,7 +1,7 @@
 package fz.frazionz.item;
 
+import fz.frazionz.entity.item.EntityBigXp;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.item.EntityBigXp;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
@@ -31,7 +31,7 @@ public class ItemBigXp extends Item
 
         if (!worldIn.capabilities.isCreativeMode)
         {
-            itemstack.substract(1);
+            itemstack.shrink(1);
         }
 
         itemStackIn.playSound((EntityPlayer)null, worldIn.posX, worldIn.posY, worldIn.posZ, SoundEvents.ENTITY_EXPERIENCE_BOTTLE_THROW, SoundCategory.NEUTRAL, 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
@@ -40,7 +40,7 @@ public class ItemBigXp extends Item
         {
             EntityBigXp entityBigXp = new EntityBigXp(itemStackIn, worldIn);
             //entityBigXp.setHeadingFromThrower(worldIn, worldIn.rotationPitch, worldIn.rotationYaw, -20.0F, 0.7F, 1.0F);
-            itemStackIn.spawnEntityInWorld(entityBigXp);
+            itemStackIn.spawnEntity(entityBigXp);
         }
 
         worldIn.addStat(StatList.getObjectUseStats(this));

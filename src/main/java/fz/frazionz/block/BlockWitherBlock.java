@@ -46,7 +46,7 @@ public class BlockWitherBlock extends Block
     {
         if (entityIn instanceof EntityLivingBase)
         {
-            entityIn.attackEntityFrom(DamageSource.wither, 1.5F);
+            entityIn.attackEntityFrom(DamageSource.WITHER, 1.5F);
         }
 
         super.onEntityWalk(worldIn, pos, entityIn);

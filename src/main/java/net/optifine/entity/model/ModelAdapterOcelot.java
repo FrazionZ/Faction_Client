@@ -9,7 +9,7 @@ import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RenderOcelot;
 import net.minecraft.entity.passive.EntityOcelot;
-import optifine.Reflector;
+import net.optifine.reflect.Reflector;
 
 public class ModelAdapterOcelot extends ModelAdapter
 {
@@ -46,6 +46,11 @@ public class ModelAdapterOcelot extends ModelAdapter
                 return null;
             }
         }
+    }
+
+    public String[] getModelRendererNames()
+    {
+        return new String[] {"back_left_leg", "back_right_leg", "front_left_leg", "front_right_leg", "tail", "tail2", "head", "body"};
     }
 
     private static Map<String, Integer> getMapPartFields()

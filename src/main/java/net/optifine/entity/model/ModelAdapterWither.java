@@ -7,8 +7,8 @@ import net.minecraft.client.model.ModelWither;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RenderWither;
 import net.minecraft.entity.boss.EntityWither;
-import optifine.Config;
-import optifine.Reflector;
+import net.minecraft.src.Config;
+import net.optifine.reflect.Reflector;
 
 public class ModelAdapterWither extends ModelAdapter
 {
@@ -75,6 +75,11 @@ public class ModelAdapterWither extends ModelAdapter
                 }
             }
         }
+    }
+
+    public String[] getModelRendererNames()
+    {
+        return new String[] {"body1", "body2", "body3", "head1", "head2", "head3"};
     }
 
     public IEntityRenderer makeEntityRender(ModelBase modelBase, float shadowSize)

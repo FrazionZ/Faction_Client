@@ -2,7 +2,6 @@ package fz.frazionz.mods;
 
 import fz.frazionz.Client;
 import fz.frazionz.event.EventManager;
-import fz.frazionz.gui.hud.HUDManager;
 import fz.frazionz.mods.impl.ModKeystrokes;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -17,7 +16,7 @@ public class Mod {
 	
 	public Mod() {
 		this.mc = Minecraft.getMinecraft();
-		this.font = mc.fontRendererObj;
+		this.font = mc.fontRenderer;
 		this.client = Client.getInstance();
 		
 		// ADD_MODS //

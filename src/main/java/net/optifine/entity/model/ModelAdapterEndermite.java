@@ -7,8 +7,8 @@ import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.entity.RenderEndermite;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.monster.EntityEndermite;
-import optifine.Config;
-import optifine.Reflector;
+import net.minecraft.src.Config;
+import net.optifine.reflect.Reflector;
 
 public class ModelAdapterEndermite extends ModelAdapter
 {
@@ -54,6 +54,11 @@ public class ModelAdapterEndermite extends ModelAdapter
                 return null;
             }
         }
+    }
+
+    public String[] getModelRendererNames()
+    {
+        return new String[] {"body1", "body2", "body3", "body4"};
     }
 
     public IEntityRenderer makeEntityRender(ModelBase modelBase, float shadowSize)

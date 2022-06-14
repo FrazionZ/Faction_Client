@@ -43,7 +43,7 @@ public class SPacketPlayerPosLook implements Packet<INetHandlerPlayClient>
         this.yaw = buf.readFloat();
         this.pitch = buf.readFloat();
         this.flags = SPacketPlayerPosLook.EnumFlags.unpack(buf.readUnsignedByte());
-        this.teleportId = buf.readVarIntFromBuffer();
+        this.teleportId = buf.readVarInt();
     }
 
     /**
@@ -57,7 +57,7 @@ public class SPacketPlayerPosLook implements Packet<INetHandlerPlayClient>
         buf.writeFloat(this.yaw);
         buf.writeFloat(this.pitch);
         buf.writeByte(SPacketPlayerPosLook.EnumFlags.pack(this.flags));
-        buf.writeVarIntToBuffer(this.teleportId);
+        buf.writeVarInt(this.teleportId);
     }
 
     /**
@@ -113,9 +113,9 @@ public class SPacketPlayerPosLook implements Packet<INetHandlerPlayClient>
 
         private final int bit;
 
-        private EnumFlags(int p_i46690_3_)
+        private EnumFlags(int bitIn)
         {
-            this.bit = p_i46690_3_;
+            this.bit = bitIn;
         }
 
         private int getMask()
@@ -123,9 +123,9 @@ public class SPacketPlayerPosLook implements Packet<INetHandlerPlayClient>
             return 1 << this.bit;
         }
 
-        private boolean isSet(int p_187043_1_)
+        private boolean isSet(int flags)
         {
-            return (p_187043_1_ & this.getMask()) == this.getMask();
+            return (flags & this.getMask()) == this.getMask();
         }
 
         public static Set<SPacketPlayerPosLook.EnumFlags> unpack(int flags)

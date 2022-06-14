@@ -4,19 +4,24 @@ import java.nio.ByteBuffer;
 import java.util.List;
 import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.client.renderer.vertex.VertexFormatElement;
-import optifine.Config;
-import optifine.Reflector;
-import shadersmod.client.SVertexBuilder;
+import net.minecraft.src.Config;
+import net.optifine.reflect.Reflector;
+import net.optifine.shaders.SVertexBuilder;
 
 public class WorldVertexBufferUploader
 {
-    public void draw(BufferBuilder vertexBufferIn)
+    public void draw(BufferBuilder bufferBuilderIn)
     {
-        if (vertexBufferIn.getVertexCount() > 0)
+        if (bufferBuilderIn.getVertexCount() > 0)
         {
-            VertexFormat vertexformat = vertexBufferIn.getVertexFormat();
-            int i = vertexformat.getNextOffset();
-            ByteBuffer bytebuffer = vertexBufferIn.getByteBuffer();
+            if (bufferBuilderIn.getDrawMode() == 7 && Config.isQuadsToTriangles())
+            {
+                bufferBuilderIn.quadsToTriangles();
+            }
+
+            VertexFormat vertexformat = bufferBuilderIn.getVertexFormat();
+            int i = vertexformat.getSize();
+            ByteBuffer bytebuffer = bufferBuilderIn.getByteBuffer();
             List<VertexFormatElement> list = vertexformat.getElements();
             boolean flag = Reflector.ForgeVertexFormatElementEnumUseage_preDraw.exists();
             boolean flag1 = Reflector.ForgeVertexFormatElementEnumUseage_postDraw.exists();
@@ -58,23 +63,24 @@ public class WorldVertexBufferUploader
                         case NORMAL:
                             GlStateManager.glNormalPointer(k, i, bytebuffer);
                             GlStateManager.glEnableClientState(32885);
+                            break;
 					default:
 						break;
                     }
                 }
             }
 
-            if (vertexBufferIn.isMultiTexture())
+            if (bufferBuilderIn.isMultiTexture())
             {
-                vertexBufferIn.drawMultiTexture();
+                bufferBuilderIn.drawMultiTexture();
             }
             else if (Config.isShaders())
             {
-                SVertexBuilder.drawArrays(vertexBufferIn.getDrawMode(), 0, vertexBufferIn.getVertexCount(), vertexBufferIn);
+                SVertexBuilder.drawArrays(bufferBuilderIn.getDrawMode(), 0, bufferBuilderIn.getVertexCount(), bufferBuilderIn);
             }
             else
             {
-                GlStateManager.glDrawArrays(vertexBufferIn.getDrawMode(), 0, vertexBufferIn.getVertexCount());
+                GlStateManager.glDrawArrays(bufferBuilderIn.getDrawMode(), 0, bufferBuilderIn.getVertexCount());
             }
 
             int j1 = 0;
@@ -119,6 +125,6 @@ public class WorldVertexBufferUploader
             }
         }
 
-        vertexBufferIn.reset();
+        bufferBuilderIn.reset();
     }
 }

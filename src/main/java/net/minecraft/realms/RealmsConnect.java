@@ -108,7 +108,7 @@ public class RealmsConnect
         if (this.connection != null && this.connection.isChannelOpen())
         {
             this.connection.closeChannel(new TextComponentTranslation("disconnect.genericReason", new Object[0]));
-            this.connection.checkDisconnected();
+            this.connection.handleDisconnection();
         }
     }
 
@@ -122,7 +122,7 @@ public class RealmsConnect
             }
             else
             {
-                this.connection.checkDisconnected();
+                this.connection.handleDisconnection();
             }
         }
     }

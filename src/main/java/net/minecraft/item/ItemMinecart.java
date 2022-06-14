@@ -25,9 +25,9 @@ public class ItemMinecart extends Item
         {
             EnumFacing enumfacing = (EnumFacing)source.getBlockState().getValue(BlockDispenser.FACING);
             World world = source.getWorld();
-            double d0 = source.getX() + (double)enumfacing.getFrontOffsetX() * 1.125D;
-            double d1 = Math.floor(source.getY()) + (double)enumfacing.getFrontOffsetY();
-            double d2 = source.getZ() + (double)enumfacing.getFrontOffsetZ() * 1.125D;
+            double d0 = source.getX() + (double)enumfacing.getXOffset() * 1.125D;
+            double d1 = Math.floor(source.getY()) + (double)enumfacing.getYOffset();
+            double d2 = source.getZ() + (double)enumfacing.getZOffset() * 1.125D;
             BlockPos blockpos = source.getBlockPos().offset(enumfacing);
             IBlockState iblockstate = world.getBlockState(blockpos);
             BlockRailBase.EnumRailDirection blockrailbase$enumraildirection = iblockstate.getBlock() instanceof BlockRailBase ? (BlockRailBase.EnumRailDirection)iblockstate.getValue(((BlockRailBase)iblockstate.getBlock()).getShapeProperty()) : BlockRailBase.EnumRailDirection.NORTH_SOUTH;
@@ -71,8 +71,8 @@ public class ItemMinecart extends Item
                 entityminecart.setCustomNameTag(stack.getDisplayName());
             }
 
-            world.spawnEntityInWorld(entityminecart);
-            stack.substract(1);
+            world.spawnEntity(entityminecart);
+            stack.shrink(1);
             return stack;
         }
         protected void playDispenseSound(IBlockSource source)
@@ -93,9 +93,9 @@ public class ItemMinecart extends Item
     /**
      * Called when a Block is right-clicked with this Item
      */
-    public EnumActionResult onItemUse(EntityPlayer stack, World playerIn, BlockPos worldIn, EnumHand pos, EnumFacing hand, float facing, float hitX, float hitY)
+    public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
-        IBlockState iblockstate = playerIn.getBlockState(worldIn);
+        IBlockState iblockstate = worldIn.getBlockState(pos);
 
         if (!BlockRailBase.isRailBlock(iblockstate))
         {
@@ -103,9 +103,9 @@ public class ItemMinecart extends Item
         }
         else
         {
-            ItemStack itemstack = stack.getHeldItem(pos);
+            ItemStack itemstack = player.getHeldItem(hand);
 
-            if (!playerIn.isRemote)
+            if (!worldIn.isRemote)
             {
                 BlockRailBase.EnumRailDirection blockrailbase$enumraildirection = iblockstate.getBlock() instanceof BlockRailBase ? (BlockRailBase.EnumRailDirection)iblockstate.getValue(((BlockRailBase)iblockstate.getBlock()).getShapeProperty()) : BlockRailBase.EnumRailDirection.NORTH_SOUTH;
                 double d0 = 0.0D;
@@ -115,17 +115,17 @@ public class ItemMinecart extends Item
                     d0 = 0.5D;
                 }
 
-                EntityMinecart entityminecart = EntityMinecart.create(playerIn, (double)worldIn.getX() + 0.5D, (double)worldIn.getY() + 0.0625D + d0, (double)worldIn.getZ() + 0.5D, this.minecartType);
+                EntityMinecart entityminecart = EntityMinecart.create(worldIn, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.0625D + d0, (double)pos.getZ() + 0.5D, this.minecartType);
 
                 if (itemstack.hasDisplayName())
                 {
                     entityminecart.setCustomNameTag(itemstack.getDisplayName());
                 }
 
-                playerIn.spawnEntityInWorld(entityminecart);
+                worldIn.spawnEntity(entityminecart);
             }
 
-            itemstack.substract(1);
+            itemstack.shrink(1);
             return EnumActionResult.SUCCESS;
         }
     }

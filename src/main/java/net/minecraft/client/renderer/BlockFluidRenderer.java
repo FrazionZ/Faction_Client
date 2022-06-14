@@ -6,18 +6,19 @@ import net.minecraft.block.BlockSlab;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.block.model.FaceBakery;
 import net.minecraft.client.renderer.color.BlockColors;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.init.Blocks;
+import net.minecraft.src.Config;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IBlockAccess;
-import optifine.Config;
-import optifine.CustomColors;
-import optifine.RenderEnv;
-import shadersmod.client.SVertexBuilder;
+import net.optifine.CustomColors;
+import net.optifine.render.RenderEnv;
+import net.optifine.shaders.SVertexBuilder;
 
 public class BlockFluidRenderer
 {
@@ -42,7 +43,7 @@ public class BlockFluidRenderer
         this.atlasSpriteWaterOverlay = texturemap.getAtlasSprite("minecraft:blocks/water_overlay");
     }
 
-    public boolean renderFluid(IBlockAccess blockAccess, IBlockState blockStateIn, BlockPos blockPosIn, BufferBuilder worldRendererIn)
+    public boolean renderFluid(IBlockAccess blockAccess, IBlockState blockStateIn, BlockPos blockPosIn, BufferBuilder bufferBuilderIn)
     {
         boolean flag3;
 
@@ -50,13 +51,13 @@ public class BlockFluidRenderer
         {
             if (Config.isShaders())
             {
-                SVertexBuilder.pushEntity(blockStateIn, blockPosIn, blockAccess, worldRendererIn);
+                SVertexBuilder.pushEntity(blockStateIn, blockPosIn, blockAccess, bufferBuilderIn);
             }
 
             BlockLiquid blockliquid = (BlockLiquid)blockStateIn.getBlock();
             boolean flag = blockStateIn.getMaterial() == Material.LAVA;
             TextureAtlasSprite[] atextureatlassprite = flag ? this.atlasSpritesLava : this.atlasSpritesWater;
-            RenderEnv renderenv = worldRendererIn.getRenderEnv(blockAccess, blockStateIn, blockPosIn);
+            RenderEnv renderenv = bufferBuilderIn.getRenderEnv(blockStateIn, blockPosIn);
             int i = CustomColors.getFluidColor(blockAccess, blockStateIn, blockPosIn, renderenv);
             float f = (float)(i >> 16 & 255) / 255.0F;
             float f1 = (float)(i >> 8 & 255) / 255.0F;
@@ -91,7 +92,7 @@ public class BlockFluidRenderer
                     flag3 = true;
                     float f12 = BlockLiquid.getSlopeAngle(blockAccess, blockPosIn, material, blockStateIn);
                     TextureAtlasSprite textureatlassprite = f12 > -999.0F ? atextureatlassprite[1] : atextureatlassprite[0];
-                    worldRendererIn.setSprite(textureatlassprite);
+                    bufferBuilderIn.setSprite(textureatlassprite);
                     f7 -= 0.001F;
                     f8 -= 0.001F;
                     f9 -= 0.001F;
@@ -137,22 +138,23 @@ public class BlockFluidRenderer
                     float f24 = 1.0F * f;
                     float f25 = 1.0F * f1;
                     float f26 = 1.0F * f2;
-                    worldRendererIn.pos(d0 + 0.0D, d1 + (double)f7, d2 + 0.0D).color(f24, f25, f26, 1.0F).tex((double)f13, (double)f17).lightmap(l2, i3).endVertex();
-                    worldRendererIn.pos(d0 + 0.0D, d1 + (double)f8, d2 + 1.0D).color(f24, f25, f26, 1.0F).tex((double)f14, (double)f18).lightmap(l2, i3).endVertex();
-                    worldRendererIn.pos(d0 + 1.0D, d1 + (double)f9, d2 + 1.0D).color(f24, f25, f26, 1.0F).tex((double)f15, (double)f19).lightmap(l2, i3).endVertex();
-                    worldRendererIn.pos(d0 + 1.0D, d1 + (double)f10, d2 + 0.0D).color(f24, f25, f26, 1.0F).tex((double)f16, (double)f20).lightmap(l2, i3).endVertex();
+                    bufferBuilderIn.pos(d0 + 0.0D, d1 + (double)f7, d2 + 0.0D).color(f24, f25, f26, 1.0F).tex((double)f13, (double)f17).lightmap(l2, i3).endVertex();
+                    bufferBuilderIn.pos(d0 + 0.0D, d1 + (double)f8, d2 + 1.0D).color(f24, f25, f26, 1.0F).tex((double)f14, (double)f18).lightmap(l2, i3).endVertex();
+                    bufferBuilderIn.pos(d0 + 1.0D, d1 + (double)f9, d2 + 1.0D).color(f24, f25, f26, 1.0F).tex((double)f15, (double)f19).lightmap(l2, i3).endVertex();
+                    bufferBuilderIn.pos(d0 + 1.0D, d1 + (double)f10, d2 + 0.0D).color(f24, f25, f26, 1.0F).tex((double)f16, (double)f20).lightmap(l2, i3).endVertex();
 
                     if (blockliquid.shouldRenderSides(blockAccess, blockPosIn.up()))
                     {
-                        worldRendererIn.pos(d0 + 0.0D, d1 + (double)f7, d2 + 0.0D).color(f24, f25, f26, 1.0F).tex((double)f13, (double)f17).lightmap(l2, i3).endVertex();
-                        worldRendererIn.pos(d0 + 1.0D, d1 + (double)f10, d2 + 0.0D).color(f24, f25, f26, 1.0F).tex((double)f16, (double)f20).lightmap(l2, i3).endVertex();
-                        worldRendererIn.pos(d0 + 1.0D, d1 + (double)f9, d2 + 1.0D).color(f24, f25, f26, 1.0F).tex((double)f15, (double)f19).lightmap(l2, i3).endVertex();
-                        worldRendererIn.pos(d0 + 0.0D, d1 + (double)f8, d2 + 1.0D).color(f24, f25, f26, 1.0F).tex((double)f14, (double)f18).lightmap(l2, i3).endVertex();
+                        bufferBuilderIn.pos(d0 + 0.0D, d1 + (double)f7, d2 + 0.0D).color(f24, f25, f26, 1.0F).tex((double)f13, (double)f17).lightmap(l2, i3).endVertex();
+                        bufferBuilderIn.pos(d0 + 1.0D, d1 + (double)f10, d2 + 0.0D).color(f24, f25, f26, 1.0F).tex((double)f16, (double)f20).lightmap(l2, i3).endVertex();
+                        bufferBuilderIn.pos(d0 + 1.0D, d1 + (double)f9, d2 + 1.0D).color(f24, f25, f26, 1.0F).tex((double)f15, (double)f19).lightmap(l2, i3).endVertex();
+                        bufferBuilderIn.pos(d0 + 0.0D, d1 + (double)f8, d2 + 1.0D).color(f24, f25, f26, 1.0F).tex((double)f14, (double)f18).lightmap(l2, i3).endVertex();
                     }
                 }
 
                 if (flag2)
                 {
+                    bufferBuilderIn.setSprite(atextureatlassprite[0]);
                     float f38 = atextureatlassprite[0].getMinU();
                     float f39 = atextureatlassprite[0].getMaxU();
                     float f40 = atextureatlassprite[0].getMinV();
@@ -160,10 +162,11 @@ public class BlockFluidRenderer
                     int l1 = blockStateIn.getPackedLightmapCoords(blockAccess, blockPosIn.down());
                     int i2 = l1 >> 16 & 65535;
                     int j2 = l1 & 65535;
-                    worldRendererIn.pos(d0, d1, d2 + 1.0D).color(f * 0.5F, f1 * 0.5F, f2 * 0.5F, 1.0F).tex((double)f38, (double)f41).lightmap(i2, j2).endVertex();
-                    worldRendererIn.pos(d0, d1, d2).color(f * 0.5F, f1 * 0.5F, f2 * 0.5F, 1.0F).tex((double)f38, (double)f40).lightmap(i2, j2).endVertex();
-                    worldRendererIn.pos(d0 + 1.0D, d1, d2).color(f * 0.5F, f1 * 0.5F, f2 * 0.5F, 1.0F).tex((double)f39, (double)f40).lightmap(i2, j2).endVertex();
-                    worldRendererIn.pos(d0 + 1.0D, d1, d2 + 1.0D).color(f * 0.5F, f1 * 0.5F, f2 * 0.5F, 1.0F).tex((double)f39, (double)f41).lightmap(i2, j2).endVertex();
+                    float f44 = FaceBakery.getFaceBrightness(EnumFacing.DOWN);
+                    bufferBuilderIn.pos(d0, d1, d2 + 1.0D).color(f * f44, f1 * f44, f2 * f44, 1.0F).tex((double)f38, (double)f41).lightmap(i2, j2).endVertex();
+                    bufferBuilderIn.pos(d0, d1, d2).color(f * f44, f1 * f44, f2 * f44, 1.0F).tex((double)f38, (double)f40).lightmap(i2, j2).endVertex();
+                    bufferBuilderIn.pos(d0 + 1.0D, d1, d2).color(f * f44, f1 * f44, f2 * f44, 1.0F).tex((double)f39, (double)f40).lightmap(i2, j2).endVertex();
+                    bufferBuilderIn.pos(d0 + 1.0D, d1, d2 + 1.0D).color(f * f44, f1 * f44, f2 * f44, 1.0F).tex((double)f39, (double)f41).lightmap(i2, j2).endVertex();
                     flag3 = true;
                 }
 
@@ -194,7 +197,7 @@ public class BlockFluidRenderer
 
                     BlockPos blockpos = blockPosIn.add(j1, 0, k1);
                     TextureAtlasSprite textureatlassprite1 = atextureatlassprite[1];
-                    worldRendererIn.setSprite(textureatlassprite1);
+                    bufferBuilderIn.setSprite(textureatlassprite1);
                     float f42 = 0.0F;
                     float f43 = 0.0F;
 
@@ -206,7 +209,7 @@ public class BlockFluidRenderer
                         if (block == Blocks.GLASS || block == Blocks.STAINED_GLASS || block == Blocks.BEACON || block == Blocks.SLIME_BLOCK || block == Blocks.REVERSE_FALL_BLOCK)
                         {
                             textureatlassprite1 = this.atlasSpriteWaterOverlay;
-                            worldRendererIn.setSprite(textureatlassprite1);
+                            bufferBuilderIn.setSprite(textureatlassprite1);
                         }
 
                         if (block == Blocks.FARMLAND || block == Blocks.GRASS_PATH)
@@ -229,8 +232,8 @@ public class BlockFluidRenderer
 
                     if (aboolean[i1])
                     {
-                        float f44;
                         float f45;
+                        float f46;
                         double d3;
                         double d4;
                         double d5;
@@ -238,8 +241,8 @@ public class BlockFluidRenderer
 
                         if (i1 == 0)
                         {
-                            f44 = f7;
-                            f45 = f10;
+                            f45 = f7;
+                            f46 = f10;
                             d3 = d0;
                             d5 = d0 + 1.0D;
                             d4 = d2 + 0.0010000000474974513D;
@@ -247,8 +250,8 @@ public class BlockFluidRenderer
                         }
                         else if (i1 == 1)
                         {
-                            f44 = f9;
-                            f45 = f8;
+                            f45 = f9;
+                            f46 = f8;
                             d3 = d0 + 1.0D;
                             d5 = d0;
                             d4 = d2 + 1.0D - 0.0010000000474974513D;
@@ -256,8 +259,8 @@ public class BlockFluidRenderer
                         }
                         else if (i1 == 2)
                         {
-                            f44 = f8;
-                            f45 = f7;
+                            f45 = f8;
+                            f46 = f7;
                             d3 = d0 + 0.0010000000474974513D;
                             d5 = d0 + 0.0010000000474974513D;
                             d4 = d2 + 1.0D;
@@ -265,18 +268,18 @@ public class BlockFluidRenderer
                         }
                         else
                         {
-                            f44 = f10;
-                            f45 = f9;
+                            f45 = f10;
+                            f46 = f9;
                             d3 = d0 + 1.0D - 0.0010000000474974513D;
                             d5 = d0 + 1.0D - 0.0010000000474974513D;
                             d4 = d2;
                             d6 = d2 + 1.0D;
                         }
 
-                        if (f44 > f42 || f45 > f43)
+                        if (f45 > f42 || f46 > f43)
                         {
-                            f42 = Math.min(f42, f44);
-                            f43 = Math.min(f43, f45);
+                            f42 = Math.min(f42, f45);
+                            f43 = Math.min(f43, f46);
 
                             if (f42 > f11)
                             {
@@ -291,35 +294,35 @@ public class BlockFluidRenderer
                             flag3 = true;
                             float f27 = textureatlassprite1.getInterpolatedU(0.0D);
                             float f28 = textureatlassprite1.getInterpolatedU(8.0D);
-                            float f29 = textureatlassprite1.getInterpolatedV((double)((1.0F - f44) * 16.0F * 0.5F));
-                            float f30 = textureatlassprite1.getInterpolatedV((double)((1.0F - f45) * 16.0F * 0.5F));
+                            float f29 = textureatlassprite1.getInterpolatedV((double)((1.0F - f45) * 16.0F * 0.5F));
+                            float f30 = textureatlassprite1.getInterpolatedV((double)((1.0F - f46) * 16.0F * 0.5F));
                             float f31 = textureatlassprite1.getInterpolatedV(8.0D);
                             float f32 = textureatlassprite1.getInterpolatedV((double)((1.0F - f42) * 16.0F * 0.5F));
                             float f33 = textureatlassprite1.getInterpolatedV((double)((1.0F - f43) * 16.0F * 0.5F));
                             int j = blockStateIn.getPackedLightmapCoords(blockAccess, blockpos);
                             int k = j >> 16 & 65535;
                             int l = j & 65535;
-                            float f34 = i1 < 2 ? 0.8F : 0.6F;
+                            float f34 = i1 < 2 ? FaceBakery.getFaceBrightness(EnumFacing.NORTH) : FaceBakery.getFaceBrightness(EnumFacing.WEST);
                             float f35 = 1.0F * f34 * f;
                             float f36 = 1.0F * f34 * f1;
                             float f37 = 1.0F * f34 * f2;
-                            worldRendererIn.pos(d3, d1 + (double)f44, d4).color(f35, f36, f37, 1.0F).tex((double)f27, (double)f29).lightmap(k, l).endVertex();
-                            worldRendererIn.pos(d5, d1 + (double)f45, d6).color(f35, f36, f37, 1.0F).tex((double)f28, (double)f30).lightmap(k, l).endVertex();
-                            worldRendererIn.pos(d5, d1 + (double)f43, d6).color(f35, f36, f37, 1.0F).tex((double)f28, (double)f33).lightmap(k, l).endVertex();
-                            worldRendererIn.pos(d3, d1 + (double)f42, d4).color(f35, f36, f37, 1.0F).tex((double)f27, (double)f32).lightmap(k, l).endVertex();
+                            bufferBuilderIn.pos(d3, d1 + (double)f45, d4).color(f35, f36, f37, 1.0F).tex((double)f27, (double)f29).lightmap(k, l).endVertex();
+                            bufferBuilderIn.pos(d5, d1 + (double)f46, d6).color(f35, f36, f37, 1.0F).tex((double)f28, (double)f30).lightmap(k, l).endVertex();
+                            bufferBuilderIn.pos(d5, d1 + (double)f43, d6).color(f35, f36, f37, 1.0F).tex((double)f28, (double)f33).lightmap(k, l).endVertex();
+                            bufferBuilderIn.pos(d3, d1 + (double)f42, d4).color(f35, f36, f37, 1.0F).tex((double)f27, (double)f32).lightmap(k, l).endVertex();
 
                             if (textureatlassprite1 != this.atlasSpriteWaterOverlay)
                             {
-                                worldRendererIn.pos(d3, d1 + (double)f42, d4).color(f35, f36, f37, 1.0F).tex((double)f27, (double)f32).lightmap(k, l).endVertex();
-                                worldRendererIn.pos(d5, d1 + (double)f43, d6).color(f35, f36, f37, 1.0F).tex((double)f28, (double)f33).lightmap(k, l).endVertex();
-                                worldRendererIn.pos(d5, d1 + (double)f45, d6).color(f35, f36, f37, 1.0F).tex((double)f28, (double)f30).lightmap(k, l).endVertex();
-                                worldRendererIn.pos(d3, d1 + (double)f44, d4).color(f35, f36, f37, 1.0F).tex((double)f27, (double)f29).lightmap(k, l).endVertex();
+                                bufferBuilderIn.pos(d3, d1 + (double)f42, d4).color(f35, f36, f37, 1.0F).tex((double)f27, (double)f32).lightmap(k, l).endVertex();
+                                bufferBuilderIn.pos(d5, d1 + (double)f43, d6).color(f35, f36, f37, 1.0F).tex((double)f28, (double)f33).lightmap(k, l).endVertex();
+                                bufferBuilderIn.pos(d5, d1 + (double)f46, d6).color(f35, f36, f37, 1.0F).tex((double)f28, (double)f30).lightmap(k, l).endVertex();
+                                bufferBuilderIn.pos(d3, d1 + (double)f45, d4).color(f35, f36, f37, 1.0F).tex((double)f27, (double)f29).lightmap(k, l).endVertex();
                             }
                         }
                     }
                 }
 
-                worldRendererIn.setSprite((TextureAtlasSprite)null);
+                bufferBuilderIn.setSprite((TextureAtlasSprite)null);
                 boolean flag4 = flag3;
                 return flag4;
             }
@@ -330,7 +333,7 @@ public class BlockFluidRenderer
         {
             if (Config.isShaders())
             {
-                SVertexBuilder.popEntity(worldRendererIn);
+                SVertexBuilder.popEntity(bufferBuilderIn);
             }
         }
 

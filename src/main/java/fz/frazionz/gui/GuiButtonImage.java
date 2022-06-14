@@ -21,17 +21,17 @@ public class GuiButtonImage extends GuiButton
         this.ressourceLocation = ressourceLocation;
     }
 
-    public void func_191746_c(int p_191746_1_, int p_191746_2_)
+    public void setPosition(int x, int y)
     {
-        this.xPosition = p_191746_1_;
-        this.yPosition = p_191746_2_;
+        this.x = x;
+        this.y = y;
     }
 
-    public void func_191745_a(Minecraft mc, int mouseX, int mouseY, float partialTick)
+    public void drawButton(Minecraft mc, int mouseX, int mouseY, float partialTick)
     {
         if (this.visible)
         {
-            this.hovered = this.xPosition <= mouseX && mouseX <= this.xPosition + this.width && this.yPosition <= mouseY && mouseY <= this.yPosition + this.height;
+            this.hovered = this.x <= mouseX && mouseX <= this.x + this.width && this.y <= mouseY && mouseY <= this.y + this.height;
             mc.getTextureManager().bindTexture(this.ressourceLocation);
             GlStateManager.disableDepth();
             int i = this.textureX;
@@ -46,8 +46,8 @@ public class GuiButtonImage extends GuiButton
             }
 
             GlStateManager.enableBlend();
-            this.drawModalRectWithCustomSizedTexture(this.xPosition, this.yPosition, i, j, this.width, this.height, 512.0F, 512.0F);
-            mc.fontRendererObj.drawString(this.displayString, this.xPosition + (this.width - mc.fontRendererObj.getStringWidth(this.displayString)) / 2, this.yPosition + this.height/2 - 3, 0xFFFFFFFF, true);
+            this.drawModalRectWithCustomSizedTexture(this.x, this.y, i, j, this.width, this.height, 512.0F, 512.0F);
+            mc.fontRenderer.drawString(this.displayString, this.x + (this.width - mc.fontRenderer.getStringWidth(this.displayString)) / 2, this.y + this.height/2 - 3, 0xFFFFFFFF, true);
             GlStateManager.enableDepth();
         }
     }

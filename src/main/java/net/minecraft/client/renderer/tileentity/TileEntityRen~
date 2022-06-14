@@ -16,7 +16,6 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.entity.Entity;
-import net.minecraft.src.Reflector;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityBanner;
 import net.minecraft.tileentity.TileEntityBeacon;
@@ -35,7 +34,10 @@ import net.minecraft.tileentity.TileEntityStructure;
 import net.minecraft.util.ReportedException;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.optifine.EmissiveTextures;
+import net.optifine.reflect.Reflector;
 
 public class TileEntityRendererDispatcher {
    public final Map<Class<? extends TileEntity>, TileEntitySpecialRenderer<? extends TileEntity>> field_147559_m = Maps.<Class<? extends TileEntity>, TileEntitySpecialRenderer<? extends TileEntity>>newHashMap();
@@ -91,7 +93,7 @@ public class TileEntityRendererDispatcher {
 
    @Nullable
    public <T extends TileEntity> TileEntitySpecialRenderer<T> func_147547_b(@Nullable TileEntity p_147547_1_) {
-      return p_147547_1_ == null ? null : this.func_147546_a(p_147547_1_.getClass());
+      return p_147547_1_ != null && !p_147547_1_.func_145837_r() ? this.func_147546_a(p_147547_1_.getClass()) : null;
    }
 
    public void func_190056_a(World p_190056_1_, TextureManager p_190056_2_, FontRenderer p_190056_3_, Entity p_190056_4_, RayTraceResult p_190056_5_, float p_190056_6_) {
@@ -112,13 +114,13 @@ public class TileEntityRendererDispatcher {
 
    public void func_180546_a(TileEntity p_180546_1_, float p_180546_2_, int p_180546_3_) {
       if (p_180546_1_.func_145835_a(this.field_147560_j, this.field_147561_k, this.field_147558_l) < p_180546_1_.func_145833_n()) {
-         RenderHelper.func_74519_b();
          boolean flag = true;
          if (Reflector.ForgeTileEntity_hasFastRenderer.exists()) {
             flag = !this.drawingBatch || !Reflector.callBoolean(p_180546_1_, Reflector.ForgeTileEntity_hasFastRenderer);
          }
 
          if (flag) {
+            RenderHelper.func_74519_b();
             int i = this.field_147550_f.func_175626_b(p_180546_1_.func_174877_v(), 0);
             int j = i % 65536;
             int k = i / 65536;
@@ -127,7 +129,24 @@ public class TileEntityRendererDispatcher {
          }
 
          BlockPos blockpos = p_180546_1_.func_174877_v();
+         if (!this.field_147550_f.func_175668_a(blockpos, false)) {
+            return;
+         }
+
+         if (EmissiveTextures.isActive()) {
+            EmissiveTextures.beginRender();
+         }
+
          this.func_192854_a(p_180546_1_, (double)blockpos.func_177958_n() - field_147554_b, (double)blockpos.func_177956_o() - field_147555_c, (double)blockpos.func_177952_p() - field_147552_d, p_180546_2_, p_180546_3_, 1.0F);
+         if (EmissiveTextures.isActive()) {
+            if (EmissiveTextures.hasEmissive()) {
+               EmissiveTextures.beginRenderEmissive();
+               this.func_192854_a(p_180546_1_, (double)blockpos.func_177958_n() - field_147554_b, (double)blockpos.func_177956_o() - field_147555_c, (double)blockpos.func_177952_p() - field_147552_d, p_180546_2_, p_180546_3_, 1.0F);
+               EmissiveTextures.endRenderEmissive();
+            }
+
+            EmissiveTextures.endRender();
+         }
       }
 
    }
@@ -192,7 +211,12 @@ public class TileEntityRendererDispatcher {
       }
 
       if (p_drawBatch_1_ > 0) {
-         this.batchBuffer.func_178180_c().func_181674_a(0.0F, 0.0F, 0.0F);
+         Vec3d vec3d = (Vec3d)Reflector.call(Reflector.ActiveRenderInfo_getCameraPosition);
+         if (vec3d != null) {
+            this.batchBuffer.func_178180_c().func_181674_a((float)vec3d.field_72450_a, (float)vec3d.field_72448_b, (float)vec3d.field_72449_c);
+         } else {
+            this.batchBuffer.func_178180_c().func_181674_a(0.0F, 0.0F, 0.0F);
+         }
       }
 
       this.batchBuffer.func_78381_a();

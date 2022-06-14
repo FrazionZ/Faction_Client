@@ -13,12 +13,12 @@ import net.minecraft.init.PotionTypes;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.src.Config;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Tuple;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
-import optifine.Config;
-import optifine.CustomColors;
+import net.optifine.CustomColors;
 
 public class PotionUtils
 {
@@ -74,7 +74,7 @@ public class PotionUtils
         }
     }
 
-    public static int func_190932_c(ItemStack p_190932_0_)
+    public static int getColor(ItemStack p_190932_0_)
     {
         NBTTagCompound nbttagcompound = p_190932_0_.getTagCompound();
 
@@ -165,7 +165,7 @@ public class PotionUtils
                 NBTTagCompound nbttagcompound = itemIn.getTagCompound();
                 nbttagcompound.removeTag("Potion");
 
-                if (nbttagcompound.hasNoTags())
+                if (nbttagcompound.isEmpty())
                 {
                     itemIn.setTagCompound((NBTTagCompound)null);
                 }
@@ -227,7 +227,7 @@ public class PotionUtils
                     {
                         AttributeModifier attributemodifier = entry.getValue();
                         AttributeModifier attributemodifier1 = new AttributeModifier(attributemodifier.getName(), potion.getAttributeModifierAmount(potioneffect.getAmplifier(), attributemodifier), attributemodifier.getOperation());
-                        list1.add(new Tuple(((IAttribute)entry.getKey()).getAttributeUnlocalizedName(), attributemodifier1));
+                        list1.add(new Tuple(((IAttribute)entry.getKey()).getName(), attributemodifier1));
                     }
                 }
 

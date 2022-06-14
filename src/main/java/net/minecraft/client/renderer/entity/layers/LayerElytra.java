@@ -9,9 +9,9 @@ import net.minecraft.entity.player.EnumPlayerModelParts;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.src.Config;
 import net.minecraft.util.ResourceLocation;
-import optifine.Config;
-import optifine.CustomItems;
+import net.optifine.CustomItems;
 
 public class LayerElytra implements LayerRenderer<EntityLivingBase>
 {

@@ -24,7 +24,6 @@ public class Locale
     /**
      * For each domain $D and language $L, attempts to load the resource $D:lang/$L.lang
      */
-
     public synchronized void loadLocaleDataFiles(IResourceManager resourceManager, List<String> languageList)
     {
         this.properties.clear();

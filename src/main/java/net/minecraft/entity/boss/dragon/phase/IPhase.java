@@ -40,7 +40,7 @@ public interface IPhase
 
     float getYawFactor();
 
-    PhaseList <? extends IPhase > getPhaseList();
+    PhaseList <? extends IPhase > getType();
 
     @Nullable
 

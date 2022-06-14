@@ -3,8 +3,9 @@ package net.optifine.entity.model;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
-
-import optifine.Config;
+import net.minecraft.client.model.ModelBase;
+import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.src.Config;
 
 public class CustomModelRegistry
 {
@@ -43,6 +44,7 @@ public class CustomModelRegistry
         addModelAdapter(map, new ModelAdapterMooshroom());
         addModelAdapter(map, new ModelAdapterMule());
         addModelAdapter(map, new ModelAdapterOcelot());
+        addModelAdapter(map, new ModelAdapterParrot());
         addModelAdapter(map, new ModelAdapterPig());
         addModelAdapter(map, new ModelAdapterPigZombie());
         addModelAdapter(map, new ModelAdapterPolarBear());
@@ -71,9 +73,9 @@ public class CustomModelRegistry
         addModelAdapter(map, new ModelAdapterZombieVillager());
         addModelAdapter(map, new ModelAdapterSheepWool());
         addModelAdapter(map, new ModelAdapterBanner());
+        addModelAdapter(map, new ModelAdapterBed());
         addModelAdapter(map, new ModelAdapterBook());
         addModelAdapter(map, new ModelAdapterChest());
-        addModelAdapter(map, new ModelAdapterDirtChest());
         addModelAdapter(map, new ModelAdapterChestLarge());
         addModelAdapter(map, new ModelAdapterEnderChest());
         addModelAdapter(map, new ModelAdapterHeadDragon());
@@ -86,12 +88,41 @@ public class CustomModelRegistry
 
     private static void addModelAdapter(Map<String, ModelAdapter> map, ModelAdapter modelAdapter)
     {
-        if (map.containsKey(modelAdapter.getName()))
+        addModelAdapter(map, modelAdapter, modelAdapter.getName());
+        String[] astring = modelAdapter.getAliases();
+
+        if (astring != null)
         {
-            Config.warn("Model adapter already registered for id: " + modelAdapter.getName() + ", class: " + modelAdapter.getEntityClass().getName());
+            for (int i = 0; i < astring.length; ++i)
+            {
+                String s = astring[i];
+                addModelAdapter(map, modelAdapter, s);
+            }
         }
 
-        map.put(modelAdapter.getName(), modelAdapter);
+        ModelBase modelbase = modelAdapter.makeModel();
+        String[] astring1 = modelAdapter.getModelRendererNames();
+
+        for (int j = 0; j < astring1.length; ++j)
+        {
+            String s1 = astring1[j];
+            ModelRenderer modelrenderer = modelAdapter.getModelRenderer(modelbase, s1);
+
+            if (modelrenderer == null)
+            {
+                Config.warn("Model renderer not found, model: " + modelAdapter.getName() + ", name: " + s1);
+            }
+        }
+    }
+
+    private static void addModelAdapter(Map<String, ModelAdapter> map, ModelAdapter modelAdapter, String name)
+    {
+        if (map.containsKey(name))
+        {
+            Config.warn("Model adapter already registered for id: " + name + ", class: " + modelAdapter.getEntityClass().getName());
+        }
+
+        map.put(name, modelAdapter);
     }
 
     public static ModelAdapter getModelAdapter(String name)

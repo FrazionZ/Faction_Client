@@ -7,14 +7,14 @@ import net.minecraft.client.resources.ResourcePackListEntry;
 
 public class GuiResourcePackAvailable extends GuiResourcePackList
 {
-    public GuiResourcePackAvailable(Minecraft mcIn, int p_i45054_2_, int p_i45054_3_, List<ResourcePackListEntry> p_i45054_4_)
+    public GuiResourcePackAvailable(Minecraft mcIn, int width, int height, List<ResourcePackListEntry> p_i45054_4_)
     {
-        super(mcIn, p_i45054_2_, p_i45054_3_, p_i45054_4_);
+        super(mcIn, width, height, p_i45054_4_);
     }
     
-    public GuiResourcePackAvailable(Minecraft mcIn, int left, int right, int topIn, int bottomIn, int slotHeightIn, boolean second, List<ResourcePackListEntry> packEntries)
+    public GuiResourcePackAvailable(Minecraft mcIn, int left, int right, int topIn, int bottomIn, int slotHeightIn, List<ResourcePackListEntry> packEntries)
     {
-    	super(mcIn, left, right, topIn, bottomIn, slotHeightIn, second, packEntries);
+    	super(mcIn, left, right, topIn, bottomIn, slotHeightIn, packEntries);
     }
 
     protected String getListHeader()

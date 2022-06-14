@@ -3,7 +3,6 @@ package net.minecraft.item;
 import java.util.List;
 import javax.annotation.Nullable;
 import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
@@ -11,7 +10,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
 import net.minecraft.init.PotionTypes;
-import net.minecraft.inventory.ContainerBrewingStand;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.potion.PotionType;
 import net.minecraft.potion.PotionUtils;
@@ -25,22 +23,15 @@ import net.minecraft.world.World;
 
 public class ItemPotion extends Item
 {
-	
-	EntityPlayer entityplayer;
-	
-	ContainerBrewingStand container;
-	
-	Minecraft mc;
-	
     public ItemPotion()
-    {   
-    	this.setMaxStackSize(2);
+    {
+        this.setMaxStackSize(2);
         this.setCreativeTab(CreativeTabs.BREWING);
     }
 
-    public ItemStack func_190903_i()
+    public ItemStack getDefaultInstance()
     {
-        return PotionUtils.addPotionToItemStack(super.func_190903_i(), PotionTypes.WATER);
+        return PotionUtils.addPotionToItemStack(super.getDefaultInstance(), PotionTypes.WATER);
     }
 
     /**
@@ -53,12 +44,12 @@ public class ItemPotion extends Item
 
         if (entityplayer == null || !entityplayer.capabilities.isCreativeMode)
         {
-            stack.substract(1);
+            stack.shrink(1);
         }
 
         if (entityplayer instanceof EntityPlayerMP)
         {
-            CriteriaTriggers.field_193138_y.func_193148_a((EntityPlayerMP)entityplayer, stack);
+            CriteriaTriggers.CONSUME_ITEM.trigger((EntityPlayerMP)entityplayer, stack);
         }
 
         if (!worldIn.isRemote)
@@ -83,7 +74,7 @@ public class ItemPotion extends Item
 
         if (entityplayer == null || !entityplayer.capabilities.isCreativeMode)
         {
-            if (stack.func_190926_b())
+            if (stack.isEmpty())
             {
                 return new ItemStack(Items.GLASS_BOTTLE);
             }
@@ -113,10 +104,10 @@ public class ItemPotion extends Item
         return EnumAction.DRINK;
     }
 
-    public ActionResult<ItemStack> onItemRightClick(World itemStackIn, EntityPlayer worldIn, EnumHand playerIn)
+    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn)
     {
-        worldIn.setActiveHand(playerIn);
-        return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, worldIn.getHeldItem(playerIn));
+        playerIn.setActiveHand(handIn);
+        return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, playerIn.getHeldItem(handIn));
     }
 
     public String getItemStackDisplayName(ItemStack stack)
@@ -127,11 +118,19 @@ public class ItemPotion extends Item
     /**
      * allows items to add custom lines of information to the mouseover description
      */
-    public void addInformation(ItemStack stack, @Nullable World playerIn, List<String> tooltip, ITooltipFlag advanced)
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
     {
         PotionUtils.addPotionTooltip(stack, tooltip, 1.0F);
     }
 
+    /**
+     * Returns true if this item has an enchantment glint. By default, this returns
+     * <code>stack.isItemEnchanted()</code>, but other items can override it (for instance, written books always return
+     * true).
+     *  
+     * Note that if you override this method, you generally want to also call the super version (on {@link Item}) to get
+     * the glint for enchanted items. Of course, that is unnecessary if the overwritten version always returns true.
+     */
     public boolean hasEffect(ItemStack stack)
     {
         return super.hasEffect(stack) || !PotionUtils.getEffectsFromStack(stack).isEmpty();
@@ -140,15 +139,15 @@ public class ItemPotion extends Item
     /**
      * returns a list of items with the same ID, but different meta (eg: dye returns 16 items)
      */
-    public void getSubItems(CreativeTabs itemIn, NonNullList<ItemStack> tab)
+    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items)
     {
-        if (this.func_194125_a(itemIn))
+        if (this.isInCreativeTab(tab))
         {
             for (PotionType potiontype : PotionType.REGISTRY)
             {
                 if (potiontype != PotionTypes.EMPTY)
                 {
-                    tab.add(PotionUtils.addPotionToItemStack(new ItemStack(this), potiontype));
+                    items.add(PotionUtils.addPotionToItemStack(new ItemStack(this), potiontype));
                 }
             }
         }

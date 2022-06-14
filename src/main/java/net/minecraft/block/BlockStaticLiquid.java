@@ -26,7 +26,7 @@ public class BlockStaticLiquid extends BlockLiquid
      * change. Cases may include when redstone power is updated, cactus blocks popping off due to a neighboring solid
      * block, etc.
      */
-    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos p_189540_5_)
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
     {
         if (!this.checkForMixing(worldIn, pos, state))
         {
@@ -36,14 +36,14 @@ public class BlockStaticLiquid extends BlockLiquid
 
     private void updateLiquid(World worldIn, BlockPos pos, IBlockState state)
     {
-        BlockDynamicLiquid blockdynamicliquid = getFlowingBlock(this.blockMaterial);
+        BlockDynamicLiquid blockdynamicliquid = getFlowingBlock(this.material);
         worldIn.setBlockState(pos, blockdynamicliquid.getDefaultState().withProperty(LEVEL, state.getValue(LEVEL)), 2);
         worldIn.scheduleUpdate(pos, blockdynamicliquid, this.tickRate(worldIn));
     }
 
     public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
     {
-        if (this.blockMaterial == Material.LAVA)
+        if (this.material == Material.LAVA)
         {
             if (worldIn.getGameRules().getBoolean("doFireTick"))
             {
@@ -64,7 +64,7 @@ public class BlockStaticLiquid extends BlockLiquid
 
                         Block block = worldIn.getBlockState(blockpos).getBlock();
 
-                        if (block.blockMaterial == Material.AIR)
+                        if (block.material == Material.AIR)
                         {
                             if (this.isSurroundingBlockFlammable(worldIn, blockpos))
                             {
@@ -72,7 +72,7 @@ public class BlockStaticLiquid extends BlockLiquid
                                 return;
                             }
                         }
-                        else if (block.blockMaterial.blocksMovement())
+                        else if (block.material.blocksMovement())
                         {
                             return;
                         }

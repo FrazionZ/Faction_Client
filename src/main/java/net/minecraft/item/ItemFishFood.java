@@ -49,15 +49,15 @@ public class ItemFishFood extends ItemFood
     /**
      * returns a list of items with the same ID, but different meta (eg: dye returns 16 items)
      */
-    public void getSubItems(CreativeTabs itemIn, NonNullList<ItemStack> tab)
+    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items)
     {
-        if (this.func_194125_a(itemIn))
+        if (this.isInCreativeTab(tab))
         {
             for (ItemFishFood.FishType itemfishfood$fishtype : ItemFishFood.FishType.values())
             {
                 if (!this.cooked || itemfishfood$fishtype.canCook())
                 {
-                    tab.add(new ItemStack(this, 1, itemfishfood$fishtype.getMetadata()));
+                    items.add(new ItemStack(this, 1, itemfishfood$fishtype.getMetadata()));
                 }
             }
         }
@@ -67,10 +67,10 @@ public class ItemFishFood extends ItemFood
      * Returns the unlocalized name of this item. This version accepts an ItemStack so different stacks can have
      * different names based on their damage or NBT.
      */
-    public String getUnlocalizedName(ItemStack stack)
+    public String getTranslationKey(ItemStack stack)
     {
         ItemFishFood.FishType itemfishfood$fishtype = ItemFishFood.FishType.byItemStack(stack);
-        return this.getUnlocalizedName() + "." + itemfishfood$fishtype.getUnlocalizedName() + "." + (this.cooked && itemfishfood$fishtype.canCook() ? "cooked" : "raw");
+        return this.getTranslationKey() + "." + itemfishfood$fishtype.getTranslationKey() + "." + (this.cooked && itemfishfood$fishtype.canCook() ? "cooked" : "raw");
     }
 
     public static enum FishType
@@ -82,7 +82,7 @@ public class ItemFishFood extends ItemFood
 
         private static final Map<Integer, ItemFishFood.FishType> META_LOOKUP = Maps.<Integer, ItemFishFood.FishType>newHashMap();
         private final int meta;
-        private final String unlocalizedName;
+        private final String translationKey;
         private final int uncookedHealAmount;
         private final float uncookedSaturationModifier;
         private final int cookedHealAmount;
@@ -92,7 +92,7 @@ public class ItemFishFood extends ItemFood
         private FishType(int meta, String unlocalizedName, int uncookedHeal, float uncookedSaturation, int cookedHeal, float cookedSaturation)
         {
             this.meta = meta;
-            this.unlocalizedName = unlocalizedName;
+            this.translationKey = unlocalizedName;
             this.uncookedHealAmount = uncookedHeal;
             this.uncookedSaturationModifier = uncookedSaturation;
             this.cookedHealAmount = cookedHeal;
@@ -103,7 +103,7 @@ public class ItemFishFood extends ItemFood
         private FishType(int meta, String unlocalizedName, int uncookedHeal, float uncookedSaturation)
         {
             this.meta = meta;
-            this.unlocalizedName = unlocalizedName;
+            this.translationKey = unlocalizedName;
             this.uncookedHealAmount = uncookedHeal;
             this.uncookedSaturationModifier = uncookedSaturation;
             this.cookedHealAmount = 0;
@@ -116,9 +116,9 @@ public class ItemFishFood extends ItemFood
             return this.meta;
         }
 
-        public String getUnlocalizedName()
+        public String getTranslationKey()
         {
-            return this.unlocalizedName;
+            return this.translationKey;
         }
 
         public int getUncookedHealAmount()

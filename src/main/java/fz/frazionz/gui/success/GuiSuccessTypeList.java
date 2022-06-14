@@ -6,9 +6,9 @@ import fz.frazionz.api.gsonObj.ShopType;
 import fz.frazionz.api.gsonObj.SuccessType;
 import fz.frazionz.data.FzUserData;
 import fz.frazionz.gui.GuiButtonOnlyImage;
-import fz.frazionz.gui.GuiShopButton;
-import fz.frazionz.gui.GuiShopCategoryList;
-import fz.frazionz.gui.GuiShopItems;
+import fz.frazionz.gui.shop.GuiListItemButton;
+import fz.frazionz.gui.shop.GuiShopCategoryList;
+import fz.frazionz.gui.shop.GuiShopItems;
 import fz.frazionz.utils.MathUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
@@ -31,7 +31,7 @@ public class GuiSuccessTypeList extends GuiListExtended
 
     public GuiSuccessTypeList(GuiScreen lastScreen, Minecraft mcIn, int left, int right, int top, int bottom, int slotHeight, int spaceBetween)
     {
-        super(mcIn, left, right, top, bottom, slotHeight, true, spaceBetween);
+        super(mcIn, left, right, top, bottom, slotHeight, spaceBetween);
         this.mc = mcIn;
         this.lastScreen = lastScreen;
         this.listEntries = new GuiListExtended.IGuiListEntry[SuccessAPIDataStocker.successTypes.size()];
@@ -58,9 +58,6 @@ public class GuiSuccessTypeList extends GuiListExtended
 
     protected int getScrollBarX()
     {
-        if(this.mc.gameSettings.frazionz_ui) {
-            return super.getScrollBarX();
-        }
         return super.getScrollBarX();
     }
 
@@ -78,7 +75,7 @@ public class GuiSuccessTypeList extends GuiListExtended
     {
         SuccessType type = ((GuiSuccessTypeList.SuccessTypeEntry)this.listEntries[slotIndex]).getSuccessType();
         if(type.getId() == -1) //SHOW ADVANCEMENT MINECRAFT DEFAULT
-        	this.mc.displayGuiScreen(new GuiScreenAdvancements(this.mc.player.connection.func_191982_f()));
+        	this.mc.displayGuiScreen(new GuiScreenAdvancements(this.mc.player.connection.getAdvancementManager()));
         else {
 	        GuiButton guiButton = ((GuiSuccessTypeList.SuccessTypeEntry)this.listEntries[slotIndex]).getSuccessTypeButton();
 	        guiButton.playPressSound(this.mc.getSoundHandler());
@@ -100,7 +97,7 @@ public class GuiSuccessTypeList extends GuiListExtended
             int k = this.left + this.width / 2 - this.getListWidth() / 2 + 2;
             int l = this.top - (int)this.amountScrolled;
 
-            this.func_192638_a(k, l, mouseXIn, mouseYIn, partialTicks);
+            this.drawSelectionBox(k, l, mouseXIn, mouseYIn, partialTicks);
             GlStateManager.enableBlend();
             GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ZERO, GlStateManager.DestFactor.ONE);
             GlStateManager.disableAlpha();
@@ -136,11 +133,11 @@ public class GuiSuccessTypeList extends GuiListExtended
             this.successTypeButton = new GuiSuccessTypeButton(successType.getDisplay(), 0, 0, 0, 299, 36, 0, 239, this.background);
         }
 
-        public void func_192634_a(int p_192634_1_, int p_192634_2_, int p_192634_3_, int p_192634_4_, int p_192634_5_, int p_192634_6_, int p_192634_7_, boolean p_192634_8_, float p_192634_9_)
+        public void drawEntry(int slotIndex, int x, int y, int listWidth, int slotHeight, int mouseX, int mouseY, boolean isSelected, float partialTicks)
         {
-            this.successTypeButton.xPosition = p_192634_2_ - 3;
-            this.successTypeButton.yPosition = p_192634_3_;
-            this.successTypeButton.func_191745_a(GuiSuccessTypeList.this.mc, p_192634_6_, p_192634_7_, p_192634_9_);
+            this.successTypeButton.x = x - 3;
+            this.successTypeButton.y = y;
+            this.successTypeButton.drawButton(GuiSuccessTypeList.this.mc, mouseX, mouseY, partialTicks);
         }
 
         public boolean mousePressed(int slotIndex, int mouseX, int mouseY, int mouseEvent, int relativeX, int relativeY)
@@ -156,9 +153,8 @@ public class GuiSuccessTypeList extends GuiListExtended
             this.successTypeButton.mouseReleased(x, y);
         }
 
-        public void func_192633_a(int p_192633_1_, int p_192633_2_, int p_192633_3_, float p_192633_4_)
-        {
-        }
+		public void updatePosition(int slotIndex, int x, int y, float partialTicks) {
+		}
 
         public SuccessType getSuccessType() {
             return successType;

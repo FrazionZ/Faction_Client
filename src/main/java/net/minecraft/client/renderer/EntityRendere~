@@ -21,6 +21,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.GuiDownloadTerrain;
 import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.gui.GuiScreen;
@@ -63,12 +64,6 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.integrated.IntegratedServer;
 import net.minecraft.src.Config;
-import net.minecraft.src.CustomColors;
-import net.minecraft.src.Lagometer;
-import net.minecraft.src.RandomMobs;
-import net.minecraft.src.Reflector;
-import net.minecraft.src.ReflectorForge;
-import net.minecraft.src.TextureUtils;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.EnumFacing;
@@ -83,11 +78,26 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.event.ClickEvent;
 import net.minecraft.world.GameType;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.biome.Biome;
+import net.optifine.CustomColors;
+import net.optifine.GlErrors;
+import net.optifine.Lagometer;
+import net.optifine.RandomEntities;
+import net.optifine.gui.GuiChatOF;
+import net.optifine.reflect.Reflector;
+import net.optifine.reflect.ReflectorForge;
+import net.optifine.reflect.ReflectorResolver;
+import net.optifine.shaders.Shaders;
+import net.optifine.shaders.ShadersRender;
+import net.optifine.util.MemoryMonitor;
+import net.optifine.util.TextureUtils;
+import net.optifine.util.TimedEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.input.Keyboard;
@@ -95,10 +105,7 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GLContext;
-import org.lwjgl.util.glu.GLU;
 import org.lwjgl.util.glu.Project;
-import shadersmod.client.Shaders;
-import shadersmod.client.ShadersRender;
 
 public class EntityRenderer implements IResourceManagerReloadListener {
    private static final Logger field_147710_q = LogManager.getLogger();
@@ -173,7 +180,6 @@ public class EntityRenderer implements IResourceManagerReloadListener {
    private int serverWaitTimeCurrent = 0;
    private float avgServerTimeDiff = 0.0F;
    private float avgServerTickDiff = 0.0F;
-   private long lastErrorCheckTimeMs = 0L;
    private ShaderGroup[] fxaaShaders = new ShaderGroup[10];
    private boolean loadVisibleChunks = false;
 
@@ -468,6 +474,7 @@ public class EntityRenderer implements IResourceManagerReloadListener {
          if (flag) {
             if (!Config.zoomMode) {
                Config.zoomMode = true;
+               Config.zoomSmoothCamera = this.field_78531_r.field_71474_y.field_74326_T;
                this.field_78531_r.field_71474_y.field_74326_T = true;
                this.field_78531_r.field_71438_f.field_147595_R = true;
             }
@@ -477,7 +484,7 @@ public class EntityRenderer implements IResourceManagerReloadListener {
             }
          } else if (Config.zoomMode) {
             Config.zoomMode = false;
-            this.field_78531_r.field_71474_y.field_74326_T = false;
+            this.field_78531_r.field_71474_y.field_74326_T = Config.zoomSmoothCamera;
             this.field_78527_v = new MouseFilter();
             this.field_78526_w = new MouseFilter();
             this.field_78531_r.field_71438_f.field_147595_R = true;
@@ -801,8 +808,8 @@ public class EntityRenderer implements IResourceManagerReloadListener {
       this.field_78531_r.func_110434_K().func_110577_a(this.field_110922_T);
       GlStateManager.func_187421_b(3553, 10241, 9729);
       GlStateManager.func_187421_b(3553, 10240, 9729);
-      GlStateManager.func_187421_b(3553, 10242, 10496);
-      GlStateManager.func_187421_b(3553, 10243, 10496);
+      GlStateManager.func_187421_b(3553, 10242, 33071);
+      GlStateManager.func_187421_b(3553, 10243, 33071);
       GlStateManager.func_179131_c(1.0F, 1.0F, 1.0F, 1.0F);
       GlStateManager.func_179098_w();
       GlStateManager.func_179138_g(OpenGlHelper.field_77478_a);
@@ -824,7 +831,7 @@ public class EntityRenderer implements IResourceManagerReloadListener {
          this.field_78531_r.field_71424_I.func_76320_a("lightTex");
          World world = this.field_78531_r.field_71441_e;
          if (world != null) {
-            if (Config.isCustomColors() && CustomColors.updateLightmap(world, this.field_78514_e, this.field_78504_Q, this.field_78531_r.field_71439_g.func_70644_a(MobEffects.field_76439_r))) {
+            if (Config.isCustomColors() && CustomColors.updateLightmap(world, this.field_78514_e, this.field_78504_Q, this.field_78531_r.field_71439_g.func_70644_a(MobEffects.field_76439_r), p_78472_1_)) {
                this.field_78513_d.func_110564_a();
                this.field_78536_aa = false;
                this.field_78531_r.field_71424_I.func_76319_b();
@@ -1104,6 +1111,7 @@ public class EntityRenderer implements IResourceManagerReloadListener {
 
       this.frameFinish();
       this.waitForServerThread();
+      MemoryMonitor.update();
       Lagometer.updateLagometer();
       if (this.field_78531_r.field_71474_y.ofProfiler) {
          this.field_78531_r.field_71474_y.field_74329_Q = true;
@@ -1225,10 +1233,16 @@ public class EntityRenderer implements IResourceManagerReloadListener {
          Shaders.setCamera(p_175068_2_);
       }
 
-      ActiveRenderInfo.func_74583_a(this.field_78531_r.field_71439_g, this.field_78531_r.field_71474_y.field_74320_O == 2);
+      if (Reflector.ActiveRenderInfo_updateRenderInfo2.exists()) {
+         Reflector.call(Reflector.ActiveRenderInfo_updateRenderInfo2, this.field_78531_r.func_175606_aa(), this.field_78531_r.field_71474_y.field_74320_O == 2);
+      } else {
+         ActiveRenderInfo.func_74583_a(this.field_78531_r.field_71439_g, this.field_78531_r.field_71474_y.field_74320_O == 2);
+      }
+
       this.field_78531_r.field_71424_I.func_76318_c("frustum");
       ClippingHelper clippinghelper = ClippingHelperImpl.func_78558_a();
       this.field_78531_r.field_71424_I.func_76318_c("culling");
+      clippinghelper.disabled = Config.isShaders() && !Shaders.isFrustumCulling();
       ICamera icamera = new Frustum(clippinghelper);
       Entity entity = this.field_78531_r.func_175606_aa();
       double d0 = entity.field_70142_S + (entity.field_70165_t - entity.field_70142_S) * (double)p_175068_2_;
@@ -1310,7 +1324,9 @@ public class EntityRenderer implements IResourceManagerReloadListener {
          ShadersRender.beginTerrainCutoutMipped();
       }
 
+      this.field_78531_r.func_110434_K().func_110581_b(TextureMap.field_110575_b).func_174936_b(false, this.field_78531_r.field_71474_y.field_151442_I > 0);
       renderglobal.func_174977_a(BlockRenderLayer.CUTOUT_MIPPED, (double)p_175068_2_, p_175068_1_, entity);
+      this.field_78531_r.func_110434_K().func_110581_b(TextureMap.field_110575_b).func_174935_a();
       this.field_78531_r.func_110434_K().func_110581_b(TextureMap.field_110575_b).func_174936_b(false, false);
       if (flag) {
          ShadersRender.beginTerrainCutout();
@@ -1400,6 +1416,10 @@ public class EntityRenderer implements IResourceManagerReloadListener {
       }
 
       GlStateManager.func_179132_a(false);
+      if (Config.isShaders()) {
+         GlStateManager.func_179132_a(Shaders.isRainDepth());
+      }
+
       GlStateManager.func_179089_o();
       this.field_78531_r.field_71424_I.func_76318_c("weather");
       if (flag) {
@@ -1788,6 +1808,7 @@ public class EntityRenderer implements IResourceManagerReloadListener {
          float f12 = 0.0F;
          if (entity instanceof EntityLivingBase) {
             f12 = (float)EnchantmentHelper.func_185292_c((EntityLivingBase)entity) * 0.2F;
+            f12 = Config.limit(f12, 0.0F, 0.6F);
             if (((EntityLivingBase)entity).func_70644_a(MobEffects.field_76427_o)) {
                f12 = f12 * 0.3F + 0.6F;
             }
@@ -1796,21 +1817,25 @@ public class EntityRenderer implements IResourceManagerReloadListener {
          this.field_175080_Q = 0.02F + f12;
          this.field_175082_R = 0.02F + f12;
          this.field_175081_S = 0.2F + f12;
-         Vec3d vec3d7 = CustomColors.getUnderwaterColor(this.field_78531_r.field_71441_e, this.field_78531_r.func_175606_aa().field_70165_t, this.field_78531_r.func_175606_aa().field_70163_u + 1.0D, this.field_78531_r.func_175606_aa().field_70161_v);
-         if (vec3d7 != null) {
-            this.field_175080_Q = (float)vec3d7.field_72450_a;
-            this.field_175082_R = (float)vec3d7.field_72448_b;
-            this.field_175081_S = (float)vec3d7.field_72449_c;
-         }
       } else if (iblockstate1.func_185904_a() == Material.field_151587_i) {
          this.field_175080_Q = 0.6F;
          this.field_175082_R = 0.1F;
          this.field_175081_S = 0.0F;
-         Vec3d vec3d6 = CustomColors.getUnderlavaColor(this.field_78531_r.field_71441_e, this.field_78531_r.func_175606_aa().field_70165_t, this.field_78531_r.func_175606_aa().field_70163_u + 1.0D, this.field_78531_r.func_175606_aa().field_70161_v);
+      }
+
+      if (iblockstate1.func_185904_a() == Material.field_151586_h) {
+         Vec3d vec3d6 = CustomColors.getUnderwaterColor(this.field_78531_r.field_71441_e, this.field_78531_r.func_175606_aa().field_70165_t, this.field_78531_r.func_175606_aa().field_70163_u + 1.0D, this.field_78531_r.func_175606_aa().field_70161_v);
          if (vec3d6 != null) {
             this.field_175080_Q = (float)vec3d6.field_72450_a;
             this.field_175082_R = (float)vec3d6.field_72448_b;
             this.field_175081_S = (float)vec3d6.field_72449_c;
+         }
+      } else if (iblockstate1.func_185904_a() == Material.field_151587_i) {
+         Vec3d vec3d7 = CustomColors.getUnderlavaColor(this.field_78531_r.field_71441_e, this.field_78531_r.func_175606_aa().field_70165_t, this.field_78531_r.func_175606_aa().field_70163_u + 1.0D, this.field_78531_r.func_175606_aa().field_70161_v);
+         if (vec3d7 != null) {
+            this.field_175080_Q = (float)vec3d7.field_72450_a;
+            this.field_175082_R = (float)vec3d7.field_72448_b;
+            this.field_175081_S = (float)vec3d7.field_72449_c;
          }
       }
 
@@ -1857,6 +1882,10 @@ public class EntityRenderer implements IResourceManagerReloadListener {
             f6 = 1.0F / this.field_175081_S;
          }
 
+         if (Float.isInfinite(f6)) {
+            f6 = Math.nextAfter(f6, 0.0D);
+         }
+
          this.field_175080_Q = this.field_175080_Q * (1.0F - f15) + this.field_175080_Q * f6 * f15;
          this.field_175082_R = this.field_175082_R * (1.0F - f15) + this.field_175082_R * f6 * f15;
          this.field_175081_S = this.field_175081_S * (1.0F - f15) + this.field_175081_S * f6 * f15;
@@ -1897,80 +1926,53 @@ public class EntityRenderer implements IResourceManagerReloadListener {
       if (f >= 0.0F) {
          GlStateManager.func_179095_a(f);
       } else if (entity instanceof EntityLivingBase && ((EntityLivingBase)entity).func_70644_a(MobEffects.field_76440_q)) {
-         float f2 = 5.0F;
+         float f4 = 5.0F;
          int i = ((EntityLivingBase)entity).func_70660_b(MobEffects.field_76440_q).func_76459_b();
          if (i < 20) {
-            f2 = 5.0F + (this.field_78530_s - 5.0F) * (1.0F - (float)i / 20.0F);
+            f4 = 5.0F + (this.field_78530_s - 5.0F) * (1.0F - (float)i / 20.0F);
          }
 
-         if (Config.isShaders()) {
-            Shaders.setFog(GlStateManager.FogMode.LINEAR);
-         } else {
-            GlStateManager.func_187430_a(GlStateManager.FogMode.LINEAR);
-         }
-
+         GlStateManager.func_187430_a(GlStateManager.FogMode.LINEAR);
          if (p_78468_1_ == -1) {
             GlStateManager.func_179102_b(0.0F);
-            GlStateManager.func_179153_c(f2 * 0.8F);
+            GlStateManager.func_179153_c(f4 * 0.8F);
          } else {
-            GlStateManager.func_179102_b(f2 * 0.25F);
-            GlStateManager.func_179153_c(f2);
+            GlStateManager.func_179102_b(f4 * 0.25F);
+            GlStateManager.func_179153_c(f4);
          }
 
          if (GLContext.getCapabilities().GL_NV_fog_distance && Config.isFogFancy()) {
             GlStateManager.func_187412_c(34138, 34139);
          }
       } else if (this.field_78500_U) {
-         if (Config.isShaders()) {
-            Shaders.setFog(GlStateManager.FogMode.EXP);
-         } else {
-            GlStateManager.func_187430_a(GlStateManager.FogMode.EXP);
-         }
-
+         GlStateManager.func_187430_a(GlStateManager.FogMode.EXP);
          GlStateManager.func_179095_a(0.1F);
       } else if (iblockstate.func_185904_a() == Material.field_151586_h) {
-         if (Config.isShaders()) {
-            Shaders.setFog(GlStateManager.FogMode.EXP);
-         } else {
-            GlStateManager.func_187430_a(GlStateManager.FogMode.EXP);
-         }
-
+         GlStateManager.func_187430_a(GlStateManager.FogMode.EXP);
+         float f1 = Config.isClearWater() ? 0.02F : 0.1F;
          if (entity instanceof EntityLivingBase) {
             if (((EntityLivingBase)entity).func_70644_a(MobEffects.field_76427_o)) {
                GlStateManager.func_179095_a(0.01F);
             } else {
-               GlStateManager.func_179095_a(0.1F - (float)EnchantmentHelper.func_185292_c((EntityLivingBase)entity) * 0.03F);
+               float f2 = 0.1F - (float)EnchantmentHelper.func_185292_c((EntityLivingBase)entity) * 0.03F;
+               GlStateManager.func_179095_a(Config.limit(f2, 0.0F, f1));
             }
          } else {
-            GlStateManager.func_179095_a(0.1F);
-         }
-
-         if (Config.isClearWater()) {
-            GlStateManager.func_179095_a(0.02F);
+            GlStateManager.func_179095_a(f1);
          }
       } else if (iblockstate.func_185904_a() == Material.field_151587_i) {
-         if (Config.isShaders()) {
-            Shaders.setFog(GlStateManager.FogMode.EXP);
-         } else {
-            GlStateManager.func_187430_a(GlStateManager.FogMode.EXP);
-         }
-
+         GlStateManager.func_187430_a(GlStateManager.FogMode.EXP);
          GlStateManager.func_179095_a(2.0F);
       } else {
-         float f1 = this.field_78530_s;
+         float f3 = this.field_78530_s;
          this.fogStandard = true;
-         if (Config.isShaders()) {
-            Shaders.setFog(GlStateManager.FogMode.LINEAR);
-         } else {
-            GlStateManager.func_187430_a(GlStateManager.FogMode.LINEAR);
-         }
-
+         GlStateManager.func_187430_a(GlStateManager.FogMode.LINEAR);
          if (p_78468_1_ == -1) {
             GlStateManager.func_179102_b(0.0F);
-            GlStateManager.func_179153_c(f1);
+            GlStateManager.func_179153_c(f3);
          } else {
-            GlStateManager.func_179102_b(f1 * Config.getFogStart());
-            GlStateManager.func_179153_c(f1);
+            GlStateManager.func_179102_b(f3 * Config.getFogStart());
+            GlStateManager.func_179153_c(f3);
          }
 
          if (GLContext.getCapabilities().GL_NV_fog_distance) {
@@ -1984,12 +1986,12 @@ public class EntityRenderer implements IResourceManagerReloadListener {
          }
 
          if (this.field_78531_r.field_71441_e.field_73011_w.func_76568_b((int)entity.field_70165_t, (int)entity.field_70161_v) || this.field_78531_r.field_71456_v.func_184046_j().func_184056_f()) {
-            GlStateManager.func_179102_b(f1 * 0.05F);
-            GlStateManager.func_179153_c(f1);
+            GlStateManager.func_179102_b(f3 * 0.05F);
+            GlStateManager.func_179153_c(f3);
          }
 
          if (Reflector.ForgeHooksClient_onFogRender.exists()) {
-            Reflector.callVoid(Reflector.ForgeHooksClient_onFogRender, this, entity, iblockstate, p_78468_2_, p_78468_1_, f1);
+            Reflector.callVoid(Reflector.ForgeHooksClient_onFogRender, this, entity, iblockstate, p_78468_2_, p_78468_1_, f3);
          }
       }
 
@@ -2092,7 +2094,9 @@ public class EntityRenderer implements IResourceManagerReloadListener {
    }
 
    private void frameInit() {
+      GlErrors.frameStart();
       if (!this.initialized) {
+         ReflectorResolver.resolve();
          TextureUtils.registerResourceListener();
          if (Config.getBitsOs() == 64 && Config.getBitsJre() == 32) {
             Config.setNotify64BitJava(true);
@@ -2107,7 +2111,8 @@ public class EntityRenderer implements IResourceManagerReloadListener {
          if (Config.getNewRelease() != null) {
             String s = "HD_U".replace("HD_U", "HD Ultra").replace("L", "Light");
             String s1 = s + " " + Config.getNewRelease();
-            TextComponentString textcomponentstring = new TextComponentString(I18n.func_135052_a("of.message.newVersion", s1));
+            TextComponentString textcomponentstring = new TextComponentString(I18n.func_135052_a("of.message.newVersion", "\u00a7n" + s1 + "\u00a7r"));
+            textcomponentstring.func_150255_a((new Style()).func_150241_a(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://optifine.net/downloads")));
             this.field_78531_r.field_71456_v.func_146158_b().func_146227_a(textcomponentstring);
             Config.setNewRelease((String)null);
          }
@@ -2124,7 +2129,7 @@ public class EntityRenderer implements IResourceManagerReloadListener {
       }
 
       if (this.updatedWorld != world) {
-         RandomMobs.worldChanged(this.updatedWorld, world);
+         RandomEntities.worldChanged(this.updatedWorld, world);
          Config.updateThreadPriorities();
          this.lastServerTime = 0L;
          this.lastServerTicks = 0;
@@ -2135,19 +2140,19 @@ public class EntityRenderer implements IResourceManagerReloadListener {
          Shaders.configAntialiasingLevel = 0;
       }
 
+      if (this.field_78531_r.field_71462_r != null && this.field_78531_r.field_71462_r.getClass() == GuiChat.class) {
+         this.field_78531_r.func_147108_a(new GuiChatOF((GuiChat)this.field_78531_r.field_71462_r));
+      }
+
    }
 
    private void frameFinish() {
-      if (this.field_78531_r.field_71441_e != null) {
-         long i = System.currentTimeMillis();
-         if (i > this.lastErrorCheckTimeMs + 10000L) {
-            this.lastErrorCheckTimeMs = i;
-            int j = GlStateManager.func_187434_L();
-            if (j != 0) {
-               String s = GLU.gluErrorString(j);
-               TextComponentString textcomponentstring = new TextComponentString(I18n.func_135052_a("of.message.openglError", j, s));
-               this.field_78531_r.field_71456_v.func_146158_b().func_146227_a(textcomponentstring);
-            }
+      if (this.field_78531_r.field_71441_e != null && Config.isShowGlErrors() && TimedEvent.isActive("CheckGlErrorFrameFinish", 10000L)) {
+         int i = GlStateManager.func_187434_L();
+         if (i != 0 && GlErrors.isEnabled(i)) {
+            String s = Config.getGlErrorString(i);
+            TextComponentString textcomponentstring = new TextComponentString(I18n.func_135052_a("of.message.openglError", i, s));
+            this.field_78531_r.field_71456_v.func_146158_b().func_146227_a(textcomponentstring);
          }
       }
 
@@ -2235,47 +2240,65 @@ public class EntityRenderer implements IResourceManagerReloadListener {
    }
 
    private void loadAllVisibleChunks(Entity p_loadAllVisibleChunks_1_, double p_loadAllVisibleChunks_2_, ICamera p_loadAllVisibleChunks_4_, boolean p_loadAllVisibleChunks_5_) {
-      RenderGlobal renderglobal = Config.getRenderGlobal();
-      int i = renderglobal.getCountLoadedChunks();
-      long j = System.currentTimeMillis();
-      Config.dbg("Loading visible chunks");
-      long k = System.currentTimeMillis() + 5000L;
-      int l = 0;
-      boolean flag = false;
+      int i = this.field_78531_r.field_71474_y.ofChunkUpdates;
+      boolean flag = this.field_78531_r.field_71474_y.ofLazyChunkLoading;
 
-      while(true) {
-         flag = false;
+      try {
+         this.field_78531_r.field_71474_y.ofChunkUpdates = 1000;
+         this.field_78531_r.field_71474_y.ofLazyChunkLoading = false;
+         RenderGlobal renderglobal = Config.getRenderGlobal();
+         int j = renderglobal.getCountLoadedChunks();
+         long k = System.currentTimeMillis();
+         Config.dbg("Loading visible chunks");
+         long l = System.currentTimeMillis() + 5000L;
+         int i1 = 0;
+         boolean flag1 = false;
 
-         for(int i1 = 0; i1 < 100; ++i1) {
-            renderglobal.field_147595_R = true;
-            renderglobal.func_174970_a(p_loadAllVisibleChunks_1_, p_loadAllVisibleChunks_2_, p_loadAllVisibleChunks_4_, this.field_175084_ae++, p_loadAllVisibleChunks_5_);
-            if (!renderglobal.func_184384_n()) {
-               flag = true;
+         while(true) {
+            flag1 = false;
+
+            for(int j1 = 0; j1 < 100; ++j1) {
+               renderglobal.field_147595_R = true;
+               renderglobal.func_174970_a(p_loadAllVisibleChunks_1_, p_loadAllVisibleChunks_2_, p_loadAllVisibleChunks_4_, this.field_175084_ae++, p_loadAllVisibleChunks_5_);
+               if (!renderglobal.func_184384_n()) {
+                  flag1 = true;
+               }
+
+               i1 = i1 + renderglobal.getCountChunksToUpdate();
+
+               while(!renderglobal.func_184384_n()) {
+                  renderglobal.func_174967_a(System.nanoTime() + 1000000000L);
+               }
+
+               i1 = i1 - renderglobal.getCountChunksToUpdate();
+               if (!flag1) {
+                  break;
+               }
             }
 
-            l = l + renderglobal.getCountChunksToUpdate();
-            renderglobal.func_174967_a(System.nanoTime() + 1000000000L);
-            l = l - renderglobal.getCountChunksToUpdate();
+            if (renderglobal.getCountLoadedChunks() != j) {
+               flag1 = true;
+               j = renderglobal.getCountLoadedChunks();
+            }
+
+            if (System.currentTimeMillis() > l) {
+               Config.log("Chunks loaded: " + i1);
+               l = System.currentTimeMillis() + 5000L;
+            }
+
+            if (!flag1) {
+               break;
+            }
          }
 
-         if (renderglobal.getCountLoadedChunks() != i) {
-            flag = true;
-            i = renderglobal.getCountLoadedChunks();
-         }
-
-         if (System.currentTimeMillis() > k) {
-            Config.log("Chunks loaded: " + l);
-            k = System.currentTimeMillis() + 5000L;
-         }
-
-         if (!flag) {
-            break;
-         }
+         Config.log("Chunks loaded: " + i1);
+         Config.log("Finished loading visible chunks");
+         RenderChunk.field_178592_a = 0;
+      } finally {
+         this.field_78531_r.field_71474_y.ofChunkUpdates = i;
+         this.field_78531_r.field_71474_y.ofLazyChunkLoading = flag;
       }
 
-      Config.log("Chunks loaded: " + l);
-      Config.log("Finished loading visible chunks");
-      RenderChunk.field_178592_a = 0;
    }
 
    public static void func_189692_a(FontRenderer p_189692_0_, String p_189692_1_, float p_189692_2_, float p_189692_3_, float p_189692_4_, int p_189692_5_, float p_189692_6_, float p_189692_7_, boolean p_189692_8_, boolean p_189692_9_) {

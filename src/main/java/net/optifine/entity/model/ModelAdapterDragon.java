@@ -7,7 +7,7 @@ import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.entity.RenderDragon;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.boss.EntityDragon;
-import optifine.Reflector;
+import net.optifine.reflect.Reflector;
 
 public class ModelAdapterDragon extends ModelAdapter
 {
@@ -80,6 +80,11 @@ public class ModelAdapterDragon extends ModelAdapter
                 return modelPart.equals("wing_tip") ? (ModelRenderer)Reflector.getFieldValue(modeldragon, Reflector.ModelDragon_ModelRenderers, 11) : null;
             }
         }
+    }
+
+    public String[] getModelRendererNames()
+    {
+        return new String[] {"head", "spine", "jaw", "body", "rear_leg", "front_leg", "rear_leg_tip", "front_leg_tip", "rear_foot", "front_foot", "wing", "wing_tip"};
     }
 
     public IEntityRenderer makeEntityRender(ModelBase modelBase, float shadowSize)

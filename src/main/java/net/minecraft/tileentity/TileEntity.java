@@ -5,7 +5,19 @@ import javax.annotation.Nullable;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import fz.frazionz.tileentity.TileEntityAmeliorator;
+import fz.frazionz.tileentity.TileEntityBauxiteChest;
+import fz.frazionz.tileentity.TileEntityBauxiteFurnace;
+import fz.frazionz.tileentity.TileEntityDirtChest;
+import fz.frazionz.tileentity.TileEntityFrazionChest;
+import fz.frazionz.tileentity.TileEntityFrazionFurnace;
+import fz.frazionz.tileentity.TileEntityHdvChest;
+import fz.frazionz.tileentity.TileEntityOnyxChest;
+import fz.frazionz.tileentity.TileEntityOnyxFurnace;
 import fz.frazionz.tileentity.TileEntityTrophyForge;
+import fz.frazionz.tileentity.TileEntityYelliteChest;
+import fz.frazionz.tileentity.TileEntityZFurnace;
+import fz.frazionz.tileentity.TileEntityZHopper;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockJukebox;
 import net.minecraft.block.state.IBlockState;
@@ -25,7 +37,7 @@ import net.minecraft.world.World;
 public abstract class TileEntity
 {
     private static final Logger LOGGER = LogManager.getLogger();
-    private static final RegistryNamespaced < ResourceLocation, Class <? extends TileEntity >> field_190562_f = new RegistryNamespaced < ResourceLocation, Class <? extends TileEntity >> ();
+    private static final RegistryNamespaced < ResourceLocation, Class <? extends TileEntity >> REGISTRY = new RegistryNamespaced < ResourceLocation, Class <? extends TileEntity >> ();
 
     /** the instance of the world the tile entity is in. */
     protected World world;
@@ -36,15 +48,15 @@ public abstract class TileEntity
     /** the Block type that this TileEntity is contained within */
     protected Block blockType;
 
-    private static void func_190560_a(String p_190560_0_, Class <? extends TileEntity > p_190560_1_)
+    private static void register(String id, Class <? extends TileEntity > clazz)
     {
-        field_190562_f.putObject(new ResourceLocation(p_190560_0_), p_190560_1_);
+        REGISTRY.putObject(new ResourceLocation(id), clazz);
     }
 
     @Nullable
-    public static ResourceLocation func_190559_a(Class <? extends TileEntity > p_190559_0_)
+    public static ResourceLocation getKey(Class <? extends TileEntity > clazz)
     {
-        return field_190562_f.getNameForObject(p_190559_0_);
+        return REGISTRY.getNameForObject(clazz);
     }
 
     /**
@@ -58,7 +70,7 @@ public abstract class TileEntity
     /**
      * Sets the worldObj for this tileEntity.
      */
-    public void setWorldObj(World worldIn)
+    public void setWorld(World worldIn)
     {
         this.world = worldIn;
     }
@@ -66,7 +78,7 @@ public abstract class TileEntity
     /**
      * Returns true if the worldObj isn't null.
      */
-    public boolean hasWorldObj()
+    public boolean hasWorld()
     {
         return this.world != null;
     }
@@ -83,7 +95,7 @@ public abstract class TileEntity
 
     private NBTTagCompound writeInternal(NBTTagCompound compound)
     {
-        ResourceLocation resourcelocation = field_190562_f.getNameForObject(this.getClass());
+        ResourceLocation resourcelocation = REGISTRY.getNameForObject(this.getClass());
 
         if (resourcelocation == null)
         {
@@ -107,7 +119,7 @@ public abstract class TileEntity
 
         try
         {
-            Class <? extends TileEntity > oclass = (Class)field_190562_f.getObject(new ResourceLocation(s));
+            Class <? extends TileEntity > oclass = (Class)REGISTRY.getObject(new ResourceLocation(s));
 
             if (oclass != null)
             {
@@ -209,11 +221,20 @@ public abstract class TileEntity
     }
 
     @Nullable
+
+    /**
+     * Retrieves packet to send to the client whenever this Tile Entity is resynced via World.notifyBlockUpdate. For
+     * modded TE's, this packet comes back to you clientside in {@link #onDataPacket}
+     */
     public SPacketUpdateTileEntity getUpdatePacket()
     {
         return null;
     }
 
+    /**
+     * Get an NBT compound to sync to the client with SPacketChunkData, used for initial loading of the chunk or when
+     * many blocks change at once. This compound comes back to you clientside in {@link handleUpdateTag}
+     */
     public NBTTagCompound getUpdateTag()
     {
         return this.writeInternal(new NBTTagCompound());
@@ -240,6 +261,10 @@ public abstract class TileEntity
         this.tileEntityInvalid = false;
     }
 
+    /**
+     * See {@link Block#eventReceived} for more information. This must return true serverside before it is called
+     * clientside.
+     */
     public boolean receiveClientEvent(int id, int type)
     {
         return false;
@@ -253,18 +278,18 @@ public abstract class TileEntity
 
     public void addInfoToCrashReport(CrashReportCategory reportCategory)
     {
-        reportCategory.setDetail("Name", new ICrashReportDetail<String>()
+        reportCategory.addDetail("Name", new ICrashReportDetail<String>()
         {
             public String call() throws Exception
             {
-                return TileEntity.field_190562_f.getNameForObject(TileEntity.this.getClass()) + " // " + TileEntity.this.getClass().getCanonicalName();
+                return TileEntity.REGISTRY.getNameForObject(TileEntity.this.getClass()) + " // " + TileEntity.this.getClass().getCanonicalName();
             }
         });
 
         if (this.world != null)
         {
             CrashReportCategory.addBlockInfo(reportCategory, this.pos, this.getBlockType(), this.getBlockMetadata());
-            reportCategory.setDetail("Actual block type", new ICrashReportDetail<String>()
+            reportCategory.addDetail("Actual block type", new ICrashReportDetail<String>()
             {
                 public String call() throws Exception
                 {
@@ -272,7 +297,7 @@ public abstract class TileEntity
 
                     try
                     {
-                        return String.format("ID #%d (%s // %s)", i, Block.getBlockById(i).getUnlocalizedName(), Block.getBlockById(i).getClass().getCanonicalName());
+                        return String.format("ID #%d (%s // %s)", i, Block.getBlockById(i).getTranslationKey(), Block.getBlockById(i).getClass().getCanonicalName());
                     }
                     catch (Throwable var3)
                     {
@@ -280,7 +305,7 @@ public abstract class TileEntity
                     }
                 }
             });
-            reportCategory.setDetail("Actual block data value", new ICrashReportDetail<String>()
+            reportCategory.addDetail("Actual block data value", new ICrashReportDetail<String>()
             {
                 public String call() throws Exception
                 {
@@ -314,64 +339,83 @@ public abstract class TileEntity
     @Nullable
 
     /**
-     * Get the formatted ChatComponent that will be used for the sender's username in chat
+     * Returns a displayable component representing this thing's name. This method should be implemented slightly
+     * differently depending on the interface (for <a href="https://github.com/ModCoderPack/MCPBot-
+     * Issues/issues/14">technical reasons</a> the same method is used for both IWorldNameable and ICommandSender), but
+     * unlike {@link #getName()} this method will generally behave sanely.
+     *  
+     * <dl>
+     * <dt>{@link net.minecraft.util.INameable#getDisplayName() INameable.getDisplayName()}</dt>
+     * <dd>A normal component. Might be a translation component or a text component depending on the context. Usually
+     * implemented as:</dd>
+     * <dd><pre><code>return this.{@link net.minecraft.util.INameable#hasCustomName() hasCustomName()} ? new
+     * TextComponentString(this.{@link #getName()}) : new TextComponentTranslation(this.{@link
+     * #getName()});</code></pre></dd>
+     * <dt>{@link net.minecraft.command.ICommandSender#getDisplayName() ICommandSender.getDisplayName()} and {@link
+     * net.minecraft.entity.Entity#getDisplayName() Entity.getDisplayName()}</dt>
+     * <dd>For most entities, this returns the result of {@link #getName()}, with {@linkplain
+     * net.minecraft.scoreboard.ScorePlayerTeam#formatPlayerName scoreboard formatting} and a {@linkplain
+     * net.minecraft.entity.Entity#getHoverEvent special hover event}.</dd>
+     * <dd>For non-entity command senders, this will return the result of {@link #getName()} in a text component.</dd>
+     * </dl>
      */
     public ITextComponent getDisplayName()
     {
         return null;
     }
 
-    public void rotate(Rotation p_189667_1_)
+    public void rotate(Rotation rotationIn)
     {
     }
 
-    public void mirror(Mirror p_189668_1_)
+    public void mirror(Mirror mirrorIn)
     {
     }
 
     static
     {
-        func_190560_a("furnace", TileEntityFurnace.class);
-        func_190560_a("chest", TileEntityChest.class);
-        func_190560_a("ender_chest", TileEntityEnderChest.class);
-        func_190560_a("jukebox", BlockJukebox.TileEntityJukebox.class);
-        func_190560_a("dispenser", TileEntityDispenser.class);
-        func_190560_a("dropper", TileEntityDropper.class);
-        func_190560_a("sign", TileEntitySign.class);
-        func_190560_a("mob_spawner", TileEntityMobSpawner.class);
-        func_190560_a("noteblock", TileEntityNote.class);
-        func_190560_a("piston", TileEntityPiston.class);
-        func_190560_a("brewing_stand", TileEntityBrewingStand.class);
-        func_190560_a("enchanting_table", TileEntityEnchantmentTable.class);
-        func_190560_a("end_portal", TileEntityEndPortal.class);
-        func_190560_a("beacon", TileEntityBeacon.class);
-        func_190560_a("skull", TileEntitySkull.class);
-        func_190560_a("daylight_detector", TileEntityDaylightDetector.class);
-        func_190560_a("hopper", TileEntityHopper.class);
-        func_190560_a("z_hopper", TileEntityZHopper.class);
-        func_190560_a("comparator", TileEntityComparator.class);
-        func_190560_a("flower_pot", TileEntityFlowerPot.class);
-        func_190560_a("banner", TileEntityBanner.class);
-        func_190560_a("structure_block", TileEntityStructure.class);
-        func_190560_a("end_gateway", TileEntityEndGateway.class);
-        func_190560_a("command_block", TileEntityCommandBlock.class);
-        func_190560_a("shulker_box", TileEntityShulkerBox.class);
-        func_190560_a("bed", TileEntityBed.class);
-        func_190560_a("dirt_chest", TileEntityDirtChest.class);
-        func_190560_a("yellite_chest", TileEntityYelliteChest.class);
-        func_190560_a("bauxite_chest", TileEntityBauxiteChest.class);
-        func_190560_a("frazion_chest", TileEntityFrazionChest.class);
-        func_190560_a("onyx_chest", TileEntityOnyxChest.class);
-        func_190560_a("hdv_chest", TileEntityHdvChest.class);
-        func_190560_a("yellite_furnace", TileEntityZFurnace.class);
-        func_190560_a("bauxite_furnace", TileEntityBauxiteFurnace.class);
-        func_190560_a("onyx_furnace", TileEntityOnyxFurnace.class);
-        func_190560_a("frazion_furnace", TileEntityFrazionFurnace.class);
-        func_190560_a("ameliorator", TileEntityAmeliorator.class);
-        /*func_190560_a("yellite_brewing_stand", TileEntityYelliteBrewingStand.class);
-        func_190560_a("bauxite_brewing_stand", TileEntityBauxiteBrewingStand.class);
-        func_190560_a("onyx_brewing_stand", TileEntityBrewingStand.class);
-        func_190560_a("frazion_brewing_stand", TileEntityBrewingStand.class);*/
-        func_190560_a("trophy_forge", TileEntityTrophyForge.class);
+        register("furnace", TileEntityFurnace.class);
+        register("chest", TileEntityChest.class);
+        register("ender_chest", TileEntityEnderChest.class);
+        register("jukebox", BlockJukebox.TileEntityJukebox.class);
+        register("dispenser", TileEntityDispenser.class);
+        register("dropper", TileEntityDropper.class);
+        register("sign", TileEntitySign.class);
+        register("mob_spawner", TileEntityMobSpawner.class);
+        register("noteblock", TileEntityNote.class);
+        register("piston", TileEntityPiston.class);
+        register("brewing_stand", TileEntityBrewingStand.class);
+        register("enchanting_table", TileEntityEnchantmentTable.class);
+        register("end_portal", TileEntityEndPortal.class);
+        register("beacon", TileEntityBeacon.class);
+        register("skull", TileEntitySkull.class);
+        register("daylight_detector", TileEntityDaylightDetector.class);
+        register("hopper", TileEntityHopper.class);
+        register("comparator", TileEntityComparator.class);
+        register("flower_pot", TileEntityFlowerPot.class);
+        register("banner", TileEntityBanner.class);
+        register("structure_block", TileEntityStructure.class);
+        register("end_gateway", TileEntityEndGateway.class);
+        register("command_block", TileEntityCommandBlock.class);
+        register("shulker_box", TileEntityShulkerBox.class);
+        register("bed", TileEntityBed.class);
+        register("z_hopper", TileEntityZHopper.class);
+        register("dirt_chest", TileEntityDirtChest.class);
+        register("yellite_chest", TileEntityYelliteChest.class);
+        register("bauxite_chest", TileEntityBauxiteChest.class);
+        register("frazion_chest", TileEntityFrazionChest.class);
+        register("onyx_chest", TileEntityOnyxChest.class);
+        register("hdv_chest", TileEntityHdvChest.class);
+        register("yellite_furnace", TileEntityZFurnace.class);
+        register("bauxite_furnace", TileEntityBauxiteFurnace.class);
+        register("onyx_furnace", TileEntityOnyxFurnace.class);
+        register("frazion_furnace", TileEntityFrazionFurnace.class);
+        register("ameliorator", TileEntityAmeliorator.class);
+        /*register("yellite_brewing_stand", TileEntityYelliteBrewingStand.class);
+        register("bauxite_brewing_stand", TileEntityBauxiteBrewingStand.class);
+        register("onyx_brewing_stand", TileEntityBrewingStand.class);
+        register("frazion_brewing_stand", TileEntityBrewingStand.class);*/
+        register("trophy_forge", TileEntityTrophyForge.class);
+    
     }
 }

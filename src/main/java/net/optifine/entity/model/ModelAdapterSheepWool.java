@@ -12,7 +12,7 @@ import net.minecraft.client.renderer.entity.RenderSheep;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.client.renderer.entity.layers.LayerSheepWool;
 import net.minecraft.entity.passive.EntitySheep;
-import optifine.Config;
+import net.minecraft.src.Config;
 
 public class ModelAdapterSheepWool extends ModelAdapterQuadruped
 {

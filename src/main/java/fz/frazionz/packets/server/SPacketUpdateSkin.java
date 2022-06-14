@@ -20,12 +20,12 @@ public class SPacketUpdateSkin implements Packet<INetHandlerPlayClient> {
 
     @Override
     public void readPacketData(PacketBuffer buf) throws IOException {
-        this.uuid = buf.readUuid();
+        this.uuid = buf.readUniqueId();
     }
 
     @Override
     public void writePacketData(PacketBuffer buf) throws IOException {
-        buf.writeUuid(uuid);
+        buf.writeUniqueId(uuid);
     }
 
     @Override

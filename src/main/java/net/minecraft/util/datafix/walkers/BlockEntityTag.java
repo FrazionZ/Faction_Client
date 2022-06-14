@@ -14,13 +14,13 @@ import org.apache.logging.log4j.Logger;
 public class BlockEntityTag implements IDataWalker
 {
     private static final Logger LOGGER = LogManager.getLogger();
-    private static final Map<String, String> field_190892_b = Maps.<String, String>newHashMap();
+    private static final Map<String, String> NEW_TO_OLD_ID_MAP = Maps.<String, String>newHashMap();
     private static final Map<String, String> ITEM_ID_TO_BLOCK_ENTITY_ID = Maps.<String, String>newHashMap();
 
     @Nullable
     private static String getBlockEntityID(int blockID, String p_188267_1_)
     {
-        return blockID < 515 ? (String)field_190892_b.get((new ResourceLocation(p_188267_1_)).toString()) : (String)ITEM_ID_TO_BLOCK_ENTITY_ID.get((new ResourceLocation(p_188267_1_)).toString());
+        return blockID < 515 ? (String)NEW_TO_OLD_ID_MAP.get((new ResourceLocation(p_188267_1_)).toString()) : (String)ITEM_ID_TO_BLOCK_ENTITY_ID.get((new ResourceLocation(p_188267_1_)).toString());
     }
 
     public NBTTagCompound process(IDataFixer fixer, NBTTagCompound compound, int versionIn)
@@ -65,9 +65,10 @@ public class BlockEntityTag implements IDataWalker
 
     static
     {
-        Map<String, String> map = field_190892_b;
+        Map<String, String> map = NEW_TO_OLD_ID_MAP;
         map.put("minecraft:furnace", "Furnace");
         map.put("minecraft:lit_furnace", "Furnace");
+        
         map.put("minecraft:yellite_furnace", "yellite_furnace");
         map.put("minecraft:lit_yellite_furnace", "yellite_furnace");
         map.put("minecraft:bauxite_furnace", "bauxite_furnace");
@@ -78,13 +79,16 @@ public class BlockEntityTag implements IDataWalker
         map.put("minecraft:lit_frazion_furnace", "frazion_furnace");
         map.put("minecraft:ameliorator", "ameliorator");
         map.put("minecraft:trophy_forge", "trophy_forge");
+        
         map.put("minecraft:chest", "Chest");
+        
         map.put("minecraft:dirt_chest", "dirt_chest");
         map.put("minecraft:yellite_chest", "yellite_chest");
         map.put("minecraft:bauxite_chest", "bauxite_chest");
         map.put("minecraft:frazion_chest", "frazion_chest");
         map.put("minecraft:hdv_chest", "hdv_chest");
         map.put("minecraft:onyx_chest", "onyx_chest");
+        
         map.put("minecraft:trapped_chest", "Chest");
         map.put("minecraft:ender_chest", "EnderChest");
         map.put("minecraft:jukebox", "RecordPlayer");
@@ -101,6 +105,7 @@ public class BlockEntityTag implements IDataWalker
         map.put("minecraft:daylight_detector", "DLDetector");
         map.put("minecraft:hopper", "Hopper");
         map.put("minecraft:z_hopper", "z_hopper");
+
         map.put("minecraft:banner", "Banner");
         map.put("minecraft:flower_pot", "FlowerPot");
         map.put("minecraft:repeating_command_block", "CommandBlock");
@@ -117,32 +122,17 @@ public class BlockEntityTag implements IDataWalker
         map.put("minecraft:end_portal", "Airportal");
         map.put("minecraft:end_gateway", "EndGateway");
         map.put("minecraft:shield", "Shield");
+        
         map.put("minecraft:spawner_inventory", "spawner_inventory");
         map.put("minecraft:yellite_brewing_stand", "yellite_brewing_stand");
         map.put("minecraft:bauxite_brewing_stand", "bauxite_brewing_stand");
         map.put("minecraft:onyx_brewing_stand", "onyx_brewing_stand");
         map.put("minecraft:frazion_brewing_stand", "frazion_brewing_stand");
+        
         map = ITEM_ID_TO_BLOCK_ENTITY_ID;
         map.put("minecraft:furnace", "minecraft:furnace");
-        map.put("minecraft:yellite_furnace", "minecraft:yellite_furnace");
-        map.put("minecraft:lit_yellite_furnace", "minecraft:yellite_furnace");
-        map.put("minecraft:bauxite_furnace", "minecraft:bauxite_furnace");
-        map.put("minecraft:lit_bauxite_furnace", "minecraft:bauxite_furnace");
-        map.put("minecraft:onyx_furnace", "minecraft:onyx_furnace");
-        map.put("minecraft:lit_onyx_furnace", "minecraft:onyx_furnace");
-        map.put("minecraft:frazion_furnace", "minecraft:frazion_furnace");
-        map.put("minecraft:lit_frazion_furnace", "minecraft:frazion_furnace");
-        map.put("minecraft:ameliorator", "minecraft:ameliorator");
-        map.put("minecraft:trophy_forge", "minecraft:trophy_forge");
         map.put("minecraft:lit_furnace", "minecraft:furnace");
         map.put("minecraft:chest", "minecraft:chest");
-        map.put("minecraft:dirt_chest", "minecraft:dirt_chest");
-        map.put("minecraft:yellite_chest", "minecraft:yellite_chest");
-        map.put("minecraft:bauxite_chest", "minecraft:bauxite_chest");
-        map.put("minecraft:frazion_chest", "minecraft:frazion_chest");
-        map.put("minecraft:hdv_chest", "minecraft:hdv_chest");
-        map.put("minecraft:spawner_inventory", "minecraft:spawner_inventory");
-        map.put("minecraft:onyx_chest", "minecraft:onyx_chest");
         map.put("minecraft:trapped_chest", "minecraft:chest");
         map.put("minecraft:ender_chest", "minecraft:enderchest");
         map.put("minecraft:jukebox", "minecraft:jukebox");
@@ -158,7 +148,6 @@ public class BlockEntityTag implements IDataWalker
         map.put("minecraft:skull", "minecraft:skull");
         map.put("minecraft:daylight_detector", "minecraft:daylight_detector");
         map.put("minecraft:hopper", "minecraft:hopper");
-        map.put("minecraft:z_hopper", "minecraft:z_hopper");
         map.put("minecraft:banner", "minecraft:banner");
         map.put("minecraft:flower_pot", "minecraft:flower_pot");
         map.put("minecraft:repeating_command_block", "minecraft:command_block");
@@ -193,9 +182,29 @@ public class BlockEntityTag implements IDataWalker
         map.put("minecraft:end_portal", "minecraft:end_portal");
         map.put("minecraft:end_gateway", "minecraft:end_gateway");
         map.put("minecraft:shield", "minecraft:shield");
+    
+        map.put("minecraft:yellite_furnace", "minecraft:yellite_furnace");
+        map.put("minecraft:lit_yellite_furnace", "minecraft:yellite_furnace");
+        map.put("minecraft:bauxite_furnace", "minecraft:bauxite_furnace");
+        map.put("minecraft:lit_bauxite_furnace", "minecraft:bauxite_furnace");
+        map.put("minecraft:onyx_furnace", "minecraft:onyx_furnace");
+        map.put("minecraft:lit_onyx_furnace", "minecraft:onyx_furnace");
+        map.put("minecraft:frazion_furnace", "minecraft:frazion_furnace");
+        map.put("minecraft:lit_frazion_furnace", "minecraft:frazion_furnace");
+        map.put("minecraft:ameliorator", "minecraft:ameliorator");
+        map.put("minecraft:trophy_forge", "minecraft:trophy_forge");
+        map.put("minecraft:dirt_chest", "minecraft:dirt_chest");
+        map.put("minecraft:yellite_chest", "minecraft:yellite_chest");
+        map.put("minecraft:bauxite_chest", "minecraft:bauxite_chest");
+        map.put("minecraft:frazion_chest", "minecraft:frazion_chest");
+        map.put("minecraft:hdv_chest", "minecraft:hdv_chest");
+        map.put("minecraft:spawner_inventory", "minecraft:spawner_inventory");
+        map.put("minecraft:onyx_chest", "minecraft:onyx_chest");
+        map.put("minecraft:z_hopper", "minecraft:z_hopper");
         map.put("minecraft:yellite_brewing_stand", "minecraft:yellite_brewing_stand");
         map.put("minecraft:bauxite_brewing_stand", "minecraft:bauxite_brewing_stand");
         map.put("minecraft:onyx_brewing_stand", "minecraft:onyx_brewing_stand");
         map.put("minecraft:frazion_brewing_stand", "minecraft:frazion_brewing_stand");
+    
     }
 }

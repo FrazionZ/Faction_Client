@@ -46,7 +46,7 @@ public class RegistryNamespacedDefaultedByKey<K, V> extends RegistryNamespaced<K
         int i = super.getIDForObject(value);
         return i == -1 ? super.getIDForObject(this.defaultValue) : i;
     }
-
+    
     public int getValueForObject(int value)
     {
         int i = super.getValueForObject(value);

@@ -34,15 +34,15 @@ public class ParticleEnchantmentTable extends Particle
         this.setParticleTextureIndex((int)(Math.random() * 26.0D + 1.0D + 224.0D));
     }
 
-    public void moveEntity(double x, double y, double z)
+    public void move(double x, double y, double z)
     {
-        this.setEntityBoundingBox(this.getEntityBoundingBox().offset(x, y, z));
+        this.setBoundingBox(this.getBoundingBox().offset(x, y, z));
         this.resetPositionToBB();
     }
 
-    public int getBrightnessForRender(float p_189214_1_)
+    public int getBrightnessForRender(float partialTick)
     {
-        int i = super.getBrightnessForRender(p_189214_1_);
+        int i = super.getBrightnessForRender(partialTick);
         float f = (float)this.particleAge / (float)this.particleMaxAge;
         f = f * f;
         f = f * f;

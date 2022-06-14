@@ -23,7 +23,7 @@ public class TileEntityTrophyForge extends TileEntityLockable implements ITickab
 	
 	private static final int[] SLOT_CRAFT = new int[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
     
-    private NonNullList<ItemStack> TrophyForgeItemStacks = NonNullList.<ItemStack>func_191197_a(12, ItemStack.field_190927_a);
+    private NonNullList<ItemStack> TrophyForgeItemStacks = NonNullList.<ItemStack>withSize(12, ItemStack.EMPTY);
     
     private int forgeTime;
     private int totalForgeTime;
@@ -37,11 +37,11 @@ public class TileEntityTrophyForge extends TileEntityLockable implements ITickab
 		return this.TrophyForgeItemStacks.size();
 	}
 
-	public boolean func_191420_l()
+	public boolean isEmpty()
     {
         for (ItemStack itemstack : this.TrophyForgeItemStacks)
         {
-            if (!itemstack.func_190926_b())
+            if (!itemstack.isEmpty())
             {
                 return false;
             }
@@ -150,8 +150,8 @@ public class TileEntityTrophyForge extends TileEntityLockable implements ITickab
     public void readFromNBT(NBTTagCompound compound)
     {
         super.readFromNBT(compound);
-        this.TrophyForgeItemStacks = NonNullList.<ItemStack>func_191197_a(this.getSizeInventory(), ItemStack.field_190927_a);
-        ItemStackHelper.func_191283_b(compound, this.TrophyForgeItemStacks);
+        this.TrophyForgeItemStacks = NonNullList.<ItemStack>withSize(this.getSizeInventory(), ItemStack.EMPTY);
+        ItemStackHelper.loadAllItems(compound, this.TrophyForgeItemStacks);
         this.forgeTime = compound.getShort("ForgeTime");
         this.totalForgeTime = compound.getShort("TotalForgeTime");
         this.isForging = compound.getShort("IsForging");
@@ -163,7 +163,7 @@ public class TileEntityTrophyForge extends TileEntityLockable implements ITickab
         compound.setShort("ForgeTime", (short)this.forgeTime);
         compound.setShort("TotalForgeTime", (short)this.totalForgeTime);
         compound.setShort("IsForging", (short)this.isForging);
-        ItemStackHelper.func_191282_a(compound, this.TrophyForgeItemStacks);
+        ItemStackHelper.saveAllItems(compound, this.TrophyForgeItemStacks);
 
         return compound;
     }
@@ -195,7 +195,7 @@ public class TileEntityTrophyForge extends TileEntityLockable implements ITickab
 
     public int getForgeTime()
     {
-    	return 2400;
+    	return 100;
     }
     
     public ItemStack getRecipeResult() {
@@ -227,12 +227,12 @@ public class TileEntityTrophyForge extends TileEntityLockable implements ITickab
     		
     		result.setTagCompound(new NBTTagCompound());
     		AttributeModifier attribute = item.getRandomAttributeModifier();
-    		result.addAttributeModifier(item.getMonsterAttributes().getAttributeUnlocalizedName(), attribute, EntityEquipmentSlot.TROPHY_1);
-    		result.addAttributeModifier(item.getMonsterAttributes().getAttributeUnlocalizedName(), attribute, EntityEquipmentSlot.TROPHY_2);
-    		result.addAttributeModifier(item.getMonsterAttributes().getAttributeUnlocalizedName(), attribute, EntityEquipmentSlot.TROPHY_3);
+    		result.addAttributeModifier(item.getMonsterAttributes().getName(), attribute, EntityEquipmentSlot.TROPHY_1);
+    		result.addAttributeModifier(item.getMonsterAttributes().getName(), attribute, EntityEquipmentSlot.TROPHY_2);
+    		result.addAttributeModifier(item.getMonsterAttributes().getName(), attribute, EntityEquipmentSlot.TROPHY_3);
     	}
         for(int i = 0; i < 12; i++) {
-        	this.TrophyForgeItemStacks.get(i).substract(1);
+        	this.TrophyForgeItemStacks.get(i).shrink(1);
         }
         
         this.TrophyForgeItemStacks.set(4, result.copy());

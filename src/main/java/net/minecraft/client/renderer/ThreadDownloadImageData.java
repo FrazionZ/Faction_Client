@@ -6,26 +6,29 @@ import java.io.File;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.Proxy;
-import java.net.URL;
 import java.net.Proxy.Type;
+import java.net.URL;
 import java.util.concurrent.atomic.AtomicInteger;
+
 import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.texture.SimpleTexture;
-import net.minecraft.client.renderer.texture.TextureUtil;
-import net.minecraft.client.resources.IResourceManager;
-import net.minecraft.util.ResourceLocation;
-import optifine.CapeImageBuffer;
-import optifine.Config;
-import optifine.HttpPipeline;
-import optifine.HttpRequest;
-import optifine.HttpResponse;
-import optifine.SkinImageBuffer;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import fz.frazionz.utils.SkinImageBuffer;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.texture.SimpleTexture;
+import net.minecraft.client.renderer.texture.TextureUtil;
+import net.minecraft.client.resources.IResourceManager;
+import net.minecraft.src.Config;
+import net.minecraft.util.ResourceLocation;
+import net.optifine.http.HttpPipeline;
+import net.optifine.http.HttpRequest;
+import net.optifine.http.HttpResponse;
+import net.optifine.player.CapeImageBuffer;
+import net.optifine.shaders.ShadersTex;
 
 public class ThreadDownloadImageData extends SimpleTexture
 {
@@ -63,7 +66,14 @@ public class ThreadDownloadImageData extends SimpleTexture
                 this.deleteGlTexture();
             }
 
-            TextureUtil.uploadTextureImage(super.getGlTextureId(), this.bufferedImage);
+            if (Config.isShaders())
+            {
+                ShadersTex.loadSimpleTexture(super.getGlTextureId(), this.bufferedImage, false, false, Config.getResourceManager(), this.textureLocation, this.getMultiTexID());
+            }
+            else
+            {
+                TextureUtil.uploadTextureImage(super.getGlTextureId(), this.bufferedImage);
+            }
         }
     }
 
@@ -273,5 +283,10 @@ public class ThreadDownloadImageData extends SimpleTexture
         	SkinImageBuffer skinImageBuffer = (SkinImageBuffer)this.imageBuffer;
         	skinImageBuffer.cleanup();
         }
+    }
+
+    public IImageBuffer getImageBuffer()
+    {
+        return this.imageBuffer;
     }
 }

@@ -1,7 +1,5 @@
 package net.minecraft.client.gui;
 
-import java.awt.Color;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.audio.SoundHandler;
@@ -12,22 +10,20 @@ import net.minecraft.util.ResourceLocation;
 public class GuiButton extends Gui
 {
     protected static final ResourceLocation BUTTON_TEXTURES = new ResourceLocation("textures/gui/widgets.png");
+	protected static final ResourceLocation FZ_BUTTON_TEXTURES = new ResourceLocation("textures/gui/frazionz/widgets.png");
     protected static final ResourceLocation BUTTON_TEXTURES_NEW = new ResourceLocation("textures/gui/main_menu_button.png");
-    public int x;
-
-    /**
-     * Button width in pixels
-     */
+    
+    /** Button width in pixels */
     protected int width;
 
     /** Button height in pixels */
     protected int height;
 
     /** The x position of this control. */
-    public int xPosition;
+    public int x;
 
     /** The y position of this control. */
-    public int yPosition;
+    public int y;
 
     /** The string displayed on this control. */
     public String displayString;
@@ -39,8 +35,6 @@ public class GuiButton extends Gui
     /** Hides the button completely if false. */
     public boolean visible;
     protected boolean hovered;
-    
-    protected int idi;
 
     public GuiButton(int buttonId, int x, int y, String buttonText)
     {
@@ -54,27 +48,11 @@ public class GuiButton extends Gui
         this.enabled = true;
         this.visible = true;
         this.id = buttonId;
-        this.xPosition = x;
-        this.yPosition = y;
+        this.x = x;
+        this.y = y;
         this.width = widthIn;
         this.height = heightIn;
         this.displayString = buttonText;
-        this.idi = 0;
-    }
-    
-    public GuiButton(int buttonId, int x, int y, int widthIn, int heightIn, String buttonText, int id)
-    {
-        this.width = 200;
-        this.height = 20;
-        this.enabled = true;
-        this.visible = true;
-        this.id = buttonId;
-        this.xPosition = x;
-        this.yPosition = y;
-        this.width = widthIn;
-        this.height = heightIn;
-        this.displayString = buttonText;
-        this.idi = id;
     }
 
     /**
@@ -96,7 +74,8 @@ public class GuiButton extends Gui
 
         return i;
     }
-
+    
+    /**
     int fade;
     public void drawButton(Minecraft mc, int mouseX, int mouseY, float p_191745_4_) {
         if(this.visible) {
@@ -121,30 +100,26 @@ public class GuiButton extends Gui
         }
         
     }
-    
-    
-    public void func_191745_a(Minecraft p_191745_1_, int p_191745_2_, int p_191745_3_, float p_191745_4_)
+    */
+
+    /**
+     * Draws this button to the screen.
+     */
+    public void drawButton(Minecraft mc, int mouseX, int mouseY, float partialTicks)
     {
         if (this.visible)
         {
-            FontRenderer fontrenderer = p_191745_1_.fontRendererObj;
-            if(idi == 1) {
-            	
-            	p_191745_1_.getTextureManager().bindTexture(BUTTON_TEXTURES_NEW);
-            	
-            }
-            else {
-            	p_191745_1_.getTextureManager().bindTexture(BUTTON_TEXTURES);
-            }
+            FontRenderer fontrenderer = mc.fontRenderer;
+            mc.getTextureManager().bindTexture(BUTTON_TEXTURES);
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-            this.hovered = p_191745_2_ >= this.xPosition && p_191745_3_ >= this.yPosition && p_191745_2_ < this.xPosition + this.width && p_191745_3_ < this.yPosition + this.height;
+            this.hovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
             int i = this.getHoverState(this.hovered);
             GlStateManager.enableBlend();
             GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
             GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-            this.drawTexturedModalRect(this.xPosition, this.yPosition, 0, 46 + i * 20, this.width / 2, this.height);
-            this.drawTexturedModalRect(this.xPosition + this.width / 2, this.yPosition, 200 - this.width / 2, 46 + i * 20, this.width / 2, this.height);
-            this.mouseDragged(p_191745_1_, p_191745_2_, p_191745_3_);
+            this.drawTexturedModalRect(this.x, this.y, 0, 46 + i * 20, this.width / 2, this.height);
+            this.drawTexturedModalRect(this.x + this.width / 2, this.y, 200 - this.width / 2, 46 + i * 20, this.width / 2, this.height);
+            this.mouseDragged(mc, mouseX, mouseY);
             int j = 14737632;
 
             if (!this.enabled)
@@ -156,7 +131,7 @@ public class GuiButton extends Gui
                 j = 16777120;
             }
 
-            this.drawCenteredString(fontrenderer, this.displayString, this.xPosition + this.width / 2, this.yPosition + (this.height - 8) / 2, j);
+            this.drawCenteredString(fontrenderer, this.displayString, this.x + this.width / 2, this.y + (this.height - 8) / 2, j);
         }
     }
 
@@ -180,7 +155,7 @@ public class GuiButton extends Gui
      */
     public boolean mousePressed(Minecraft mc, int mouseX, int mouseY)
     {
-        return this.enabled && this.visible && mouseX >= this.xPosition && mouseY >= this.yPosition && mouseX < this.xPosition + this.width && mouseY < this.yPosition + this.height;
+        return this.enabled && this.visible && mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
     }
 
     /**

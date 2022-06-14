@@ -9,17 +9,17 @@ public class GuiOptionsRowList extends GuiListExtended
 {
     private final List<GuiOptionsRowList.Row> options = Lists.<GuiOptionsRowList.Row>newArrayList();
 
-    public GuiOptionsRowList(Minecraft mcIn, int p_i45015_2_, int p_i45015_3_, int p_i45015_4_, int p_i45015_5_, int p_i45015_6_, GameSettings.Options... p_i45015_7_)
+    public GuiOptionsRowList(Minecraft mcIn, int left, int right, int top, int bottom, int slotHeight, GameSettings.Options... p_i45015_7_)
     {
-        super(mcIn, p_i45015_2_, p_i45015_3_, p_i45015_4_, p_i45015_5_, p_i45015_6_);
+        super(mcIn, left, right, top, bottom, slotHeight);
         this.centerListVertically = false;
 
         for (int i = 0; i < p_i45015_7_.length; i += 2)
         {
             GameSettings.Options gamesettings$options = p_i45015_7_[i];
             GameSettings.Options gamesettings$options1 = i < p_i45015_7_.length - 1 ? p_i45015_7_[i + 1] : null;
-            GuiButton guibutton = this.createButton(mcIn, p_i45015_2_ / 2 - 155, 0, gamesettings$options);
-            GuiButton guibutton1 = this.createButton(mcIn, p_i45015_2_ / 2 - 155 + 160, 0, gamesettings$options1);
+            GuiButton guibutton = this.createButton(mcIn, left / 2 - 155, 0, gamesettings$options);
+            GuiButton guibutton1 = this.createButton(mcIn, left / 2 - 155 + 160, 0, gamesettings$options1);
             this.options.add(new GuiOptionsRowList.Row(guibutton, guibutton1));
         }
     }
@@ -32,8 +32,8 @@ public class GuiOptionsRowList extends GuiListExtended
         }
         else
         {
-            int i = options.returnEnumOrdinal();
-            return (GuiButton)(options.getEnumFloat() ? new GuiOptionSlider(i, p_148182_2_, p_148182_3_, options) : new GuiOptionButton(i, p_148182_2_, p_148182_3_, options, mcIn.gameSettings.getKeyBinding(options)));
+            int i = options.getOrdinal();
+            return (GuiButton)(options.isFloat() ? new GuiOptionSlider(i, p_148182_2_, p_148182_3_, options) : new GuiOptionButton(i, p_148182_2_, p_148182_3_, options, mcIn.gameSettings.getKeyBinding(options)));
         }
     }
 
@@ -75,18 +75,18 @@ public class GuiOptionsRowList extends GuiListExtended
             this.buttonB = buttonBIn;
         }
 
-        public void func_192634_a(int p_192634_1_, int p_192634_2_, int p_192634_3_, int p_192634_4_, int p_192634_5_, int p_192634_6_, int p_192634_7_, boolean p_192634_8_, float p_192634_9_)
+        public void drawEntry(int slotIndex, int x, int y, int listWidth, int slotHeight, int mouseX, int mouseY, boolean isSelected, float partialTicks)
         {
             if (this.buttonA != null)
             {
-                this.buttonA.yPosition = p_192634_3_;
-                this.buttonA.func_191745_a(this.client, p_192634_6_, p_192634_7_, p_192634_9_);
+                this.buttonA.y = y;
+                this.buttonA.drawButton(this.client, mouseX, mouseY, partialTicks);
             }
 
             if (this.buttonB != null)
             {
-                this.buttonB.yPosition = p_192634_3_;
-                this.buttonB.func_191745_a(this.client, p_192634_6_, p_192634_7_, p_192634_9_);
+                this.buttonB.y = y;
+                this.buttonB.drawButton(this.client, mouseX, mouseY, partialTicks);
             }
         }
 
@@ -96,8 +96,8 @@ public class GuiOptionsRowList extends GuiListExtended
             {
                 if (this.buttonA instanceof GuiOptionButton)
                 {
-                    this.client.gameSettings.setOptionValue(((GuiOptionButton)this.buttonA).returnEnumOptions(), 1);
-                    this.buttonA.displayString = this.client.gameSettings.getKeyBinding(GameSettings.Options.getEnumOptions(this.buttonA.id));
+                    this.client.gameSettings.setOptionValue(((GuiOptionButton)this.buttonA).getOption(), 1);
+                    this.buttonA.displayString = this.client.gameSettings.getKeyBinding(GameSettings.Options.byOrdinal(this.buttonA.id));
                 }
 
                 return true;
@@ -106,8 +106,8 @@ public class GuiOptionsRowList extends GuiListExtended
             {
                 if (this.buttonB instanceof GuiOptionButton)
                 {
-                    this.client.gameSettings.setOptionValue(((GuiOptionButton)this.buttonB).returnEnumOptions(), 1);
-                    this.buttonB.displayString = this.client.gameSettings.getKeyBinding(GameSettings.Options.getEnumOptions(this.buttonB.id));
+                    this.client.gameSettings.setOptionValue(((GuiOptionButton)this.buttonB).getOption(), 1);
+                    this.buttonB.displayString = this.client.gameSettings.getKeyBinding(GameSettings.Options.byOrdinal(this.buttonB.id));
                 }
 
                 return true;
@@ -131,7 +131,7 @@ public class GuiOptionsRowList extends GuiListExtended
             }
         }
 
-        public void func_192633_a(int p_192633_1_, int p_192633_2_, int p_192633_3_, float p_192633_4_)
+        public void updatePosition(int slotIndex, int x, int y, float partialTicks)
         {
         }
     }

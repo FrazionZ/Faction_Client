@@ -51,4 +51,9 @@ public abstract class ModelAdapterBiped extends ModelAdapter
             }
         }
     }
+
+    public String[] getModelRendererNames()
+    {
+        return new String[] {"head", "headwear", "body", "left_arm", "right_arm", "left_leg", "right_leg"};
+    }
 }

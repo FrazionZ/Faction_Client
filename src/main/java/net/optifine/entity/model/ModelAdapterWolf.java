@@ -7,7 +7,7 @@ import net.minecraft.client.model.ModelWolf;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RenderWolf;
 import net.minecraft.entity.passive.EntityWolf;
-import optifine.Reflector;
+import net.optifine.reflect.Reflector;
 
 public class ModelAdapterWolf extends ModelAdapter
 {
@@ -64,6 +64,11 @@ public class ModelAdapterWolf extends ModelAdapter
                 return modelPart.equals("mane") ? (ModelRenderer)Reflector.getFieldValue(modelwolf, Reflector.ModelWolf_mane) : null;
             }
         }
+    }
+
+    public String[] getModelRendererNames()
+    {
+        return new String[] {"head", "body", "leg1", "leg2", "leg3", "leg4", "tail", "mane"};
     }
 
     public IEntityRenderer makeEntityRender(ModelBase modelBase, float shadowSize)

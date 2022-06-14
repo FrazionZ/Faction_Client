@@ -35,7 +35,7 @@ public class GuiSuccessItemsList extends GuiListExtended
 
     public GuiSuccessItemsList(GuiScreen lastScreen, SuccessType type, Minecraft mcIn, int left, int right, int top, int bottom, int slotHeight, int spaceBetween)
     {
-        super(mcIn, left, right, top, bottom, slotHeight, true, spaceBetween);
+        super(mcIn, left, right, top, bottom, slotHeight, spaceBetween);
         this.mc = mcIn;
         this.type = type;
         this.lastScreen = lastScreen;
@@ -63,9 +63,6 @@ public class GuiSuccessItemsList extends GuiListExtended
 
     protected int getScrollBarX()
     {
-        if(this.mc.gameSettings.frazionz_ui) {
-            return super.getScrollBarX();
-        }
         return super.getScrollBarX();
     }
 
@@ -112,7 +109,7 @@ public class GuiSuccessItemsList extends GuiListExtended
                 this.drawListHeader(k, l, tessellator);
             }
 
-            this.func_192638_a(k, l, mouseXIn, mouseYIn, partialTicks);
+            this.drawSelectionBox(k, l, mouseXIn, mouseYIn, partialTicks);
             GlStateManager.disableDepth();
             this.overlayBackground(0, this.top, 255, 255);
             this.overlayBackground(this.bottom, this.height, 255, 255);
@@ -156,11 +153,11 @@ public class GuiSuccessItemsList extends GuiListExtended
             this.successItemButton = new GuiSuccessItemsButton(item, 0, 0, 0, 299, 36, 0, 239, this.background);
         }
 
-        public void func_192634_a(int p_192634_1_, int p_192634_2_, int p_192634_3_, int p_192634_4_, int p_192634_5_, int p_192634_6_, int p_192634_7_, boolean p_192634_8_, float p_192634_9_)
+        public void drawEntry(int slotIndex, int x, int y, int listWidth, int slotHeight, int mouseX, int mouseY, boolean isSelected, float partialTicks)
         {
-            this.successItemButton.xPosition = p_192634_2_ - 3;
-            this.successItemButton.yPosition = p_192634_3_;
-            this.successItemButton.func_191745_a(GuiSuccessItemsList.this.mc, p_192634_6_, p_192634_7_, p_192634_9_);
+            this.successItemButton.x = x - 3;
+            this.successItemButton.y = y;
+            this.successItemButton.drawButton(GuiSuccessItemsList.this.mc, mouseX, mouseY, partialTicks);
         }
 
         public boolean mousePressed(int slotIndex, int mouseX, int mouseY, int mouseEvent, int relativeX, int relativeY)
@@ -177,9 +174,8 @@ public class GuiSuccessItemsList extends GuiListExtended
             this.successItemButton.mouseReleased(x, y);
         }
 
-        public void func_192633_a(int p_192633_1_, int p_192633_2_, int p_192633_3_, float p_192633_4_)
-        {
-        }
+		public void updatePosition(int slotIndex, int x, int y, float partialTicks) {
+		}
 
         public SuccessObj getSuccessObj() {
             return item;
@@ -206,7 +202,7 @@ public class GuiSuccessItemsList extends GuiListExtended
             this.resourceLocation = resourceLocation;
         }
 
-        public void func_191745_a(Minecraft mc, int mouseX, int mouseY, float p_191745_4_)
+        public void drawButton(Minecraft mc, int mouseX, int mouseY, float p_191745_4_)
         {
             if (this.visible)
             {
@@ -217,7 +213,7 @@ public class GuiSuccessItemsList extends GuiListExtended
                 GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
                 GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
 
-                this.hovered = mouseX >= this.xPosition && mouseY >= this.yPosition && mouseX < this.xPosition + this.width && mouseY < this.yPosition + this.height;
+                this.hovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
 
                 mc.getTextureManager().bindTexture(this.resourceLocation);
                 GlStateManager.disableDepth();
@@ -225,12 +221,12 @@ public class GuiSuccessItemsList extends GuiListExtended
                 int j = this.textureY;
                 if (this.hovered)
                     j += this.height;
-                this.drawModalRectWithCustomSizedTexture(this.xPosition, this.yPosition, i, j, this.width, this.height, 512.0F, 512.0F);
+                this.drawModalRectWithCustomSizedTexture(this.x, this.y, i, j, this.width, this.height, 512.0F, 512.0F);
 
                 GlStateManager.enableDepth();
 
-                mc.fontRendererObj.drawScaleString(this.displayString, this.xPosition + 12, this.yPosition + (this.height / 2) - 8, 1.2F, new Color(225, 121, 6));
-                mc.fontRendererObj.drawScaleString(successObj.getDescription(), this.xPosition + 12, this.yPosition + (this.height / 2) + 3, 0.8F, new Color(225, 255, 255));
+                mc.fontRenderer.drawScaleString(this.displayString, this.x + 12, this.y + (this.height / 2) - 8, 1.2F, new Color(225, 121, 6));
+                mc.fontRenderer.drawScaleString(successObj.getDescription(), this.x + 12, this.y + (this.height / 2) + 3, 0.8F, new Color(225, 255, 255));
 
                 /*if(successObj.getImgMinia() != null){
                     GL11.glBindTexture(GL11.GL_TEXTURE_2D, successObj.getImgMinia().getGlTextureId());

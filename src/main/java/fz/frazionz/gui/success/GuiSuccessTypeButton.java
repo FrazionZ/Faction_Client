@@ -23,7 +23,7 @@ public class GuiSuccessTypeButton extends GuiButton {
         this.resourceLocation = resourceLocation;
     }
 
-    public void func_191745_a(Minecraft mc, int mouseX, int mouseY, float p_191745_4_)
+    public void drawButton(Minecraft mc, int mouseX, int mouseY, float p_191745_4_)
     {
         if (this.visible)
         {
@@ -35,8 +35,8 @@ public class GuiSuccessTypeButton extends GuiButton {
             GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
             
             
-        	FontRenderer fontrenderer = mc.fontRendererObj;
-        	this.hovered = mouseX >= this.xPosition && mouseY >= this.yPosition && mouseX < this.xPosition + this.width && mouseY < this.yPosition + this.height;
+        	FontRenderer fontrenderer = mc.fontRenderer;
+        	this.hovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
             mc.getTextureManager().bindTexture(this.resourceLocation);
             GlStateManager.disableDepth();
             int i = this.textureX;
@@ -47,7 +47,7 @@ public class GuiSuccessTypeButton extends GuiButton {
                 j += this.height;
             }
 
-            this.drawModalRectWithCustomSizedTexture(this.xPosition, this.yPosition, i, j, this.width, this.height,  512.0F, 512.0F);
+            this.drawModalRectWithCustomSizedTexture(this.x, this.y, i, j, this.width, this.height,  512.0F, 512.0F);
             
             int k = 14737632;
 
@@ -61,7 +61,7 @@ public class GuiSuccessTypeButton extends GuiButton {
             }
             
             GlStateManager.enableDepth();
-            this.drawString(mc.fontRendererObj, this.displayString, this.xPosition + 12, this.yPosition + (this.height / 2) - 3, 0xFFFFFFFF);
+            this.drawString(mc.fontRenderer, this.displayString, this.x + 12, this.y + (this.height / 2) - 3, 0xFFFFFFFF);
             
         }
     }

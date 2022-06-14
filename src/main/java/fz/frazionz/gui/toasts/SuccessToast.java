@@ -15,21 +15,16 @@ public class SuccessToast implements IToast {
     private final SPacketToast.Icon icon;
 
     private final String title;
-
     private final String subtitle;
 
     private static final ResourceLocation logoFZ = new ResourceLocation("textures/gui/title/background/fz_logo_flat_white.png");
-
     private static final ResourceLocation toastFZ = new ResourceLocation("textures/gui/frazionz/toasts.png");
 
     private long field_193662_f;
-
-    private boolean field_193663_g;
+    private boolean hasPlayedSound;
 
     public static int BACKGROUND_COLOR = -15198184;
-
     public static int FIRST_GRADIENT_COLOR = -34304;
-
     public static int SECOND_GRADIENT_COLOR = -88063;
 
     public SuccessToast(SPacketToast.Icon icon, ITextComponent title, ITextComponent subtitle) {
@@ -38,20 +33,20 @@ public class SuccessToast implements IToast {
         this.subtitle = subtitle.getUnformattedText();
     }
 
-    public IToast.Visibility func_193653_a(GuiToast fzGuiToast, long p_193653_2_) {
-        if (this.field_193663_g) {
-            this.field_193662_f = p_193653_2_;
-            this.field_193663_g = false;
+    public IToast.Visibility draw(GuiToast toastGui, long delta) {
+        if (this.hasPlayedSound) {
+            this.hasPlayedSound = false;
         }
-        fzGuiToast.func_192989_b().getTextureManager().bindTexture(toastFZ);
+        Minecraft mc = toastGui.getMinecraft();
+        mc.getTextureManager().bindTexture(toastFZ);
         GlStateManager.color(1.0F, 1.0F, 1.0F);
-        fzGuiToast.drawTexturedModalRect(0, 0, 0, 32, 160, 32);
+        toastGui.drawTexturedModalRect(0, 0, 0, 32, 160, 32);
         if (this.icon != null) {
-            fzGuiToast.func_192989_b().getTextureManager().bindTexture(toastFZ);
+            mc.getTextureManager().bindTexture(toastFZ);
             GlStateManager.color(1.0F, 1.0F, 1.0F);
-            fzGuiToast.drawTexturedModalRect(this.icon.getxToast(), this.icon.getyToast(), this.icon.getxTexture(), this.icon.getyTexture(), this.icon.getW(), this.icon.getH());
+            toastGui.drawTexturedModalRect(this.icon.getxToast(), this.icon.getyToast(), this.icon.getxTexture(), this.icon.getyTexture(), this.icon.getW(), this.icon.getH());
         } else {
-            fzGuiToast.func_192989_b().getTextureManager().bindTexture(logoFZ);
+        	mc.getTextureManager().bindTexture(logoFZ);
             GuiToast.drawModalRectWithCustomSizedTexture(132, 5, 0.0F, 0.0F, 24, 24, 24.0F, 24.0F);
         }
         String titleSuccess = "Succès Obtenu !";
@@ -61,15 +56,13 @@ public class SuccessToast implements IToast {
             if(keyBinding.getKeyDescription().equalsIgnoreCase("key.advancements"))
                 keySuccess = GameSettings.getKeyDisplayString(keyBinding.getKeyCode());
         String touchToShowSuccess = "Appuyez sur ("+keySuccess+") pour afficher";
-        Minecraft.fontRendererObj.drawScaleString(touchToShowSuccess, 4, 26, 0.7D, Color.WHITE);
-        Minecraft.fontRendererObj.drawScaleString(titleSuccess, 6.0F, 4.0F, 1.2D, Color.ORANGE);
-        if (p_193653_2_ < 2000L) {
-            fzGuiToast.func_192989_b();
-            Minecraft.fontRendererObj.drawScaleString(this.title, 6.0F, 14.0F, 0.8D, Color.WHITE);
+        mc.fontRenderer.drawScaleString(touchToShowSuccess, 4, 26, 0.7D, Color.WHITE);
+        mc.fontRenderer.drawScaleString(titleSuccess, 6.0F, 4.0F, 1.2D, Color.ORANGE);
+        if (delta < 2000L) {
+        	mc.fontRenderer.drawScaleString(this.title, 6.0F, 14.0F, 0.8D, Color.WHITE);
         } else {
-            fzGuiToast.func_192989_b();
-            Minecraft.fontRendererObj.drawScaleString(this.subtitle, 6.0F, 14.0F, 0.8D, Color.WHITE);
+        	mc.fontRenderer.drawScaleString(this.subtitle, 6.0F, 14.0F, 0.8D, Color.WHITE);
         }
-        return (p_193653_2_ >= 5000L) ? IToast.Visibility.HIDE : IToast.Visibility.SHOW;
+        return (delta >= 5000L) ? IToast.Visibility.HIDE : IToast.Visibility.SHOW;
     }
 }

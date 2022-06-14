@@ -23,7 +23,7 @@ public class Font {
     protected int fontHeight = -1;
     protected int charOffset = 0;
     
-    private float imgSize = 1048;
+    private float imgSize;
     private int size;
 
 	private ResourceLocation resourceLocation;
@@ -31,6 +31,7 @@ public class Font {
     // font : HindVadodara-Bold.tff
    
     public Font(ResourceLocation resourceLocation, float size) {
+    	this.imgSize = size * (32 - size/3 - 24/size);
     	this.size = (int) size;
     	this.resourceLocation = resourceLocation;
         java.awt.Font tmp;
@@ -121,7 +122,7 @@ public class Font {
 
             positionX += charData.width;
         }
-
+        
         return bufferedImage;
     }
 
@@ -198,15 +199,6 @@ public class Font {
         }
     }
 
-    public java.awt.Font getFont() {
-        return this.font;
-    }
-
-    public void setFont(java.awt.Font font) {
-        this.font = font;
-        tex = setupTexture(font, this.antiAlias, this.fractionalMetrics, this.charData);
-    }
-
     protected static class CharData {
         public int width;
         public int height;
@@ -216,9 +208,5 @@ public class Font {
     
     public int getSize() {
 		return size;
-	}
-    
-    public void setSize(int size) {
-		this.size = size;
 	}
 }

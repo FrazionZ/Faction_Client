@@ -1,11 +1,18 @@
 package net.minecraft.client.renderer;
 
+import java.util.HashMap;
+import java.util.Map;
 import javax.annotation.Nullable;
 import net.minecraft.client.renderer.chunk.IRenderChunkFactory;
 import net.minecraft.client.renderer.chunk.RenderChunk;
+import net.minecraft.src.Config;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.optifine.render.VboRegion;
 
 public class ViewFrustum
 {
@@ -15,6 +22,7 @@ public class ViewFrustum
     protected int countChunksX;
     protected int countChunksZ;
     public RenderChunk[] renderChunks;
+    private Map<ChunkPos, VboRegion[]> mapVboRegions = new HashMap<ChunkPos, VboRegion[]>();
 
     public ViewFrustum(World worldIn, int renderDistanceChunks, RenderGlobal renderGlobalIn, IRenderChunkFactory renderChunkFactory)
     {
@@ -39,7 +47,25 @@ public class ViewFrustum
                     int j1 = (i1 * this.countChunksY + l) * this.countChunksX + k;
                     this.renderChunks[j1] = renderChunkFactory.create(this.world, this.renderGlobal, j++);
                     this.renderChunks[j1].setPosition(k * 16, l * 16, i1 * 16);
+
+                    if (Config.isVbo() && Config.isRenderRegions())
+                    {
+                        this.updateVboRegion(this.renderChunks[j1]);
+                    }
                 }
+            }
+        }
+
+        for (int k1 = 0; k1 < this.renderChunks.length; ++k1)
+        {
+            RenderChunk renderchunk1 = this.renderChunks[k1];
+
+            for (int l1 = 0; l1 < EnumFacing.VALUES.length; ++l1)
+            {
+                EnumFacing enumfacing = EnumFacing.VALUES[l1];
+                BlockPos blockpos = renderchunk1.getBlockPosOffset16(enumfacing);
+                RenderChunk renderchunk = this.getRenderChunk(blockpos);
+                renderchunk1.setRenderChunkNeighbour(enumfacing, renderchunk);
             }
         }
     }
@@ -50,6 +76,8 @@ public class ViewFrustum
         {
             renderchunk.deleteGlResources();
         }
+
+        this.deleteVboRegions();
     }
 
     protected void setCountChunksXYZ(int renderDistanceChunks)
@@ -97,14 +125,14 @@ public class ViewFrustum
         return i - j / p_178157_2_ * p_178157_2_;
     }
 
-    public void markBlocksForUpdate(int p_187474_1_, int p_187474_2_, int p_187474_3_, int p_187474_4_, int p_187474_5_, int p_187474_6_, boolean p_187474_7_)
+    public void markBlocksForUpdate(int minX, int minY, int minZ, int maxX, int maxY, int maxZ, boolean updateImmediately)
     {
-        int i = MathHelper.intFloorDiv(p_187474_1_, 16);
-        int j = MathHelper.intFloorDiv(p_187474_2_, 16);
-        int k = MathHelper.intFloorDiv(p_187474_3_, 16);
-        int l = MathHelper.intFloorDiv(p_187474_4_, 16);
-        int i1 = MathHelper.intFloorDiv(p_187474_5_, 16);
-        int j1 = MathHelper.intFloorDiv(p_187474_6_, 16);
+        int i = MathHelper.intFloorDiv(minX, 16);
+        int j = MathHelper.intFloorDiv(minY, 16);
+        int k = MathHelper.intFloorDiv(minZ, 16);
+        int l = MathHelper.intFloorDiv(maxX, 16);
+        int i1 = MathHelper.intFloorDiv(maxY, 16);
+        int j1 = MathHelper.intFloorDiv(maxZ, 16);
 
         for (int k1 = i; k1 <= l; ++k1)
         {
@@ -135,7 +163,7 @@ public class ViewFrustum
 
                     int i3 = (l2 * this.countChunksY + j2) * this.countChunksX + l1;
                     RenderChunk renderchunk = this.renderChunks[i3];
-                    renderchunk.setNeedsUpdate(p_187474_7_);
+                    renderchunk.setNeedsUpdate(updateImmediately);
                 }
             }
         }
@@ -171,5 +199,59 @@ public class ViewFrustum
         {
             return null;
         }
+    }
+
+    private void updateVboRegion(RenderChunk p_updateVboRegion_1_)
+    {
+        BlockPos blockpos = p_updateVboRegion_1_.getPosition();
+        int i = blockpos.getX() >> 8 << 8;
+        int j = blockpos.getZ() >> 8 << 8;
+        ChunkPos chunkpos = new ChunkPos(i, j);
+        BlockRenderLayer[] ablockrenderlayer = BlockRenderLayer.values();
+        VboRegion[] avboregion = this.mapVboRegions.get(chunkpos);
+
+        if (avboregion == null)
+        {
+            avboregion = new VboRegion[ablockrenderlayer.length];
+
+            for (int k = 0; k < ablockrenderlayer.length; ++k)
+            {
+                avboregion[k] = new VboRegion(ablockrenderlayer[k]);
+            }
+
+            this.mapVboRegions.put(chunkpos, avboregion);
+        }
+
+        for (int l = 0; l < ablockrenderlayer.length; ++l)
+        {
+            VboRegion vboregion = avboregion[l];
+
+            if (vboregion != null)
+            {
+                p_updateVboRegion_1_.getVertexBufferByLayer(l).setVboRegion(vboregion);
+            }
+        }
+    }
+
+    public void deleteVboRegions()
+    {
+        for (ChunkPos chunkpos : this.mapVboRegions.keySet())
+        {
+            VboRegion[] avboregion = this.mapVboRegions.get(chunkpos);
+
+            for (int i = 0; i < avboregion.length; ++i)
+            {
+                VboRegion vboregion = avboregion[i];
+
+                if (vboregion != null)
+                {
+                    vboregion.deleteGlBuffers();
+                }
+
+                avboregion[i] = null;
+            }
+        }
+
+        this.mapVboRegions.clear();
     }
 }

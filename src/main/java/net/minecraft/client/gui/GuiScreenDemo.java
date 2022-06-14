@@ -29,7 +29,7 @@ public class GuiScreenDemo extends GuiScreen
     /**
      * Called by the controls from the buttonList when activated. (Mouse pressed for buttons)
      */
-    protected void actionPerformed(GuiButton button, int mouseButton) throws IOException
+    protected void actionPerformed(GuiButton button, int keyCode) throws IOException
     {
         switch (button.id)
         {
@@ -56,7 +56,12 @@ public class GuiScreenDemo extends GuiScreen
     }
 
     /**
-     * Draws either a gradient over the background screen (when it exists) or a flat gradient over background.png
+     * Draws either a gradient over the background world (if there is a world), or a dirt screen if there is no world.
+     *  
+     * This method should usually be called before doing any other rendering; otherwise weird results will occur if
+     * there is no world, and the world will not be tinted if there is.
+     *  
+     * Do not call after having already done other rendering, as it will draw over it.
      */
     public void drawDefaultBackground()
     {
@@ -76,14 +81,14 @@ public class GuiScreenDemo extends GuiScreen
         this.drawDefaultBackground();
         int i = (this.width - 248) / 2 + 10;
         int j = (this.height - 166) / 2 + 8;
-        this.fontRendererObj.drawString(I18n.format("demo.help.title"), i, j, 2039583);
+        this.fontRenderer.drawString(I18n.format("demo.help.title"), i, j, 2039583);
         j = j + 12;
         GameSettings gamesettings = this.mc.gameSettings;
-        this.fontRendererObj.drawString(I18n.format("demo.help.movementShort", GameSettings.getKeyDisplayString(gamesettings.keyBindForward.getKeyCode()), GameSettings.getKeyDisplayString(gamesettings.keyBindLeft.getKeyCode()), GameSettings.getKeyDisplayString(gamesettings.keyBindBack.getKeyCode()), GameSettings.getKeyDisplayString(gamesettings.keyBindRight.getKeyCode())), i, j, 5197647);
-        this.fontRendererObj.drawString(I18n.format("demo.help.movementMouse"), i, j + 12, 5197647);
-        this.fontRendererObj.drawString(I18n.format("demo.help.jump", GameSettings.getKeyDisplayString(gamesettings.keyBindJump.getKeyCode())), i, j + 24, 5197647);
-        this.fontRendererObj.drawString(I18n.format("demo.help.inventory", GameSettings.getKeyDisplayString(gamesettings.keyBindInventory.getKeyCode())), i, j + 36, 5197647);
-        this.fontRendererObj.drawSplitString(I18n.format("demo.help.fullWrapped"), i, j + 68, 218, 2039583);
+        this.fontRenderer.drawString(I18n.format("demo.help.movementShort", GameSettings.getKeyDisplayString(gamesettings.keyBindForward.getKeyCode()), GameSettings.getKeyDisplayString(gamesettings.keyBindLeft.getKeyCode()), GameSettings.getKeyDisplayString(gamesettings.keyBindBack.getKeyCode()), GameSettings.getKeyDisplayString(gamesettings.keyBindRight.getKeyCode())), i, j, 5197647);
+        this.fontRenderer.drawString(I18n.format("demo.help.movementMouse"), i, j + 12, 5197647);
+        this.fontRenderer.drawString(I18n.format("demo.help.jump", GameSettings.getKeyDisplayString(gamesettings.keyBindJump.getKeyCode())), i, j + 24, 5197647);
+        this.fontRenderer.drawString(I18n.format("demo.help.inventory", GameSettings.getKeyDisplayString(gamesettings.keyBindInventory.getKeyCode())), i, j + 36, 5197647);
+        this.fontRenderer.drawSplitString(I18n.format("demo.help.fullWrapped"), i, j + 68, 218, 2039583);
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
 }

@@ -38,47 +38,47 @@ public class ItemSkull extends Item
     /**
      * Called when a Block is right-clicked with this Item
      */
-    public EnumActionResult onItemUse(EntityPlayer stack, World playerIn, BlockPos worldIn, EnumHand pos, EnumFacing hand, float facing, float hitX, float hitY)
+    public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
-        if (hand == EnumFacing.DOWN)
+        if (facing == EnumFacing.DOWN)
         {
             return EnumActionResult.FAIL;
         }
         else
         {
-            IBlockState iblockstate = playerIn.getBlockState(worldIn);
+            IBlockState iblockstate = worldIn.getBlockState(pos);
             Block block = iblockstate.getBlock();
-            boolean flag = block.isReplaceable(playerIn, worldIn);
+            boolean flag = block.isReplaceable(worldIn, pos);
 
             if (!flag)
             {
-                if (!playerIn.getBlockState(worldIn).getMaterial().isSolid())
+                if (!worldIn.getBlockState(pos).getMaterial().isSolid())
                 {
                     return EnumActionResult.FAIL;
                 }
 
-                worldIn = worldIn.offset(hand);
+                pos = pos.offset(facing);
             }
 
-            ItemStack itemstack = stack.getHeldItem(pos);
+            ItemStack itemstack = player.getHeldItem(hand);
 
-            if (stack.canPlayerEdit(worldIn, hand, itemstack) && Blocks.SKULL.canPlaceBlockAt(playerIn, worldIn))
+            if (player.canPlayerEdit(pos, facing, itemstack) && Blocks.SKULL.canPlaceBlockAt(worldIn, pos))
             {
-                if (playerIn.isRemote)
+                if (worldIn.isRemote)
                 {
                     return EnumActionResult.SUCCESS;
                 }
                 else
                 {
-                    playerIn.setBlockState(worldIn, Blocks.SKULL.getDefaultState().withProperty(BlockSkull.FACING, hand), 11);
+                    worldIn.setBlockState(pos, Blocks.SKULL.getDefaultState().withProperty(BlockSkull.FACING, facing), 11);
                     int i = 0;
 
-                    if (hand == EnumFacing.UP)
+                    if (facing == EnumFacing.UP)
                     {
-                        i = MathHelper.floor((double)(stack.rotationYaw * 16.0F / 360.0F) + 0.5D) & 15;
+                        i = MathHelper.floor((double)(player.rotationYaw * 16.0F / 360.0F) + 0.5D) & 15;
                     }
 
-                    TileEntity tileentity = playerIn.getTileEntity(worldIn);
+                    TileEntity tileentity = worldIn.getTileEntity(pos);
 
                     if (tileentity instanceof TileEntitySkull)
                     {
@@ -130,15 +130,15 @@ public class ItemSkull extends Item
                         }
 
                         tileentityskull.setSkullRotation(i);
-                        Blocks.SKULL.checkWitherSpawn(playerIn, worldIn, tileentityskull);
+                        Blocks.SKULL.checkWitherSpawn(worldIn, pos, tileentityskull);
                     }
 
-                    if (stack instanceof EntityPlayerMP)
+                    if (player instanceof EntityPlayerMP)
                     {
-                        CriteriaTriggers.field_193137_x.func_193173_a((EntityPlayerMP)stack, worldIn, itemstack);
+                        CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP)player, pos, itemstack);
                     }
 
-                    itemstack.substract(1);
+                    itemstack.shrink(1);
                     return EnumActionResult.SUCCESS;
                 }
             }
@@ -152,13 +152,13 @@ public class ItemSkull extends Item
     /**
      * returns a list of items with the same ID, but different meta (eg: dye returns 16 items)
      */
-    public void getSubItems(CreativeTabs itemIn, NonNullList<ItemStack> tab)
+    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items)
     {
-        if (this.func_194125_a(itemIn))
+        if (this.isInCreativeTab(tab))
         {
             for (int i = 0; i < SKULL_TYPES.length; ++i)
             {
-                tab.add(new ItemStack(this, 1, i));
+                items.add(new ItemStack(this, 1, i));
             }
         }
     }
@@ -176,7 +176,7 @@ public class ItemSkull extends Item
      * Returns the unlocalized name of this item. This version accepts an ItemStack so different stacks can have
      * different names based on their damage or NBT.
      */
-    public String getUnlocalizedName(ItemStack stack)
+    public String getTranslationKey(ItemStack stack)
     {
         int i = stack.getMetadata();
 
@@ -185,7 +185,7 @@ public class ItemSkull extends Item
             i = 0;
         }
 
-        return super.getUnlocalizedName() + "." + SKULL_TYPES[i];
+        return super.getTranslationKey() + "." + SKULL_TYPES[i];
     }
 
     public String getItemStackDisplayName(ItemStack stack)
@@ -239,7 +239,7 @@ public class ItemSkull extends Item
         if (nbt.hasKey("SkullOwner", 8) && !StringUtils.isBlank(nbt.getString("SkullOwner")))
         {
             GameProfile gameprofile = new GameProfile((UUID)null, nbt.getString("SkullOwner"));
-            gameprofile = TileEntitySkull.updateGameprofile(gameprofile);
+            gameprofile = TileEntitySkull.updateGameProfile(gameprofile);
             nbt.setTag("SkullOwner", NBTUtil.writeGameProfile(new NBTTagCompound(), gameprofile));
             return true;
         }

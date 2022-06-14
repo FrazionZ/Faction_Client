@@ -53,25 +53,34 @@ public class TileEntityFlowerPot extends TileEntity
     }
 
     @Nullable
+
+    /**
+     * Retrieves packet to send to the client whenever this Tile Entity is resynced via World.notifyBlockUpdate. For
+     * modded TE's, this packet comes back to you clientside in {@link #onDataPacket}
+     */
     public SPacketUpdateTileEntity getUpdatePacket()
     {
         return new SPacketUpdateTileEntity(this.pos, 5, this.getUpdateTag());
     }
 
+    /**
+     * Get an NBT compound to sync to the client with SPacketChunkData, used for initial loading of the chunk or when
+     * many blocks change at once. This compound comes back to you clientside in {@link handleUpdateTag}
+     */
     public NBTTagCompound getUpdateTag()
     {
         return this.writeToNBT(new NBTTagCompound());
     }
 
-    public void func_190614_a(ItemStack p_190614_1_)
+    public void setItemStack(ItemStack stack)
     {
-        this.flowerPotItem = p_190614_1_.getItem();
-        this.flowerPotData = p_190614_1_.getMetadata();
+        this.flowerPotItem = stack.getItem();
+        this.flowerPotData = stack.getMetadata();
     }
 
     public ItemStack getFlowerItemStack()
     {
-        return this.flowerPotItem == null ? ItemStack.field_190927_a : new ItemStack(this.flowerPotItem, 1, this.flowerPotData);
+        return this.flowerPotItem == null ? ItemStack.EMPTY : new ItemStack(this.flowerPotItem, 1, this.flowerPotData);
     }
 
     @Nullable

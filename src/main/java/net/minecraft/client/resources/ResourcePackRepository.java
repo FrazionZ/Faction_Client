@@ -55,12 +55,12 @@ public class ResourcePackRepository
         }
     };
     private static final Pattern SHA1 = Pattern.compile("^[a-fA-F0-9]{40}$");
-    private static final ResourceLocation field_191400_f = new ResourceLocation("textures/misc/unknown_pack.png");
+    private static final ResourceLocation UNKNOWN_PACK_TEXTURE = new ResourceLocation("textures/misc/unknown_pack.png");
     private final File dirResourcepacks;
     public final IResourcePack rprDefaultResourcePack;
     private final File dirServerResourcepacks;
     public final MetadataSerializer rprMetadataSerializer;
-    private IResourcePack resourcePackInstance;
+    private IResourcePack serverResourcePack;
     private final ReentrantLock lock = new ReentrantLock();
     private ListenableFuture<Object> downloadingPacks;
     private List<ResourcePackRepository.Entry> repositoryEntriesAll = Lists.<ResourcePackRepository.Entry>newArrayList();
@@ -126,7 +126,7 @@ public class ResourcePackRepository
         return this.dirResourcepacks.isDirectory() ? Arrays.asList(this.dirResourcepacks.listFiles(RESOURCE_PACK_FILTER)) : Collections.emptyList();
     }
 
-    private IResourcePack func_191399_b(File p_191399_1_)
+    private IResourcePack getResourcePack(File p_191399_1_)
     {
         IResourcePack iresourcepack;
 
@@ -200,9 +200,9 @@ public class ResourcePackRepository
     @Nullable
     public ResourcePackRepository.Entry getResourcePackEntry()
     {
-        if (this.resourcePackInstance != null)
+        if (this.serverResourcePack != null)
         {
-            ResourcePackRepository.Entry resourcepackrepository$entry = new ResourcePackRepository.Entry(this.resourcePackInstance);
+            ResourcePackRepository.Entry resourcepackrepository$entry = new ResourcePackRepository.Entry(this.serverResourcePack);
 
             try
             {
@@ -254,7 +254,7 @@ public class ResourcePackRepository
             {
                 if (this.checkHash(s1, file1))
                 {
-                    ListenableFuture listenablefuture2 = this.setResourcePackInstance(file1);
+                    ListenableFuture listenablefuture2 = this.setServerResourcePack(file1);
                     ListenableFuture listenablefuture3 = listenablefuture2;
                     return listenablefuture3;
                 }
@@ -282,7 +282,7 @@ public class ResourcePackRepository
                 {
                     if (ResourcePackRepository.this.checkHash(s1, file1))
                     {
-                        ResourcePackRepository.this.setResourcePackInstance(file1);
+                        ResourcePackRepository.this.setServerResourcePack(file1);
                         settablefuture.set((Object)null);
                     }
                     else
@@ -309,30 +309,40 @@ public class ResourcePackRepository
 
     private boolean checkHash(String p_190113_1_, File p_190113_2_)
     {
+        InputStream inputstream = null;
+        boolean flag;
+
         try
         {
-            String s = DigestUtils.sha1Hex((InputStream)(new FileInputStream(p_190113_2_)));
+            String s = DigestUtils.sha1Hex(inputstream = new FileInputStream(p_190113_2_));
 
-            if (p_190113_1_.isEmpty())
+            if (!p_190113_1_.isEmpty())
             {
-                LOGGER.info("Found file {} without verification hash", (Object)p_190113_2_);
-                return true;
+                if (s.toLowerCase(java.util.Locale.ROOT).equals(p_190113_1_.toLowerCase(java.util.Locale.ROOT)))
+                {
+                    LOGGER.info("Found file {} matching requested hash {}", p_190113_2_, p_190113_1_);
+                    flag = true;
+                    return flag;
+                }
+
+                LOGGER.warn("File {} had wrong hash (expected {}, found {}).", p_190113_2_, p_190113_1_, s);
+                return false;
             }
 
-            if (s.toLowerCase(java.util.Locale.ROOT).equals(p_190113_1_.toLowerCase(java.util.Locale.ROOT)))
-            {
-                LOGGER.info("Found file {} matching requested hash {}", p_190113_2_, p_190113_1_);
-                return true;
-            }
-
-            LOGGER.warn("File {} had wrong hash (expected {}, found {}).", p_190113_2_, p_190113_1_, s);
+            LOGGER.info("Found file {} without verification hash", (Object)p_190113_2_);
+            flag = true;
         }
         catch (IOException ioexception1)
         {
             LOGGER.warn("File {} couldn't be hashed.", p_190113_2_, ioexception1);
+            return false;
+        }
+        finally
+        {
+            IOUtils.closeQuietly(inputstream);
         }
 
-        return false;
+        return flag;
     }
 
     private boolean validatePack(File p_190112_1_)
@@ -377,7 +387,7 @@ public class ResourcePackRepository
         }
     }
 
-    public ListenableFuture<Object> setResourcePackInstance(File resourceFile)
+    public ListenableFuture<Object> setServerResourcePack(File resourceFile)
     {
         if (!this.validatePack(resourceFile))
         {
@@ -385,7 +395,7 @@ public class ResourcePackRepository
         }
         else
         {
-            this.resourcePackInstance = new FileResourcePack(resourceFile);
+            this.serverResourcePack = new FileResourcePack(resourceFile);
             return Minecraft.getMinecraft().scheduleResourcesRefresh();
         }
     }
@@ -395,9 +405,9 @@ public class ResourcePackRepository
     /**
      * Getter for the IResourcePack instance associated with this ResourcePackRepository
      */
-    public IResourcePack getResourcePackInstance()
+    public IResourcePack getServerResourcePack()
     {
-        return this.resourcePackInstance;
+        return this.serverResourcePack;
     }
 
     public void clearResourcePack()
@@ -413,9 +423,9 @@ public class ResourcePackRepository
 
             this.downloadingPacks = null;
 
-            if (this.resourcePackInstance != null)
+            if (this.serverResourcePack != null)
             {
-                this.resourcePackInstance = null;
+                this.serverResourcePack = null;
                 Minecraft.getMinecraft().scheduleResourcesRefresh();
             }
         }
@@ -433,7 +443,7 @@ public class ResourcePackRepository
 
         private Entry(File resourcePackFileIn)
         {
-            this(ResourcePackRepository.this.func_191399_b(resourcePackFileIn));
+            this(ResourcePackRepository.this.getResourcePack(resourcePackFileIn));
         }
 
         private Entry(IResourcePack reResourcePackIn)
@@ -466,7 +476,7 @@ public class ResourcePackRepository
                 {
                     try
                     {
-                        bufferedimage = TextureUtil.readBufferedImage(Minecraft.getMinecraft().getResourceManager().getResource(ResourcePackRepository.field_191400_f).getInputStream());
+                        bufferedimage = TextureUtil.readBufferedImage(Minecraft.getMinecraft().getResourceManager().getResource(ResourcePackRepository.UNKNOWN_PACK_TEXTURE).getInputStream());
                     }
                     catch (IOException ioexception)
                     {

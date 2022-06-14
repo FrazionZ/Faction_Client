@@ -7,8 +7,8 @@ import net.minecraft.client.model.ModelShulkerBullet;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RenderShulkerBullet;
 import net.minecraft.entity.projectile.EntityShulkerBullet;
-import optifine.Config;
-import optifine.Reflector;
+import net.minecraft.src.Config;
+import net.optifine.reflect.Reflector;
 
 public class ModelAdapterShulkerBullet extends ModelAdapter
 {
@@ -33,6 +33,11 @@ public class ModelAdapterShulkerBullet extends ModelAdapter
             ModelShulkerBullet modelshulkerbullet = (ModelShulkerBullet)model;
             return modelPart.equals("bullet") ? modelshulkerbullet.renderer : null;
         }
+    }
+
+    public String[] getModelRendererNames()
+    {
+        return new String[] {"bullet"};
     }
 
     public IEntityRenderer makeEntityRender(ModelBase modelBase, float shadowSize)

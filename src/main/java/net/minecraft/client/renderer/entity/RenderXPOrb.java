@@ -7,10 +7,10 @@ import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.item.EntityXPOrb;
+import net.minecraft.src.Config;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
-import optifine.Config;
-import optifine.CustomColors;
+import net.optifine.CustomColors;
 
 public class RenderXPOrb extends Render<EntityXPOrb>
 {

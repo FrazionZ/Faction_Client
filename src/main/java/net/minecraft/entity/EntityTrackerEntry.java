@@ -2,7 +2,6 @@ package net.minecraft.entity;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -11,13 +10,15 @@ import org.apache.logging.log4j.Logger;
 
 import com.google.common.collect.Sets;
 
+import fz.frazionz.entity.item.EntityBigXp;
+import fz.frazionz.entity.item.EntityDynamite;
+import fz.frazionz.entity.item.EntityZTNTPrimed;
+import fz.frazionz.entity.projectile.EntityDynamiteArrow;
 import net.minecraft.block.Block;
 import net.minecraft.entity.ai.attributes.AttributeMap;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.item.EntityArmorStand;
-import net.minecraft.entity.item.EntityBigXp;
 import net.minecraft.entity.item.EntityBoat;
-import net.minecraft.entity.item.EntityDynamite;
 import net.minecraft.entity.item.EntityEnderCrystal;
 import net.minecraft.entity.item.EntityEnderEye;
 import net.minecraft.entity.item.EntityEnderPearl;
@@ -30,13 +31,11 @@ import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.item.EntityPainting;
 import net.minecraft.entity.item.EntityTNTPrimed;
 import net.minecraft.entity.item.EntityXPOrb;
-import net.minecraft.entity.item.EntityZTNTPrimed;
 import net.minecraft.entity.passive.IAnimals;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.entity.projectile.EntityDragonFireball;
-import net.minecraft.entity.projectile.EntityDynamiteArrow;
 import net.minecraft.entity.projectile.EntityEgg;
 import net.minecraft.entity.projectile.EntityEvokerFangs;
 import net.minecraft.entity.projectile.EntityFireball;
@@ -81,7 +80,11 @@ public class EntityTrackerEntry
 
     /** The entity that this EntityTrackerEntry tracks. */
     private final Entity trackedEntity;
+
+    /** Track distance in blocks */
     private final int range;
+
+    /** Max track distance, in blocks */
     private int maxRange;
 
     /** check for sync when ticks % updateFrequency==0 */
@@ -200,7 +203,7 @@ public class EntityTrackerEntry
                 }
             }
 
-            this.sendMetadataToAllAssociatedPlayers();
+            this.sendMetadata();
         }
 
         if (this.updateCounter % this.updateFrequency == 0 || this.trackedEntity.isAirBorne || this.trackedEntity.getDataManager().isDirty())
@@ -221,7 +224,7 @@ public class EntityTrackerEntry
                 this.encodedPosX = EntityTracker.getPositionLong(this.trackedEntity.posX);
                 this.encodedPosY = EntityTracker.getPositionLong(this.trackedEntity.posY);
                 this.encodedPosZ = EntityTracker.getPositionLong(this.trackedEntity.posZ);
-                this.sendMetadataToAllAssociatedPlayers();
+                this.sendMetadata();
                 this.ridingEntity = true;
             }
             else
@@ -263,7 +266,8 @@ public class EntityTrackerEntry
                     {
                         this.onGround = this.trackedEntity.onGround;
                         this.ticksSinceLastForcedTeleport = 0;
-                        // FRAZIONZ EDIT ARROW // this.resetPlayerVisibility();
+                        // FrazionZ Edit Arrow
+                        //this.resetPlayerVisibility();
                         packet1 = new SPacketEntityTeleport(this.trackedEntity);
                     }
                 }
@@ -297,7 +301,7 @@ public class EntityTrackerEntry
                     this.sendPacketToTrackedPlayers(packet1);
                 }
 
-                this.sendMetadataToAllAssociatedPlayers();
+                this.sendMetadata();
 
                 if (flag)
                 {
@@ -339,7 +343,7 @@ public class EntityTrackerEntry
      * Sends the entity metadata (DataWatcher) and attributes to all players tracking this entity, including the entity
      * itself if a player.
      */
-    private void sendMetadataToAllAssociatedPlayers()
+    private void sendMetadata()
     {
         EntityDataManager entitydatamanager = this.trackedEntity.getDataManager();
 
@@ -351,7 +355,7 @@ public class EntityTrackerEntry
         if (this.trackedEntity instanceof EntityLivingBase)
         {
             AttributeMap attributemap = (AttributeMap)((EntityLivingBase)this.trackedEntity).getAttributeMap();
-            Set<IAttributeInstance> set = attributemap.getAttributeInstanceSet();
+            Set<IAttributeInstance> set = attributemap.getDirtyInstances();
 
             if (!set.isEmpty())
             {
@@ -425,7 +429,7 @@ public class EntityTrackerEntry
                     {
                         AttributeMap attributemap = (AttributeMap)((EntityLivingBase)this.trackedEntity).getAttributeMap();
                         Collection<IAttributeInstance> collection = attributemap.getWatchedAttributes();
-                        
+
                         if (!collection.isEmpty())
                         {
                             playerMP.connection.sendPacket(new SPacketEntityProperties(this.trackedEntity.getEntityId(), collection));
@@ -452,7 +456,7 @@ public class EntityTrackerEntry
                         {
                             ItemStack itemstack = ((EntityLivingBase)this.trackedEntity).getItemStackFromSlot(entityequipmentslot);
 
-                            if (!itemstack.func_190926_b())
+                            if (!itemstack.isEmpty())
                             {
                                 playerMP.connection.sendPacket(new SPacketEntityEquipment(this.trackedEntity.getEntityId(), entityequipmentslot, itemstack));
                             }
@@ -562,7 +566,7 @@ public class EntityTrackerEntry
         }
         else if (this.trackedEntity instanceof EntityFishHook)
         {
-            Entity entity2 = ((EntityFishHook)this.trackedEntity).func_190619_l();
+            Entity entity2 = ((EntityFishHook)this.trackedEntity).getAngler();
             return new SPacketSpawnObject(this.trackedEntity, 90, entity2 == null ? this.trackedEntity.getEntityId() : entity2.getEntityId());
         }
         else if (this.trackedEntity instanceof EntitySpectralArrow)
@@ -591,23 +595,6 @@ public class EntityTrackerEntry
         {
             return new SPacketSpawnObject(this.trackedEntity, 75);
         }
-        
-        else if (this.trackedEntity instanceof EntityBigXp)
-        {
-            return new SPacketSpawnObject(this.trackedEntity, 100);
-        }
-        
-        else if (this.trackedEntity instanceof EntityDynamite)
-        {
-            return new SPacketSpawnObject(this.trackedEntity, 101);
-        }
-        
-        else if (this.trackedEntity instanceof EntityDynamiteArrow)
-        {
-            Entity entity1 = ((EntityDynamiteArrow)this.trackedEntity).shootingEntity;
-            return new SPacketSpawnObject(this.trackedEntity, 102, 1 + (entity1 == null ? this.trackedEntity.getEntityId() : entity1.getEntityId()));
-        }
-        
         else if (this.trackedEntity instanceof EntityEnderPearl)
         {
             return new SPacketSpawnObject(this.trackedEntity, 65);
@@ -673,10 +660,6 @@ public class EntityTrackerEntry
         {
             return new SPacketSpawnObject(this.trackedEntity, 50);
         }
-        else if (this.trackedEntity instanceof EntityZTNTPrimed)
-        {
-            return new SPacketSpawnObject(this.trackedEntity, 103);
-        }
         else if (this.trackedEntity instanceof EntityEnderCrystal)
         {
             return new SPacketSpawnObject(this.trackedEntity, 51);
@@ -704,6 +687,25 @@ public class EntityTrackerEntry
         {
             return new SPacketSpawnObject(this.trackedEntity, 3);
         }
+        else if (this.trackedEntity instanceof EntityBigXp)
+        {
+            return new SPacketSpawnObject(this.trackedEntity, 100);
+        }
+        
+        else if (this.trackedEntity instanceof EntityDynamite)
+        {
+            return new SPacketSpawnObject(this.trackedEntity, 101);
+        }
+        
+        else if (this.trackedEntity instanceof EntityDynamiteArrow)
+        {
+            Entity entity1 = ((EntityDynamiteArrow)this.trackedEntity).shootingEntity;
+            return new SPacketSpawnObject(this.trackedEntity, 102, 1 + (entity1 == null ? this.trackedEntity.getEntityId() : entity1.getEntityId()));
+        }
+        else if (this.trackedEntity instanceof EntityZTNTPrimed)
+        {
+            return new SPacketSpawnObject(this.trackedEntity, 103);
+        }
         else
         {
             throw new IllegalArgumentException("Don't know how to add " + this.trackedEntity.getClass() + "!");
@@ -728,6 +730,11 @@ public class EntityTrackerEntry
         return this.trackedEntity;
     }
 
+    /**
+     * Sets the "max track distance" for this entity
+     *  
+     * @param maxRangeIn Max track distance, in blocks
+     */
     public void setMaxRange(int maxRangeIn)
     {
         this.maxRange = maxRangeIn;

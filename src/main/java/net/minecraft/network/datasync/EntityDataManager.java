@@ -13,8 +13,11 @@ import javax.annotation.Nullable;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.entity.Entity;
+import net.minecraft.init.Biomes;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ReportedException;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.biome.Biome;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -30,6 +33,8 @@ public class EntityDataManager
     private final ReadWriteLock lock = new ReentrantReadWriteLock();
     private boolean empty = true;
     private boolean dirty;
+    public Biome spawnBiome = Biomes.PLAINS;
+    public BlockPos spawnPosition = BlockPos.ORIGIN;
 
     public EntityDataManager(Entity entityIn)
     {
@@ -208,7 +213,7 @@ public class EntityDataManager
                         list = Lists. < EntityDataManager.DataEntry<? >> newArrayList();
                     }
 
-                    list.add(dataentry.func_192735_d());
+                    list.add(dataentry.copy());
                 }
             }
 
@@ -245,7 +250,7 @@ public class EntityDataManager
                 list = Lists. < EntityDataManager.DataEntry<? >> newArrayList();
             }
 
-            list.add(dataentry.func_192735_d());
+            list.add(dataentry.copy());
         }
 
         this.lock.readLock().unlock();
@@ -264,7 +269,7 @@ public class EntityDataManager
         else
         {
             buf.writeByte(dataparameter.getId());
-            buf.writeVarIntToBuffer(i);
+            buf.writeVarInt(i);
             dataparameter.getSerializer().write(buf, entry.getValue());
         }
     }
@@ -282,7 +287,7 @@ public class EntityDataManager
                 list = Lists. < EntityDataManager.DataEntry<? >> newArrayList();
             }
 
-            int j = buf.readVarIntFromBuffer();
+            int j = buf.readVarInt();
             DataSerializer<?> dataserializer = DataSerializers.getSerializer(j);
 
             if (dataserializer == null)
@@ -376,9 +381,9 @@ public class EntityDataManager
             this.dirty = dirtyIn;
         }
 
-        public EntityDataManager.DataEntry<T> func_192735_d()
+        public EntityDataManager.DataEntry<T> copy()
         {
-            return new EntityDataManager.DataEntry<T>(this.key, this.key.getSerializer().func_192717_a(this.value));
+            return new EntityDataManager.DataEntry<T>(this.key, this.key.getSerializer().copyValue(this.value));
         }
     }
 }

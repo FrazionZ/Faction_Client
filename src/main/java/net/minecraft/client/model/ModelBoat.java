@@ -12,7 +12,10 @@ public class ModelBoat extends ModelBase implements IMultipassModel
     public ModelRenderer[] paddles = new ModelRenderer[2];
 
     /**
-     * Part of the model rendered to make it seem like there's no water in the boat
+     * An invisible layer that is rendered to make it seem like there's no water in the boat.
+     *  
+     * @see https://redd.it/3qufgo
+     * @see https://bugs.mojang.com/browse/MC-47636
      */
     public ModelRenderer noWater;
     private final int patchList = GLAllocation.generateDisplayLists(1);
@@ -74,7 +77,7 @@ public class ModelBoat extends ModelBase implements IMultipassModel
         this.renderPaddle(entityboat, 1, scale, limbSwing);
     }
 
-    public void renderMultipass(Entity p_187054_1_, float p_187054_2_, float p_187054_3_, float p_187054_4_, float p_187054_5_, float p_187054_6_, float scale)
+    public void renderMultipass(Entity entityIn, float partialTicks, float p_187054_3_, float p_187054_4_, float p_187054_5_, float p_187054_6_, float scale)
     {
         GlStateManager.rotate(90.0F, 0.0F, 1.0F, 0.0F);
         GlStateManager.colorMask(false, false, false, false);

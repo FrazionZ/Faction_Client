@@ -61,6 +61,11 @@ public class ModelAdapterCreeper extends ModelAdapter
         }
     }
 
+    public String[] getModelRendererNames()
+    {
+        return new String[] {"head", "armor", "body", "leg1", "leg2", "leg3", "leg4"};
+    }
+
     public IEntityRenderer makeEntityRender(ModelBase modelBase, float shadowSize)
     {
         RenderManager rendermanager = Minecraft.getMinecraft().getRenderManager();

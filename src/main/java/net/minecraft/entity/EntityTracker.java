@@ -9,15 +9,17 @@ import org.apache.logging.log4j.Logger;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
+import fz.frazionz.entity.item.EntityBigXp;
+import fz.frazionz.entity.item.EntityDynamite;
+import fz.frazionz.entity.item.EntityZTNTPrimed;
+import fz.frazionz.entity.projectile.EntityDynamiteArrow;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.crash.ICrashReportDetail;
 import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.entity.item.EntityArmorStand;
-import net.minecraft.entity.item.EntityBigXp;
 import net.minecraft.entity.item.EntityBoat;
-import net.minecraft.entity.item.EntityDynamite;
 import net.minecraft.entity.item.EntityEnderCrystal;
 import net.minecraft.entity.item.EntityEnderEye;
 import net.minecraft.entity.item.EntityEnderPearl;
@@ -28,13 +30,11 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.item.EntityTNTPrimed;
 import net.minecraft.entity.item.EntityXPOrb;
-import net.minecraft.entity.item.EntityZTNTPrimed;
 import net.minecraft.entity.passive.EntityBat;
 import net.minecraft.entity.passive.EntitySquid;
 import net.minecraft.entity.passive.IAnimals;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.projectile.EntityArrow;
-import net.minecraft.entity.projectile.EntityDynamiteArrow;
 import net.minecraft.entity.projectile.EntityEgg;
 import net.minecraft.entity.projectile.EntityEvokerFangs;
 import net.minecraft.entity.projectile.EntityFireball;
@@ -56,20 +56,22 @@ import net.minecraft.world.chunk.Chunk;
 public class EntityTracker
 {
     private static final Logger LOGGER = LogManager.getLogger();
-    private final WorldServer theWorld;
-    private final Set<EntityTrackerEntry> trackedEntities = Sets.<EntityTrackerEntry>newHashSet();
+    private final WorldServer world;
+    private final Set<EntityTrackerEntry> entries = Sets.<EntityTrackerEntry>newHashSet();
     private final IntHashMap<EntityTrackerEntry> trackedEntityHashTable = new IntHashMap<EntityTrackerEntry>();
+
+    /** "Max track distance", measured in blocks. */
     private int maxTrackingDistanceThreshold;
 
     public EntityTracker(WorldServer theWorldIn)
     {
-        this.theWorld = theWorldIn;
+        this.world = theWorldIn;
         this.maxTrackingDistanceThreshold = theWorldIn.getMinecraftServer().getPlayerList().getEntityViewDistance();
     }
 
     public static long getPositionLong(double value)
     {
-        return MathHelper.lFloor(value * 4096.0D);
+        return MathHelper.lfloor(value * 4096.0D);
     }
 
     public static void updateServerPosition(Entity entityIn, double x, double y, double z)
@@ -79,14 +81,14 @@ public class EntityTracker
         entityIn.serverPosZ = getPositionLong(z);
     }
 
-    public void trackEntity(Entity entityIn)
+    public void track(Entity entityIn)
     {
         if (entityIn instanceof EntityPlayerMP)
         {
-            this.trackEntity(entityIn, 512, 2);
+            this.track(entityIn, 512, 2);
             EntityPlayerMP entityplayermp = (EntityPlayerMP)entityIn;
 
-            for (EntityTrackerEntry entitytrackerentry : this.trackedEntities)
+            for (EntityTrackerEntry entitytrackerentry : this.entries)
             {
                 if (entitytrackerentry.getTrackedEntity() != entityplayermp)
                 {
@@ -96,147 +98,147 @@ public class EntityTracker
         }
         else if (entityIn instanceof EntityFishHook)
         {
-            this.addEntityToTracker(entityIn, 64, 5, true);
+            this.track(entityIn, 64, 5, true);
         }
         else if (entityIn instanceof EntityArrow)
         {
-            this.addEntityToTracker(entityIn, 64, 20, false);
-        }
-        else if (entityIn instanceof EntityDynamiteArrow)
-        {
-            this.addEntityToTracker(entityIn, 64, 20, false);
+            this.track(entityIn, 64, 20, false);
         }
         else if (entityIn instanceof EntitySmallFireball)
         {
-            this.addEntityToTracker(entityIn, 64, 10, false);
+            this.track(entityIn, 64, 10, false);
         }
         else if (entityIn instanceof EntityFireball)
         {
-            this.addEntityToTracker(entityIn, 64, 10, true);
+            this.track(entityIn, 64, 10, true);
         }
         else if (entityIn instanceof EntitySnowball)
         {
-            this.addEntityToTracker(entityIn, 64, 10, true);
+            this.track(entityIn, 64, 10, true);
         }
         else if (entityIn instanceof EntityLlamaSpit)
         {
-            this.addEntityToTracker(entityIn, 64, 10, false);
+            this.track(entityIn, 64, 10, false);
         }
         else if (entityIn instanceof EntityEnderPearl)
         {
-            this.addEntityToTracker(entityIn, 64, 10, true);
+            this.track(entityIn, 64, 10, true);
         }
         else if (entityIn instanceof EntityEnderEye)
         {
-            this.addEntityToTracker(entityIn, 64, 4, true);
+            this.track(entityIn, 64, 4, true);
         }
         else if (entityIn instanceof EntityEgg)
         {
-            this.addEntityToTracker(entityIn, 64, 10, true);
+            this.track(entityIn, 64, 10, true);
         }
         else if (entityIn instanceof EntityPotion)
         {
-            this.addEntityToTracker(entityIn, 64, 10, true);
+            this.track(entityIn, 64, 10, true);
         }
         else if (entityIn instanceof EntityExpBottle)
         {
-            this.addEntityToTracker(entityIn, 64, 10, true);
-        }
-        else if (entityIn instanceof EntityBigXp)
-        {
-            this.addEntityToTracker(entityIn, 64, 10, true);
-        }
-        else if (entityIn instanceof EntityDynamite)
-        {
-            this.addEntityToTracker(entityIn, 64, 10, true);
+            this.track(entityIn, 64, 10, true);
         }
         else if (entityIn instanceof EntityFireworkRocket)
         {
-            this.addEntityToTracker(entityIn, 64, 10, true);
+            this.track(entityIn, 64, 10, true);
         }
         else if (entityIn instanceof EntityItem)
         {
-            this.addEntityToTracker(entityIn, 64, 20, true);
+            this.track(entityIn, 64, 20, true);
         }
         else if (entityIn instanceof EntityMinecart)
         {
-            this.addEntityToTracker(entityIn, 80, 3, true);
+            this.track(entityIn, 80, 3, true);
         }
         else if (entityIn instanceof EntityBoat)
         {
-            this.addEntityToTracker(entityIn, 80, 3, true);
+            this.track(entityIn, 80, 3, true);
         }
         else if (entityIn instanceof EntitySquid)
         {
-            this.addEntityToTracker(entityIn, 64, 3, true);
+            this.track(entityIn, 64, 3, true);
         }
         else if (entityIn instanceof EntityWither)
         {
-            this.addEntityToTracker(entityIn, 80, 3, false);
+            this.track(entityIn, 80, 3, false);
         }
         else if (entityIn instanceof EntityShulkerBullet)
         {
-            this.addEntityToTracker(entityIn, 80, 3, true);
+            this.track(entityIn, 80, 3, true);
         }
         else if (entityIn instanceof EntityBat)
         {
-            this.addEntityToTracker(entityIn, 80, 3, false);
+            this.track(entityIn, 80, 3, false);
         }
         else if (entityIn instanceof EntityDragon)
         {
-            this.addEntityToTracker(entityIn, 160, 3, true);
+            this.track(entityIn, 160, 3, true);
         }
         else if (entityIn instanceof IAnimals)
         {
-            this.addEntityToTracker(entityIn, 80, 3, true);
+            this.track(entityIn, 80, 3, true);
         }
         else if (entityIn instanceof EntityTNTPrimed)
         {
-            this.addEntityToTracker(entityIn, 160, 10, true);
-        }
-        else if (entityIn instanceof EntityZTNTPrimed)
-        {
-            this.addEntityToTracker(entityIn, 160, 10, true);
+            this.track(entityIn, 160, 10, true);
         }
         else if (entityIn instanceof EntityFallingBlock)
         {
-            this.addEntityToTracker(entityIn, 160, 20, true);
+            this.track(entityIn, 160, 20, true);
         }
         else if (entityIn instanceof EntityHanging)
         {
-            this.addEntityToTracker(entityIn, 160, Integer.MAX_VALUE, false);
+            this.track(entityIn, 160, Integer.MAX_VALUE, false);
         }
         else if (entityIn instanceof EntityArmorStand)
         {
-            this.addEntityToTracker(entityIn, 160, 3, true);
+            this.track(entityIn, 160, 3, true);
         }
         else if (entityIn instanceof EntityXPOrb)
         {
-            this.addEntityToTracker(entityIn, 160, 20, true);
+            this.track(entityIn, 160, 20, true);
         }
         else if (entityIn instanceof EntityAreaEffectCloud)
         {
-            this.addEntityToTracker(entityIn, 160, Integer.MAX_VALUE, true);
+            this.track(entityIn, 160, Integer.MAX_VALUE, true);
         }
         else if (entityIn instanceof EntityEnderCrystal)
         {
-            this.addEntityToTracker(entityIn, 256, Integer.MAX_VALUE, false);
+            this.track(entityIn, 256, Integer.MAX_VALUE, false);
         }
         else if (entityIn instanceof EntityEvokerFangs)
         {
-            this.addEntityToTracker(entityIn, 160, 2, false);
+            this.track(entityIn, 160, 2, false);
+        }
+        else if (entityIn instanceof EntityDynamiteArrow)
+        {
+            this.track(entityIn, 64, 20, false);
+        }
+        else if (entityIn instanceof EntityBigXp)
+        {
+            this.track(entityIn, 64, 10, true);
+        }
+        else if (entityIn instanceof EntityDynamite)
+        {
+            this.track(entityIn, 64, 10, true);
+        }
+        else if (entityIn instanceof EntityZTNTPrimed)
+        {
+            this.track(entityIn, 160, 10, true);
         }
     }
 
-    public void trackEntity(Entity entityIn, int trackingRange, int updateFrequency)
+    public void track(Entity entityIn, int trackingRange, int updateFrequency)
     {
-        this.addEntityToTracker(entityIn, trackingRange, updateFrequency, false);
+        this.track(entityIn, trackingRange, updateFrequency, false);
     }
 
     /**
      * Args : Entity, trackingRange, updateFrequency, sendVelocityUpdates
      */
-    public void addEntityToTracker(Entity entityIn, int trackingRange, final int updateFrequency, boolean sendVelocityUpdates)
+    public void track(Entity entityIn, int trackingRange, final int updateFrequency, boolean sendVelocityUpdates)
     {
         try
         {
@@ -246,16 +248,16 @@ public class EntityTracker
             }
 
             EntityTrackerEntry entitytrackerentry = new EntityTrackerEntry(entityIn, trackingRange, this.maxTrackingDistanceThreshold, updateFrequency, sendVelocityUpdates);
-            this.trackedEntities.add(entitytrackerentry);
+            this.entries.add(entitytrackerentry);
             this.trackedEntityHashTable.addKey(entityIn.getEntityId(), entitytrackerentry);
-            entitytrackerentry.updatePlayerEntities(this.theWorld.playerEntities);
+            entitytrackerentry.updatePlayerEntities(this.world.playerEntities);
         }
         catch (Throwable throwable)
         {
             CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Adding entity to track");
             CrashReportCategory crashreportcategory = crashreport.makeCategory("Entity To Track");
             crashreportcategory.addCrashSection("Tracking range", trackingRange + " blocks");
-            crashreportcategory.setDetail("Update interval", new ICrashReportDetail<String>()
+            crashreportcategory.addDetail("Update interval", new ICrashReportDetail<String>()
             {
                 public String call() throws Exception
                 {
@@ -283,13 +285,18 @@ public class EntityTracker
         }
     }
 
-    public void untrackEntity(Entity entityIn)
+    /**
+     * Removes the given entity, sending removal packets to all players tracking it. Called when the entity is dead.
+     *  
+     * @param entityIn The entity to untrack
+     */
+    public void untrack(Entity entityIn)
     {
         if (entityIn instanceof EntityPlayerMP)
         {
             EntityPlayerMP entityplayermp = (EntityPlayerMP)entityIn;
 
-            for (EntityTrackerEntry entitytrackerentry : this.trackedEntities)
+            for (EntityTrackerEntry entitytrackerentry : this.entries)
             {
                 entitytrackerentry.removeFromTrackedPlayers(entityplayermp);
             }
@@ -299,18 +306,18 @@ public class EntityTracker
 
         if (entitytrackerentry1 != null)
         {
-            this.trackedEntities.remove(entitytrackerentry1);
+            this.entries.remove(entitytrackerentry1);
             entitytrackerentry1.sendDestroyEntityPacketToTrackedPlayers();
         }
     }
 
-    public void updateTrackedEntities()
+    public void tick()
     {
         List<EntityPlayerMP> list = Lists.<EntityPlayerMP>newArrayList();
 
-        for (EntityTrackerEntry entitytrackerentry : this.trackedEntities)
+        for (EntityTrackerEntry entitytrackerentry : this.entries)
         {
-            entitytrackerentry.updatePlayerList(this.theWorld.playerEntities);
+            entitytrackerentry.updatePlayerList(this.world.playerEntities);
 
             if (entitytrackerentry.playerEntitiesUpdated)
             {
@@ -327,7 +334,7 @@ public class EntityTracker
         {
             EntityPlayerMP entityplayermp = list.get(i);
 
-            for (EntityTrackerEntry entitytrackerentry1 : this.trackedEntities)
+            for (EntityTrackerEntry entitytrackerentry1 : this.entries)
             {
                 if (entitytrackerentry1.getTrackedEntity() != entityplayermp)
                 {
@@ -339,11 +346,11 @@ public class EntityTracker
 
     public void updateVisibility(EntityPlayerMP player)
     {
-        for (EntityTrackerEntry entitytrackerentry : this.trackedEntities)
+        for (EntityTrackerEntry entitytrackerentry : this.entries)
         {
             if (entitytrackerentry.getTrackedEntity() == player)
             {
-                entitytrackerentry.updatePlayerEntities(this.theWorld.playerEntities);
+                entitytrackerentry.updatePlayerEntities(this.world.playerEntities);
             }
             else
             {
@@ -352,7 +359,7 @@ public class EntityTracker
         }
     }
 
-    public void sendToAllTrackingEntity(Entity entityIn, Packet<?> packetIn)
+    public void sendToTracking(Entity entityIn, Packet<?> packetIn)
     {
         EntityTrackerEntry entitytrackerentry = this.trackedEntityHashTable.lookup(entityIn.getEntityId());
 
@@ -374,7 +381,7 @@ public class EntityTracker
 
     public void removePlayerFromTrackers(EntityPlayerMP player)
     {
-        for (EntityTrackerEntry entitytrackerentry : this.trackedEntities)
+        for (EntityTrackerEntry entitytrackerentry : this.entries)
         {
             entitytrackerentry.removeTrackedPlayerSymmetric(player);
         }
@@ -389,15 +396,15 @@ public class EntityTracker
         List<Entity> list = Lists.<Entity>newArrayList();
         List<Entity> list1 = Lists.<Entity>newArrayList();
 
-        for (EntityTrackerEntry entitytrackerentry : this.trackedEntities)
+        for (EntityTrackerEntry entitytrackerentry : this.entries)
         {
             Entity entity = entitytrackerentry.getTrackedEntity();
 
-            if (entity != player && entity.chunkCoordX == chunkIn.xPosition && entity.chunkCoordZ == chunkIn.zPosition)
+            if (entity != player && entity.chunkCoordX == chunkIn.x && entity.chunkCoordZ == chunkIn.z)
             {
                 entitytrackerentry.updatePlayerEntity(player);
 
-                if (entity instanceof EntityLiving && ((EntityLiving)entity).getLeashedToEntity() != null)
+                if (entity instanceof EntityLiving && ((EntityLiving)entity).getLeashHolder() != null)
                 {
                     list.add(entity);
                 }
@@ -413,7 +420,7 @@ public class EntityTracker
         {
             for (Entity entity1 : list)
             {
-                player.connection.sendPacket(new SPacketEntityAttach(entity1, ((EntityLiving)entity1).getLeashedToEntity()));
+                player.connection.sendPacket(new SPacketEntityAttach(entity1, ((EntityLiving)entity1).getLeashHolder()));
             }
         }
 
@@ -426,11 +433,17 @@ public class EntityTracker
         }
     }
 
-    public void setViewDistance(int p_187252_1_)
+    /**
+     * Sets the view distance used on the server. For the dedicated server, this is the <code>view-distance</code> value
+     * in server.properties. For the integrated server, this is the host's render distance (which may change).
+     *  
+     * @param distance Distance to track, in chunks
+     */
+    public void setViewDistance(int distance)
     {
-        this.maxTrackingDistanceThreshold = (p_187252_1_ - 1) * 16;
+        this.maxTrackingDistanceThreshold = (distance - 1) * 16;
 
-        for (EntityTrackerEntry entitytrackerentry : this.trackedEntities)
+        for (EntityTrackerEntry entitytrackerentry : this.entries)
         {
             entitytrackerentry.setMaxRange(this.maxTrackingDistanceThreshold);
         }

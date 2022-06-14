@@ -7,7 +7,7 @@ import net.minecraft.client.model.ModelWitch;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RenderWitch;
 import net.minecraft.entity.monster.EntityWitch;
-import optifine.Reflector;
+import net.optifine.reflect.Reflector;
 
 public class ModelAdapterWitch extends ModelAdapter
 {
@@ -64,6 +64,11 @@ public class ModelAdapterWitch extends ModelAdapter
                 return modelPart.equals("nose") ? modelwitch.villagerNose : null;
             }
         }
+    }
+
+    public String[] getModelRendererNames()
+    {
+        return new String[] {"mole", "head", "body", "arms", "right_leg", "left_leg", "nose"};
     }
 
     public IEntityRenderer makeEntityRender(ModelBase modelBase, float shadowSize)

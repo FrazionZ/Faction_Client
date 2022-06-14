@@ -48,8 +48,7 @@ public class BlockPistonStructureHelper
         	if(iblockstate.getBlock() == Blocks.PUMPKIN || iblockstate.getBlock() == Blocks.MELON_BLOCK || iblockstate.getBlock() == Blocks.REEDS) {
         		return false;
         	}
-        	
-        	else if (iblockstate.getMobilityFlag() == EnumPushReaction.DESTROY)
+        	else if (iblockstate.getPushReaction() == EnumPushReaction.DESTROY)
             {
                 this.toDestroy.add(this.blockToMove);
                 return true;
@@ -173,7 +172,7 @@ public class BlockPistonStructureHelper
                         return false;
                     }
 
-                    if (iblockstate.getMobilityFlag() == EnumPushReaction.DESTROY)
+                    if (iblockstate.getPushReaction() == EnumPushReaction.DESTROY)
                     {
                         this.toDestroy.add(blockpos1);
                         return true;
@@ -206,11 +205,11 @@ public class BlockPistonStructureHelper
         this.toMove.addAll(list2);
     }
 
-    private boolean addBranchingBlocks(BlockPos p_177250_1_)
+    private boolean addBranchingBlocks(BlockPos fromPos)
     {
         for (EnumFacing enumfacing : EnumFacing.values())
         {
-            if (enumfacing.getAxis() != this.moveDirection.getAxis() && !this.addBlockLine(p_177250_1_.offset(enumfacing), enumfacing))
+            if (enumfacing.getAxis() != this.moveDirection.getAxis() && !this.addBlockLine(fromPos.offset(enumfacing), enumfacing))
             {
                 return false;
             }

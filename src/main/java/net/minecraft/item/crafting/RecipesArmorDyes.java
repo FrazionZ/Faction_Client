@@ -17,20 +17,20 @@ public class RecipesArmorDyes implements IRecipe
      */
     public boolean matches(InventoryCrafting inv, World worldIn)
     {
-        ItemStack itemstack = ItemStack.field_190927_a;
+        ItemStack itemstack = ItemStack.EMPTY;
         List<ItemStack> list = Lists.<ItemStack>newArrayList();
 
         for (int i = 0; i < inv.getSizeInventory(); ++i)
         {
             ItemStack itemstack1 = inv.getStackInSlot(i);
 
-            if (!itemstack1.func_190926_b())
+            if (!itemstack1.isEmpty())
             {
                 if (itemstack1.getItem() instanceof ItemArmor)
                 {
                     ItemArmor itemarmor = (ItemArmor)itemstack1.getItem();
 
-                    if (itemarmor.getArmorMaterial() != ItemArmor.ArmorMaterial.LEATHER || !itemstack.func_190926_b())
+                    if (itemarmor.getArmorMaterial() != ItemArmor.ArmorMaterial.LEATHER || !itemstack.isEmpty())
                     {
                         return false;
                     }
@@ -49,7 +49,7 @@ public class RecipesArmorDyes implements IRecipe
             }
         }
 
-        return !itemstack.func_190926_b() && !list.isEmpty();
+        return !itemstack.isEmpty() && !list.isEmpty();
     }
 
     /**
@@ -57,7 +57,7 @@ public class RecipesArmorDyes implements IRecipe
      */
     public ItemStack getCraftingResult(InventoryCrafting inv)
     {
-        ItemStack itemstack = ItemStack.field_190927_a;
+        ItemStack itemstack = ItemStack.EMPTY;
         int[] aint = new int[3];
         int i = 0;
         int j = 0;
@@ -67,19 +67,19 @@ public class RecipesArmorDyes implements IRecipe
         {
             ItemStack itemstack1 = inv.getStackInSlot(k);
 
-            if (!itemstack1.func_190926_b())
+            if (!itemstack1.isEmpty())
             {
                 if (itemstack1.getItem() instanceof ItemArmor)
                 {
                     itemarmor = (ItemArmor)itemstack1.getItem();
 
-                    if (itemarmor.getArmorMaterial() != ItemArmor.ArmorMaterial.LEATHER || !itemstack.func_190926_b())
+                    if (itemarmor.getArmorMaterial() != ItemArmor.ArmorMaterial.LEATHER || !itemstack.isEmpty())
                     {
-                        return ItemStack.field_190927_a;
+                        return ItemStack.EMPTY;
                     }
 
                     itemstack = itemstack1.copy();
-                    itemstack.func_190920_e(1);
+                    itemstack.setCount(1);
 
                     if (itemarmor.hasColor(itemstack1))
                     {
@@ -98,10 +98,10 @@ public class RecipesArmorDyes implements IRecipe
                 {
                     if (itemstack1.getItem() != Items.DYE)
                     {
-                        return ItemStack.field_190927_a;
+                        return ItemStack.EMPTY;
                     }
 
-                    float[] afloat = EnumDyeColor.byDyeDamage(itemstack1.getMetadata()).func_193349_f();
+                    float[] afloat = EnumDyeColor.byDyeDamage(itemstack1.getMetadata()).getColorComponentValues();
                     int l1 = (int)(afloat[0] * 255.0F);
                     int i2 = (int)(afloat[1] * 255.0F);
                     int j2 = (int)(afloat[2] * 255.0F);
@@ -116,7 +116,7 @@ public class RecipesArmorDyes implements IRecipe
 
         if (itemarmor == null)
         {
-            return ItemStack.field_190927_a;
+            return ItemStack.EMPTY;
         }
         else
         {
@@ -135,14 +135,18 @@ public class RecipesArmorDyes implements IRecipe
         }
     }
 
+    /**
+     * Get the result of this recipe, usually for display purposes (e.g. recipe book). If your recipe has more than one
+     * possible result (e.g. it's dynamic and depends on its inputs), then return an empty stack.
+     */
     public ItemStack getRecipeOutput()
     {
-        return ItemStack.field_190927_a;
+        return ItemStack.EMPTY;
     }
 
     public NonNullList<ItemStack> getRemainingItems(InventoryCrafting inv)
     {
-        NonNullList<ItemStack> nonnulllist = NonNullList.<ItemStack>func_191197_a(inv.getSizeInventory(), ItemStack.field_190927_a);
+        NonNullList<ItemStack> nonnulllist = NonNullList.<ItemStack>withSize(inv.getSizeInventory(), ItemStack.EMPTY);
 
         for (int i = 0; i < nonnulllist.size(); ++i)
         {
@@ -157,13 +161,20 @@ public class RecipesArmorDyes implements IRecipe
         return nonnulllist;
     }
 
-    public boolean func_192399_d()
+    /**
+     * If true, this recipe does not appear in the recipe book and does not respect recipe unlocking (and the
+     * doLimitedCrafting gamerule)
+     */
+    public boolean isDynamic()
     {
         return true;
     }
 
-    public boolean func_194133_a(int p_194133_1_, int p_194133_2_)
+    /**
+     * Used to determine if this recipe can fit in a grid of the given width/height
+     */
+    public boolean canFit(int width, int height)
     {
-        return p_194133_1_ * p_194133_2_ >= 2;
+        return width * height >= 2;
     }
 }

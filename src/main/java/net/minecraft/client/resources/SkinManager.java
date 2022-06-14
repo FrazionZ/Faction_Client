@@ -29,7 +29,7 @@ public class SkinManager
 {
     private static final ExecutorService THREAD_POOL = new ThreadPoolExecutor(0, 2, 1L, TimeUnit.MINUTES, new LinkedBlockingQueue());
     private final TextureManager textureManager;
-    public static File skinCacheDir;
+    public final File skinCacheDir;
     private final MinecraftSessionService sessionService;
     private final LoadingCache<GameProfile, Map<Type, MinecraftProfileTexture>> skinCacheLoader;
 
@@ -68,7 +68,6 @@ public class SkinManager
     public ResourceLocation loadSkin(final MinecraftProfileTexture profileTexture, final Type textureType, @Nullable final SkinManager.SkinAvailableCallback skinAvailableCallback)
     {
         final ResourceLocation resourcelocation = new ResourceLocation("frazionz/skins/" + profileTexture.getHash());
-        
         ITextureObject itextureobject = this.textureManager.getTexture(resourcelocation);
 
         if (itextureobject != null)
@@ -166,7 +165,7 @@ public class SkinManager
         void skinAvailable(Type typeIn, ResourceLocation location, MinecraftProfileTexture profileTexture);
     }
     
-    public static File getSkincachedir() {
+    public File getSkinCacheDir() {
 		return skinCacheDir;
 	}
 }

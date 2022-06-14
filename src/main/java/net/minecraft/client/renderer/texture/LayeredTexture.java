@@ -8,7 +8,9 @@ import java.io.IOException;
 import java.util.List;
 import net.minecraft.client.resources.IResource;
 import net.minecraft.client.resources.IResourceManager;
+import net.minecraft.src.Config;
 import net.minecraft.util.ResourceLocation;
+import net.optifine.shaders.ShadersTex;
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -17,10 +19,16 @@ public class LayeredTexture extends AbstractTexture
 {
     private static final Logger LOGGER = LogManager.getLogger();
     public final List<String> layeredTextureNames;
+    private ResourceLocation textureLocation;
 
     public LayeredTexture(String... textureNames)
     {
         this.layeredTextureNames = Lists.newArrayList(textureNames);
+
+        if (textureNames.length > 0 && textureNames[0] != null)
+        {
+            this.textureLocation = new ResourceLocation(textureNames[0]);
+        }
     }
 
     public void loadTexture(IResourceManager resourceManager) throws IOException
@@ -49,9 +57,9 @@ public class LayeredTexture extends AbstractTexture
 
                 continue;
             }
-            catch (IOException ioexception)
+            catch (IOException ioexception1)
             {
-                LOGGER.error("Couldn't load layered image", (Throwable)ioexception);
+                LOGGER.error("Couldn't load layered image", (Throwable)ioexception1);
             }
             finally
             {
@@ -61,6 +69,13 @@ public class LayeredTexture extends AbstractTexture
             return;
         }
 
-        TextureUtil.uploadTextureImage(this.getGlTextureId(), bufferedimage);
+        if (Config.isShaders())
+        {
+            ShadersTex.loadSimpleTexture(this.getGlTextureId(), bufferedimage, false, false, resourceManager, this.textureLocation, this.getMultiTexID());
+        }
+        else
+        {
+            TextureUtil.uploadTextureImage(this.getGlTextureId(), bufferedimage);
+        }
     }
 }
