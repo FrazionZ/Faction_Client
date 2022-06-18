@@ -10,6 +10,7 @@ run/logs/
 run/resourcepacks/
 run/shaderpacks/
 run/saves/
+run/crash-reports/
 run/options.txt
 run/optionsof.txt
 gradle.properties
