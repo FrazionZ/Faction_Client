@@ -15,11 +15,9 @@ import fz.frazionz.packets.client.CPacketShopTrade;
 import fz.frazionz.packets.client.CPacketTrophyForge;
 import fz.frazionz.packets.server.SPacketGuiOpener;
 import fz.frazionz.packets.server.SPacketToast;
+import fz.frazionz.packets.server.SPacketUpdateData;
 import fz.frazionz.packets.server.SPacketUpdateInformation;
 import fz.frazionz.packets.server.SPacketUpdateSkin;
-import fz.frazionz.packets.server.SPacketUserDataBoolean;
-import fz.frazionz.packets.server.SPacketUserDataDouble;
-import fz.frazionz.packets.server.SPacketUserDataString;
 import net.minecraft.network.handshake.client.C00Handshake;
 import net.minecraft.network.login.client.CPacketEncryptionResponse;
 import net.minecraft.network.login.client.CPacketLoginStart;
@@ -264,12 +262,11 @@ public enum EnumConnectionState
             this.registerPacket(EnumPacketDirection.SERVERBOUND, CPacketPlayerTryUseItem.class);
             // FrazionZ Packet //
             this.registerPacket(EnumPacketDirection.SERVERBOUND, CPacketTrophyForge.class);
-            this.registerPacket(EnumPacketDirection.CLIENTBOUND, SPacketGuiOpener.class);
-            this.registerPacket(EnumPacketDirection.SERVERBOUND, CPacketServerSwitch.class);
-            this.registerPacket(EnumPacketDirection.CLIENTBOUND, SPacketUserDataString.class);
-            this.registerPacket(EnumPacketDirection.CLIENTBOUND, SPacketUserDataDouble.class);
-            this.registerPacket(EnumPacketDirection.CLIENTBOUND, SPacketUserDataBoolean.class);
             this.registerPacket(EnumPacketDirection.SERVERBOUND, CPacketShopTrade.class);
+            this.registerPacket(EnumPacketDirection.SERVERBOUND, CPacketServerSwitch.class);
+            
+            this.registerPacket(EnumPacketDirection.CLIENTBOUND, SPacketGuiOpener.class);
+            this.registerPacket(EnumPacketDirection.CLIENTBOUND, SPacketUpdateData.class);
             this.registerPacket(EnumPacketDirection.CLIENTBOUND, SPacketUpdateInformation.class);
             this.registerPacket(EnumPacketDirection.CLIENTBOUND, SPacketToast.class);
             this.registerPacket(EnumPacketDirection.CLIENTBOUND, SPacketUpdateSkin.class);

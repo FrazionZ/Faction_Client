@@ -1,33 +1,19 @@
 package net.minecraft.client.gui;
 
-import java.awt.Color;
 import java.io.Closeable;
-import java.io.File;
 import java.io.IOException;
-import java.net.URI;
-import java.text.NumberFormat;
-import java.util.Calendar;
-import java.util.Currency;
-import java.util.Date;
-import java.util.Locale;
 import java.util.Random;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GLContext;
 
 import com.google.common.util.concurrent.Runnables;
 
 import fz.frazionz.Client;
-import fz.frazionz.api.data.PlayerDataStocker;
-import fz.frazionz.forgemods.smoothscrollingeverywhere.RunSixtyTimesEverySec;
-import fz.frazionz.gui.GuiRoundedButton;
-import fz.frazionz.gui.buttons.GuiFzButton;
 import fz.frazionz.gui.buttons.GuiMenuButton;
-import fz.frazionz.utils.FzUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.GuiConnecting;
 import net.minecraft.client.renderer.GlStateManager;
@@ -40,7 +26,6 @@ import net.minecraft.realms.RealmsBridge;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StringUtils;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.world.storage.ISaveFormat;
 
 public class GuiMainMenu extends GuiScreen
 {
@@ -138,9 +123,6 @@ public class GuiMainMenu extends GuiScreen
         }
         this.minceraftRoll = RANDOM.nextFloat();
         this.openGLWarning1 = "";
-
-
-        PlayerDataStocker.loadProfilItems();
 
         if (!GLContext.getCapabilities().OpenGL20 && !OpenGlHelper.areShadersSupported())
         {

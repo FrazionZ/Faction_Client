@@ -33,39 +33,4 @@ public class FzUserData {
 		return this.macros.get(macroNumber);
 	}
 	
-	public enum EnumUserData {
-		
-		CURRENT_CHUNK("wilderness", DataType.SERVER),
-		FACTION("wilderness", DataType.USER),
-		MONEY(0.0D, DataType.USER);
-		
-		private Object value;
-		private DataType type;
-		
-		private EnumUserData(Object value, DataType type) {
-			this.value = value;
-			this.type = type;
-		}
-		
-		public Object getValue() {
-			return value;
-		}
-		
-		public DataType getType() {
-			return type;
-		}
-		
-		public void setValue(Object value) {
-			this.value = value;
-		}
-		
-		public enum DataType {
-			
-			SERVER,
-			USER;
-			
-		}
-		
-	}
-	
 }

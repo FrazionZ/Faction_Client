@@ -45,14 +45,8 @@ public class FzUtils {
                 : (s.substring(0, s.length() - 1));
     }
 
-    public static String convertMoney(String s){
-        if(s.equalsIgnoreCase("N/A"))
-            return "0.00";
-        Locale usa = new Locale("en", "US");
-        Currency dollars = Currency.getInstance(usa);
-        NumberFormat dollarFormat = NumberFormat.getCurrencyInstance(usa);
-        return dollarFormat.format(Double.parseDouble(s)).replace("$", "");
+    public static String convertMoney(double money){
+    	return String.format("%,.2f", money);
     }
-
 
 }

@@ -1,17 +1,12 @@
 package fz.frazionz.gui.shop;
 
-import java.awt.*;
 import java.io.IOException;
-import java.util.concurrent.Executors;
 
 import fz.frazionz.Client;
 import fz.frazionz.api.gsonObj.ShopType;
-import fz.frazionz.data.FzUserData;
-import fz.frazionz.gui.GuiButtonOnlyImage;
 import fz.frazionz.gui.GuiFrazionZInterface;
 import fz.frazionz.gui.renderer.fonts.FzFontRenderer;
 import fz.frazionz.utils.FzUtils;
-import fz.frazionz.utils.MathUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -67,13 +62,7 @@ public class GuiShopItems extends GuiFrazionZInterface {
         this.drawTopList();
         this.drawButtons(mouseX, mouseY, partialTicks);
 
-        String money = null;
-        if(Client.getInstance().getFactionProfile() != null) {
-            money = Client.getInstance().getFactionProfile().getMoney();
-            if (money == null)
-                money = "N/A";
-        }else
-            money = "N/A";
+        double money = (double)(Client.getInstance().getFactionProfile().getMoney());
         String s = "\u00A76M\u00A7foney : " + FzUtils.convertMoney(money) + " Coins";
         this.fontRenderer.drawString(s, this.width / 2 - this.fontRenderer.getStringWidth(s) / 2, this.guiTop + this.ySize - 22, 16777215, true);
 	}

@@ -7,7 +7,6 @@ import java.util.Locale;
 import fz.frazionz.Client;
 import fz.frazionz.api.gsonObj.BoutiqueItem;
 import fz.frazionz.gui.GuiButtonImage;
-import fz.frazionz.gui.GuiButtonOnlyImage;
 import fz.frazionz.gui.GuiFrazionZInterface;
 import fz.frazionz.gui.renderer.fonts.FzFontRenderer;
 import fz.frazionz.packets.client.CPacketShopTrade;
@@ -55,15 +54,10 @@ public class GuiBoutiqueItemSelect extends GuiFrazionZInterface {
         super.drawScreen(mouseX, mouseY, partialTicks);
         
         // Draw More Information
-		String money = null;
-		if(Client.getInstance().getFactionProfile() != null) {
-			money = Client.getInstance().getFactionProfile().getMoney();
-			if (money == null)
-				money = "N/A";
-		}else
-			money = "N/A";
-		String s = "\u00A76M\u00A7foney : " + FzUtils.convertMoney(money) + " Coins";
+        double money = (double)(Client.getInstance().getFactionProfile().getMoney());
+        String s = "\u00A76M\u00A7foney : " + FzUtils.convertMoney(money) + " Coins";
         this.fontRenderer.drawString(s, this.width / 2 - this.fontRenderer.getStringWidth(s) / 2, this.guiTop + this.ySize - 22, 16777215, true);
+	
         // 92 = (368 / 4) = taille du background gris
         
         // Draw Sell Price

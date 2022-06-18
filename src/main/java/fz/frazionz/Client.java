@@ -1,12 +1,7 @@
 package fz.frazionz;
 
-import java.io.File;
-
-import org.lwjgl.input.Mouse;
-
 import fz.frazionz.api.HTTPFunctions;
 import fz.frazionz.api.data.FactionProfile;
-import fz.frazionz.api.data.PlayerDataStocker;
 import fz.frazionz.api.data.ShopAPIDataStocker;
 import fz.frazionz.discord.DiscordRP;
 import fz.frazionz.event.EventManager;
@@ -17,13 +12,6 @@ import fz.frazionz.mods.FileManager;
 import fz.frazionz.mods.ModInstances;
 import fz.frazionz.mods.blockrenderer.BlockRenderer;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.TextComponentTranslation;
 
 public class Client {
 
@@ -49,8 +37,7 @@ public class Client {
 
 		ShopAPIDataStocker.loadAPIData();
 		//SuccessAPIDataStocker.loadAPIData();
-		PlayerDataStocker.loadProfilItems();
-		factionProfile = HTTPFunctions.getFactionProfile();
+		this.factionProfile = HTTPFunctions.getFactionProfile();
 	}
 	
 	
@@ -79,11 +66,4 @@ public class Client {
 	public FactionProfile getFactionProfile() {
 		return factionProfile;
 	}
-	
-	/*public static void saveItemRenderers() {
-		BlockRenderer renderer = new BlockRenderer();
-		//renderer.renderOneItem(128);
-		renderer.bulkRender(128);
-		
-	}*/
 }

@@ -100,18 +100,10 @@ public class GuiShopItemSelect extends GuiFrazionZInterface {
 		super.drawScreen(mouseX, mouseY, partialTicks);
 
         // Draw More Information
-		String money = null;
-		if(Client.getInstance().getFactionProfile() != null) 
-		{
-			money = Client.getInstance().getFactionProfile().getMoney();
-			if (money == null)
-				money = "N/A";
-		}
-		else
-			money = "N/A";
-		String s = "\u00A76M\u00A7foney : " + FzUtils.convertMoney(money) + " Coins";
-		
+        double money = (double)(Client.getInstance().getFactionProfile().getMoney());
+        String s = "\u00A76M\u00A7foney : " + FzUtils.convertMoney(money) + " Coins";
         this.fontRenderer.drawString(s, this.width / 2 - this.fontRenderer.getStringWidth(s) / 2, this.guiTop + this.ySize - 22, 16777215, true);
+	
         this.fontRenderer.drawString("Vente", this.width / 2 + 61 + 67/2 - (this.fontRenderer.getStringWidth("Vente") / 2 ), this.guiTop + 52, 16777215, true);
         this.fontRenderer.drawString("Achat",  this.width / 2 - 61 - 67/2 - (this.fontRenderer.getStringWidth("Achat") / 2 ), this.guiTop + 52, 16777215, true);
         
