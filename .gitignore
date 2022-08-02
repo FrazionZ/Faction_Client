@@ -5,6 +5,10 @@ build/
 .gradle/
 run/assets/frazionz/
 run/assets/skins/
+run/screenshots/
+run/mods.txt/
+run/optionsshaders.txt
+run/ass
 run/hud/
 run/logs/
 run/resourcepacks/
