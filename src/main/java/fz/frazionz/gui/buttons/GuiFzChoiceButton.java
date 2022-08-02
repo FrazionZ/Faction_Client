@@ -1,5 +1,6 @@
 package fz.frazionz.gui.buttons;
 
+import fz.frazionz.Client;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 
@@ -41,8 +42,8 @@ public class GuiFzChoiceButton extends GuiFzButton
             
             this.mouseDragged(mc, mouseX, mouseY);
 
-            mc.fzFontRenderers.get(16).drawCenteredString(displayString, x + this.width/2 - (width/5), y + height/2, 0xFFFFFFFF);
-            mc.fzFontRenderers.get(16).drawCenteredString(info, x + 4*(width/5), y + height/2, 0xFFFFFFFF);
+            Client.getInstance().getTTFFontRenderers().get(16).drawCenteredString(displayString, x + this.width/2 - (width/5), y + height/2, 0xFFFFFFFF);
+            Client.getInstance().getTTFFontRenderers().get(16).drawCenteredString(info, x + 4*(width/5), y + height/2, 0xFFFFFFFF);
         }
     }
     

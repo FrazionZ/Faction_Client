@@ -5,6 +5,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Executors;
 
+import fz.frazionz.Client;
+import fz.frazionz.TTFFontRenderer;
 import fz.frazionz.api.HTTPFunctions;
 import fz.frazionz.packets.client.CPacketServerSwitch;
 import net.minecraft.client.Minecraft;
@@ -26,8 +28,8 @@ public class GuiServerSwitcher extends GuiFrazionZInterface {
 	public void initGui() {
 		String ip = "185.157.246.85";
 
-		SwitcherButton faction = new SwitcherButton(2, "Faction", (this.width / 2) - 103, (this.height / 2) - 59, 84, 141, 0, 0, this.fontRenderer, this.mc.fzFontRenderers.get(24), 4, 1);
-		SwitcherButton minage  = new SwitcherButton(3, "Minage", (this.width / 2) + 23, (this.height / 2) - 59, 84, 141, 0, 0, this.fontRenderer, this.mc.fzFontRenderers.get(24), 3, 0);
+		SwitcherButton faction = new SwitcherButton(2, "Faction", (this.width / 2) - 103, (this.height / 2) - 59, 84, 141, 0, 0, this.fontRenderer, Client.getInstance().getTTFFontRenderers().get(24), 4, 1);
+		SwitcherButton minage  = new SwitcherButton(3, "Minage", (this.width / 2) + 23, (this.height / 2) - 59, 84, 141, 0, 0, this.fontRenderer, Client.getInstance().getTTFFontRenderers().get(24), 3, 0);
 		this.buttonList.add(faction);
 		this.buttonList.add(minage);
 
@@ -68,13 +70,13 @@ public class GuiServerSwitcher extends GuiFrazionZInterface {
 	    private final int textureX;
 	    private final int textureY;
 	    private final FontRenderer fontRenderer;
-	    private final fz.frazionz.gui.renderer.fonts.FzFontRenderer tfFontRenderer;
+	    private final TTFFontRenderer ttfFontRenderer;
 		private String serverCount;
 		
 		private int iconX;
 		private int iconY;
 
-	    public SwitcherButton(int buttonId, String displayString, int x, int y, int widthIn, int heightIn, int textureX, int textureY, FontRenderer fontRenderer, fz.frazionz.gui.renderer.fonts.FzFontRenderer tfFontRenderer, int iconX, int iconY)
+	    public SwitcherButton(int buttonId, String displayString, int x, int y, int widthIn, int heightIn, int textureX, int textureY, FontRenderer fontRenderer, TTFFontRenderer tfFontRenderer, int iconX, int iconY)
 	    {
 	        super(buttonId, x, y, widthIn, heightIn, displayString);
 	        this.width = widthIn;
@@ -84,7 +86,7 @@ public class GuiServerSwitcher extends GuiFrazionZInterface {
 			this.fontRenderer = fontRenderer;
 			this.iconX = iconX;
 			this.iconY = iconY;
-			this.tfFontRenderer = tfFontRenderer;
+			this.ttfFontRenderer = tfFontRenderer;
 	    }
 
 		public void setServerCount(String serverCount) {
@@ -114,7 +116,7 @@ public class GuiServerSwitcher extends GuiFrazionZInterface {
 	            String info = (this.serverCount == null ? "Recherche..." : serverCount + (Integer.parseInt(serverCount) > 1 ? " Joueurs" :" Joueur"));
 				this.drawString(fontRenderer, info, this.x + this.width/2 - fontRenderer.getStringWidth(info)/2, this.y + this.height - 16, 0xFFFFFFFF);
 
-	            tfFontRenderer.drawCenteredString(this.displayString, this.x + this.width / 2, this.y + this.height/2 + 24, 0xFFFFFFFF);
+	            ttfFontRenderer.drawCenteredString(this.displayString, this.x + this.width / 2, this.y + this.height/2 + 24, 0xFFFFFFFF);
 
 	            this.mouseDragged(mc, mouseX, mouseY);
 	        }

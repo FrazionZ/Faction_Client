@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -69,7 +68,6 @@ import fz.frazionz.data.FzUserData;
 import fz.frazionz.gui.GuiKeyBinds;
 import fz.frazionz.gui.hud.HUDConfigScreen;
 import fz.frazionz.gui.hud.HUDManager;
-import fz.frazionz.gui.renderer.fonts.FzFontRenderer;
 import fz.frazionz.mods.ModInstances;
 import fz.frazionz.mods.impl.ModKeystrokes;
 import fz.frazionz.mods.sneak.SmoothSneak;
@@ -341,7 +339,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo
     /** Mouse helper instance. */
     public MouseHelper mouseHelper;
     public final File gameDir;
-    private final File fileAssets;
+    public final File fileAssets;
     private final String launchedVersion;
     private final String versionType;
     private final Proxy proxy;
@@ -434,7 +432,6 @@ public class Minecraft implements IThreadListener, ISnooperInfo
     private String debugProfilerName = "root";
 
     private ModKeystrokes modKeytrokes;
-	public HashMap<Integer, FzFontRenderer> fzFontRenderers;
     public FontUtils font;
     private FzUserData fzUserData;
     public static final ResourceLocation FONT_LOCATION = new ResourceLocation("font/font.ttf");
@@ -602,12 +599,6 @@ public class Minecraft implements IThreadListener, ISnooperInfo
         // INIT FrazionZ FontRenderer //
         ////////////////////////////////
         
-        this.fzFontRenderers = new HashMap<Integer, FzFontRenderer>();
-        this.fzFontRenderers.put(16, new FzFontRenderer(this.FONT_LOCATION, 16));
-        this.fzFontRenderers.put(20, new FzFontRenderer(this.FONT_LOCATION, 20));
-        this.fzFontRenderers.put(24, new FzFontRenderer(this.FONT_LOCATION, 24));
-        
-        
         if (this.gameSettings.language != null)
         {
             this.fontRenderer.setUnicodeFlag(this.isUnicode());
@@ -729,6 +720,8 @@ public class Minecraft implements IThreadListener, ISnooperInfo
         } catch (UnknownHostException | SocketException e) {
             e.printStackTrace();
         }*/
+		
+		Client.getInstance().postMinecraftInit();
     }
     
     public ArrayList<String> getMacAddressList() throws SocketException

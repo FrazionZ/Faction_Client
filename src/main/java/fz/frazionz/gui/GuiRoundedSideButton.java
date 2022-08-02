@@ -1,5 +1,6 @@
 package fz.frazionz.gui;
 
+import fz.frazionz.TTFFontRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
@@ -8,12 +9,12 @@ public class GuiRoundedSideButton extends GuiButton {
 	
 	private boolean quit;
 	private int hoverInt;
-	private fz.frazionz.gui.renderer.fonts.FzFontRenderer fontrenderer;
+	private TTFFontRenderer fontrenderer;
 	private boolean isActive;
 	private boolean isLeft;
 	
 	//default constructors
-	public GuiRoundedSideButton(int buttonId, int x, int y, int widthIn, int heightIn, String buttonText, boolean quit, fz.frazionz.gui.renderer.fonts.FzFontRenderer fontrenderer, int hoverInt, boolean isLeft, boolean isActive) {
+	public GuiRoundedSideButton(int buttonId, int x, int y, int widthIn, int heightIn, String buttonText, boolean quit, TTFFontRenderer fontrenderer, int hoverInt, boolean isLeft, boolean isActive) {
 		super(buttonId, x, y, widthIn, heightIn, buttonText);
 		this.quit = quit;
 		this.fontrenderer = fontrenderer;

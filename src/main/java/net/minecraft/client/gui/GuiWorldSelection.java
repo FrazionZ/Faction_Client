@@ -10,8 +10,9 @@ import org.apache.logging.log4j.Logger;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 
+import fz.frazionz.Client;
+import fz.frazionz.TTFFontRenderer;
 import fz.frazionz.gui.buttons.GuiFzButton;
-import fz.frazionz.gui.renderer.fonts.FzFontRenderer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
 
@@ -131,8 +132,8 @@ public class GuiWorldSelection extends GuiScreen
         this.drawRect(0, 0, this.width, this.height/8, this.BLACK_4);
 	    this.drawRect(0, this.height - this.height/8, this.width, this.height, this.BLACK_4);
 	    
-        FzFontRenderer titleRenderer = this.mc.fzFontRenderers.get(24);
-        int titleSize = titleRenderer.getStringWidth(this.title);
+        TTFFontRenderer titleRenderer = Client.getInstance().getTTFFontRenderers().get(24);
+        int titleSize = titleRenderer.getWidth(this.title);
         titleRenderer.drawCenteredString(this.title, this.width / 2, this.height/16, 0xFFFFFFFF);
         
         super.drawScreen(mouseX, mouseY, partialTicks);

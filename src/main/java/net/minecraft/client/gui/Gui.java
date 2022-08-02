@@ -14,6 +14,7 @@ import javax.imageio.ImageIO;
 
 import org.lwjgl.opengl.GL11;
 
+import fz.frazionz.TTFFontRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
@@ -360,7 +361,7 @@ public class Gui
         GlStateManager.enableTexture2D();
     }
     
-    public static void drawRoundedRectWithContent(int left, int top, int width, int height, int color, int radius, fz.frazionz.gui.renderer.fonts.FzFontRenderer fontrenderer, String content)
+    public static void drawRoundedRectWithContent(int left, int top, int width, int height, int color, int radius, TTFFontRenderer fontrenderer, String content)
     {
         GL11.glPushMatrix();
         GL11.glEnable(3042);

@@ -1,5 +1,6 @@
 package fz.frazionz.gui.buttons;
 
+import fz.frazionz.gui.utils.RoundedShaderRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
@@ -40,6 +41,16 @@ public class GuiFzSlider extends GuiFzButton
         return 1;
     }
 
+    @Override
+    protected int getBackgroundColor() {
+    	return BLACK_4;
+    }
+    
+    @Override
+    protected boolean hasHover() {
+    	return false;
+    }
+    
     /**
      * Fired when the mouse button is dragged. Equivalent of MouseListener.mouseDragged(MouseEvent e).
      */
@@ -57,10 +68,18 @@ public class GuiFzSlider extends GuiFzButton
                 this.displayString = I18n.format(this.options.getTranslation()) + ": " + mc.gameSettings.getKeyBinding(this.options);
             }
 
-            mc.getTextureManager().bindTexture(INTERFACE_BACKGROUND_2);
-            GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-            this.drawModalRectWithCustomSizedTexture(this.x + (int)(sliderValue * (float)(width-8)), this.y, 200+(this.hovered?8:0), 117, 8, height/2, 512.0F, 512.0F);
-            this.drawModalRectWithCustomSizedTexture(this.x + (int)(sliderValue * (float)(width-8)), this.y + height/2, 200+(this.hovered?8:0), 117 + (30-height/2), 8, height/2, 512.0F, 512.0F);
+            //mc.getTextureManager().bindTexture(INTERFACE_BACKGROUND_2);
+            //GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+            
+            if(this.hovered && hoveredValue < 3)
+            	hoveredValue += 1;
+            else if(!this.hovered && hoveredValue > 0)
+            	hoveredValue -= 1;
+            RoundedShaderRenderer.getInstance().drawRoundRect(this.x + (int)(sliderValue * (float)(width-8)) - hoveredValue + 1, this.y - hoveredValue + 1, 8+2*hoveredValue - 2, this.height + 2*hoveredValue - 2, 3.5f, 0xFFFFFF);
+            RoundedShaderRenderer.getInstance().drawRoundRect(this.x + (int)(sliderValue * (float)(width-8)), this.y, 8, this.height, 2, BLACK_1);
+            
+            //this.drawModalRectWithCustomSizedTexture(this.x + (int)(sliderValue * (float)(width-8)), this.y, 200+(this.hovered?8:0), 117, 8, height/2, 512.0F, 512.0F);
+            //this.drawModalRectWithCustomSizedTexture(this.x + (int)(sliderValue * (float)(width-8)), this.y + height/2, 200+(this.hovered?8:0), 117 + (30-height/2), 8, height/2, 512.0F, 512.0F);
         }
     }
 

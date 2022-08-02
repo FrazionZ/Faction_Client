@@ -2,6 +2,7 @@ package fz.frazionz.gui.buttons;
 
 import java.awt.Color;
 
+import fz.frazionz.Client;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
@@ -63,7 +64,7 @@ public class GuiMenuButton extends GuiButton
             }
             this.mouseDragged(mc, mouseX, mouseY);
 
-            mc.fzFontRenderers.get(20).drawCenteredString(displayString, this.x + this.width / 2, this.y + this.height/2, 0xFFFFFFFF);
+            Client.getInstance().getTTFFontRenderers().get(20).drawCenteredString(displayString, this.x + this.width / 2, this.y + this.height/2, 0xFFFFFFFF);
         }
     }
 }

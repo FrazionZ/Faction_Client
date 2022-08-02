@@ -2,10 +2,10 @@ package fz.frazionz.gui;
 
 import java.io.IOException;
 
-import fz.frazionz.gui.renderer.fonts.FzFontRenderer;
+import fz.frazionz.Client;
+import fz.frazionz.TTFFontRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiLabel;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
@@ -86,8 +86,8 @@ public class GuiFrazionZInterface extends GuiScreen {
 	}
 	
 	public void drawTitle() {
-        FzFontRenderer titleRenderer = this.mc.fzFontRenderers.get(24);
-        int titleSize = titleRenderer.getStringWidth(this.title);
+        TTFFontRenderer titleRenderer = Client.getInstance().getTTFFontRenderers().get(24);
+        int titleSize = titleRenderer.getWidth(this.title);
 		
 		// draw title background
         this.mc.getTextureManager().bindTexture(BACKGROUND_2);
@@ -102,8 +102,8 @@ public class GuiFrazionZInterface extends GuiScreen {
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 		GlStateManager.enableBlend();
         this.drawModalRectWithCustomSizedTexture(this.guiLeft + this.xSize/2 + titleSize/2, this.guiTop - 10, 366, 0, 28 , 26, 512.0F, 512.0F);
-        
-		this.mc.fzFontRenderers.get(24).drawCenteredString(this.title, this.guiLeft + this.xSize/2, this.guiTop + 3, 0xFFFFFFFF);
+                
+		titleRenderer.drawCenteredString(this.title, this.guiLeft + this.xSize/2, this.guiTop + 3, 0xFFFFFFFF);
 	}
 	
 	public class GuiBackButton extends GuiButton

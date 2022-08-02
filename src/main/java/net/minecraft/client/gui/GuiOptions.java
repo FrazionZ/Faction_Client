@@ -2,7 +2,6 @@ package net.minecraft.client.gui;
 
 import java.io.IOException;
 
-import fz.frazionz.gui.GuiClassement;
 import fz.frazionz.gui.GuiFzBaseScreen;
 import fz.frazionz.gui.GuiMacro;
 import fz.frazionz.gui.buttons.GuiFzButton;
@@ -11,8 +10,6 @@ import fz.frazionz.gui.buttons.GuiFzOptionButton;
 import fz.frazionz.gui.buttons.GuiFzSlider;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.settings.GameSettings;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.EnumDifficulty;
 
@@ -203,7 +200,7 @@ public class GuiOptions extends GuiFzBaseScreen
             }
             if (button.id == 204) {
             	this.mc.gameSettings.saveOptions();
-                this.mc.displayGuiScreen(new GuiClassement(this, 1));
+                //this.mc.displayGuiScreen(new GuiClassement(this, 1));
             }
         }
     }

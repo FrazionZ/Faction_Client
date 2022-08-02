@@ -1,23 +1,24 @@
 package fz.frazionz;
 
+import java.util.HashMap;
+
 import fz.frazionz.api.HTTPFunctions;
 import fz.frazionz.api.data.FactionProfile;
 import fz.frazionz.api.data.ShopAPIDataStocker;
 import fz.frazionz.discord.DiscordRP;
 import fz.frazionz.event.EventManager;
-import fz.frazionz.event.EventTarget;
-import fz.frazionz.event.impl.ClientTickEvent;
 import fz.frazionz.gui.hud.HUDManager;
 import fz.frazionz.mods.FileManager;
 import fz.frazionz.mods.ModInstances;
 import fz.frazionz.mods.blockrenderer.BlockRenderer;
 import net.minecraft.client.Minecraft;
+import net.minecraft.util.ResourceLocation;
 
 public class Client {
 
 	private static final Client INSTANCE = new Client();
-
-
+	public HashMap<Integer, TTFFontRenderer> ttfFontRenderers = new HashMap<>();
+	
 	public static final Client getInstance() {
 		return INSTANCE;
 	}
@@ -40,6 +41,12 @@ public class Client {
 		this.factionProfile = HTTPFunctions.getFactionProfile();
 	}
 	
+	public void postMinecraftInit() {
+		this.ttfFontRenderers.put(24, new TTFFontRenderer(new ResourceLocation("font/font.ttf"), 24));
+		this.ttfFontRenderers.put(20, new TTFFontRenderer(new ResourceLocation("font/font.ttf"), 20));
+		this.ttfFontRenderers.put(16, new TTFFontRenderer(new ResourceLocation("font/font.ttf"), 16));
+	}
+	
 	
 	public void start() {
 		hudManager = HUDManager.getInstance();
@@ -55,15 +62,12 @@ public class Client {
 	public DiscordRP getDiscordRP() {
 		return discordRP;
 	}
-	
-	@EventTarget
-	public void onTick(ClientTickEvent e) {
-		if(Minecraft.getMinecraft().gameSettings.CLIENT_GUI_MOD_POS.isPressed()) {	
-			hudManager.openConfigScreen();			
-		}
-	}
 
 	public FactionProfile getFactionProfile() {
 		return factionProfile;
+	}
+	
+	public HashMap<Integer, TTFFontRenderer> getTTFFontRenderers() {
+		return ttfFontRenderers;
 	}
 }

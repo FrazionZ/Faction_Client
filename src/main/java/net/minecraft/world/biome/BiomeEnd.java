@@ -5,7 +5,7 @@ import net.minecraft.init.Blocks;
 
 public class BiomeEnd extends Biome
 {
-    public BiomeEnd(Biome.BiomeProperties properties)
+	public BiomeEnd(Biome.BiomeProperties properties)
     {
         super(properties);
         this.spawnableMonsterList.clear();

@@ -2,8 +2,9 @@ package fz.frazionz.gui;
 
 import java.io.IOException;
 
+import fz.frazionz.Client;
+import fz.frazionz.TTFFontRenderer;
 import fz.frazionz.gui.buttons.GuiFzButton;
-import fz.frazionz.gui.renderer.fonts.FzFontRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiKeyBindingList;
@@ -167,8 +168,8 @@ public class GuiKeyBinds extends GuiScreen
         this.drawRect(0, 0, this.width, this.height/8, this.BLACK_4);
 	    this.drawRect(0, this.height - this.height/8, this.width, this.height, this.BLACK_4);
 	    
-        FzFontRenderer titleRenderer = this.mc.fzFontRenderers.get(24);
-        int titleSize = titleRenderer.getStringWidth(this.title);
+        TTFFontRenderer titleRenderer = Client.getInstance().getTTFFontRenderers().get(24);
+        int titleSize = titleRenderer.getWidth(this.title);
         titleRenderer.drawCenteredString(this.title, this.width / 2, this.height/16, 0xFFFFFFFF);
 	
 	    this.buttonReset.enabled = flag;

@@ -1,5 +1,6 @@
 package fz.frazionz.gui;
 
+import fz.frazionz.TTFFontRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
@@ -14,14 +15,14 @@ public class GuiRoundedSlider extends GuiButton
     private final float minValue;
     private final float maxValue;
     
-	private fz.frazionz.gui.renderer.fonts.FzFontRenderer fontrenderer;
+	private TTFFontRenderer fontrenderer;
     
     public GuiRoundedSlider(int buttonId, int x, int y, GameSettings.Options optionIn)
     {
         this(buttonId, x, y, optionIn, 0.0F, 1.0F);
     }
     
-    public GuiRoundedSlider(int buttonId, int x, int y, int widthIn, int heightIn, String buttonText, fz.frazionz.gui.renderer.fonts.FzFontRenderer fontrenderer, int hoverInt, GameSettings.Options optionIn, float minValueIn, float maxValue) {
+    public GuiRoundedSlider(int buttonId, int x, int y, int widthIn, int heightIn, String buttonText, TTFFontRenderer fontrenderer, int hoverInt, GameSettings.Options optionIn, float minValueIn, float maxValue) {
 		super(buttonId, x, y, widthIn, heightIn, "");
 		this.fontrenderer = fontrenderer;
 		

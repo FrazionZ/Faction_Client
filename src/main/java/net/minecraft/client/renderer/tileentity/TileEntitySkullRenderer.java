@@ -12,7 +12,8 @@ import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture.Type;
 
-import fz.frazionz.utils.SkinUtils;
+import fz.frazionz.utils.FzSkinUtils;
+import fz.frazionz.utils.FzSkinUtils.ImageType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelDragonHead;
@@ -121,9 +122,9 @@ public class TileEntitySkullRenderer extends TileEntitySpecialRenderer<TileEntit
                     
                     if (profile != null)
                     {
-                        resourcelocation1 = SkinUtils.loadSkin(profile);
-                        File cacheFile = new File(Minecraft.getMinecraft().gameDir, "assets/frazionz/skins/" + StringUtils.lowerCase(profile.getName()));
-                        if(cacheFile.exists() && cacheFile.length() < 100)
+                        resourcelocation1 = FzSkinUtils.loadSkin(profile, ImageType.SKIN);
+                        File cacheFile = FzSkinUtils.getProfileCacheFile(profile, ImageType.SKIN);
+                        if(!cacheFile.exists() && cacheFile.length() < 100)
                         	resourcelocation1 = DefaultPlayerSkin.getDefaultSkinLegacy();
                     }
 

@@ -35,7 +35,7 @@ import fz.frazionz.gui.toasts.SuccessToast;
 import fz.frazionz.packets.server.SPacketToast;
 import fz.frazionz.packets.server.SPacketUpdateSkin;
 import fz.frazionz.tileentity.TileEntityTrophyForge;
-import fz.frazionz.utils.SkinUtils;
+import fz.frazionz.utils.FzSkinUtils;
 import io.netty.buffer.Unpooled;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.block.Block;
@@ -908,7 +908,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
      * Invoked when disconnecting, the parameter is a ChatComponent describing the reason for termination
      */
     public void onDisconnect(ITextComponent reason)
-    {
+    {	
         this.client.loadWorld((WorldClient)null);
 
         if (this.guiScreenServer != null)
@@ -2408,11 +2408,11 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
     
     @Override
     public void handleUpdateSkin(SPacketUpdateSkin handler) {
-        EntityPlayer entityPlayer = null;
+        /*EntityPlayer entityPlayer = null;
         for(EntityPlayer entityPlayerMPObj : mc.world.playerEntities)
             if(entityPlayerMPObj.getGameProfile().getId().equals(handler.getUuid()))
                 entityPlayer = entityPlayerMPObj;
         EntityOtherPlayerMP eopm = new EntityOtherPlayerMP(mc.world, entityPlayer.getGameProfile());
-        SkinUtils.downloadSkin(eopm);
+        SkinUtils.loadSkin(eopm);*/
     }
 }

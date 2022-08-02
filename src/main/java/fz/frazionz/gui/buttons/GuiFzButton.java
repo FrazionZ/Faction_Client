@@ -1,7 +1,10 @@
 package fz.frazionz.gui.buttons;
 
 import java.awt.Color;
+import java.util.concurrent.Executors;
 
+import fz.frazionz.Client;
+import fz.frazionz.gui.utils.RoundedShaderRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
@@ -11,7 +14,7 @@ import net.minecraft.client.renderer.GlStateManager;
 public class GuiFzButton extends GuiButton
 {   
 	
-	private int fade;
+	protected int hoveredValue;
 	
     public GuiFzButton(int buttonId, int x, int y, String buttonText)
     {
@@ -40,6 +43,14 @@ public class GuiFzButton extends GuiButton
         return i;
     }
     
+    protected int getBackgroundColor() {
+    	return BLACK_1;
+    }
+    
+    protected boolean hasHover() {
+    	return true;
+    }
+    
     /**
      * Draws this button to the screen.
      */
@@ -54,15 +65,23 @@ public class GuiFzButton extends GuiButton
             GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
             GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
             
-            int i = 27 + this.getHoverState(this.hovered) * 30;
-            this.drawModalRectWithCustomSizedTexture(this.x, this.y, 0, i, this.width/2, this.height/2, 512.0F, 512.0F);
-            this.drawModalRectWithCustomSizedTexture(this.x, this.y + this.height/2, 0, i+(30-this.height/2), this.width/2, this.height/2, 512.0F, 512.0F);
-            this.drawModalRectWithCustomSizedTexture(this.x + this.width / 2, this.y, 200-this.width/2, i, this.width/2, this.height/2, 512.0F, 512.0F);
-            this.drawModalRectWithCustomSizedTexture(this.x + this.width / 2, this.y + this.height/2, 200-this.width/2, i+(30-this.height/2), this.width/2, this.height/2, 512.0F, 512.0F);
+            if(this.hasHover()) {
+                if(this.hovered && hoveredValue < 3)
+                	hoveredValue += 1;
+                else if(!this.hovered && hoveredValue > 0)
+                	hoveredValue -= 1;
+                
+            	RoundedShaderRenderer.getInstance().drawRoundRect(this.x - hoveredValue + 1, this.y - hoveredValue + 1, this.width+2*hoveredValue - 2, this.height + 2*hoveredValue - 2, 3.5f, 0xFFFFFF);
+            }
+            RoundedShaderRenderer.getInstance().drawRoundRect(this.x, this.y, this.width, this.height, 2, getBackgroundColor());
+            //this.drawModalRectWithCustomSizedTexture(this.x, this.y, 0, i, this.width/2, this.height/2, 512.0F, 512.0F);
+            //this.drawModalRectWithCustomSizedTexture(this.x, this.y + this.height/2, 0, i+(30-this.height/2), this.width/2, this.height/2, 512.0F, 512.0F);
+            //this.drawModalRectWithCustomSizedTexture(this.x + this.width / 2, this.y, 200-this.width/2, i, this.width/2, this.height/2, 512.0F, 512.0F);
+            //this.drawModalRectWithCustomSizedTexture(this.x + this.width / 2, this.y + this.height/2, 200-this.width/2, i+(30-this.height/2), this.width/2, this.height/2, 512.0F, 512.0F);
             
             this.mouseDragged(mc, mouseX, mouseY);
 
-            mc.fzFontRenderers.get(16).drawCenteredString(displayString, this.x + this.width / 2, this.y + this.height/2, 0xFFFFFFFF);
+            Client.getInstance().getTTFFontRenderers().get(16).drawCenteredString(displayString, this.x + this.width / 2, this.y + this.height/2, 0xFFFFFFFF);
         }
     }
 }

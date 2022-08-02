@@ -1,13 +1,11 @@
 package fz.frazionz.gui.shop;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 
 import fz.frazionz.Client;
-import fz.frazionz.api.data.FactionProfile;
+import fz.frazionz.TTFFontRenderer;
 import fz.frazionz.gui.GuiFrazionZInterface;
-import fz.frazionz.gui.renderer.fonts.FzFontRenderer;
+import fz.frazionz.gui.utils.RoundedShaderRenderer;
 import fz.frazionz.utils.FzUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
@@ -78,8 +76,8 @@ public class GuiBoutiqueCategory extends GuiFrazionZInterface {
 		GlStateManager.popMatrix();
 		
 		
-        FzFontRenderer titleRenderer = this.mc.fzFontRenderers.get(24);
-        int titleSize = titleRenderer.getStringWidth(this.title);
+        TTFFontRenderer titleRenderer = Client.getInstance().getTTFFontRenderers().get(24);
+        int titleSize = titleRenderer.getWidth(this.title);
 		
 		// draw title background
         this.mc.getTextureManager().bindTexture(BACKGROUND_2);
@@ -96,6 +94,8 @@ public class GuiBoutiqueCategory extends GuiFrazionZInterface {
         this.drawModalRectWithCustomSizedTexture(this.guiLeft + this.xSize/2 + titleSize/2, this.guiTop - 10, 366, 0, 28 , 26, 512.0F, 512.0F);
         
         titleRenderer.drawCenteredString(this.title, this.guiLeft + this.xSize/2, this.guiTop + 3, 0xFFFFFFFF);
+        
+        RoundedShaderRenderer.getInstance().drawRoundRect(this.guiLeft, this.guiTop, this.xSize, this.ySize, 8, 0xFFFFFF);
 	}
 
 }

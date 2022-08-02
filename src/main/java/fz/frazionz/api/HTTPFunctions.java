@@ -85,6 +85,7 @@ public class HTTPFunctions {
 	{
 		FactionProfile factionProfile = null;
 
+		System.out.println(Minecraft.getMinecraft().getSession().getPlayerID());
 		HTTPReply reply = HTTPUtils.sendGet(HTTPEndpoints.FACTION_PROFILE + Minecraft.getMinecraft().getSession().getPlayerID());
 
 		if(reply.getStatusCode() == 200)

@@ -9,7 +9,8 @@ import com.mojang.authlib.GameProfile;
 
 import fz.frazionz.api.HTTPFunctions;
 import fz.frazionz.api.gsonObj.ObjPlayerSkinsInfo;
-import fz.frazionz.utils.SkinUtils;
+import fz.frazionz.utils.FzSkinUtils;
+import fz.frazionz.utils.FzSkinUtils.ImageType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.network.NetworkPlayerInfo;
 import net.minecraft.client.renderer.ImageBufferDownload;
@@ -37,8 +38,8 @@ public abstract class AbstractClientPlayer extends EntityPlayer
     public float rotateElytraX;
     public float rotateElytraY;
     public float rotateElytraZ;
-    private ResourceLocation locationOfCape = null;
-    private ResourceLocation locationOfSkin = null;
+    private ResourceLocation capeLocation = null;
+    private ResourceLocation skinLocation = null;
     private ObjPlayerSkinsInfo playerSkinsInfo = null;
     private long reloadCapeTimeMs = 0L;
     private boolean elytraOfCape = false;
@@ -65,11 +66,11 @@ public abstract class AbstractClientPlayer extends EntityPlayer
         });
 
         try{
-            CapeUtils.downloadCape(this);
+        	capeLocation = FzSkinUtils.loadSkin(this.getGameProfile(), ImageType.CAPE);
         }catch(Exception e) {
         }
         try{
-            SkinUtils.downloadSkin(this);
+            skinLocation = FzSkinUtils.loadSkin(this.getGameProfile(), ImageType.SKIN);
         }catch(Exception e) {
         }
         PlayerConfigurations.getPlayerConfiguration(this);
@@ -127,9 +128,9 @@ public abstract class AbstractClientPlayer extends EntityPlayer
      */
     public ResourceLocation getLocationSkin()
     {
-        if (this.locationOfSkin != null)
+        if (this.skinLocation != null)
         {
-            return this.locationOfSkin;
+            return this.skinLocation;
         }
         else {
         	
@@ -154,9 +155,9 @@ public abstract class AbstractClientPlayer extends EntityPlayer
                 this.reloadCapeTimeMs = 0L;
             }
 
-            if (this.locationOfCape != null)
+            if (this.capeLocation != null)
             {
-                return this.locationOfCape;
+                return this.capeLocation;
             }
             else
             {
@@ -256,12 +257,12 @@ public abstract class AbstractClientPlayer extends EntityPlayer
 
     public ResourceLocation getLocationOfCape()
     {
-        return this.locationOfCape;
+        return this.capeLocation;
     }
 
     public void setLocationOfCape(ResourceLocation p_setLocationOfCape_1_)
     {
-        this.locationOfCape = p_setLocationOfCape_1_;
+        this.capeLocation = p_setLocationOfCape_1_;
     }
 
     public boolean hasElytraCape()
@@ -274,7 +275,7 @@ public abstract class AbstractClientPlayer extends EntityPlayer
         }
         else
         {
-            return resourcelocation == this.locationOfCape ? this.elytraOfCape : true;
+            return resourcelocation == this.capeLocation ? this.elytraOfCape : true;
         }
     }
 
@@ -300,11 +301,11 @@ public abstract class AbstractClientPlayer extends EntityPlayer
     
     public ResourceLocation getLocationOfSkin()
     {
-        return this.locationOfSkin;
+        return this.skinLocation;
     }
 
     public void setLocationOfSkin(ResourceLocation p_setLocationOfSkin_1_)
     {
-        this.locationOfSkin = p_setLocationOfSkin_1_;
+        this.skinLocation = p_setLocationOfSkin_1_;
     }
 }

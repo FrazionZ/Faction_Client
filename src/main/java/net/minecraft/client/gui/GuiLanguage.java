@@ -6,10 +6,10 @@ import java.util.Map;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
-import fz.frazionz.gui.GuiFzBaseScreen;
+import fz.frazionz.Client;
+import fz.frazionz.TTFFontRenderer;
 import fz.frazionz.gui.buttons.GuiFzButton;
 import fz.frazionz.gui.buttons.GuiFzOptionButton;
-import fz.frazionz.gui.renderer.fonts.FzFontRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.resources.Language;
@@ -107,8 +107,8 @@ public class GuiLanguage extends GuiScreen
      */
     public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {        
-    	FzFontRenderer titleRenderer = this.mc.fzFontRenderers.get(24);
-    	int titleSize = titleRenderer.getStringWidth(this.title);
+    	TTFFontRenderer titleRenderer = Client.getInstance().getTTFFontRenderers().get(24);
+    	int titleSize = titleRenderer.getWidth(this.title);
     	
     	this.drawRect(0, 0, width, height, BLACK_3);
         this.list.drawScreen(mouseX, mouseY, partialTicks);

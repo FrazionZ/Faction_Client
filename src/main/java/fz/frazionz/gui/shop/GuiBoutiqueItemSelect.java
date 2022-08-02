@@ -5,10 +5,10 @@ import java.text.NumberFormat;
 import java.util.Locale;
 
 import fz.frazionz.Client;
+import fz.frazionz.TTFFontRenderer;
 import fz.frazionz.api.gsonObj.BoutiqueItem;
 import fz.frazionz.gui.GuiButtonImage;
 import fz.frazionz.gui.GuiFrazionZInterface;
-import fz.frazionz.gui.renderer.fonts.FzFontRenderer;
 import fz.frazionz.packets.client.CPacketShopTrade;
 import fz.frazionz.utils.FzUtils;
 import net.minecraft.client.Minecraft;
@@ -76,8 +76,8 @@ public class GuiBoutiqueItemSelect extends GuiFrazionZInterface {
     @Override
 	public void drawTitle() {
     	
-        FzFontRenderer titleRenderer = this.mc.fzFontRenderers.get(24);
-        int titleSize = titleRenderer.getStringWidth(this.title) + 14;
+        TTFFontRenderer titleRenderer = Client.getInstance().getTTFFontRenderers().get(24);
+        int titleSize = titleRenderer.getWidth(this.title) + 14;
 		
 		// draw title background
         
@@ -103,7 +103,7 @@ public class GuiBoutiqueItemSelect extends GuiFrazionZInterface {
         GlStateManager.disableRescaleNormal();
         RenderHelper.disableStandardItemLighting();
         
-		this.mc.fzFontRenderers.get(24).drawCenteredString(this.title, this.guiLeft + this.xSize/2 + 7, this.guiTop + 3, 0xFFFFFFFF);
+		titleRenderer.drawCenteredString(this.title, this.guiLeft + this.xSize/2 + 7, this.guiTop + 3, 0xFFFFFFFF);
 	}
 
 }

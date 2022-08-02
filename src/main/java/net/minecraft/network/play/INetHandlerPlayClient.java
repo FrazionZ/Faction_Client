@@ -399,6 +399,4 @@ public interface INetHandlerPlayClient extends INetHandler
     
     void handleUpdateSkin(SPacketUpdateSkin handler);
 
-    //void handleOpenGuiBoutique(SPacketOpenGuiBoutique packetIn);
-
 }

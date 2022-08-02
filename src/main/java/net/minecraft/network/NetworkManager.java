@@ -493,7 +493,7 @@ public class NetworkManager extends SimpleChannelInboundHandler < Packet<? >>
             else
             {
                 this.disconnected = true;
-
+                
                 if (this.getExitMessage() != null)
                 {
                     this.getNetHandler().onDisconnect(this.getExitMessage());

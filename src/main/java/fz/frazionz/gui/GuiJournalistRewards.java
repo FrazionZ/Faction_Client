@@ -60,7 +60,7 @@ public class GuiJournalistRewards extends GuiScreen {
 
     public void callbackAfterLoad(int width, int height){
         buttonList.clear();
-        buttonList.add(new GuiRoundedButton(0, this.width / 2 - width / 2, this.guiTop + this.ySize - 68, width, height, "Récuperer maintenant", false, this.mc.fzFontRenderers.get(24), 1));
+        //buttonList.add(new GuiRoundedButton(0, this.width / 2 - width / 2, this.guiTop + this.ySize - 68, width, height, "Récuperer maintenant", false, this.mc.fzFontRenderers.get(24), 1));
     }
 
 

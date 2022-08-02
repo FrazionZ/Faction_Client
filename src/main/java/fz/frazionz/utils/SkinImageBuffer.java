@@ -18,7 +18,7 @@ public class SkinImageBuffer extends ImageBufferDownload
 
     public BufferedImage parseUserSkin(BufferedImage image)
     {
-        return SkinUtils.parseSkin(image);
+        return FzSkinUtils.parseSkin(image);
     }
 
     public void skinAvailable()

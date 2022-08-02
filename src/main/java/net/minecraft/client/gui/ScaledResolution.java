@@ -1,20 +1,7 @@
 package net.minecraft.client.gui;
 
-import java.util.Arrays;
-import java.util.List;
-
-import fz.frazionz.gui.GuiClassement;
-import fz.frazionz.gui.GuiMacro;
-import fz.frazionz.gui.GuiModsConfig;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.achievement.GuiStats;
-import net.minecraft.client.gui.advancements.GuiScreenAdvancements;
 import net.minecraft.util.math.MathHelper;
-import net.optifine.gui.GuiAnimationSettingsOF;
-import net.optifine.gui.GuiDetailSettingsOF;
-import net.optifine.gui.GuiOtherSettingsOF;
-import net.optifine.gui.GuiPerformanceSettingsOF;
-import net.optifine.gui.GuiQualitySettingsOF;
 
 public class ScaledResolution
 {

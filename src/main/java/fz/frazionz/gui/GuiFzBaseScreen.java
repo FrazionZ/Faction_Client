@@ -1,31 +1,9 @@
 package fz.frazionz.gui;
 
-import java.io.IOException;
-
-import fz.frazionz.gui.buttons.GuiFzButton;
-import fz.frazionz.gui.buttons.GuiFzOptionButton;
-import fz.frazionz.gui.buttons.GuiFzSlider;
-import fz.frazionz.gui.renderer.fonts.FzFontRenderer;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiControls;
-import net.minecraft.client.gui.GuiCustomizeSkin;
-import net.minecraft.client.gui.GuiLanguage;
-import net.minecraft.client.gui.GuiLockIconButton;
-import net.minecraft.client.gui.GuiOptionButton;
+import fz.frazionz.Client;
+import fz.frazionz.TTFFontRenderer;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.GuiScreenOptionsSounds;
-import net.minecraft.client.gui.GuiScreenResourcePacks;
-import net.minecraft.client.gui.GuiSnooper;
-import net.minecraft.client.gui.GuiVideoSettings;
-import net.minecraft.client.gui.GuiYesNo;
-import net.minecraft.client.gui.ScreenChatOptions;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.client.settings.GameSettings;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.TextComponentTranslation;
-import net.minecraft.world.EnumDifficulty;
 
 public class GuiFzBaseScreen extends GuiScreen
 {
@@ -82,8 +60,8 @@ public class GuiFzBaseScreen extends GuiScreen
      * Draw the title.
      */
     protected void drawTitle() {
-        FzFontRenderer titleRenderer = this.mc.fzFontRenderers.get(24);
-        int titleSize = titleRenderer.getStringWidth(this.title);
+        TTFFontRenderer titleRenderer = Client.getInstance().getTTFFontRenderers().get(24);
+        int titleSize = titleRenderer.getWidth(this.title);
 		
 		// draw title background
         this.mc.getTextureManager().bindTexture(INTERFACE_BACKGROUND_2);

@@ -3,9 +3,9 @@ package fz.frazionz.gui.shop;
 import java.io.IOException;
 
 import fz.frazionz.Client;
+import fz.frazionz.TTFFontRenderer;
 import fz.frazionz.api.gsonObj.BoutiqueType;
 import fz.frazionz.gui.GuiFrazionZInterface;
-import fz.frazionz.gui.renderer.fonts.FzFontRenderer;
 import fz.frazionz.utils.FzUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
@@ -88,8 +88,8 @@ public class GuiBoutiqueItems extends GuiFrazionZInterface {
 		GlStateManager.popMatrix();
 		
 		
-        FzFontRenderer titleRenderer = this.mc.fzFontRenderers.get(24);
-        int titleSize = titleRenderer.getStringWidth(this.title);
+        TTFFontRenderer titleRenderer = Client.getInstance().getTTFFontRenderers().get(24);
+        int titleSize = titleRenderer.getWidth(this.title);
 		
 		// draw title background
         this.mc.getTextureManager().bindTexture(BACKGROUND_2);
