@@ -14,8 +14,8 @@ import net.minecraft.advancements.PlayerAdvancements;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.JsonUtils;
-import net.minecraft.util.ResourceLocation;
 
 public class RecipeUnlockedTrigger implements ICriterionTrigger<RecipeUnlockedTrigger.Instance>
 {

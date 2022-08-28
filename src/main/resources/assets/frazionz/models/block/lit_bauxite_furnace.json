@@ -1,0 +1,8 @@
+{
+    "parent": "block/orientable",
+    "textures": {
+        "top": "frazionz:blocks/bauxite_furnace_top",
+        "front": "frazionz:blocks/bauxite_furnace_front_on",
+        "side": "frazionz:blocks/bauxite_furnace_side"
+    }
+}

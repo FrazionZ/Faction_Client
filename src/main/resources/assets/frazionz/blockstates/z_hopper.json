@@ -1,0 +1,9 @@
+{
+    "variants": {
+        "facing=down": { "model": "frazionz:z_hopper_down" },
+        "facing=north": { "model": "frazionz:z_hopper_side" },
+        "facing=south": { "model": "frazionz:z_hopper_side", "y": 180 },
+        "facing=west": { "model": "frazionz:z_hopper_side", "y": 270 },
+        "facing=east": { "model": "frazionz:z_hopper_side", "y": 90 }
+    }
+}

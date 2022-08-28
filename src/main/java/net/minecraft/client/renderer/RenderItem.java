@@ -68,12 +68,12 @@ import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemFishFood;
 import net.minecraft.item.ItemStack;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.src.Config;
 import net.minecraft.tileentity.TileEntityStructure;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ReportedException;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
@@ -952,7 +952,7 @@ public class RenderItem implements IResourceManagerReloadListener
         this.registerBlock(Blocks.MOSSY_COBBLESTONE, "mossy_cobblestone");
         this.registerBlock(Blocks.MYCELIUM, "mycelium");
         this.registerBlock(Blocks.NETHERRACK, BlockNetherrack.NetherrackType.NETHERRACK.getMetadata(), "netherrack");
-        this.registerBlock(Blocks.NETHERRACK, BlockNetherrack.NetherrackType.NETHERRACK_NYLIUM.getMetadata(), "netherrack_nylium");
+        this.registerBlock(Blocks.NETHERRACK, BlockNetherrack.NetherrackType.NETHERRACK_NYLIUM.getMetadata(), "frazionz:netherrack_nylium");
         this.registerBlock(Blocks.NETHER_BRICK, "nether_brick");
         this.registerBlock(Blocks.NETHER_BRICK_FENCE, "nether_brick_fence");
         this.registerBlock(Blocks.NETHER_BRICK_STAIRS, "nether_brick_stairs");
@@ -1335,280 +1335,290 @@ public class RenderItem implements IResourceManagerReloadListener
         this.registerBlock(Blocks.STRUCTURE_BLOCK, TileEntityStructure.Mode.CORNER.getModeId(), "structure_block");
         this.registerBlock(Blocks.STRUCTURE_BLOCK, TileEntityStructure.Mode.DATA.getModeId(), "structure_block");
 
-        this.registerItem(Items.DYNAMITE_ARROW, "dynamite_arrow");
-        this.registerItem(Items.YELLITE, "yellite");
-        this.registerItem(Items.YELLITE_HELMET, "yellite_helmet");
-        this.registerItem(Items.YELLITE_CHESTPLATE, "yellite_chestplate");
-        this.registerItem(Items.YELLITE_LEGGINGS, "yellite_leggings");
-        this.registerItem(Items.YELLITE_BOOTS, "yellite_boots");
-        this.registerItem(Items.YELLITE_SWORD, "yellite_sword");
-        this.registerItem(Items.YELLITE_PICKAXE, "yellite_pickaxe");
-        this.registerItem(Items.YELLITE_AXE, "yellite_axe");
-        this.registerItem(Items.YELLITE_HOE, "yellite_hoe");
-        this.registerItem(Items.YELLITE_SHOVEL, "yellite_shovel");
-        this.registerItem(Items.YELLITE_MULTITOOL, "yellite_multitool");
-        this.registerItem(Items.YELLITE_APPLE, "yellite_apple");
-        this.registerItem(Items.YELLITE_STICK, "yellite_stick");
-        this.registerBlock(Blocks.YELLITE_BLOCK, "yellite_block");
-        this.registerBlock(Blocks.YELLITE_ORE, "yellite_ore");
-        this.registerBlock(Blocks.YELLITE_CHEST, "yellite_chest");
-        this.registerBlock(Blocks.YELLITE_FURNACE, "yellite_furnace");
-        this.registerBlock(Blocks.YELLITE_LADDER, "yellite_ladder");
+        this.registerItem(Items.DYNAMITE_ARROW, "frazionz:dynamite_arrow");
+        this.registerItem(Items.YELLITE, "frazionz:yellite");
+        this.registerItem(Items.YELLITE_HELMET, "frazionz:yellite_helmet");
+        this.registerItem(Items.YELLITE_CHESTPLATE, "frazionz:yellite_chestplate");
+        this.registerItem(Items.YELLITE_LEGGINGS, "frazionz:yellite_leggings");
+        this.registerItem(Items.YELLITE_BOOTS, "frazionz:yellite_boots");
+        this.registerItem(Items.YELLITE_SWORD, "frazionz:yellite_sword");
+        this.registerItem(Items.YELLITE_PICKAXE, "frazionz:yellite_pickaxe");
+        this.registerItem(Items.YELLITE_AXE, "frazionz:yellite_axe");
+        this.registerItem(Items.YELLITE_HOE, "frazionz:yellite_hoe");
+        this.registerItem(Items.YELLITE_SHOVEL, "frazionz:yellite_shovel");
+        this.registerItem(Items.YELLITE_MULTITOOL, "frazionz:yellite_multitool");
+        this.registerItem(Items.YELLITE_APPLE, "frazionz:yellite_apple");
+        this.registerItem(Items.YELLITE_STICK, "frazionz:yellite_stick");
+        this.registerBlock(Blocks.YELLITE_BLOCK, "frazionz:yellite_block");
+        this.registerBlock(Blocks.YELLITE_ORE, "frazionz:yellite_ore");
+        this.registerBlock(Blocks.YELLITE_CHEST, "frazionz:yellite_chest");
+        this.registerBlock(Blocks.YELLITE_FURNACE, "frazionz:yellite_furnace");
+        this.registerBlock(Blocks.YELLITE_LADDER, "frazionz:yellite_ladder");
         
-        this.registerItem(Items.BAUXITE, "bauxite");
-        this.registerItem(Items.BAUXITE_HELMET, "bauxite_helmet");
-        this.registerItem(Items.BAUXITE_CHESTPLATE, "bauxite_chestplate");
-        this.registerItem(Items.BAUXITE_LEGGINGS, "bauxite_leggings");
-        this.registerItem(Items.BAUXITE_BOOTS, "bauxite_boots");
-        this.registerItem(Items.BAUXITE_SWORD, "bauxite_sword");
-        this.registerItem(Items.BAUXITE_PICKAXE, "bauxite_pickaxe");
-        this.registerItem(Items.BAUXITE_AXE, "bauxite_axe");
-        this.registerItem(Items.BAUXITE_HOE, "bauxite_hoe");
-        this.registerItem(Items.BAUXITE_SHOVEL, "bauxite_shovel");
-        this.registerItem(Items.BAUXITE_MULTITOOL, "bauxite_multitool");
-        this.registerItem(Items.BAUXITE_APPLE, "bauxite_apple");
-        this.registerItem(Items.BAUXITE_STICK, "bauxite_stick");
-        this.registerBlock(Blocks.BAUXITE_BLOCK, "bauxite_block");
-        this.registerBlock(Blocks.BAUXITE_ORE, "bauxite_ore");
-        this.registerBlock(Blocks.BAUXITE_CHEST, "bauxite_chest");
-        this.registerBlock(Blocks.BAUXITE_FURNACE, "bauxite_furnace");
-        this.registerBlock(Blocks.BAUXITE_LADDER, "bauxite_ladder");
+        this.registerItem(Items.BAUXITE, "frazionz:bauxite");
+        this.registerItem(Items.BAUXITE_HELMET, "frazionz:bauxite_helmet");
+        this.registerItem(Items.BAUXITE_CHESTPLATE, "frazionz:bauxite_chestplate");
+        this.registerItem(Items.BAUXITE_LEGGINGS, "frazionz:bauxite_leggings");
+        this.registerItem(Items.BAUXITE_BOOTS, "frazionz:bauxite_boots");
+        this.registerItem(Items.BAUXITE_SWORD, "frazionz:bauxite_sword");
+        this.registerItem(Items.BAUXITE_PICKAXE, "frazionz:bauxite_pickaxe");
+        this.registerItem(Items.BAUXITE_AXE, "frazionz:bauxite_axe");
+        this.registerItem(Items.BAUXITE_HOE, "frazionz:bauxite_hoe");
+        this.registerItem(Items.BAUXITE_SHOVEL, "frazionz:bauxite_shovel");
+        this.registerItem(Items.BAUXITE_MULTITOOL, "frazionz:bauxite_multitool");
+        this.registerItem(Items.BAUXITE_APPLE, "frazionz:bauxite_apple");
+        this.registerItem(Items.BAUXITE_STICK, "frazionz:bauxite_stick");
+        this.registerBlock(Blocks.BAUXITE_BLOCK, "frazionz:bauxite_block");
+        this.registerBlock(Blocks.BAUXITE_ORE, "frazionz:bauxite_ore");
+        this.registerBlock(Blocks.BAUXITE_CHEST, "frazionz:bauxite_chest");
+        this.registerBlock(Blocks.BAUXITE_FURNACE, "frazionz:bauxite_furnace");
+        this.registerBlock(Blocks.BAUXITE_LADDER, "frazionz:bauxite_ladder");
         
-        this.registerItem(Items.ONYX, "onyx");
-        this.registerItem(Items.ONYX_HELMET, "onyx_helmet");
-        this.registerItem(Items.ONYX_CHESTPLATE, "onyx_chestplate");
-        this.registerItem(Items.ONYX_LEGGINGS, "onyx_leggings");
-        this.registerItem(Items.ONYX_BOOTS, "onyx_boots");
-        this.registerItem(Items.ONYX_SWORD, "onyx_sword");
-        this.registerItem(Items.ONYX_PICKAXE, "onyx_pickaxe");
-        this.registerItem(Items.ONYX_AXE, "onyx_axe");
-        this.registerItem(Items.ONYX_HOE, "onyx_hoe");
-        this.registerItem(Items.ONYX_SHOVEL, "onyx_shovel");
-        this.registerItem(Items.ONYX_MULTITOOL, "onyx_multitool");
-        this.registerItem(Items.ONYX_APPLE, "onyx_apple");
-        this.registerItem(Items.ONYX_STICK, "onyx_stick");
-        this.registerBlock(Blocks.ONYX_BLOCK, "onyx_block");
-        this.registerBlock(Blocks.ONYX_ORE, "onyx_ore");
-        this.registerBlock(Blocks.ONYX_CHEST, "onyx_chest");
-        this.registerBlock(Blocks.ONYX_FURNACE, "onyx_furnace");
-        this.registerBlock(Blocks.ONYX_LADDER, "onyx_ladder");
+        this.registerItem(Items.ONYX, "frazionz:onyx");
+        this.registerItem(Items.ONYX_HELMET, "frazionz:onyx_helmet");
+        this.registerItem(Items.ONYX_CHESTPLATE, "frazionz:onyx_chestplate");
+        this.registerItem(Items.ONYX_LEGGINGS, "frazionz:onyx_leggings");
+        this.registerItem(Items.ONYX_BOOTS, "frazionz:onyx_boots");
+        this.registerItem(Items.ONYX_SWORD, "frazionz:onyx_sword");
+        this.registerItem(Items.ONYX_PICKAXE, "frazionz:onyx_pickaxe");
+        this.registerItem(Items.ONYX_AXE, "frazionz:onyx_axe");
+        this.registerItem(Items.ONYX_HOE, "frazionz:onyx_hoe");
+        this.registerItem(Items.ONYX_SHOVEL, "frazionz:onyx_shovel");
+        this.registerItem(Items.ONYX_MULTITOOL, "frazionz:onyx_multitool");
+        this.registerItem(Items.ONYX_APPLE, "frazionz:onyx_apple");
+        this.registerItem(Items.ONYX_STICK, "frazionz:onyx_stick");
+        this.registerBlock(Blocks.ONYX_BLOCK, "frazionz:onyx_block");
+        this.registerBlock(Blocks.ONYX_ORE, "frazionz:onyx_ore");
+        this.registerBlock(Blocks.ONYX_CHEST, "frazionz:onyx_chest");
+        this.registerBlock(Blocks.ONYX_FURNACE, "frazionz:onyx_furnace");
+        this.registerBlock(Blocks.ONYX_LADDER, "frazionz:onyx_ladder");
         
-        this.registerItem(Items.FRAZION, "frazion");
-        this.registerItem(Items.FRAZION_POWDER, "frazion_powder");
-        this.registerItem(Items.FRAZION_HELMET, "frazion_helmet");
-        this.registerItem(Items.FRAZION_CHESTPLATE, "frazion_chestplate");
-        this.registerItem(Items.FRAZION_LEGGINGS, "frazion_leggings");
-        this.registerItem(Items.FRAZION_BOOTS, "frazion_boots");
-        this.registerItem(Items.FRAZION_SWORD, "frazion_sword");
-        this.registerItem(Items.FRAZION_DAGGER, "frazion_dagger");
-        this.registerItem(Items.FRAZION_PICKAXE, "frazion_pickaxe");
-        this.registerItem(Items.FRAZION_AXE, "frazion_axe");
-        this.registerItem(Items.FRAZION_HOE, "frazion_hoe");
-        this.registerItem(Items.FRAZION_SHOVEL, "frazion_shovel");
-        this.registerItem(Items.FRAZION_HAMMER, "frazion_hammer");
-        this.registerItem(Items.FRAZION_MULTITOOL, "frazion_multitool");
-        this.registerItem(Items.FRAZION_APPLE, "frazion_apple");
-        this.registerItem(Items.FRAZION_STICK, "frazion_stick");
+        this.registerItem(Items.FRAZION, "frazionz:frazion");
+        this.registerItem(Items.FRAZION_POWDER, "frazionz:frazion_powder");
+        this.registerItem(Items.FRAZION_HELMET, "frazionz:frazion_helmet");
+        this.registerItem(Items.FRAZION_CHESTPLATE, "frazionz:frazion_chestplate");
+        this.registerItem(Items.FRAZION_LEGGINGS, "frazionz:frazion_leggings");
+        this.registerItem(Items.FRAZION_BOOTS, "frazionz:frazion_boots");
+        this.registerItem(Items.FRAZION_SWORD, "frazionz:frazion_sword");
+        this.registerItem(Items.FRAZION_DAGGER, "frazionz:frazion_dagger");
+        this.registerItem(Items.FRAZION_PICKAXE, "frazionz:frazion_pickaxe");
+        this.registerItem(Items.FRAZION_AXE, "frazionz:frazion_axe");
+        this.registerItem(Items.FRAZION_HOE, "frazionz:frazion_hoe");
+        this.registerItem(Items.FRAZION_SHOVEL, "frazionz:frazion_shovel");
+        this.registerItem(Items.FRAZION_HAMMER, "frazionz:frazion_hammer");
+        this.registerItem(Items.FRAZION_MULTITOOL, "frazionz:frazion_multitool");
+        this.registerItem(Items.FRAZION_APPLE, "frazionz:frazion_apple");
+        this.registerItem(Items.FRAZION_STICK, "frazionz:frazion_stick");
         
-        this.registerItem(Items.FRAZION_HELMET_70, "frazion_helmet_70");
-        this.registerItem(Items.FRAZION_CHESTPLATE_70, "frazion_chestplate_70");
-        this.registerItem(Items.FRAZION_LEGGINGS_70, "frazion_leggings_70");
-        this.registerItem(Items.FRAZION_BOOTS_70, "frazion_boots_70");
+        this.registerItem(Items.FRAZION_HELMET_70, "frazionz:frazion_helmet_70");
+        this.registerItem(Items.FRAZION_CHESTPLATE_70, "frazionz:frazion_chestplate_70");
+        this.registerItem(Items.FRAZION_LEGGINGS_70, "frazionz:frazion_leggings_70");
+        this.registerItem(Items.FRAZION_BOOTS_70, "frazionz:frazion_boots_70");
         
-        this.registerItem(Items.FRAZION_HELMET_100, "frazion_helmet_100");
-        this.registerItem(Items.FRAZION_CHESTPLATE_100, "frazion_chestplate_100");
-        this.registerItem(Items.FRAZION_LEGGINGS_100, "frazion_leggings_100");
-        this.registerItem(Items.FRAZION_BOOTS_100, "frazion_boots_100");
+        this.registerItem(Items.FRAZION_HELMET_100, "frazionz:frazion_helmet_100");
+        this.registerItem(Items.FRAZION_CHESTPLATE_100, "frazionz:frazion_chestplate_100");
+        this.registerItem(Items.FRAZION_LEGGINGS_100, "frazionz:frazion_leggings_100");
+        this.registerItem(Items.FRAZION_BOOTS_100, "frazionz:frazion_boots_100");
         
-        this.registerBlock(Blocks.FRAZION_BLOCK, "frazion_block");
-        this.registerBlock(Blocks.FRAZION_ORE, "frazion_ore");
-        this.registerBlock(Blocks.FRAZION_CHEST, "frazion_chest");
-        this.registerBlock(Blocks.FRAZION_FURNACE, "frazion_furnace");
-        this.registerBlock(Blocks.FRAZION_LADDER, "frazion_ladder");
+        this.registerBlock(Blocks.FRAZION_BLOCK, "frazionz:frazion_block");
+        this.registerBlock(Blocks.FRAZION_ORE, "frazionz:frazion_ore");
+        this.registerBlock(Blocks.FRAZION_CHEST, "frazionz:frazion_chest");
+        this.registerBlock(Blocks.FRAZION_FURNACE, "frazionz:frazion_furnace");
+        this.registerBlock(Blocks.FRAZION_LADDER, "frazionz:frazion_ladder");
         
-        this.registerItem(Items.COSMIC_POWDER, "cosmic_powder");
-        this.registerItem(Items.COSMIC_NUGGET, "cosmic_nugget");
-        this.registerItem(Items.COSMIC_INGOT, "cosmic_ingot");
+        this.registerItem(Items.COSMIC_POWDER, "frazionz:cosmic_powder");
+        this.registerItem(Items.COSMIC_NUGGET, "frazionz:cosmic_nugget");
+        this.registerItem(Items.COSMIC_INGOT, "frazionz:cosmic_ingot");
         
-        this.registerItem(Items.LEGENDARY_AXE, "legendary_axe");
-        this.registerItem(Items.LEGENDARY_SWORD, "legendary_sword");
-        this.registerItem(Items.LEGENDARY_DAGGER, "legendary_dagger");
-        this.registerItem(Items.LEGENDARY_SCYTHE, "legendary_scythe");
+        this.registerItem(Items.LEGENDARY_AXE, "frazionz:legendary_axe");
+        this.registerItem(Items.LEGENDARY_SWORD, "frazionz:legendary_sword");
+        this.registerItem(Items.LEGENDARY_DAGGER, "frazionz:legendary_dagger");
+        this.registerItem(Items.LEGENDARY_SCYTHE, "frazionz:legendary_scythe");
         
-        this.registerItem(Items.ULTRA_BOW, "ultra_bow");
-        this.registerBlock(Blocks.Z_HOPPER, "z_hopper");
-        this.registerBlock(Blocks.DIRT_CHEST, "dirt_chest");
-        this.registerBlock(Blocks.HDV_CHEST, "hdv_chest");
+        this.registerItem(Items.ULTRA_BOW, "frazionz:ultra_bow");
+        this.registerBlock(Blocks.Z_HOPPER, "frazionz:z_hopper");
+        this.registerBlock(Blocks.DIRT_CHEST, "frazionz:dirt_chest");
+        this.registerBlock(Blocks.HDV_CHEST, "frazionz:hdv_chest");
         
-        this.registerItem(Items.TRPOHY_BAT, "trophy_bat");
-        this.registerItem(Items.TROPHY_BLAZE, "trophy_blaze");
-        this.registerItem(Items.TROPHY_CREEPER, "trophy_creeper");
-        this.registerItem(Items.TROPHY_ENDERMAN, "trophy_enderman");
-        this.registerItem(Items.TRPOHY_GHAST, "trophy_ghast");
-        this.registerItem(Items.TROPHY_GUARDIAN, "trophy_guardian");
-        this.registerItem(Items.TROPHY_VILLAGER, "trophy_villager");
-        this.registerItem(Items.TROPHY_SHULKER, "trophy_shulker");
-        this.registerItem(Items.TROPHY_SPIDER, "trophy_spider");
-        this.registerItem(Items.TROPHY_SKELETON, "trophy_skeleton");
-        this.registerItem(Items.TROPHY_SLIME, "trophy_slime");
-        this.registerItem(Items.TRPOHY_SQUID, "trophy_squid");
-        this.registerBlock(Blocks.TROPHY_FORGE, "trophy_forge");
+        this.registerItem(Items.TROPHY_BAT, "frazionz:trophy_bat");
+        this.registerItem(Items.TROPHY_BLAZE, "frazionz:trophy_blaze");
+        this.registerItem(Items.TROPHY_CREEPER, "frazionz:trophy_creeper");
+        this.registerItem(Items.TROPHY_ENDERMAN, "frazionz:trophy_enderman");
+        this.registerItem(Items.TRPOHY_GHAST, "frazionz:trophy_ghast");
+        this.registerItem(Items.TROPHY_GUARDIAN, "frazionz:trophy_guardian");
+        this.registerItem(Items.TROPHY_VILLAGER, "frazionz:trophy_villager");
+        this.registerItem(Items.TROPHY_SHULKER, "frazionz:trophy_shulker");
+        this.registerItem(Items.TROPHY_SPIDER, "frazionz:trophy_spider");
+        this.registerItem(Items.TROPHY_SKELETON, "frazionz:trophy_skeleton");
+        this.registerItem(Items.TROPHY_SLIME, "frazionz:trophy_slime");
+        this.registerItem(Items.TRPOHY_SQUID, "frazionz:trophy_squid");
+        this.registerItem(Items.TROPHY_PIG, "frazionz:trophy_pig");
+        this.registerItem(Items.TROPHY_SHEEP, "frazionz:trophy_sheep");
+        this.registerItem(Items.TROPHY_IRON_GOLEM, "frazionz:trophy_iron_golem");
+        this.registerItem(Items.TROPHY_SILVERFISH, "frazionz:trophy_silverfish");
         
-        this.registerItem(Items.RECORD_FZ_1, "record_fz1");
-        this.registerItem(Items.RECORD_FZ_2, "record_fz2");
-        this.registerItem(Items.RECORD_FZ_3, "record_fz3");
-        this.registerItem(Items.RECORD_FZ_4, "record_fz4");
-        this.registerItem(Items.RECORD_FZ_5, "record_fz5");
-        this.registerItem(Items.RECORD_FZ_6, "record_fz6");
-        this.registerItem(Items.RECORD_FZ_7, "record_fz7");
-        this.registerItem(Items.RECORD_FZ_8, "record_fz8");
-        this.registerItem(Items.RECORD_FZ_9, "record_fz9");
-        this.registerItem(Items.RECORD_FZ_10, "record_fz10");
+        this.registerBlock(Blocks.TROPHY_FORGE, "frazionz:trophy_forge");
         
-        this.registerBlock(Blocks.CRISTAL_ROUGE, "cristal_rouge");
-        this.registerBlock(Blocks.CRISTAL_JAUNE, "cristal_jaune");
-        this.registerBlock(Blocks.CRISTAL_VIOLET, "cristal_violet");
-        this.registerBlock(Blocks.CRISTAL_VERT, "cristal_vert");
-        this.registerBlock(Blocks.CRISTAL_BLEU, "cristal_bleu");
-        this.registerBlock(Blocks.OBSIDIAN_YELLITE, "obsidian_yellite");
-        this.registerBlock(Blocks.OBSIDIAN_BAUXITE, "obsidian_bauxite");
-        this.registerBlock(Blocks.OBSIDIAN_ONYX, "obsidian_onyx");
-        this.registerBlock(Blocks.OBSIDIAN_FRAZION, "obsidian_frazion");
+        this.registerItem(Items.RECORD_FZ_1, "frazionz:fz_record_1");
+        this.registerItem(Items.RECORD_FZ_2, "frazionz:fz_record_2");
+        this.registerItem(Items.RECORD_FZ_3, "frazionz:fz_record_3");
+        this.registerItem(Items.RECORD_FZ_4, "frazionz:fz_record_4");
+        this.registerItem(Items.RECORD_FZ_5, "frazionz:fz_record_5");
+        this.registerItem(Items.RECORD_FZ_6, "frazionz:fz_record_6");
+        this.registerItem(Items.RECORD_FZ_7, "frazionz:fz_record_7");
+        this.registerItem(Items.RECORD_FZ_8, "frazionz:fz_record_8");
+        this.registerItem(Items.RECORD_FZ_9, "frazionz:fz_record_9");
+        this.registerItem(Items.RECORD_FZ_10, "frazionz:fz_record_10");
         
-        this.registerBlock(Blocks.Z_TNT, "z_tnt");
-        this.registerItem(Items.FARM_KEY, "key_farm");
-        this.registerItem(Items.VOTE_KEY, "key_vote");
-        this.registerItem(Items.COMMON_KEY, "key_common");
-        this.registerItem(Items.RARE_KEY, "key_rare");
-        this.registerItem(Items.LEGENDARY_KEY, "key_legendary");
+        this.registerBlock(Blocks.CRISTAL_ROUGE, "frazionz:cristal_rouge");
+        this.registerBlock(Blocks.CRISTAL_JAUNE, "frazionz:cristal_jaune");
+        this.registerBlock(Blocks.CRISTAL_VIOLET, "frazionz:cristal_violet");
+        this.registerBlock(Blocks.CRISTAL_VERT, "frazionz:cristal_vert");
+        this.registerBlock(Blocks.CRISTAL_BLEU, "frazionz:cristal_bleu");
+        this.registerBlock(Blocks.OBSIDIAN_YELLITE, "frazionz:obsidian_yellite");
+        this.registerBlock(Blocks.OBSIDIAN_BAUXITE, "frazionz:obsidian_bauxite");
+        this.registerBlock(Blocks.OBSIDIAN_ONYX, "frazionz:obsidian_onyx");
+        this.registerBlock(Blocks.OBSIDIAN_FRAZION, "frazionz:obsidian_frazion");
         
-        this.registerItem(Items.STRAWBERRY, "strawberry");
-        this.registerItem(Items.BANANA, "banana");
-        this.registerItem(Items.PIZZA, "pizza");
-        this.registerItem(Items.DONUTS, "donuts");
+        this.registerBlock(Blocks.Z_TNT, "frazionz:z_tnt");
+        this.registerItem(Items.FARM_KEY, "frazionz:key_farm");
+        this.registerItem(Items.VOTE_KEY, "frazionz:key_vote");
+        this.registerItem(Items.COMMON_KEY, "frazionz:key_common");
+        this.registerItem(Items.RARE_KEY, "frazionz:key_rare");
+        this.registerItem(Items.LEGENDARY_KEY, "frazionz:key_legendary");
         
-        this.registerBlock(Blocks.CRIMSON_LOG, "crimson_log");
-        this.registerBlock(Blocks.CRIMSON_ROOTS, "crimson_roots");
-        this.registerBlock(Blocks.CRIMSON_FUNGI, "crimson_fungi");
+        this.registerItem(Items.STRAWBERRY, "frazionz:strawberry");
+        this.registerItem(Items.BANANA, "frazionz:banana");
+        this.registerItem(Items.PIZZA, "frazionz:pizza");
+        this.registerItem(Items.DONUTS, "frazionz:donuts");
         
-        this.registerBlock(Blocks.NETHER_WART_BLOCK2, BlockMoreNWBVariant.VariantType.BRICK.getMetadata(), "nether_wart_block_brick");
-        this.registerBlock(Blocks.NETHER_WART_BLOCK2, BlockMoreNWBVariant.VariantType.BRICKS.getMetadata(), "nether_wart_block_bricks");
-        this.registerBlock(Blocks.NETHER_WART_BLOCK2, BlockMoreNWBVariant.VariantType.CARVED.getMetadata(), "nether_wart_block_carved");
-        this.registerBlock(Blocks.NETHER_WART_BLOCK2, BlockMoreNWBVariant.VariantType.CHISELED.getMetadata(), "nether_wart_block_chiseled");
+        this.registerBlock(Blocks.CRIMSON_LOG, "frazionz:crimson_log");
+        this.registerBlock(Blocks.CRIMSON_ROOTS, "frazionz:crimson_roots");
+        this.registerBlock(Blocks.CRIMSON_FUNGI, "frazionz:crimson_fungi");
         
-        this.registerBlock(Blocks.SANDSTONE2, BlockMoreSandstoneVariant.VariantType.BRICK.getMetadata(), "sandstone_brick");
-        this.registerBlock(Blocks.SANDSTONE2, BlockMoreSandstoneVariant.VariantType.BRICKS.getMetadata(), "sandstone_bricks");
-        this.registerBlock(Blocks.SANDSTONE2, BlockMoreSandstoneVariant.VariantType.CARVED.getMetadata(), "sandstone_carved");
-        this.registerBlock(Blocks.SANDSTONE2, BlockMoreSandstoneVariant.VariantType.CHISELED.getMetadata(), "sandstone_chiseled");
+        this.registerBlock(Blocks.NETHER_WART_BLOCK2, BlockMoreNWBVariant.VariantType.BRICK.getMetadata(), "frazionz:nether_wart_block_brick");
+        this.registerBlock(Blocks.NETHER_WART_BLOCK2, BlockMoreNWBVariant.VariantType.BRICKS.getMetadata(), "frazionz:nether_wart_block_bricks");
+        this.registerBlock(Blocks.NETHER_WART_BLOCK2, BlockMoreNWBVariant.VariantType.CARVED.getMetadata(), "frazionz:nether_wart_block_carved");
+        this.registerBlock(Blocks.NETHER_WART_BLOCK2, BlockMoreNWBVariant.VariantType.CHISELED.getMetadata(), "frazionz:nether_wart_block_chiseled");
         
-        this.registerBlock(Blocks.STONE_ANDESITE, BlockMoreAndesiteVariant.VariantType.BRICK.getMetadata(), "stone_andesite_brick");
-        this.registerBlock(Blocks.STONE_ANDESITE, BlockMoreAndesiteVariant.VariantType.BRICKS.getMetadata(), "stone_andesite_bricks");
-        this.registerBlock(Blocks.STONE_ANDESITE, BlockMoreAndesiteVariant.VariantType.CARVED.getMetadata(), "stone_andesite_carved");
-        this.registerBlock(Blocks.STONE_ANDESITE, BlockMoreAndesiteVariant.VariantType.CHISELED.getMetadata(), "stone_andesite_chiseled");
+        this.registerBlock(Blocks.SANDSTONE2, BlockMoreSandstoneVariant.VariantType.BRICK.getMetadata(), "frazionz:sandstone_brick");
+        this.registerBlock(Blocks.SANDSTONE2, BlockMoreSandstoneVariant.VariantType.BRICKS.getMetadata(), "frazionz:sandstone_bricks");
+        this.registerBlock(Blocks.SANDSTONE2, BlockMoreSandstoneVariant.VariantType.CARVED.getMetadata(), "frazionz:sandstone_carved");
+        this.registerBlock(Blocks.SANDSTONE2, BlockMoreSandstoneVariant.VariantType.CHISELED.getMetadata(), "frazionz:sandstone_chiseled");
         
-        this.registerBlock(Blocks.STONE_ANDESITE_SMOOTH, BlockMoreAndesiteSmoothVariant.VariantType.BRICK.getMetadata(), "stone_andesite_smooth_brick");
-        this.registerBlock(Blocks.STONE_ANDESITE_SMOOTH, BlockMoreAndesiteSmoothVariant.VariantType.BRICKS.getMetadata(), "stone_andesite_smooth_bricks");
-        this.registerBlock(Blocks.STONE_ANDESITE_SMOOTH, BlockMoreAndesiteSmoothVariant.VariantType.CARVED.getMetadata(), "stone_andesite_smooth_carved");
-        this.registerBlock(Blocks.STONE_ANDESITE_SMOOTH, BlockMoreAndesiteSmoothVariant.VariantType.CHISELED.getMetadata(), "stone_andesite_smooth_chiseled");
+        this.registerBlock(Blocks.STONE_ANDESITE, BlockMoreAndesiteVariant.VariantType.BRICK.getMetadata(), "frazionz:stone_andesite_brick");
+        this.registerBlock(Blocks.STONE_ANDESITE, BlockMoreAndesiteVariant.VariantType.BRICKS.getMetadata(), "frazionz:stone_andesite_bricks");
+        this.registerBlock(Blocks.STONE_ANDESITE, BlockMoreAndesiteVariant.VariantType.CARVED.getMetadata(), "frazionz:stone_andesite_carved");
+        this.registerBlock(Blocks.STONE_ANDESITE, BlockMoreAndesiteVariant.VariantType.CHISELED.getMetadata(), "frazionz:stone_andesite_chiseled");
         
-        
-        this.registerBlock(Blocks.STONE_GRANITE, BlockMoreGraniteVariant.VariantType.BRICK.getMetadata(), "stone_granite_brick");
-        this.registerBlock(Blocks.STONE_GRANITE, BlockMoreGraniteVariant.VariantType.BRICKS.getMetadata(), "stone_granite_bricks");
-        this.registerBlock(Blocks.STONE_GRANITE, BlockMoreGraniteVariant.VariantType.CARVED.getMetadata(), "stone_granite_carved");
-        this.registerBlock(Blocks.STONE_GRANITE, BlockMoreGraniteVariant.VariantType.CHISELED.getMetadata(), "stone_granite_chiseled");
-        
-        this.registerBlock(Blocks.STONE_GRANITE_SMOOTH, BlockMoreGraniteSmoothVariant.VariantType.BRICK.getMetadata(), "stone_granite_smooth_brick");
-        this.registerBlock(Blocks.STONE_GRANITE_SMOOTH, BlockMoreGraniteSmoothVariant.VariantType.BRICKS.getMetadata(), "stone_granite_smooth_bricks");
-        this.registerBlock(Blocks.STONE_GRANITE_SMOOTH, BlockMoreGraniteSmoothVariant.VariantType.CARVED.getMetadata(), "stone_granite_smooth_carved");
-        this.registerBlock(Blocks.STONE_GRANITE_SMOOTH, BlockMoreGraniteSmoothVariant.VariantType.CHISELED.getMetadata(), "stone_granite_smooth_chiseled");
+        this.registerBlock(Blocks.STONE_ANDESITE_SMOOTH, BlockMoreAndesiteSmoothVariant.VariantType.BRICK.getMetadata(), "frazionz:stone_andesite_smooth_brick");
+        this.registerBlock(Blocks.STONE_ANDESITE_SMOOTH, BlockMoreAndesiteSmoothVariant.VariantType.BRICKS.getMetadata(), "frazionz:stone_andesite_smooth_bricks");
+        this.registerBlock(Blocks.STONE_ANDESITE_SMOOTH, BlockMoreAndesiteSmoothVariant.VariantType.CARVED.getMetadata(), "frazionz:stone_andesite_smooth_carved");
+        this.registerBlock(Blocks.STONE_ANDESITE_SMOOTH, BlockMoreAndesiteSmoothVariant.VariantType.CHISELED.getMetadata(), "frazionz:stone_andesite_smooth_chiseled");
         
         
-        this.registerBlock(Blocks.STONE_DIORITE, BlockMoreDioriteVariant.VariantType.BRICK.getMetadata(), "stone_diorite_brick");
-        this.registerBlock(Blocks.STONE_DIORITE, BlockMoreDioriteVariant.VariantType.BRICKS.getMetadata(), "stone_diorite_bricks");
-        this.registerBlock(Blocks.STONE_DIORITE, BlockMoreDioriteVariant.VariantType.CARVED.getMetadata(), "stone_diorite_carved");
-        this.registerBlock(Blocks.STONE_DIORITE, BlockMoreDioriteVariant.VariantType.CHISELED.getMetadata(), "stone_diorite_chiseled");
+        this.registerBlock(Blocks.STONE_GRANITE, BlockMoreGraniteVariant.VariantType.BRICK.getMetadata(), "frazionz:stone_granite_brick");
+        this.registerBlock(Blocks.STONE_GRANITE, BlockMoreGraniteVariant.VariantType.BRICKS.getMetadata(), "frazionz:stone_granite_bricks");
+        this.registerBlock(Blocks.STONE_GRANITE, BlockMoreGraniteVariant.VariantType.CARVED.getMetadata(), "frazionz:stone_granite_carved");
+        this.registerBlock(Blocks.STONE_GRANITE, BlockMoreGraniteVariant.VariantType.CHISELED.getMetadata(), "frazionz:stone_granite_chiseled");
         
-        this.registerBlock(Blocks.STONE_DIORITE_SMOOTH, BlockMoreDioriteSmoothVariant.VariantType.BRICK.getMetadata(), "stone_diorite_smooth_brick");
-        this.registerBlock(Blocks.STONE_DIORITE_SMOOTH, BlockMoreDioriteSmoothVariant.VariantType.BRICKS.getMetadata(), "stone_diorite_smooth_bricks");
-        this.registerBlock(Blocks.STONE_DIORITE_SMOOTH, BlockMoreDioriteSmoothVariant.VariantType.CARVED.getMetadata(), "stone_diorite_smooth_carved");
-        this.registerBlock(Blocks.STONE_DIORITE_SMOOTH, BlockMoreDioriteSmoothVariant.VariantType.CHISELED.getMetadata(), "stone_diorite_smooth_chiseled");
+        this.registerBlock(Blocks.STONE_GRANITE_SMOOTH, BlockMoreGraniteSmoothVariant.VariantType.BRICK.getMetadata(), "frazionz:stone_granite_smooth_brick");
+        this.registerBlock(Blocks.STONE_GRANITE_SMOOTH, BlockMoreGraniteSmoothVariant.VariantType.BRICKS.getMetadata(), "frazionz:stone_granite_smooth_bricks");
+        this.registerBlock(Blocks.STONE_GRANITE_SMOOTH, BlockMoreGraniteSmoothVariant.VariantType.CARVED.getMetadata(), "frazionz:stone_granite_smooth_carved");
+        this.registerBlock(Blocks.STONE_GRANITE_SMOOTH, BlockMoreGraniteSmoothVariant.VariantType.CHISELED.getMetadata(), "frazionz:stone_granite_smooth_chiseled");
         
-        this.registerBlock(Blocks.STONE_BLACKSTONE, BlockDarkAndesite.VariantType.NORMAL.getMetadata(), "stone_blackstone_normal");
-        this.registerBlock(Blocks.STONE_BLACKSTONE, BlockDarkAndesite.VariantType.BRICK.getMetadata(), "stone_blackstone_brick");
-        this.registerBlock(Blocks.STONE_BLACKSTONE, BlockDarkAndesite.VariantType.BRICKS.getMetadata(), "stone_blackstone_bricks");
-        this.registerBlock(Blocks.STONE_BLACKSTONE, BlockDarkAndesite.VariantType.CARVED.getMetadata(), "stone_blackstone_carved");
-        this.registerBlock(Blocks.STONE_BLACKSTONE, BlockDarkAndesite.VariantType.CHISELED.getMetadata(), "stone_blackstone_chiseled");
         
-        this.registerBlock(Blocks.STONE_BLACKSTONE_SMOOTH, BlockDarkAndesite.VariantType.NORMAL.getMetadata(), "stone_blackstone_smooth_normal");
-        this.registerBlock(Blocks.STONE_BLACKSTONE_SMOOTH, BlockDarkAndesite.VariantType.BRICK.getMetadata(), "stone_blackstone_smooth_brick");
-        this.registerBlock(Blocks.STONE_BLACKSTONE_SMOOTH, BlockDarkAndesite.VariantType.BRICKS.getMetadata(), "stone_blackstone_smooth_bricks");
-        this.registerBlock(Blocks.STONE_BLACKSTONE_SMOOTH, BlockDarkAndesite.VariantType.CARVED.getMetadata(), "stone_blackstone_smooth_carved");
-        this.registerBlock(Blocks.STONE_BLACKSTONE_SMOOTH, BlockDarkAndesite.VariantType.CHISELED.getMetadata(), "stone_blackstone_smooth_chiseled");
+        this.registerBlock(Blocks.STONE_DIORITE, BlockMoreDioriteVariant.VariantType.BRICK.getMetadata(), "frazionz:stone_diorite_brick");
+        this.registerBlock(Blocks.STONE_DIORITE, BlockMoreDioriteVariant.VariantType.BRICKS.getMetadata(), "frazionz:stone_diorite_bricks");
+        this.registerBlock(Blocks.STONE_DIORITE, BlockMoreDioriteVariant.VariantType.CARVED.getMetadata(), "frazionz:stone_diorite_carved");
+        this.registerBlock(Blocks.STONE_DIORITE, BlockMoreDioriteVariant.VariantType.CHISELED.getMetadata(), "frazionz:stone_diorite_chiseled");
         
-        this.registerBlock(Blocks.RANDOM_ORE, "random_ore");
+        this.registerBlock(Blocks.STONE_DIORITE_SMOOTH, BlockMoreDioriteSmoothVariant.VariantType.BRICK.getMetadata(), "frazionz:stone_diorite_smooth_brick");
+        this.registerBlock(Blocks.STONE_DIORITE_SMOOTH, BlockMoreDioriteSmoothVariant.VariantType.BRICKS.getMetadata(), "frazionz:stone_diorite_smooth_bricks");
+        this.registerBlock(Blocks.STONE_DIORITE_SMOOTH, BlockMoreDioriteSmoothVariant.VariantType.CARVED.getMetadata(), "frazionz:stone_diorite_smooth_carved");
+        this.registerBlock(Blocks.STONE_DIORITE_SMOOTH, BlockMoreDioriteSmoothVariant.VariantType.CHISELED.getMetadata(), "frazionz:stone_diorite_smooth_chiseled");
         
-        this.registerBlock(Blocks.AMELIORATOR, "ameliorator");
+        this.registerBlock(Blocks.STONE_BLACKSTONE, BlockDarkAndesite.VariantType.NORMAL.getMetadata(), "frazionz:stone_blackstone_normal");
+        this.registerBlock(Blocks.STONE_BLACKSTONE, BlockDarkAndesite.VariantType.BRICK.getMetadata(), "frazionz:stone_blackstone_brick");
+        this.registerBlock(Blocks.STONE_BLACKSTONE, BlockDarkAndesite.VariantType.BRICKS.getMetadata(), "frazionz:stone_blackstone_bricks");
+        this.registerBlock(Blocks.STONE_BLACKSTONE, BlockDarkAndesite.VariantType.CARVED.getMetadata(), "frazionz:stone_blackstone_carved");
+        this.registerBlock(Blocks.STONE_BLACKSTONE, BlockDarkAndesite.VariantType.CHISELED.getMetadata(), "frazionz:stone_blackstone_chiseled");
         
-        this.registerItem(Items.NETHER_STRING, "nether_string");
-        this.registerItem(Items.RENFORCED_STRING, "renforced_string");
+        this.registerBlock(Blocks.STONE_BLACKSTONE_SMOOTH, BlockDarkAndesite.VariantType.NORMAL.getMetadata(), "frazionz:stone_blackstone_smooth_normal");
+        this.registerBlock(Blocks.STONE_BLACKSTONE_SMOOTH, BlockDarkAndesite.VariantType.BRICK.getMetadata(), "frazionz:stone_blackstone_smooth_brick");
+        this.registerBlock(Blocks.STONE_BLACKSTONE_SMOOTH, BlockDarkAndesite.VariantType.BRICKS.getMetadata(), "frazionz:stone_blackstone_smooth_bricks");
+        this.registerBlock(Blocks.STONE_BLACKSTONE_SMOOTH, BlockDarkAndesite.VariantType.CARVED.getMetadata(), "frazionz:stone_blackstone_smooth_carved");
+        this.registerBlock(Blocks.STONE_BLACKSTONE_SMOOTH, BlockDarkAndesite.VariantType.CHISELED.getMetadata(), "frazionz:stone_blackstone_smooth_chiseled");
         
-        this.registerItem(Items.RUNE, "rune");
-        this.registerItem(Items.WITHER_RUNE, "rune_wither");
-        this.registerItem(Items.POISON_RUNE, "rune_poison");
-        this.registerItem(Items.SLOWNESS_RUNE, "rune_slowness");
-        this.registerItem(Items.WEAKNESS_RUNE, "rune_weakness");
-        this.registerItem(Items.BLINDNESS_RUNE, "rune_blindness");
-        this.registerItem(Items.MINING_FATIGUE_RUNE, "rune_mining_fatigue");
+        this.registerBlock(Blocks.RANDOM_ORE, "frazionz:random_ore");
         
-        this.registerItem(Items.BIG_XP, "big_xp");
+        this.registerBlock(Blocks.AMELIORATOR, "frazionz:ameliorator");
         
-        this.registerItem(Items.LOOT_POWDER, "loot_powder");
-        this.registerItem(Items.FARM_POWDER, "farm_powder");
-        this.registerItem(Items.FARM_NUGGET, "farm_nugget");
+        this.registerItem(Items.NETHER_STRING, "frazionz:nether_string");
+        this.registerItem(Items.RENFORCED_STRING, "frazionz:renforced_string");
         
-        this.registerItem(Items.TRAVELERS_HELMET, "travelers_helmet");
-        this.registerItem(Items.TRAVELERS_CHESTPLATE, "travelers_chestplate");
-        this.registerItem(Items.TRAVELERS_LEGGINGS, "travelers_leggings");
-        this.registerItem(Items.TRAVELERS_BOOTS, "travelers_boots");
+        this.registerItem(Items.RUNE_ANTI_MALUS, "frazionz:rune_anti_malus");
+        this.registerItem(Items.RUNE_BONUS, "frazionz:rune_bonus");
+        this.registerItem(Items.RUNE_CHANCE, "frazionz:rune_chance");
+        this.registerItem(Items.RUNE_DAMAGE, "frazionz:rune_damage");
+        this.registerItem(Items.RUNE_HEALTH, "frazionz:rune_health");
+        this.registerItem(Items.RUNE_MINING, "frazionz:rune_mining");
+        this.registerItem(Items.RUNE_REGENERATION, "frazionz:rune_regeneration");
+        this.registerItem(Items.RUNE_RESISTANCE, "frazionz:rune_resistance");
+        this.registerItem(Items.RUNE_SPEED, "frazionz:rune_speed");
         
-        this.registerItem(Items.DYNAMITE, "dynamite");
+        this.registerItem(Items.BIG_XP, "frazionz:big_xp");
+        
+        this.registerItem(Items.LOOT_POWDER, "frazionz:loot_powder");
+        this.registerItem(Items.FARM_POWDER, "frazionz:farm_powder");
+        this.registerItem(Items.FARM_NUGGET, "frazionz:farm_nugget");
+        
+        this.registerItem(Items.TRAVELERS_HELMET, "frazionz:travelers_helmet");
+        this.registerItem(Items.TRAVELERS_CHESTPLATE, "frazionz:travelers_chestplate");
+        this.registerItem(Items.TRAVELERS_LEGGINGS, "frazionz:travelers_leggings");
+        this.registerItem(Items.TRAVELERS_BOOTS, "frazionz:travelers_boots");
+        
+        this.registerItem(Items.DYNAMITE, "frazionz:dynamite");
 
-        this.registerItem(Items.SPAWNER_PICKAXE, "spawner_pickaxe");
-        this.registerItem(Items.FARM_SWORD, "farm_sword");
+        this.registerItem(Items.SPAWNER_PICKAXE, "frazionz:spawner_pickaxe");
+        this.registerItem(Items.FARM_SWORD, "frazionz:farm_sword");
         
-        this.registerBlock(Blocks.RENFORCED_SAND, "renforced_sand");
+        this.registerBlock(Blocks.RENFORCED_SAND, "frazionz:renforced_sand");
 
         
-        /*this.registerItem(Items.YELLITE_BREWING_STAND, "yellite_brewing_stand");
-        this.registerItem(Items.BAUXITE_BREWING_STAND, "bauxite_brewing_stand");
-        this.registerItem(Items.ONYX_BREWING_STAND, "onyx_brewing_stand");
-        this.registerItem(Items.FRAZION_BREWING_STAND, "frazion_brewing_stand");*/
+        /*this.registerItem(Items.YELLITE_BREWING_STAND, "frazionz:yellite_brewing_stand");
+        this.registerItem(Items.BAUXITE_BREWING_STAND, "frazionz:bauxite_brewing_stand");
+        this.registerItem(Items.ONYX_BREWING_STAND, "frazionz:onyx_brewing_stand");
+        this.registerItem(Items.FRAZION_BREWING_STAND, "frazionz:frazion_brewing_stand");*/
         
-        this.registerItem(Items.BILLET, "billet");
-        this.registerItem(Items.OBSIDIAN_TOWER, "obsidian_tower");
+        this.registerItem(Items.BILLET, "frazionz:billet");
+        this.registerItem(Items.OBSIDIAN_TOWER, "frazionz:obsidian_tower");
         
-        this.registerItem(Items.BOOSTER_XP, "booster_xp");
-        this.registerItem(Items.BOOSTER_APTITUDE, "booster_aptitude");
-        this.registerItem(Items.BOOSTER_REPAIR, "booster_repair");
+        this.registerItem(Items.BOOSTER_XP, "frazionz:booster_xp");
+        this.registerItem(Items.BOOSTER_APTITUDE, "frazionz:booster_aptitude");
+        this.registerItem(Items.BOOSTER_REPAIR, "frazionz:booster_repair");
         
-        this.registerItem(Items.WITHERED_BONE, "withered_bone");
-        this.registerItem(Items.WITHERED_BONE_MEAL, "withered_bone_meal");
-        this.registerBlock(Blocks.WITHER_BLOCK, "wither_block");
+        this.registerItem(Items.WITHERED_BONE, "frazionz:withered_bone");
+        this.registerItem(Items.WITHERED_BONE_MEAL, "frazionz:withered_bone_meal");
+        this.registerBlock(Blocks.WITHER_BLOCK, "frazionz:wither_block");
         
-        this.registerBlock(Blocks.COMPACT_COBBLESTONE_X1, "compact_cobblestone_x1");
-        this.registerBlock(Blocks.COMPACT_COBBLESTONE_X2, "compact_cobblestone_x2");
-        this.registerBlock(Blocks.COMPACT_COBBLESTONE_X3, "compact_cobblestone_x3");
-        this.registerBlock(Blocks.COMPACT_COBBLESTONE_X4, "compact_cobblestone_x4");
-        this.registerBlock(Blocks.COMPACT_COBBLESTONE_X5, "compact_cobblestone_x5");
+        this.registerBlock(Blocks.COMPACT_COBBLESTONE_X1, "frazionz:compact_cobblestone_x1");
+        this.registerBlock(Blocks.COMPACT_COBBLESTONE_X2, "frazionz:compact_cobblestone_x2");
+        this.registerBlock(Blocks.COMPACT_COBBLESTONE_X3, "frazionz:compact_cobblestone_x3");
+        this.registerBlock(Blocks.COMPACT_COBBLESTONE_X4, "frazionz:compact_cobblestone_x4");
+        this.registerBlock(Blocks.COMPACT_COBBLESTONE_X5, "frazionz:compact_cobblestone_x5");
         
         
-        this.registerItem(Items.BOTTLEXP, "bottle_xp");
-        this.registerItem(Items.FACTION_TOKEN, "faction_token");
+        this.registerItem(Items.BOTTLEXP, "frazionz:bottle_xp");
+        this.registerItem(Items.FACTION_TOKEN, "frazionz:faction_token");
         
-        this.registerBlock(Blocks.REVERSE_FALL_BLOCK, "reverse_fall_block");
+        this.registerBlock(Blocks.REVERSE_FALL_BLOCK, "frazionz:reverse_fall_block");
         
-        this.registerBlock(Blocks.BLOCK_PLACER_CHEST, "block_placer_chest");
-        this.registerBlock(Blocks.BLOCK_PLACER_TRAPCHEST, "block_placer_trapchest");
+        this.registerBlock(Blocks.BLOCK_PLACER_CHEST, "frazionz:block_placer_chest");
+        this.registerBlock(Blocks.BLOCK_PLACER_TRAPCHEST, "frazionz:block_placer_trapchest");
+        
+        this.registerBlock(Blocks.GRIMOIRE_PEDESTAL, "frazionz:grimoire_pedestal");
+        this.registerBlock(Blocks.ITEM_CRUSHER, "frazionz:item_crusher");
         
         
         if (Reflector.ModelLoader_onRegisterItems.exists())

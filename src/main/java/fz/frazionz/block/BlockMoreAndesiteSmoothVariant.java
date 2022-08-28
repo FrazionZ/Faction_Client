@@ -110,7 +110,6 @@ public class BlockMoreAndesiteSmoothVariant extends Block
         private final String name;
         private final String unlocalizedName;
         private final MapColor color;
-        
 
         private VariantType(int metadataIn, String nameIn, MapColor color)
         {

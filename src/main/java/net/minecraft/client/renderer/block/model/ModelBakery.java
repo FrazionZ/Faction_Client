@@ -39,8 +39,8 @@ import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.IRegistry;
 import net.minecraft.util.registry.RegistrySimple;
 import net.minecraftforge.common.model.ITransformation;
@@ -516,18 +516,18 @@ public class ModelBakery
         this.variantNames.put(Items.BOAT, Lists.newArrayList("oak_boat"));
         this.variantNames.put(Items.TOTEM_OF_UNDYING, Lists.newArrayList("totem"));
 
-        this.variantNames.put(Item.getItemFromBlock(Blocks.CRIMSON_ROOTS), Lists.newArrayList("crimson_roots"));
-        this.variantNames.put(Item.getItemFromBlock(Blocks.NETHERRACK), Lists.newArrayList("netherrack", "netherrack_nylium"));
-        this.variantNames.put(Item.getItemFromBlock(Blocks.NETHER_WART_BLOCK2), Lists.newArrayList("nether_wart_block_brick", "nether_wart_block_bricks", "nether_wart_block_carved", "nether_wart_block_chiseled"));
-        this.variantNames.put(Item.getItemFromBlock(Blocks.SANDSTONE2), Lists.newArrayList("sandstone_brick", "sandstone_bricks", "sandstone_carved", "sandstone_chiseled"));
-        this.variantNames.put(Item.getItemFromBlock(Blocks.STONE_ANDESITE), Lists.newArrayList("stone_andesite_brick", "stone_andesite_bricks", "stone_andesite_carved", "stone_andesite_chiseled"));
-        this.variantNames.put(Item.getItemFromBlock(Blocks.STONE_ANDESITE_SMOOTH), Lists.newArrayList("stone_andesite_smooth_brick", "stone_andesite_smooth_bricks", "stone_andesite_smooth_carved", "stone_andesite_smooth_chiseled"));
-        this.variantNames.put(Item.getItemFromBlock(Blocks.STONE_GRANITE), Lists.newArrayList("stone_granite_brick", "stone_granite_bricks", "stone_granite_carved", "stone_granite_chiseled"));
-        this.variantNames.put(Item.getItemFromBlock(Blocks.STONE_GRANITE_SMOOTH), Lists.newArrayList("stone_granite_smooth_brick", "stone_granite_smooth_bricks", "stone_granite_smooth_carved", "stone_granite_smooth_chiseled"));
-        this.variantNames.put(Item.getItemFromBlock(Blocks.STONE_DIORITE), Lists.newArrayList("stone_diorite_brick", "stone_diorite_bricks", "stone_diorite_carved", "stone_diorite_chiseled"));
-        this.variantNames.put(Item.getItemFromBlock(Blocks.STONE_DIORITE_SMOOTH), Lists.newArrayList("stone_diorite_smooth_brick", "stone_diorite_smooth_bricks", "stone_diorite_smooth_carved", "stone_diorite_smooth_chiseled"));
-        this.variantNames.put(Item.getItemFromBlock(Blocks.STONE_BLACKSTONE), Lists.newArrayList("stone_blackstone_normal", "stone_blackstone_brick", "stone_blackstone_bricks", "stone_blackstone_carved", "stone_blackstone_chiseled"));
-        this.variantNames.put(Item.getItemFromBlock(Blocks.STONE_BLACKSTONE_SMOOTH), Lists.newArrayList("stone_blackstone_smooth_normal", "stone_blackstone_smooth_brick", "stone_blackstone_smooth_bricks", "stone_blackstone_smooth_carved", "stone_blackstone_smooth_chiseled"));
+        this.variantNames.put(Item.getItemFromBlock(Blocks.CRIMSON_ROOTS), Lists.newArrayList("frazionz:crimson_roots"));
+        this.variantNames.put(Item.getItemFromBlock(Blocks.NETHERRACK), Lists.newArrayList("netherrack", "frazionz:netherrack_nylium"));
+        this.variantNames.put(Item.getItemFromBlock(Blocks.NETHER_WART_BLOCK2), Lists.newArrayList("frazionz:nether_wart_block_brick", "frazionz:nether_wart_block_bricks", "frazionz:nether_wart_block_carved", "frazionz:nether_wart_block_chiseled"));
+        this.variantNames.put(Item.getItemFromBlock(Blocks.SANDSTONE2), Lists.newArrayList("frazionz:sandstone_brick", "frazionz:sandstone_bricks", "frazionz:sandstone_carved", "frazionz:sandstone_chiseled"));
+        this.variantNames.put(Item.getItemFromBlock(Blocks.STONE_ANDESITE), Lists.newArrayList("frazionz:stone_andesite_brick", "frazionz:stone_andesite_bricks", "frazionz:stone_andesite_carved", "frazionz:stone_andesite_chiseled"));
+        this.variantNames.put(Item.getItemFromBlock(Blocks.STONE_ANDESITE_SMOOTH), Lists.newArrayList("frazionz:stone_andesite_smooth_brick", "frazionz:stone_andesite_smooth_bricks", "frazionz:stone_andesite_smooth_carved", "frazionz:stone_andesite_smooth_chiseled"));
+        this.variantNames.put(Item.getItemFromBlock(Blocks.STONE_GRANITE), Lists.newArrayList("frazionz:stone_granite_brick", "frazionz:stone_granite_bricks", "frazionz:stone_granite_carved", "frazionz:stone_granite_chiseled"));
+        this.variantNames.put(Item.getItemFromBlock(Blocks.STONE_GRANITE_SMOOTH), Lists.newArrayList("frazionz:stone_granite_smooth_brick", "frazionz:stone_granite_smooth_bricks", "frazionz:stone_granite_smooth_carved", "frazionz:stone_granite_smooth_chiseled"));
+        this.variantNames.put(Item.getItemFromBlock(Blocks.STONE_DIORITE), Lists.newArrayList("frazionz:stone_diorite_brick", "frazionz:stone_diorite_bricks", "frazionz:stone_diorite_carved", "frazionz:stone_diorite_chiseled"));
+        this.variantNames.put(Item.getItemFromBlock(Blocks.STONE_DIORITE_SMOOTH), Lists.newArrayList("frazionz:stone_diorite_smooth_brick", "frazionz:stone_diorite_smooth_bricks", "frazionz:stone_diorite_smooth_carved", "frazionz:stone_diorite_smooth_chiseled"));
+        this.variantNames.put(Item.getItemFromBlock(Blocks.STONE_BLACKSTONE), Lists.newArrayList("frazionz:stone_blackstone_normal", "frazionz:stone_blackstone_brick", "frazionz:stone_blackstone_bricks", "frazionz:stone_blackstone_carved", "frazionz:stone_blackstone_chiseled"));
+        this.variantNames.put(Item.getItemFromBlock(Blocks.STONE_BLACKSTONE_SMOOTH), Lists.newArrayList("frazionz:stone_blackstone_smooth_normal", "frazionz:stone_blackstone_smooth_brick", "frazionz:stone_blackstone_smooth_bricks", "frazionz:stone_blackstone_smooth_carved", "frazionz:stone_blackstone_smooth_chiseled"));
         
         for (Entry<IRegistryDelegate<Item>, Set<String>> entry : customVariantNames.entrySet())
         {

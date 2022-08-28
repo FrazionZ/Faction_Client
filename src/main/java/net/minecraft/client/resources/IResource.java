@@ -4,7 +4,7 @@ import java.io.Closeable;
 import java.io.InputStream;
 import javax.annotation.Nullable;
 import net.minecraft.client.resources.data.IMetadataSection;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 public interface IResource extends Closeable
 {

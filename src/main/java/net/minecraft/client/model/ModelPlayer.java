@@ -1,5 +1,6 @@
 package net.minecraft.client.model;
 
+import fz.frazionz.client.model.entity.GrimoireModel;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.EnumHandSide;
@@ -14,6 +15,8 @@ public class ModelPlayer extends ModelBiped
     private final ModelRenderer bipedCape;
     private final ModelRenderer bipedDeadmau5Head;
     private final boolean smallArms;
+    
+    private GrimoireModel grimoire = new GrimoireModel();
 
     public ModelPlayer(float modelSize, boolean smallArmsIn)
     {
@@ -114,6 +117,10 @@ public class ModelPlayer extends ModelBiped
     public void renderCape(float scale)
     {
         this.bipedCape.render(scale);
+    }
+    
+    public void renderGrimoire(float scale) {
+    	this.grimoire.render(null, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, scale);
     }
 
     /**

@@ -5,7 +5,7 @@ import javax.annotation.Nullable;
 import net.minecraft.network.Packet;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.INetHandlerPlayClient;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 public class SPacketSelectAdvancementsTab implements Packet<INetHandlerPlayClient>
 {

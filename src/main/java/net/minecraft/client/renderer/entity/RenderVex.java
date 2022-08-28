@@ -3,7 +3,7 @@ package net.minecraft.client.renderer.entity;
 import net.minecraft.client.model.ModelVex;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.monster.EntityVex;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 public class RenderVex extends RenderBiped<EntityVex>
 {

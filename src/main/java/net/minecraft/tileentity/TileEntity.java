@@ -11,7 +11,9 @@ import fz.frazionz.tileentity.TileEntityBauxiteFurnace;
 import fz.frazionz.tileentity.TileEntityDirtChest;
 import fz.frazionz.tileentity.TileEntityFrazionChest;
 import fz.frazionz.tileentity.TileEntityFrazionFurnace;
+import fz.frazionz.tileentity.TileEntityGrimoirePedestal;
 import fz.frazionz.tileentity.TileEntityHdvChest;
+import fz.frazionz.tileentity.TileEntityItemCrusher;
 import fz.frazionz.tileentity.TileEntityOnyxChest;
 import fz.frazionz.tileentity.TileEntityOnyxFurnace;
 import fz.frazionz.tileentity.TileEntityTrophyForge;
@@ -26,8 +28,8 @@ import net.minecraft.crash.ICrashReportDetail;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mirror;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.RegistryNamespaced;
@@ -410,12 +412,13 @@ public abstract class TileEntity
         register("bauxite_furnace", TileEntityBauxiteFurnace.class);
         register("onyx_furnace", TileEntityOnyxFurnace.class);
         register("frazion_furnace", TileEntityFrazionFurnace.class);
-        register("ameliorator", TileEntityAmeliorator.class);
+        register("frazionz:ameliorator", TileEntityAmeliorator.class);
         /*register("yellite_brewing_stand", TileEntityYelliteBrewingStand.class);
         register("bauxite_brewing_stand", TileEntityBauxiteBrewingStand.class);
         register("onyx_brewing_stand", TileEntityBrewingStand.class);
         register("frazion_brewing_stand", TileEntityBrewingStand.class);*/
         register("trophy_forge", TileEntityTrophyForge.class);
-    
+        register("grimoire_pedestal", TileEntityGrimoirePedestal.class);
+        register("item_crusher", TileEntityItemCrusher.class);
     }
 }

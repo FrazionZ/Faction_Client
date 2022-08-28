@@ -7,8 +7,9 @@ import java.util.Map;
 import javax.annotation.Nullable;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ResourceLocation;
+
 import org.lwjgl.util.vector.Vector3f;
 
 public class ItemModelGenerator

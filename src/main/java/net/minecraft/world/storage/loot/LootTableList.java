@@ -1,10 +1,12 @@
 package net.minecraft.world.storage.loot;
 
 import com.google.common.collect.Sets;
+
+import net.minecraft.resources.ResourceLocation;
+
 import java.io.File;
 import java.util.Collections;
 import java.util.Set;
-import net.minecraft.util.ResourceLocation;
 
 public class LootTableList
 {

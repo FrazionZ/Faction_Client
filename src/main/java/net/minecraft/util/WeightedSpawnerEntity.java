@@ -1,6 +1,7 @@
 package net.minecraft.util;
 
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.resources.ResourceLocation;
 
 public class WeightedSpawnerEntity extends WeightedRandom.Item
 {

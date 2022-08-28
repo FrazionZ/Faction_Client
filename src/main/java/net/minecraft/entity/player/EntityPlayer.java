@@ -10,6 +10,7 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
 import com.mojang.authlib.GameProfile;
 
+import fz.frazionz.tileentity.TileEntityItemCrusher;
 import fz.frazionz.tileentity.TileEntityTrophyForge;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBed;
@@ -58,6 +59,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.scoreboard.ScorePlayerTeam;
 import net.minecraft.scoreboard.Scoreboard;
 import net.minecraft.scoreboard.Team;
@@ -74,7 +76,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumHandSide;
 import net.minecraft.util.FoodStats;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.datafix.DataFixer;
@@ -215,6 +216,8 @@ public abstract class EntityPlayer extends EntityLivingBase
      */
     public EntityFishHook fishEntity;
 
+    private int tickCount = 0;
+    
     protected CooldownTracker createCooldownTracker()
     {
         return new CooldownTracker();
@@ -265,6 +268,7 @@ public abstract class EntityPlayer extends EntityLivingBase
      */
     public void onUpdate()
     {
+    	this.tickCount++;
         this.noClip = this.isSpectator();
 
         if (this.isSpectator())
@@ -1280,6 +1284,10 @@ public abstract class EntityPlayer extends EntityLivingBase
     }
     
     public void openTrophyForge(TileEntityTrophyForge structure)
+    {
+    }
+    
+    public void openItemCrusher(TileEntityItemCrusher structure)
     {
     }
 
@@ -3005,6 +3013,20 @@ public abstract class EntityPlayer extends EntityLivingBase
     public boolean canUseCommandBlock()
     {
         return this.capabilities.isCreativeMode && this.canUseCommand(2, "");
+    }
+    
+    public int getTickCount() {
+		return tickCount;
+	}
+    
+    private boolean hasGrimoire = false;
+    
+    public boolean hasGrimoire() {
+    	return hasGrimoire;
+    }
+    
+    public void setHasGrimoire(boolean hasGrimoire) {
+    	this.hasGrimoire = hasGrimoire;
     }
 
     public static enum EnumChatVisibility

@@ -3,8 +3,8 @@ package net.minecraft.client.renderer.tileentity;
 import net.minecraft.client.model.ModelBook;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tileentity.TileEntityEnchantmentTable;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 
 public class TileEntityEnchantmentTableRenderer extends TileEntitySpecialRenderer<TileEntityEnchantmentTable>

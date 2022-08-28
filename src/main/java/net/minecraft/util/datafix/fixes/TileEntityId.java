@@ -61,12 +61,13 @@ public class TileEntityId implements IFixableData
         OLD_TO_NEW_ID_MAP.put("bauxite_furnace", "minecraft:bauxite_furnace");
         OLD_TO_NEW_ID_MAP.put("onyx_furnace", "minecraft:onyx_furnace");
         OLD_TO_NEW_ID_MAP.put("frazion_furnace", "minecraft:frazion_furnace");
-        OLD_TO_NEW_ID_MAP.put("ameliorator", "minecraft:ameliorator");
+        OLD_TO_NEW_ID_MAP.put("ameliorator", "frazionz:ameliorator");
         OLD_TO_NEW_ID_MAP.put("yellite_brewing_stand", "minecraft:yellite_brewing_stand");
         OLD_TO_NEW_ID_MAP.put("bauxite_brewing_stand", "minecraft:bauxite_brewing_stand");
         OLD_TO_NEW_ID_MAP.put("onyx_brewing_stand", "minecraft:onyx_brewing_stand");
         OLD_TO_NEW_ID_MAP.put("frazion_brewing_stand", "minecraft:frazion_brewing_stand");
         OLD_TO_NEW_ID_MAP.put("trophy_forge", "minecraft:trophy_forge");
-    
+        OLD_TO_NEW_ID_MAP.put("grimoire_pedestal", "minecraft:grimoire_pedestal");
+        
     }
 }

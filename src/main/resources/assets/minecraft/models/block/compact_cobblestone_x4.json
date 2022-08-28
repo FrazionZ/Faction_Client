@@ -1,6 +1,0 @@
-{
-    "parent": "block/cube_all",
-    "textures": {
-        "all": "blocks/compact_cobblestone_x4"
-    }
-}

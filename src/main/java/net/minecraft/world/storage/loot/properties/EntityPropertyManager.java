@@ -1,8 +1,10 @@
 package net.minecraft.world.storage.loot.properties;
 
 import com.google.common.collect.Maps;
+
+import net.minecraft.resources.ResourceLocation;
+
 import java.util.Map;
-import net.minecraft.util.ResourceLocation;
 
 public class EntityPropertyManager
 {

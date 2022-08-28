@@ -8,8 +8,8 @@ import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.src.Config;
-import net.minecraft.util.ResourceLocation;
 import net.optifine.entity.model.anim.ModelUpdater;
 import net.optifine.model.ModelSprite;
 import net.optifine.shaders.Shaders;
@@ -23,20 +23,20 @@ public class ModelRenderer
     public float textureHeight;
 
     /** The X offset into the texture used for displaying this model */
-    private int textureOffsetX;
+    protected int textureOffsetX;
 
     /** The Y offset into the texture used for displaying this model */
-    private int textureOffsetY;
+    protected int textureOffsetY;
     public float rotationPointX;
     public float rotationPointY;
     public float rotationPointZ;
     public float rotateAngleX;
     public float rotateAngleY;
     public float rotateAngleZ;
-    private boolean compiled;
+    protected boolean compiled;
 
     /** The GL display list rendered by the Tessellator for this model */
-    private int displayList;
+    protected int displayList;
     public boolean mirror;
     public boolean showModel;
 
@@ -45,7 +45,7 @@ public class ModelRenderer
     public List<ModelBox> cubeList;
     public List<ModelRenderer> childModels;
     public final String boxName;
-    private final ModelBase baseModel;
+    protected final ModelBase baseModel;
     public float offsetX;
     public float offsetY;
     public float offsetZ;
@@ -54,11 +54,11 @@ public class ModelRenderer
     public float scaleX;
     public float scaleY;
     public float scaleZ;
-    private int countResetDisplayList;
-    private ResourceLocation textureLocation;
-    private String id;
-    private ModelUpdater modelUpdater;
-    private RenderGlobal renderGlobal;
+    protected int countResetDisplayList;
+    protected ResourceLocation textureLocation;
+    protected String id;
+    protected ModelUpdater modelUpdater;
+    protected RenderGlobal renderGlobal;
 
     public ModelRenderer(ModelBase model, String boxNameIn)
     {
@@ -395,7 +395,7 @@ public class ModelRenderer
     /**
      * Compiles a GL display list for this model
      */
-    private void compileDisplayList(float scale)
+    protected void compileDisplayList(float scale)
     {
         if (this.displayList == 0)
         {
@@ -445,7 +445,7 @@ public class ModelRenderer
         return this.displayList;
     }
 
-    private void checkResetDisplayList()
+    protected void checkResetDisplayList()
     {
         if (this.countResetDisplayList != Shaders.countResetDisplayLists)
         {

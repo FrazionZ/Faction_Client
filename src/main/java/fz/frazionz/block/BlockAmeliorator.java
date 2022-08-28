@@ -122,25 +122,4 @@ public class BlockAmeliorator extends BlockContainer
 
         super.breakBlock(worldIn, pos, state);
     }
-    
-    public static void setState(boolean active, World worldIn, BlockPos pos)
-    {
-        IBlockState iblockstate = worldIn.getBlockState(pos);
-        TileEntity tileentity = worldIn.getTileEntity(pos);
-        keepInventory = true;
-        
-        worldIn.setBlockState(pos, Blocks.AMELIORATOR.getDefaultState(), 3);
-
-        keepInventory = false;
-
-        if (tileentity != null)
-        {
-            tileentity.validate();
-            worldIn.setTileEntity(pos, tileentity);
-        }
-    }
-    
-
-    
-
 }

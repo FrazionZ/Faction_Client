@@ -2,7 +2,7 @@ package net.minecraft.client.renderer.entity;
 
 import net.minecraft.client.model.ModelParrot;
 import net.minecraft.entity.passive.EntityParrot;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 
 public class RenderParrot extends RenderLiving<EntityParrot>

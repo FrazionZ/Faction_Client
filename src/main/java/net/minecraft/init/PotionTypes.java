@@ -3,7 +3,7 @@ package net.minecraft.init;
 import com.google.common.collect.Sets;
 import java.util.Set;
 import net.minecraft.potion.PotionType;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 public class PotionTypes
 {

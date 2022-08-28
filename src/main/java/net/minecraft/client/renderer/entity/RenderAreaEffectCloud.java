@@ -2,7 +2,7 @@ package net.minecraft.client.renderer.entity;
 
 import javax.annotation.Nullable;
 import net.minecraft.entity.EntityAreaEffectCloud;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 public class RenderAreaEffectCloud extends Render<EntityAreaEffectCloud>
 {

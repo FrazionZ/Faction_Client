@@ -12,7 +12,7 @@ import fz.frazionz.api.gsonObj.ShopItem;
 import fz.frazionz.api.gsonObj.ShopType;
 import net.minecraft.command.NumberInvalidException;
 import net.minecraft.item.Item;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 public class ShopAPIDataStocker {
 

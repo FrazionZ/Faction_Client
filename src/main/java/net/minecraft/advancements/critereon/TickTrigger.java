@@ -10,7 +10,7 @@ import java.util.Set;
 import net.minecraft.advancements.ICriterionTrigger;
 import net.minecraft.advancements.PlayerAdvancements;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 public class TickTrigger implements ICriterionTrigger<TickTrigger.Instance>
 {

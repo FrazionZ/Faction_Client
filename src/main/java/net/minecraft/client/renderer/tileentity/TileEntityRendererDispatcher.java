@@ -9,12 +9,18 @@ import com.google.common.collect.Maps;
 import fz.frazionz.tileentity.TileEntityBauxiteChest;
 import fz.frazionz.tileentity.TileEntityDirtChest;
 import fz.frazionz.tileentity.TileEntityFrazionChest;
+import fz.frazionz.tileentity.TileEntityGrimoirePedestal;
+import fz.frazionz.tileentity.TileEntityItemCrusher;
 import fz.frazionz.tileentity.TileEntityOnyxChest;
+import fz.frazionz.tileentity.TileEntityTrophyForge;
 import fz.frazionz.tileentity.TileEntityYelliteChest;
 import fz.frazionz.tileentity.renderer.TileEntityBauxiteChestRenderer;
 import fz.frazionz.tileentity.renderer.TileEntityDirtChestRenderer;
 import fz.frazionz.tileentity.renderer.TileEntityFrazionChestRenderer;
+import fz.frazionz.tileentity.renderer.TileEntityGrimoirePedestalRenderer;
+import fz.frazionz.tileentity.renderer.TileEntityItemCrusherRenderer;
 import fz.frazionz.tileentity.renderer.TileEntityOnyxChestRenderer;
+import fz.frazionz.tileentity.renderer.TileEntityTrophyForgeRenderer;
 import fz.frazionz.tileentity.renderer.TileEntityYelliteChestRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -100,7 +106,10 @@ public class TileEntityRendererDispatcher
         this.renderers.put(TileEntityYelliteChest.class, new TileEntityYelliteChestRenderer());
         this.renderers.put(TileEntityBauxiteChest.class, new TileEntityBauxiteChestRenderer());
         this.renderers.put(TileEntityFrazionChest.class, new TileEntityFrazionChestRenderer());
-        this.renderers.put(TileEntityOnyxChest.class, new TileEntityOnyxChestRenderer());
+        this.renderers.put(TileEntityOnyxChest.class, new TileEntityOnyxChestRenderer()); 
+        this.renderers.put(TileEntityGrimoirePedestal.class, new TileEntityGrimoirePedestalRenderer());
+        this.renderers.put(TileEntityTrophyForge.class, new TileEntityTrophyForgeRenderer());
+        this.renderers.put(TileEntityItemCrusher.class, new TileEntityItemCrusherRenderer());
         
         for (TileEntitySpecialRenderer<?> tileentityspecialrenderer : this.renderers.values())
         {

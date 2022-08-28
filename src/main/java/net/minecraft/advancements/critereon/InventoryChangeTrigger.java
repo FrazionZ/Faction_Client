@@ -14,8 +14,8 @@ import net.minecraft.advancements.PlayerAdvancements;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.JsonUtils;
-import net.minecraft.util.ResourceLocation;
 
 public class InventoryChangeTrigger implements ICriterionTrigger<InventoryChangeTrigger.Instance>
 {

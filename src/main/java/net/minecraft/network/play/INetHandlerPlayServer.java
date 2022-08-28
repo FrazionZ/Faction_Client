@@ -1,6 +1,6 @@
 package net.minecraft.network.play;
 
-import fz.frazionz.packets.client.CPacketTrophyForge;
+import fz.frazionz.packets.client.CPacketStartMachine;
 import net.minecraft.network.INetHandler;
 import net.minecraft.network.play.client.CPacketAnimation;
 import net.minecraft.network.play.client.CPacketChatMessage;
@@ -74,7 +74,7 @@ public interface INetHandlerPlayServer extends INetHandler
 
     
     
-    void processStartTrophyForge(CPacketTrophyForge packetIn);
+    void processStartMachine(CPacketStartMachine packetIn);
 
     
     /**

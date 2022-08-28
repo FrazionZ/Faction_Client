@@ -18,8 +18,9 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.client.CPacketCloseWindow;
 import net.minecraft.network.play.client.CPacketCustomPayload;
 import net.minecraft.potion.Potion;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tileentity.TileEntityBeacon;
-import net.minecraft.util.ResourceLocation;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

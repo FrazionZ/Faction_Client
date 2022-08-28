@@ -19,8 +19,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelShield;
 import net.minecraft.client.renderer.BannerTextures;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.block.model.IBakedModel;
-import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumDyeColor;
@@ -35,7 +33,6 @@ import net.minecraft.tileentity.TileEntityEnderChest;
 import net.minecraft.tileentity.TileEntityShulkerBox;
 import net.minecraft.tileentity.TileEntitySkull;
 import net.minecraft.util.EnumFacing;
-import net.optifine.reflect.Reflector;
 
 public class TileEntityItemStackRenderer
 {
@@ -55,7 +52,7 @@ public class TileEntityItemStackRenderer
     private final TileEntityFrazionChest frazion_chest = new TileEntityFrazionChest();
     private final TileEntityHdvChest hdv_chest = new TileEntityHdvChest();
     private final TileEntityOnyxChest onyx_chest = new TileEntityOnyxChest();
-    
+
     public void renderByItem(ItemStack itemStackIn)
     {
         this.renderByItem(itemStackIn, 1.0F);

@@ -1,10 +1,10 @@
 package fz.frazionz.entity.renderer;
 
-import fz.frazionz.entity.model.ModelNetherSpider;
+import fz.frazionz.entity.model.legacy.ModelNetherSpider;
 import fz.frazionz.entity.monster.EntityNetherSpider;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 public class RenderNetherSpider<T extends EntityNetherSpider> extends RenderLiving<T>
 {

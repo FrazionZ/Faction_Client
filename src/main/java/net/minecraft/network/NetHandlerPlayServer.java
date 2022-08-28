@@ -15,8 +15,8 @@ import com.google.common.primitives.Floats;
 import com.google.common.util.concurrent.Futures;
 
 import fz.frazionz.entity.projectile.EntityDynamiteArrow;
-import fz.frazionz.inventory.ContainerTrophyForge;
-import fz.frazionz.packets.client.CPacketTrophyForge;
+import fz.frazionz.packets.client.CPacketStartMachine;
+import fz.frazionz.tileentity.impl.TileMachine;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 import net.minecraft.advancements.Advancement;
@@ -98,6 +98,7 @@ import net.minecraft.network.play.server.SPacketPlayerPosLook;
 import net.minecraft.network.play.server.SPacketRespawn;
 import net.minecraft.network.play.server.SPacketSetSlot;
 import net.minecraft.network.play.server.SPacketTabComplete;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.CommandBlockBaseLogic;
 import net.minecraft.tileentity.TileEntity;
@@ -112,7 +113,6 @@ import net.minecraft.util.IntHashMap;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ReportedException;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.ServerRecipeBookHelper;
 import net.minecraft.util.math.BlockPos;
@@ -1282,19 +1282,14 @@ public class NetHandlerPlayServer implements INetHandlerPlayServer, ITickable
         }
     }
     
-    
-    /**
-     * Enchants the item identified by the packet given some convoluted conditions (matching window, which
-     * should/shouldn't be in use?)
-     */
-    public void processStartTrophyForge(CPacketTrophyForge packetIn)
+    public void processStartMachine(CPacketStartMachine packetIn)
     {
         PacketThreadUtil.checkThreadAndEnqueue(packetIn, this, this.player.getServerWorld());
         this.player.markPlayerActive();
         
         if(this.player.openContainer.windowId == packetIn.getWindowId() && this.player.openContainer.getCanCraft(this.player) && !this.player.isSpectator()) 
         {	
-        	((ContainerTrophyForge)this.player.openContainer).startForging();
+        	((TileMachine)this.player.openContainer).startMachine();
         	this.player.openContainer.detectAndSendChanges();
         }
     }
@@ -1747,35 +1742,6 @@ public class NetHandlerPlayServer implements INetHandlerPlayServer, ITickable
                 catch (Exception exception2)
                 {
                     LOGGER.error("Couldn't set beacon", (Throwable)exception2);
-                }
-            }
-        }
-        else if ("FZ|TrophyForge".equals(s))
-        {
-            if (this.player.openContainer instanceof ContainerTrophyForge)
-            {
-                try
-                {
-                    PacketBuffer packetBuffer = packetIn.getBufferData();
-                    
-                    int forgeTime = packetBuffer.readInt();
-                    int totalForgeTime = packetBuffer.readInt();
-                    int isForging = packetBuffer.readInt();
-                    
-                    ContainerTrophyForge containerbeacon = (ContainerTrophyForge)this.player.openContainer;
-                    
-                    IInventory iinventory = containerbeacon.getTileEntity();
-                    iinventory.setField(0, forgeTime);
-                    iinventory.setField(1, totalForgeTime);
-                    iinventory.setField(2, isForging);
-                        
-                    iinventory.markDirty();
-                    this.player.openContainer.detectAndSendChanges();
-                    
-                }
-                catch (Exception exception2)
-                {
-                    LOGGER.error("Couldn't set TrophyForge", (Throwable)exception2);
                 }
             }
         }

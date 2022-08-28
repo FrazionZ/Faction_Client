@@ -267,7 +267,7 @@ public class DataFixesManager
         BlockJukebox.registerFixesJukebox(datafixer);
         TileEntityMobSpawner.registerFixesMobSpawner(datafixer);
         TileEntityShulkerBox.registerFixesShulkerBox(datafixer);
-        EntityDynamiteArrow.registerFixesArrow(datafixer);
+        /*EntityDynamiteArrow.registerFixesArrow(datafixer);
         EntityBigXp.registerFixesBigXp(datafixer);
         EntityDynamite.registerFixesDynamite(datafixer);
         TileEntityZHopper.registerFixesHopper(datafixer);
@@ -281,7 +281,7 @@ public class DataFixesManager
         TileEntityYelliteBrewingStand.registerFixesBrewingStand(datafixer);
         TileEntityBauxiteBrewingStand.registerFixesBrewingStand(datafixer);
         EntityDemonZ.registerFixesDemonZ(datafixer);
-        EntityDemonGolem.registerFixesDemonGolem(datafixer);
+        EntityDemonGolem.registerFixesDemonGolem(datafixer);*/
         
         
         registerFixes(datafixer);

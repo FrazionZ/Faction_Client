@@ -5,7 +5,7 @@ import com.google.common.collect.UnmodifiableIterator;
 import java.util.List;
 import javax.annotation.Nullable;
 import net.minecraft.init.MobEffects;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.registry.RegistryNamespacedDefaultedByKey;
 
 public class PotionType

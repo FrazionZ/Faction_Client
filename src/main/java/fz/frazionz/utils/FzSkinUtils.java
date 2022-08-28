@@ -23,8 +23,8 @@ import net.minecraft.client.renderer.texture.ITextureObject;
 import net.minecraft.client.renderer.texture.SimpleTexture;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.resources.DefaultPlayerSkin;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.src.Config;
-import net.minecraft.util.ResourceLocation;
 
 public class FzSkinUtils
 {
@@ -47,7 +47,7 @@ public class FzSkinUtils
         return bufferedimage;
     }
     
-    public static ResourceLocation loadSkin(GameProfile profile, ImageType imgType) {
+    public static ResourceLocation loadSkin(GameProfile profile, TextureType imgType) {
     	
     	String username = StringUtils.lowerCase(profile.getName());
         String downloadURL = "https://api.frazionz.net/" + imgType.getFolder() + "/display?username=" + username;
@@ -80,11 +80,11 @@ public class FzSkinUtils
         }
     }
     
-    public static File getProfileCacheFile(GameProfile profile, ImageType imgType) {
+    public static File getProfileCacheFile(GameProfile profile, TextureType imgType) {
     	return  new File(Minecraft.getMinecraft().fileAssets + File.separator + "frazionz" + File.separator + imgType.getFolder(), String.valueOf(profile.getId().toString()));
     }
     
-    public enum ImageType {
+    public enum TextureType {
     	
     	SKIN("skins"),
     	CAPE("capes"),
@@ -92,7 +92,7 @@ public class FzSkinUtils
     	
     	private String folder;
     	
-    	ImageType(String folder) {
+    	TextureType(String folder) {
     		this.folder = folder;
     	}
     	

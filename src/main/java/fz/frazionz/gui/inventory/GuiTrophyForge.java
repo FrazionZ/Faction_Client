@@ -7,7 +7,7 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 public class GuiTrophyForge extends GuiContainer
 {
@@ -102,7 +102,7 @@ public class GuiTrophyForge extends GuiContainer
 
         if (x >= 0 && y >= 0 && x < 61 && y < 18 && this.container.canForge())
         {
-            this.mc.playerController.sendTrophyForgePacket(this.container.windowId);
+            this.mc.playerController.sendStartMachinePacket(this.container.windowId);
             this.tileTrophyForge.setField(2, 1);
         }
     }

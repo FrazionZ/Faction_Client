@@ -5,9 +5,9 @@ import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.src.Config;
 import net.minecraft.tileentity.TileEntityBeacon;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.optifine.shaders.Shaders;
 

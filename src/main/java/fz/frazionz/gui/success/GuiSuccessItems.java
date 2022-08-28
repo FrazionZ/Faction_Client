@@ -5,14 +5,14 @@ import java.io.IOException;
 
 import fz.frazionz.api.gsonObj.ShopType;
 import fz.frazionz.api.gsonObj.SuccessType;
-import fz.frazionz.data.FzUserData;
 import fz.frazionz.gui.GuiButtonOnlyImage;
 import fz.frazionz.utils.MathUtils;
+import fz.frazionz.utils.data.FzUserData;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 public class GuiSuccessItems extends GuiScreen {
 

@@ -1,0 +1,330 @@
+item.yellite_apple.name=Yellite Apple
+item.bauxite_apple.name=Bauxite Apple
+item.onyx_apple.name=Onyx Apple
+item.frazion_apple.name=Frazion Apple
+
+item.yellite.name=§eYellite
+item.yellite_sword.name=§eYellite Sword
+item.yellite_axe.name=§eYellite Axe
+item.yellite_pickaxe.name=§eYellite Pickaxe
+item.yellite_shovel.name=§eYellite Shovel
+item.yellite_hoe.name=§eYellite Hoe
+item.yellite_helmet.name=§eYellite Helmet
+item.yellite_chestplate.name=§eYellite Chestplate
+item.yellite_leggings.name=§eYellite Leggings
+item.yellite_boots.name=§eYellite Boots
+
+
+item.bauxite.name=§6Bauxite
+item.bauxite_sword.name=§6Bauxite Sword
+item.bauxite_axe.name=§6Bauxite Axe
+item.bauxite_pickaxe.name=§6Bauxite Pickaxe
+item.bauxite_shovel.name=§6Bauxite Shovel
+item.bauxite_hoe.name=§6Bauxite Hoe
+item.bauxite_helmet.name=§6Bauxite Helmet
+item.bauxite_chestplate.name=§6Bauxite Chestplate
+item.bauxite_leggings.name=§6Bauxite Leggings
+item.bauxite_boots.name=§6Bauxite Boots
+
+
+item.onyx.name=§8Onyx
+item.onyx_sword.name=§8Onyx Sword
+item.onyx_axe.name=§8Onyx Axe
+item.onyx_pickaxe.name=§8Onyx Pickaxe
+item.onyx_shovel.name=§8Onyx Shovel
+item.onyx_hoe.name=§8Onyx Hoe
+item.onyx_helmet.name=§8Onyx Helmet
+item.onyx_chestplate.name=§8Onyx Chestplate
+item.onyx_leggings.name=§8Onyx Leggings
+item.onyx_boots.name=§8Onyx Boots
+
+
+item.frazion_powder.name=§dFrazion Powder
+item.frazion_element.name=§dFrazion
+item.frazion_sword.name=§dFrazion Sword
+item.frazion_axe.name=§dFrazion Axe
+item.frazion_pickaxe.name=§dFrazion Pickaxe
+item.frazion_shovel.name=§dFrazion Shovel
+item.frazion_hoe.name=§dFrazion Hoe
+item.frazion_helmet.name=§dFrazion Helmet
+item.frazion_chestplate.name=§dFrazion Chestplate
+item.frazion_leggings.name=§dFrazion Leggings
+item.frazion_boots.name=§dFrazion Boots
+
+item.cosmic_powder.name=§bCosmic Powder
+item.cosmic_nugget.name=§bCosmic Nugget
+item.cosmic_ingot.name=§bCosmic Ingot
+
+item.banana.name=§eBanane
+item.strawberry.name=§cFraise
+item.pizza.name=§ePizza
+item.donuts.name=§eDonuts
+
+item.key_vote.name=§bVote Crystal
+item.key_farm.name=§6Farm Crystal
+item.key_common.name=§2Common Crystal
+item.key_rare.name=§4Rare Crystal
+item.key_legendary.name=§dLegendary Crystal
+
+item.ultra_bow.name=§dUltra Bow
+
+tile.frazion_block.name=§dFrazion Block
+tile.frazion_ore.name=§dFrazion Ore
+
+tile.onyx_block.name=§8Onyx Block
+tile.onyx_ore.name=§8Onyx Ore
+
+tile.bauxite_block.name=§6Bauxite Block
+tile.bauxite_ore.name=§6Bauxite Ore
+
+tile.yellite_block.name=§eYellite Block
+tile.yellite_ore.name=§eYellite Ore
+
+tile.z_hopper.name=§eZ Hopper
+item.z_hopper.name=§eZ Hopper
+
+tile.z_furnace.name=§eZ Furnace
+
+item.frazion_hammer.name=§dFrazion Hammer
+
+tile.yellite_chest.name=§eYellite Chest
+tile.bauxite_chest.name=§6Bauxite Chest
+tile.onyx_chest.name=§8Onyx Chest
+tile.frazion_chest.name=§dFrazion Chest
+
+item.yellite_multitool.name=§eYellite MultiTool
+item.bauxite_multitool.name=§6Bauxite MultiTool
+item.onyx_multitool.name=§8Onyx MultiTool
+item.frazion_multitool.name=§dFrazion MultiTool
+
+item.trophy_bat.name=Bat Trophy
+item.trophy_blaze.name=Blaze Trophy
+item.trophy_creeper.name=Creeper Trophy
+item.trophy_enderman.name=Enderman Trophy
+item.trophy_ghast.name=Ghast Trophy
+item.trophy_guardian.name=Guardian Trophy
+item.trophy_pnj.name=Villager Trophy
+item.trophy_shulker.name=Shulker Trophy
+item.trophy_skeleton.name=Skeleton Trophy
+item.trophy_slime.name=Slime Trophy
+item.trophy_spider.name=Spider Trophy
+item.trophy_squid.name=Squid Trophy
+item.trophy_pig.name=Pig Trophy
+item.trophy_sheep.name=Sheep Trophy
+item.trophy_silverfish.name=Silverfish Trophy
+item.trophy_iron_golem.name=Iron Golem Trophy
+
+item.rune_anti_malus.name=Rune Anti Malus
+item.rune_bonus.name=Rune Bo
+item.rune_chance.name=Rune Cha
+item.rune_damage.name=Rune Da
+item.rune_health.name=Rune He
+item.rune_mining.name=Rune Mi
+item.rune_regeneration.name=Rune Reg
+item.rune_resistance.name=Rune Res
+item.rune_speed.name=Rune Spe
+
+item.fz_record_1.name=§cFZ DISCO §4- §c
+item.fz_record_2.name=§cFZ DISCO §4- §c
+item.fz_record_3.name=§cFZ DISCO §4- §c
+
+item.loot_powder.name=Mob Powder
+item.farm_powder.name=Farm Powder
+item.farm_nugget.name=Farm Nugget
+
+tile.cristal_rouge.name=Red Cristal
+tile.cristal_bleu.name=Blue Cristal
+tile.cristal_vert.name=Green Cristal
+tile.cristal_jaune.name=Yellow Cristal
+tile.cristal_violet.name=Purple Cristal
+tile.crimson_log.name=Cimson Log
+tile.nether_wart_block.brick.name=Nether Wart Brick
+tile.nether_wart_block.bricks.name=Nether Wart Bricks
+tile.nether_wart_block.carved.name=Nether Wart Carved
+tile.nether_wart_block.chiseled.name=Nether Wart Chiseled
+tile.sandstone.brick.name=Sandstone Brick
+tile.sandstone.bricks.name=Sandstone Bricks
+tile.sandstone.carved.name=Sandstone Carved
+tile.sandstone.chiseled.name=Sandstone Chiseled
+tile.stone_andesite.brick.name=Andesite Brick
+tile.stone_andesite.bricks.name=Andesite Bricks
+tile.stone_andesite.carved.name=Andesite Carved
+tile.stone_andesite.chiseled.name=Andesite Chiseled
+tile.stone_andesite_smooth.brick.name=Andesite Smooth Brick
+tile.stone_andesite_smooth.bricks.name=Andesite Smooth Bricks
+tile.stone_andesite_smooth.carved.name=Andesite Smooth Carved
+tile.stone_andesite_smooth.chiseled.name=Andesite Smooth Chiseled
+tile.stone_granite.brick.name=Granite Brick
+tile.stone_granite.bricks.name=Granite Bricks
+tile.stone_granite.carved.name=Granite Carved
+tile.stone_granite.chiseled.name=Granite Chiseled
+tile.stone_granite_smooth.brick.name=Granite Smooth Brick
+tile.stone_granite_smooth.bricks.name=Granite Smooth Bricks
+tile.stone_granite_smooth.carved.name=Granite Smooth Carved
+tile.stone_granite_smooth.chiseled.name=Granite Smooth Chiseled
+tile.stone_diorite.brick.name=Diorite Brick
+tile.stone_diorite.bricks.name=Diorite Bricks
+tile.stone_diorite.carved.name=Diorite  Carved
+tile.stone_diorite.chiseled.name=Diorite Chiseled
+tile.stone_diorite_smooth.brick.name=Diorite Smooth Brick
+tile.stone_diorite_smooth.bricks.name=Diorite Smooth Bricks
+tile.stone_diorite_smooth.carved.name=Diorite Smooth Sarved
+tile.stone_diorite_smooth.chiseled.name=Diorite Smooth Chiseled
+item.nether_string.name=Nether String
+item.renforced_string.name=Renforced String
+
+item.big_xp.name=Big XP
+tile.z_tnt.name=Z Tnt
+tile.obsidian_1.name=Obsidian Purple
+tile.obsidian_2.name=Obsidian Red
+tile.obsidian_3.name=Obsidian Orange
+tile.obsidian_4.name=Obsidian Green
+
+item.yellite_stick.name=§eYellite Stick
+tile.yellite_ladder.name=§eYellite Ladder
+item.bauxite_stick.name=§6Bauxite Stick
+tile.bauxite_ladder.name=§6Bauxite Ladder
+item.onyx_stick.name=§7Onyx Stick
+tile.onyx_ladder.name=§7Onyx Ladder
+item.frazion_stick.name=§dFrazion Stick
+tile.frazion_ladder.name=§dFrazion Ladder
+
+item.frazion_helmet_70.name=§dFrazion Helmet 70%
+item.frazion_chestplate_70.name=§dFrazion Chestplate 70%
+item.frazion_leggings_70.name=§dFrazion Leggins 70%
+item.frazion_boots_70.name=§dFrazion Boots 70%
+item.frazion_helmet_100.name=§dFrazion Helmet 100%
+item.frazion_chestplate_100.name=§dFrazion Chestplate 100%
+item.frazion_leggings_100.name=§dFrazion Leggins 100%
+item.frazion_boots_100.name=§dFrazion Boots 100%
+item.travelers_helmet.name=§6Travelers Helmet
+item.travelers_chestplate.name=§6Travelers Chestplate
+item.travelers_leggings.name=§6Travelers Leggings
+item.travelers_boots.name=§6Travelers Boots
+item.legendary_sword.name=§bLegendary Sword
+item.legendary_dagger.name=§bLegendary Dagger
+item.legendary_scythe.name=§bLegendary Scythe
+item.legendary_axe.name=§bLegendary Axe
+entity.nether_spider.name=§cNether Spider
+
+item.booster_xp.name=§6Booster XP
+item.booster_repair.name=§6Booster Repair
+item.booster_aptitude.name=§6Booster d'Aptitude
+item.obsidian_tower.name=§7Obsidian Tower
+
+tile.yellite_chest.name=§eYellite Chest
+tile.bauxite_chest.name=§6Bauxite Chest
+tile.onyx_chest.name=§7Onyx Chest
+tile.frazion_chest.name=§dFrazion Chest
+tile.onyx_brewing_stand.name=Onyx Brewing Stand
+tile.bauxite_brewing_stand.name=§6Bauxite Brewing Stand
+tile.yellite_brewing_stand.name=§eYellite Brewing Stand
+
+tile.yellite_furnace.name=§eYellite Furnace
+tile.bauxite_furnace.name=§6Bauxite Furnace
+tile.onyx_furnace.name=§7Onyx Furnace
+tile.frazion_furnace.name=§dFrazion Furnace
+tile.dirt_chest.name=§6Dirt Chest
+tile.ameliorator.name=§dAméliorator
+tile.yellite_apple.name=§eYellite Apple
+tile.bauxite_apple.name=§6Bauxite Apple
+tile.onyx_apple.name=§7Onyx Apple
+tile.frazion_apple.name=§dFrazion Apple
+tile.trophy_forge.name=§eTrophy Forge
+item.trophy_forge.name=§eTrophy Forge
+tile.grimoide_pedestal.name=Grimoide Pedestal
+
+tile.hellrock.default.name=Netherrack
+tile.hellrock.nylium.name=Crimson Netherrack
+
+item.record_fz1.name=§6▬ §eFrazionZ Disc 1 §6▬
+item.record_fz2.name=§6▬ §eFrazionZ Disc 2 §6▬
+item.record_fz3.name=§6▬ §eFrazionZ Disc 3 §6▬
+item.record_fz4.name=§6▬ §eFrazionZ Disc 4 §6▬
+item.record_fz5.name=§6▬ §eFrazionZ Disc 5 §6▬
+item.record_fz6.name=§6▬ §eFrazionZ Disc 6 §6▬ 
+item.record_fz7.name=§6▬ §eFrazionZ Disc 7 §6▬
+item.record_fz8.name=§6▬ §eFrazionZ Disc 8 §6▬
+item.record_fz9.name=§6▬ §eFrazionZ Disc 9 §6▬
+item.record_fz10.name=§6▬ §eFrazionZ Disc 10 §6▬
+item.record.fz1.desc=§e§oLokoise - Sean Kevin
+item.record.fz2.desc=§e§oPetit Poney
+item.record.fz3.desc=§e§oOne Piece - Hard Knock Day
+item.record.fz4.desc=§e§oI PLAY POKEMON GO
+item.record.fz5.desc=§e§oCarla - BIM BAM TOI
+item.record.fz6.desc=§e§oHymne National Russe
+item.record.fz7.desc=§e§oDiggy Diggy Hole
+item.record.fz8.desc=§e§oKana Boon - Silhouette
+item.record.fz9.desc=§e§oFall Out Boy - The Phoenix
+item.record.fz10.desc=§e§oBiglo&Oli - La vie de reve
+tile.random_ore.name=§bRandom Ore
+tile.crimson_roots.name=§cCrimson Roots
+tile.crimson_fungi.name=§cCrimson Fungi
+tile.bauxite_chest.name=§6Bauxite Chest
+tile.frazion_chest.name=§dFrazion Chest
+
+item.spawner_pickaxe.name=§aSpawner Pickaxe
+item.farm_sword.name=§aFarm Sword
+item.dynamite_arrow.name=Dynamite Arrow
+item.dynamite.name=Dynamite
+tile.renforced_sand.name=Renforced Sand
+tile.obsidian_yellite.name=§eYellite Obsidian
+tile.obsidian_bauxite.name=§6Bauxite Obsidian
+tile.obsidian_onyx.name=§7Onyx Obsidian
+tile.obsidian_frazion.name=§dFrazion Obsidian
+entity.illager.name=§dCosmicker
+entity.herobrine_1.name=§eHerobrine
+
+item.frazion_dagger.name=§dFrazion Dagger
+
+item.billet.name=§7Billet
+
+container.dirtchest=Dirt Chest
+container.YelliteChest=Yellite Chest
+container.BauxiteChest=Bauxite Chest
+container.OnyxChest=Onyx Chest
+container.FrazionChest=Frazion Chest
+container.DirtChest=Dirt Chest
+container.yellitechest=Yellite Chest
+container.bauxitechest=Bauxite Chest
+container.onyxchest=Onyx Chest
+container.frazionchest=Frazion Chest
+container.z_hopper=Z Hopper
+
+tile.wither_block.name=Wither Block
+tile.compact_cobblestone_x1.name=Compact Cobblestone x1
+tile.compact_cobblestone_x2.name=Compact Cobblestone x2
+tile.compact_cobblestone_x3.name=Compact Cobblestone x3
+tile.compact_cobblestone_x4.name=Compact Cobblestone x4
+tile.compact_cobblestone_x5.name=Compact Cobblestone x5
+
+item.withered_bone.name=Withered Bone
+item.withered_bone_meal.name=Withered Bone Meal
+tile.reverse_fall_block.name=Reverse Fall Block
+potion.effect.nofall=Potion of No Fall
+splash_potion.effect.nofall=Splash Potion of No Fall
+lingering_potion.effect.nofall=Lingering Potion of No Fall
+tipped_arrow.effect.nofall=Arrow of No Fall
+
+item.bottlexp.name=§6Bottle XP
+item.faction_token.name=§6Faction Token
+
+fz.options.frazionz.UI=FrazionZ UI
+
+tile.stone_blackstone.normal.name=Blackstone
+tile.stone_blackstone.brick.name=Blackstone Brick
+tile.stone_blackstone.bricks.name=Blackstone Bricks
+tile.stone_blackstone.carved.name=Blackstone Carved
+tile.stone_blackstone.chiseled.name=Blackstone Chiseled
+
+tile.stone_blackstone_smooth.normal.name=Smooth Blackstone
+tile.stone_blackstone_smooth.brick.name=Smooth Blackstone Brick
+tile.stone_blackstone_smooth.bricks.name=Smooth Blackstone Bricks
+tile.stone_blackstone_smooth.carved.name=Smooth Blackstone Carved
+tile.stone_blackstone_smooth.chiseled.name=Smooth Blackstone Chiseled
+
+
+tile.block_placer_chest.name=Admin Block Placer Chest
+tile.block_placer_trapchest.name=Admin Block Placer Trapped Chest
+item.frazion.name=§dFrazion
+item.bottle_xp.name=§6Bottle XP

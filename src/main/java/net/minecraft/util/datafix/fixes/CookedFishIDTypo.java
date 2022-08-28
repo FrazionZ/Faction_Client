@@ -1,7 +1,7 @@
 package net.minecraft.util.datafix.fixes;
 
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.datafix.IFixableData;
 
 public class CookedFishIDTypo implements IFixableData

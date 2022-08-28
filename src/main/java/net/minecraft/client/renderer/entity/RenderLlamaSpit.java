@@ -3,7 +3,7 @@ package net.minecraft.client.renderer.entity;
 import net.minecraft.client.model.ModelLlamaSpit;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.projectile.EntityLlamaSpit;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 public class RenderLlamaSpit extends Render<EntityLlamaSpit>
 {

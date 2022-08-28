@@ -1,0 +1,6 @@
+{
+    "parent": "block/cross",
+    "textures": {
+        "cross": "frazionz:blocks/crimson_roots"
+    }
+}

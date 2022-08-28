@@ -1,6 +1,6 @@
 package net.optifine.entity.model;
 
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 public interface IEntityRenderer
 {

@@ -4,7 +4,7 @@ import fz.frazionz.tileentity.TileEntityBauxiteChest;
 import net.minecraft.client.model.ModelChest;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 public class TileEntityBauxiteChestRenderer extends TileEntitySpecialRenderer<TileEntityBauxiteChest>
 {
@@ -14,7 +14,7 @@ public class TileEntityBauxiteChestRenderer extends TileEntitySpecialRenderer<Ti
     public void render(TileEntityBauxiteChest tileEntity, double x, double y, double z, float partialTicks, int destroyStage, float alpha)
     {
         int i = 0;
-
+        
         if (tileEntity.hasWorld())
         {
             i = tileEntity.getBlockMetadata();

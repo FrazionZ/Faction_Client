@@ -47,23 +47,6 @@ public class BlockMoreSandstoneVariant extends Block
     {
     	BlockMoreSandstoneVariant.VariantType blockvariant$type = (BlockMoreSandstoneVariant.VariantType)state.getValue(VARIANT);
 
-        if (blockvariant$type == BlockMoreSandstoneVariant.VariantType.BRICK)
-        {
-        	blockvariant$type = BlockMoreSandstoneVariant.VariantType.BRICK;
-        }
-        else if (blockvariant$type == BlockMoreSandstoneVariant.VariantType.BRICKS)
-        {
-        	blockvariant$type = BlockMoreSandstoneVariant.VariantType.BRICKS;
-        }
-        else if (blockvariant$type == BlockMoreSandstoneVariant.VariantType.CARVED)
-        {
-        	blockvariant$type = BlockMoreSandstoneVariant.VariantType.CARVED;
-        }
-        else if (blockvariant$type == BlockMoreSandstoneVariant.VariantType.CHISELED)
-        {
-        	blockvariant$type = BlockMoreSandstoneVariant.VariantType.CHISELED;
-        }
-
         return blockvariant$type.getMetadata();
     }
     
@@ -102,7 +85,7 @@ public class BlockMoreSandstoneVariant extends Block
         BRICK(0, "sandstone" + "_" + "brick", "brick", MapColor.STONE),
         BRICKS(1, "sandstone" + "_" + "bricks", "bricks", MapColor.STONE),
     	CARVED(2, "sandstone" + "_" + "carved", "carved", MapColor.STONE),
-    	CHISELED(3, "sandstone" + "_" + "chiseled_new", "chiseled", MapColor.STONE),
+    	CHISELED(3, "sandstone" + "_" + "chiseled", "chiseled", MapColor.STONE),
     	;
 
         private static final BlockMoreSandstoneVariant.VariantType[] METADATA_LOOKUP = new BlockMoreSandstoneVariant.VariantType[values().length];

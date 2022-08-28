@@ -1,6 +1,6 @@
 package net.minecraft.init;
 
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.biome.Biome;
 
 public abstract class Biomes

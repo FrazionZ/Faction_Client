@@ -59,11 +59,6 @@ public class BlockFrazionChest extends BlockContainer
         return false;
     }
 
-    public boolean func_190946_v(IBlockState p_190946_1_)
-    {
-        return true;
-    }
-
     /**
      * The type of render function called. MODEL for mixed tesr and static model, MODELBLOCK_ANIMATED for TESR-only,
      * LIQUID for vanilla liquids, INVISIBLE to skip all rendering
@@ -232,7 +227,7 @@ public class BlockFrazionChest extends BlockContainer
 
         return this.getDefaultState().withProperty(FACING, enumfacing);
     }
-
+    
     /**
      * Convert the BlockState into the correct metadata value
      */
@@ -262,10 +257,5 @@ public class BlockFrazionChest extends BlockContainer
     protected BlockStateContainer createBlockState()
     {
         return new BlockStateContainer(this, new IProperty[] {FACING});
-    }
-
-    public BlockFaceShape func_193383_a(IBlockAccess p_193383_1_, IBlockState p_193383_2_, BlockPos p_193383_3_, EnumFacing p_193383_4_)
-    {
-        return BlockFaceShape.UNDEFINED;
     }
 }

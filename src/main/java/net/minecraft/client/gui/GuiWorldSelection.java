@@ -14,7 +14,7 @@ import fz.frazionz.Client;
 import fz.frazionz.TTFFontRenderer;
 import fz.frazionz.gui.buttons.GuiFzButton;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 public class GuiWorldSelection extends GuiScreen
 {

@@ -13,7 +13,7 @@ import net.minecraft.advancements.PlayerAdvancements;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 public class VillagerTradeTrigger implements ICriterionTrigger<VillagerTradeTrigger.Instance>
 {

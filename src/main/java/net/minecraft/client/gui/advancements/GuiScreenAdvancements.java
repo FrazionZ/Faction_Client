@@ -13,7 +13,8 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.network.play.client.CPacketSeenAdvancements;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
+
 import org.lwjgl.input.Mouse;
 
 public class GuiScreenAdvancements extends GuiScreen implements ClientAdvancementManager.IListener

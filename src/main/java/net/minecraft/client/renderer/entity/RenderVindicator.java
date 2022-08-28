@@ -6,8 +6,8 @@ import net.minecraft.client.renderer.entity.layers.LayerHeldItem;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.monster.EntityVindicator;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.EnumHandSide;
-import net.minecraft.util.ResourceLocation;
 
 public class RenderVindicator extends RenderLiving<EntityMob>
 {

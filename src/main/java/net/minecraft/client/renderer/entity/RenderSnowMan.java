@@ -3,7 +3,7 @@ package net.minecraft.client.renderer.entity;
 import net.minecraft.client.model.ModelSnowMan;
 import net.minecraft.client.renderer.entity.layers.LayerSnowmanHead;
 import net.minecraft.entity.monster.EntitySnowman;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 public class RenderSnowMan extends RenderLiving<EntitySnowman>
 {

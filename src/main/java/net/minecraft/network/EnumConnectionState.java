@@ -13,7 +13,7 @@ import com.google.common.collect.Maps;
 import fz.frazionz.packets.client.CPacketServerSwitch;
 import fz.frazionz.packets.client.CPacketShopTrade;
 import fz.frazionz.packets.client.CPacketSkillClaimButton;
-import fz.frazionz.packets.client.CPacketTrophyForge;
+import fz.frazionz.packets.client.CPacketStartMachine;
 import fz.frazionz.packets.server.SPacketGuiOpener;
 import fz.frazionz.packets.server.SPacketSkillUpdater;
 import fz.frazionz.packets.server.SPacketToast;
@@ -262,7 +262,7 @@ public enum EnumConnectionState
             this.registerPacket(EnumPacketDirection.SERVERBOUND, CPacketPlayerTryUseItemOnBlock.class);
             this.registerPacket(EnumPacketDirection.SERVERBOUND, CPacketPlayerTryUseItem.class);
             // FrazionZ Packet //
-            this.registerPacket(EnumPacketDirection.SERVERBOUND, CPacketTrophyForge.class);
+            this.registerPacket(EnumPacketDirection.SERVERBOUND, CPacketStartMachine.class);
             this.registerPacket(EnumPacketDirection.SERVERBOUND, CPacketServerSwitch.class);
             this.registerPacket(EnumPacketDirection.SERVERBOUND, CPacketShopTrade.class);
             this.registerPacket(EnumPacketDirection.SERVERBOUND, CPacketSkillClaimButton.class);

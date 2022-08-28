@@ -4,7 +4,7 @@ import com.google.common.collect.Maps;
 import java.util.Map;
 import javax.annotation.Nullable;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.datafix.FixTypes;
 import net.minecraft.util.datafix.IDataFixer;
 import net.minecraft.util.datafix.IDataWalker;
@@ -77,8 +77,9 @@ public class BlockEntityTag implements IDataWalker
         map.put("minecraft:lit_onyx_furnace", "onyx_furnace");
         map.put("minecraft:frazion_furnace", "frazion_furnace");
         map.put("minecraft:lit_frazion_furnace", "frazion_furnace");
-        map.put("minecraft:ameliorator", "ameliorator");
+        map.put("frazionz:ameliorator", "ameliorator");
         map.put("minecraft:trophy_forge", "trophy_forge");
+        map.put("minecraft:grimoire_pedestal", "grimoire_pedestal");
         
         map.put("minecraft:chest", "Chest");
         
@@ -191,7 +192,7 @@ public class BlockEntityTag implements IDataWalker
         map.put("minecraft:lit_onyx_furnace", "minecraft:onyx_furnace");
         map.put("minecraft:frazion_furnace", "minecraft:frazion_furnace");
         map.put("minecraft:lit_frazion_furnace", "minecraft:frazion_furnace");
-        map.put("minecraft:ameliorator", "minecraft:ameliorator");
+        map.put("frazionz:ameliorator", "frazionz:ameliorator");
         map.put("minecraft:trophy_forge", "minecraft:trophy_forge");
         map.put("minecraft:dirt_chest", "minecraft:dirt_chest");
         map.put("minecraft:yellite_chest", "minecraft:yellite_chest");
@@ -205,6 +206,7 @@ public class BlockEntityTag implements IDataWalker
         map.put("minecraft:bauxite_brewing_stand", "minecraft:bauxite_brewing_stand");
         map.put("minecraft:onyx_brewing_stand", "minecraft:onyx_brewing_stand");
         map.put("minecraft:frazion_brewing_stand", "minecraft:frazion_brewing_stand");
+        map.put("minecraft:grimoire_pedestal", "minecraft:grimoire_pedestal");
     
     }
 }

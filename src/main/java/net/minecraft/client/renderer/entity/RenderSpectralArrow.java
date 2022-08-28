@@ -1,7 +1,7 @@
 package net.minecraft.client.renderer.entity;
 
 import net.minecraft.entity.projectile.EntitySpectralArrow;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 public class RenderSpectralArrow extends RenderArrow<EntitySpectralArrow>
 {

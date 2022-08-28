@@ -1,8 +1,0 @@
-{
-    "variants": {
-        "facing=north": { "model": "frazion_furnace" },
-        "facing=south": { "model": "frazion_furnace", "y": 180 },
-        "facing=west":  { "model": "frazion_furnace", "y": 270 },
-        "facing=east":  { "model": "frazion_furnace", "y": 90 }
-    }
-}

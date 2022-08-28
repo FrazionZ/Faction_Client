@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "facing=south": { "model": "frazionz:cristal_rouge", "y": 90},
+        "facing=west": { "model": "frazionz:cristal_rouge"},
+        "facing=north": { "model": "frazionz:cristal_rouge", "y": 90},
+        "facing=east": { "model": "frazionz:cristal_rouge"}
+    }
+}

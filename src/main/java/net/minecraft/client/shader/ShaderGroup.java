@@ -19,8 +19,9 @@ import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.resources.IResource;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.client.util.JsonException;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.JsonUtils;
-import net.minecraft.util.ResourceLocation;
+
 import org.apache.commons.io.IOUtils;
 import org.lwjgl.util.vector.Matrix4f;
 

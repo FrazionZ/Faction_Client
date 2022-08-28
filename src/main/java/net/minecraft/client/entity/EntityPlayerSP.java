@@ -12,6 +12,7 @@ import fz.frazionz.gui.inventory.GuiDirtChest;
 import fz.frazionz.gui.inventory.GuiFrazionChest;
 import fz.frazionz.gui.inventory.GuiFrazionFurnace;
 import fz.frazionz.gui.inventory.GuiHdvChest;
+import fz.frazionz.gui.inventory.GuiItemCrusher;
 import fz.frazionz.gui.inventory.GuiOnyxChest;
 import fz.frazionz.gui.inventory.GuiOnyxFurnace;
 import fz.frazionz.gui.inventory.GuiSpawnerInventory;
@@ -884,13 +885,17 @@ public class EntityPlayerSP extends AbstractClientPlayer
         {
             this.mc.displayGuiScreen(new GuiSpawnerInventory(this.inventory, chestInventory));
         }
-        else if ("minecraft:ameliorator".equals(s))
+        else if ("frazionz:ameliorator".equals(s))
         {
             this.mc.displayGuiScreen(new GuiAmeliorator(this.inventory, chestInventory));
         }
         else if ("minecraft:trophy_forge".equals(s))
         {
             this.mc.displayGuiScreen(new GuiTrophyForge(this.inventory, chestInventory));
+        }
+        else if ("minecraft:item_crusher".equals(s))
+        {
+            this.mc.displayGuiScreen(new GuiItemCrusher(this.inventory, chestInventory));
         }
         else if ("minecraft:beacon".equals(s))
         {

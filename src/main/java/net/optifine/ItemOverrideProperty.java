@@ -5,8 +5,8 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.IItemPropertyGetter;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.src.Config;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
 public class ItemOverrideProperty

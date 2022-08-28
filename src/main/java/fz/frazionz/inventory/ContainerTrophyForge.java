@@ -1,6 +1,7 @@
 package fz.frazionz.inventory;
 
 import fz.frazionz.crafting.TrophyForgeRecipes;
+import fz.frazionz.tileentity.impl.TileMachine;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -9,7 +10,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-public class ContainerTrophyForge extends Container
+public class ContainerTrophyForge extends Container implements TileMachine
 {
 	
 	private final IInventory tileTrophyForge;
@@ -154,7 +155,7 @@ public class ContainerTrophyForge extends Container
         return itemstack;
     }
     
-    public void startForging() {
+    public void startMachine() {
     	this.tileTrophyForge.setField(2, 1);
     }
     

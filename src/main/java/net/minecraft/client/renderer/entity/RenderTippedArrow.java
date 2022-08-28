@@ -1,7 +1,7 @@
 package net.minecraft.client.renderer.entity;
 
 import net.minecraft.entity.projectile.EntityTippedArrow;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 public class RenderTippedArrow extends RenderArrow<EntityTippedArrow>
 {

@@ -1,8 +1,0 @@
-{
-    "variants": {
-        "facing=north": { "model": "block_placer_trapchest" },
-        "facing=south": { "model": "block_placer_trapchest", "y": 180 },
-        "facing=west":  { "model": "block_placer_trapchest", "y": 270 },
-        "facing=east":  { "model": "block_placer_trapchest", "y": 90 }
-    }
-}

@@ -1,5 +1,6 @@
 package net.minecraft.util;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.registry.RegistryNamespaced;
 
 public class SoundEvent

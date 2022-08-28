@@ -1,0 +1,6 @@
+{
+    "parent": "item/bow",
+    "textures": {
+        "layer0": "frazionz:items/ultra_bow_pulling_2"
+    }
+}

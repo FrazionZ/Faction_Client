@@ -4,7 +4,7 @@ import fz.frazionz.tileentity.TileEntityYelliteChest;
 import net.minecraft.client.model.ModelChest;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 public class TileEntityYelliteChestRenderer extends TileEntitySpecialRenderer<TileEntityYelliteChest>
 {

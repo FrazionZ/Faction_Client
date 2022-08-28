@@ -3,7 +3,7 @@ package net.minecraft.client.renderer.entity.layers;
 import net.minecraft.client.model.ModelLlama;
 import net.minecraft.client.renderer.entity.RenderLlama;
 import net.minecraft.entity.passive.EntityLlama;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 public class LayerLlamaDecor implements LayerRenderer<EntityLlama>
 {

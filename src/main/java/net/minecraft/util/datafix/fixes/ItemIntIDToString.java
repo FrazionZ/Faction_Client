@@ -374,7 +374,7 @@ public class ItemIntIDToString implements IFixableData
         ID_MAP[498] = "minecraft:stone_diorite";
         ID_MAP[499] = "minecraft:stone_diorite_smooth";
         ID_MAP[500] = "minecraft:random_ore";
-        ID_MAP[501] = "minecraft:ameliorator";
+        ID_MAP[501] = "frazionz:ameliorator";
         ID_MAP[502] = "minecraft:yellite_ladder";
         ID_MAP[503] = "minecraft:onyx_ladder";
         ID_MAP[504] = "minecraft:frazion_ladder";
@@ -400,6 +400,7 @@ public class ItemIntIDToString implements IFixableData
         ID_MAP[522] = "minecraft:block_placer_trapchest";
         
         ID_MAP[523] = "minecraft:trophy_forge";
+        ID_MAP[525] = "minecraft:grimoire_pedestal";
         
         ID_MAP[1000] = "minecraft:yellite";
         ID_MAP[1001] = "minecraft:bauxite";

@@ -21,7 +21,7 @@ import net.minecraft.client.resources.IResourcePack;
 import net.minecraft.client.resources.ResourceIndex;
 import net.minecraft.client.resources.data.IMetadataSection;
 import net.minecraft.client.resources.data.MetadataSerializer;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Util;
 import net.optifine.reflect.ReflectorForge;
 

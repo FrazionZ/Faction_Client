@@ -24,7 +24,6 @@ public class TrophyForgeRecipes
     
     static
     {
-    	addRecipes(null, Items.RUNE, null, Items.RUNE, Items.ENDER_PEARL, Items.RUNE, null, Items.RUNE, null, new ItemStack(Items.TROPHY_ENDERMAN));
     	addRecipes(Items.FARM_NUGGET, Items.BONE, Items.FARM_NUGGET, Items.BONE, Items.FARM_KEY, Items.BONE, Items.FARM_NUGGET, Items.BONE, Items.FARM_NUGGET, new ItemStack(Items.TROPHY_SKELETON));
     	addRecipes(Items.FARM_NUGGET, Items.SHULKER_SHELL, Items.FARM_NUGGET, Items.SHULKER_SHELL, Items.FARM_KEY, Items.SHULKER_SHELL, Items.FARM_NUGGET, Items.SHULKER_SHELL, Items.FARM_NUGGET, new ItemStack(Items.TROPHY_SHULKER));
     }

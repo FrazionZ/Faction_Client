@@ -87,7 +87,7 @@ public class ItemPickaxe extends ItemTool
     private static final Set<Block> HARVEST_LEVEL_6 = Sets.newHashSet(Blocks.OBSIDIAN_ONYX, Blocks.TROPHY_FORGE, Blocks.AMELIORATOR, Blocks.FRAZION_ORE, Blocks.FRAZION_BLOCK, Blocks.FRAZION_FURNACE, Blocks.LIT_FRAZION_FURNACE);
     private static final Set<Block> HARVEST_LEVEL_7 = Sets.newHashSet(Blocks.OBSIDIAN_FRAZION);
     
-    protected ItemPickaxe(Item.ToolMaterial material)
+    public ItemPickaxe(Item.ToolMaterial material)
     {
         super(1.25F, material, EFFECTIVE_ON);
     }

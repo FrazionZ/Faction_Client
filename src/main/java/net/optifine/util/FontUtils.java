@@ -4,8 +4,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
+
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.src.Config;
-import net.minecraft.util.ResourceLocation;
 
 public class FontUtils
 {

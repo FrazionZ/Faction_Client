@@ -3,7 +3,7 @@ package fz.frazionz.utils;
 import java.awt.image.BufferedImage;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.renderer.ImageBufferDownload;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 public class SkinImageBuffer extends ImageBufferDownload
 {

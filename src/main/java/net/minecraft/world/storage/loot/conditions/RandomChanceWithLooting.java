@@ -6,8 +6,8 @@ import com.google.gson.JsonSerializationContext;
 import java.util.Random;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.JsonUtils;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.storage.loot.LootContext;
 
 public class RandomChanceWithLooting implements LootCondition

@@ -1,6 +1,6 @@
 package net.minecraft.client.audio;
 
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 public class Sound implements ISoundEventAccessor<Sound>
 {

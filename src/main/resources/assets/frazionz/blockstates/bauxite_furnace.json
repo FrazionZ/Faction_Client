@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "facing=north": { "model": "frazionz:bauxite_furnace" },
+        "facing=south": { "model": "frazionz:bauxite_furnace", "y": 180 },
+        "facing=west":  { "model": "frazionz:bauxite_furnace", "y": 270 },
+        "facing=east":  { "model": "frazionz:bauxite_furnace", "y": 90 }
+    }
+}

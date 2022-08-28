@@ -13,8 +13,9 @@ import java.lang.reflect.Type;
 import java.util.Map;
 import java.util.Random;
 import javax.annotation.Nullable;
+
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.JsonUtils;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.storage.loot.LootContext;
 
 public class LootConditionManager

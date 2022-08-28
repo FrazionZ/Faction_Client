@@ -1,0 +1,8 @@
+{
+    "parent": "block/cube_bottom_top",
+    "textures": {
+        "bottom": "frazionz:blocks/z_tnt_bottom",
+        "top": "frazionz:blocks/z_tnt_top",
+        "side": "frazionz:blocks/z_tnt_side"
+    }
+}

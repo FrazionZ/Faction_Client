@@ -1,8 +1,0 @@
-{
-    "variants": {
-        "facing=south": { "model": "cristal_jaune", "y": 90},
-        "facing=west": { "model": "cristal_jaune"},
-        "facing=north": { "model": "cristal_jaune", "y": 90},
-        "facing=east": { "model": "cristal_jaune"}
-    }
-}

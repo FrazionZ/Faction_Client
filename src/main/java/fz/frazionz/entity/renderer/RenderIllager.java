@@ -5,7 +5,7 @@ import fz.frazionz.entity.monster.EntityIllager;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 public class RenderIllager<T extends EntityIllager> extends RenderLiving<T>
 {

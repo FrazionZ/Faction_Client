@@ -5,7 +5,7 @@ import java.util.ArrayDeque;
 import java.util.List;
 import javax.annotation.Nullable;
 import net.minecraft.advancements.FunctionManager;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 public class FunctionObject
 {

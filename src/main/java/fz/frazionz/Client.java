@@ -5,14 +5,14 @@ import java.util.HashMap;
 import fz.frazionz.api.HTTPFunctions;
 import fz.frazionz.api.data.FactionProfile;
 import fz.frazionz.api.data.ShopAPIDataStocker;
-import fz.frazionz.discord.DiscordRP;
 import fz.frazionz.event.EventManager;
 import fz.frazionz.gui.hud.HUDManager;
 import fz.frazionz.mods.FileManager;
 import fz.frazionz.mods.ModInstances;
 import fz.frazionz.mods.blockrenderer.BlockRenderer;
+import fz.frazionz.utils.discord.DiscordRP;
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 public class Client {
 

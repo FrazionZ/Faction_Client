@@ -1,0 +1,6 @@
+{
+    "variants": {
+        "half=bottom": { "model": "frazionz:half_slab_crimson" },
+        "half=top": { "model": "frazionz:upper_slab_crimson" }
+    }
+}

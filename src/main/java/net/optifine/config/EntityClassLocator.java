@@ -1,7 +1,7 @@
 package net.optifine.config;
 
 import net.minecraft.entity.EntityList;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 public class EntityClassLocator implements IObjectLocator
 {

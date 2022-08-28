@@ -29,7 +29,7 @@ import net.minecraft.advancements.critereon.TickTrigger;
 import net.minecraft.advancements.critereon.UsedEnderEyeTrigger;
 import net.minecraft.advancements.critereon.UsedTotemTrigger;
 import net.minecraft.advancements.critereon.VillagerTradeTrigger;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 public class CriteriaTriggers
 {

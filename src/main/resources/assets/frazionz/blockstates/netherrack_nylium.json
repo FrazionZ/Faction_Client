@@ -1,0 +1,10 @@
+{
+    "variants": {
+        "normal": [
+            { "model": "frazionz:netherrack_nylium" },
+            { "model": "frazionz:netherrack_nylium", "y": 90 },
+            { "model": "frazionz:netherrack_nylium", "y": 180 },
+            { "model": "frazionz:netherrack_nylium", "y": 270 }
+        ]
+    }
+}

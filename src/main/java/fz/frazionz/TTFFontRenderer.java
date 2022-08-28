@@ -14,7 +14,7 @@ import org.newdawn.slick.font.effects.ColorEffect;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 public class TTFFontRenderer {
     private int size, scaleFactor;

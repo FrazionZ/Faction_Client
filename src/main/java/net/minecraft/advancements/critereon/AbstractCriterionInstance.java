@@ -1,7 +1,7 @@
 package net.minecraft.advancements.critereon;
 
 import net.minecraft.advancements.ICriterionInstance;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 public class AbstractCriterionInstance implements ICriterionInstance
 {

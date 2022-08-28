@@ -6,7 +6,7 @@ import net.minecraft.advancements.Advancement;
 import net.minecraft.network.Packet;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.INetHandlerPlayServer;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 public class CPacketSeenAdvancements implements Packet<INetHandlerPlayServer>
 {

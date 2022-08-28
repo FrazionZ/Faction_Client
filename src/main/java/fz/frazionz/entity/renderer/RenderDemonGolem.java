@@ -1,10 +1,10 @@
 package fz.frazionz.entity.renderer;
 
-import fz.frazionz.entity.model.ModelDemonGolem;
+import fz.frazionz.entity.model.legacy.ModelDemonGolem;
 import fz.frazionz.entity.monster.EntityDemonGolem;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 public class RenderDemonGolem<T extends EntityDemonGolem> extends RenderLiving<T>
 {

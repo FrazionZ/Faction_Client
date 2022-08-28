@@ -3,7 +3,7 @@ package net.minecraft.client.renderer.entity;
 import net.minecraft.client.model.ModelPolarBear;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.monster.EntityPolarBear;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 public class RenderPolarBear extends RenderLiving<EntityPolarBear>
 {

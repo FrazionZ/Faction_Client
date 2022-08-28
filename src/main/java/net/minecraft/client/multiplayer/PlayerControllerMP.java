@@ -1,6 +1,6 @@
 package net.minecraft.client.multiplayer;
 
-import fz.frazionz.packets.client.CPacketTrophyForge;
+import fz.frazionz.packets.client.CPacketStartMachine;
 import io.netty.buffer.Unpooled;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCommandBlock;
@@ -588,9 +588,9 @@ public class PlayerControllerMP
     }
     
     // TROPHY_UPDATE //
-    public void sendTrophyForgePacket(int windowID)
+    public void sendStartMachinePacket(int windowID)
     {
-        this.connection.sendPacket(new CPacketTrophyForge(windowID));
+        this.connection.sendPacket(new CPacketStartMachine(windowID));
     }
 
     /*public void sendUpdateSkin(UUID uuid)

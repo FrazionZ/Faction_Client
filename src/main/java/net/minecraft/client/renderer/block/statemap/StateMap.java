@@ -10,7 +10,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 public class StateMap extends StateMapperBase
 {
@@ -37,6 +37,7 @@ public class StateMap extends StateMapperBase
         else
         {
             s = this.removeName(this.name, map);
+            s = ((ResourceLocation)Block.REGISTRY.getNameForObject(state.getBlock())).getNamespace() + ":" + s;
         }
 
         if (this.suffix != null)

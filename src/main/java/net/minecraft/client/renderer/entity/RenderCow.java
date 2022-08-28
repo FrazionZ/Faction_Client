@@ -2,7 +2,7 @@ package net.minecraft.client.renderer.entity;
 
 import net.minecraft.client.model.ModelCow;
 import net.minecraft.entity.passive.EntityCow;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 public class RenderCow extends RenderLiving<EntityCow>
 {

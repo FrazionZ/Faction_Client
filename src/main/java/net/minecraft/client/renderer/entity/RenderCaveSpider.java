@@ -2,7 +2,7 @@ package net.minecraft.client.renderer.entity;
 
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.monster.EntityCaveSpider;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 public class RenderCaveSpider extends RenderSpider<EntityCaveSpider>
 {

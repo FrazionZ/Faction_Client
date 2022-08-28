@@ -3,9 +3,9 @@ package net.minecraft.client.renderer.tileentity;
 import net.minecraft.client.model.ModelBed;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.item.EnumDyeColor;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tileentity.TileEntityBed;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ResourceLocation;
 
 public class TileEntityBedRenderer extends TileEntitySpecialRenderer<TileEntityBed>
 {

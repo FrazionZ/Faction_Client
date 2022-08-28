@@ -18,8 +18,8 @@ import net.minecraft.client.resources.AbstractResourcePack;
 import net.minecraft.client.resources.DefaultResourcePack;
 import net.minecraft.client.resources.IResourcePack;
 import net.minecraft.client.resources.LegacyV2Adapter;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.src.Config;
-import net.minecraft.util.ResourceLocation;
 import net.optifine.reflect.Reflector;
 
 public class ResUtils

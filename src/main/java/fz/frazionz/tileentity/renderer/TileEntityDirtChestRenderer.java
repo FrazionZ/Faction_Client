@@ -4,7 +4,7 @@ import fz.frazionz.tileentity.TileEntityDirtChest;
 import net.minecraft.client.model.ModelChest;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 public class TileEntityDirtChestRenderer extends TileEntitySpecialRenderer<TileEntityDirtChest>
 {

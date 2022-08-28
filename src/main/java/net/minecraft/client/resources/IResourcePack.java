@@ -7,7 +7,7 @@ import java.util.Set;
 import javax.annotation.Nullable;
 import net.minecraft.client.resources.data.IMetadataSection;
 import net.minecraft.client.resources.data.MetadataSerializer;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 public interface IResourcePack
 {

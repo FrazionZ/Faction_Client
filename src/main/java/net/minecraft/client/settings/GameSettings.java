@@ -7,7 +7,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.gson.Gson;
 
-import fz.frazionz.data.FzUserData;
+import fz.frazionz.utils.data.FzUserData;
 
 import java.io.BufferedReader;
 import java.io.File;

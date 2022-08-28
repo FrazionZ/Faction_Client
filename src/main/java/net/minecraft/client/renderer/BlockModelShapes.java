@@ -102,19 +102,19 @@ public class BlockModelShapes
             }
             
             if( block == Blocks.YELLITE_CHEST) {
-            	return this.modelManager.getTextureMap().getAtlasSprite("minecraft:blocks/yellite_block");
+            	return this.modelManager.getTextureMap().getAtlasSprite("frazionz:blocks/yellite_block");
             }
             
             if( block == Blocks.BAUXITE_CHEST) {
-            	return this.modelManager.getTextureMap().getAtlasSprite("minecraft:blocks/bauxite_block");
+            	return this.modelManager.getTextureMap().getAtlasSprite("frazionz:blocks/bauxite_block");
             }
             
             if( block == Blocks.ONYX_CHEST) {
-            	return this.modelManager.getTextureMap().getAtlasSprite("minecraft:blocks/onyx_block");
+            	return this.modelManager.getTextureMap().getAtlasSprite("frazionz:blocks/onyx_block");
             }
             
             if( block == Blocks.FRAZION_CHEST) {
-            	return this.modelManager.getTextureMap().getAtlasSprite("minecraft:blocks/frazion_block");
+            	return this.modelManager.getTextureMap().getAtlasSprite("frazionz:blocks/frazion_block");
             }
 
             if (block == Blocks.ENDER_CHEST)

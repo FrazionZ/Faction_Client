@@ -2,7 +2,7 @@ package net.minecraft.world.gen;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 public class FlatLayerInfo
 {

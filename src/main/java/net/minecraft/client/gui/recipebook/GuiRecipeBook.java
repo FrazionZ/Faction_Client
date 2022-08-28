@@ -34,8 +34,8 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.network.play.client.CPacketRecipeInfo;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.stats.RecipeBook;
-import net.minecraft.util.ResourceLocation;
 
 public class GuiRecipeBook extends Gui implements IRecipeUpdateListener
 {

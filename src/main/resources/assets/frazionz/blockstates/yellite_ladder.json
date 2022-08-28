@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "facing=north": { "model": "frazionz:yellite_ladder" },
+        "facing=east":  { "model": "frazionz:yellite_ladder", "y": 90 },
+        "facing=south": { "model": "frazionz:yellite_ladder", "y": 180 },
+        "facing=west":  { "model": "frazionz:yellite_ladder", "y": 270 }
+    }
+}

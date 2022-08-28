@@ -2,7 +2,7 @@ package net.minecraft.init;
 
 import javax.annotation.Nullable;
 import net.minecraft.potion.Potion;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 public class MobEffects
 {

@@ -13,7 +13,7 @@ import com.mojang.authlib.minecraft.MinecraftProfileTexture;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture.Type;
 
 import fz.frazionz.utils.FzSkinUtils;
-import fz.frazionz.utils.FzSkinUtils.ImageType;
+import fz.frazionz.utils.FzSkinUtils.TextureType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelDragonHead;
@@ -23,9 +23,9 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.DefaultPlayerSkin;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tileentity.TileEntitySkull;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ResourceLocation;
 
 public class TileEntitySkullRenderer extends TileEntitySpecialRenderer<TileEntitySkull>
 {
@@ -122,8 +122,8 @@ public class TileEntitySkullRenderer extends TileEntitySpecialRenderer<TileEntit
                     
                     if (profile != null)
                     {
-                        resourcelocation1 = FzSkinUtils.loadSkin(profile, ImageType.SKIN);
-                        File cacheFile = FzSkinUtils.getProfileCacheFile(profile, ImageType.SKIN);
+                        resourcelocation1 = FzSkinUtils.loadSkin(profile, TextureType.SKIN);
+                        File cacheFile = FzSkinUtils.getProfileCacheFile(profile, TextureType.SKIN);
                         if(!cacheFile.exists() && cacheFile.length() < 100)
                         	resourcelocation1 = DefaultPlayerSkin.getDefaultSkinLegacy();
                     }

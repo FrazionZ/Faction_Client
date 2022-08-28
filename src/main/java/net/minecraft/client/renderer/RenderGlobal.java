@@ -28,11 +28,6 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.gson.JsonSyntaxException;
 
-import fz.frazionz.tileentity.TileEntityBauxiteChest;
-import fz.frazionz.tileentity.TileEntityDirtChest;
-import fz.frazionz.tileentity.TileEntityFrazionChest;
-import fz.frazionz.tileentity.TileEntityOnyxChest;
-import fz.frazionz.tileentity.TileEntityYelliteChest;
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import it.unimi.dsi.fastutil.objects.ObjectLinkedOpenHashSet;
 import net.minecraft.block.Block;
@@ -88,6 +83,7 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemRecord;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.src.Config;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
@@ -96,7 +92,6 @@ import net.minecraft.util.ClassInheritanceMultiMap;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ReportedException;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -939,7 +934,7 @@ public class RenderGlobal implements IWorldEventListener, IResourceManagerReload
 
             TileEntitySignRenderer.updateTextRenderDistance();
             label257:
-
+            	
             for (Object renderglobal$containerlocalrenderinformation10 : this.renderInfosTileEntities)
             {
                 RenderGlobal.ContainerLocalRenderInformation renderglobal$containerlocalrenderinformation1 = (RenderGlobal.ContainerLocalRenderInformation) renderglobal$containerlocalrenderinformation10;
@@ -1024,86 +1019,6 @@ public class RenderGlobal implements IWorldEventListener, IResourceManagerReload
                     if (tileentity2 instanceof TileEntityChest)
                     {
                         TileEntityChest tileentitychest = (TileEntityChest)tileentity2;
-
-                        if (tileentitychest.adjacentChestXNeg != null)
-                        {
-                            blockpos = blockpos.offset(EnumFacing.WEST);
-                            tileentity2 = this.world.getTileEntity(blockpos);
-                        }
-                        else if (tileentitychest.adjacentChestZNeg != null)
-                        {
-                            blockpos = blockpos.offset(EnumFacing.NORTH);
-                            tileentity2 = this.world.getTileEntity(blockpos);
-                        }
-                    }
-                    
-                    if (tileentity2 instanceof TileEntityDirtChest)
-                    {
-                        TileEntityDirtChest tileentitychest = (TileEntityDirtChest)tileentity2;
-
-                        if (tileentitychest.adjacentChestXNeg != null)
-                        {
-                            blockpos = blockpos.offset(EnumFacing.WEST);
-                            tileentity2 = this.world.getTileEntity(blockpos);
-                        }
-                        else if (tileentitychest.adjacentChestZNeg != null)
-                        {
-                            blockpos = blockpos.offset(EnumFacing.NORTH);
-                            tileentity2 = this.world.getTileEntity(blockpos);
-                        }
-                    }
-
-                    if (tileentity2 instanceof TileEntityYelliteChest)
-                    {
-                        TileEntityYelliteChest tileentitychest = (TileEntityYelliteChest)tileentity2;
-
-                        if (tileentitychest.adjacentChestXNeg != null)
-                        {
-                            blockpos = blockpos.offset(EnumFacing.WEST);
-                            tileentity2 = this.world.getTileEntity(blockpos);
-                        }
-                        else if (tileentitychest.adjacentChestZNeg != null)
-                        {
-                            blockpos = blockpos.offset(EnumFacing.NORTH);
-                            tileentity2 = this.world.getTileEntity(blockpos);
-                        }
-                    }
-                    
-                    if (tileentity2 instanceof TileEntityBauxiteChest)
-                    {
-                    	TileEntityBauxiteChest tileentitychest = (TileEntityBauxiteChest)tileentity2;
-
-                        if (tileentitychest.adjacentChestXNeg != null)
-                        {
-                            blockpos = blockpos.offset(EnumFacing.WEST);
-                            tileentity2 = this.world.getTileEntity(blockpos);
-                        }
-                        else if (tileentitychest.adjacentChestZNeg != null)
-                        {
-                            blockpos = blockpos.offset(EnumFacing.NORTH);
-                            tileentity2 = this.world.getTileEntity(blockpos);
-                        }
-                    }
-                    
-                    if (tileentity2 instanceof TileEntityFrazionChest)
-                    {
-                    	TileEntityFrazionChest tileentitychest = (TileEntityFrazionChest)tileentity2;
-
-                        if (tileentitychest.adjacentChestXNeg != null)
-                        {
-                            blockpos = blockpos.offset(EnumFacing.WEST);
-                            tileentity2 = this.world.getTileEntity(blockpos);
-                        }
-                        else if (tileentitychest.adjacentChestZNeg != null)
-                        {
-                            blockpos = blockpos.offset(EnumFacing.NORTH);
-                            tileentity2 = this.world.getTileEntity(blockpos);
-                        }
-                    }
-
-                    if (tileentity2 instanceof TileEntityOnyxChest)
-                    {
-                        TileEntityOnyxChest tileentitychest = (TileEntityOnyxChest)tileentity2;
 
                         if (tileentitychest.adjacentChestXNeg != null)
                         {

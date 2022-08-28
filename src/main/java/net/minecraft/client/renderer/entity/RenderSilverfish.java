@@ -2,7 +2,7 @@ package net.minecraft.client.renderer.entity;
 
 import net.minecraft.client.model.ModelSilverfish;
 import net.minecraft.entity.monster.EntitySilverfish;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 public class RenderSilverfish extends RenderLiving<EntitySilverfish>
 {

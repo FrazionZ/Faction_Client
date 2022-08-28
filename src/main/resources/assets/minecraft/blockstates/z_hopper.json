@@ -1,9 +1,0 @@
-{
-    "variants": {
-        "facing=down": { "model": "z_hopper_down" },
-        "facing=north": { "model": "z_hopper_side" },
-        "facing=south": { "model": "z_hopper_side", "y": 180 },
-        "facing=west": { "model": "z_hopper_side", "y": 270 },
-        "facing=east": { "model": "z_hopper_side", "y": 90 }
-    }
-}

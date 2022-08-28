@@ -16,6 +16,7 @@ import org.apache.logging.log4j.Logger;
 import fz.frazionz.tileentity.renderer.TileEntityBauxiteChestRenderer;
 import fz.frazionz.tileentity.renderer.TileEntityDirtChestRenderer;
 import fz.frazionz.tileentity.renderer.TileEntityFrazionChestRenderer;
+import fz.frazionz.tileentity.renderer.TileEntityGrimoirePedestalRenderer;
 import fz.frazionz.tileentity.renderer.TileEntityHdvChestRenderer;
 import fz.frazionz.tileentity.renderer.TileEntityOnyxChestRenderer;
 import fz.frazionz.tileentity.renderer.TileEntityYelliteChestRenderer;
@@ -113,6 +114,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityBeacon;
 import net.minecraft.tileentity.TileEntityBrewingStand;
@@ -120,7 +122,6 @@ import net.minecraft.tileentity.TileEntityEnchantmentTable;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.tileentity.TileEntityLockableLoot;
 import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.ChunkCache;
@@ -527,6 +528,7 @@ public class Reflector
     public static ReflectorClass TileEntityFrazionChestRenderer = new ReflectorClass(TileEntityFrazionChestRenderer.class);
     public static ReflectorClass TileEntityOnyxChestRenderer = new ReflectorClass(TileEntityOnyxChestRenderer.class);
     public static ReflectorClass TileEntityHdvChestRenderer = new ReflectorClass(TileEntityHdvChestRenderer.class);
+    public static ReflectorClass TileEntityGrimoirePedestalRenderer = new ReflectorClass(TileEntityGrimoirePedestalRenderer.class);
     
     public static void callVoid(ReflectorMethod refMethod, Object... params)
     {

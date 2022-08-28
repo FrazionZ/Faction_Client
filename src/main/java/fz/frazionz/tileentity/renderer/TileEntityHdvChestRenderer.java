@@ -4,7 +4,7 @@ import fz.frazionz.tileentity.TileEntityHdvChest;
 import net.minecraft.client.model.ModelChest;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 public class TileEntityHdvChestRenderer extends TileEntitySpecialRenderer<TileEntityHdvChest>
 {

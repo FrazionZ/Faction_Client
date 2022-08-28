@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.src.Config;
-import net.minecraft.util.ResourceLocation;
 
 public class EntityUtils
 {

@@ -9,8 +9,8 @@ import javax.annotation.Nullable;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.LayeredColorMaskTexture;
 import net.minecraft.item.EnumDyeColor;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tileentity.BannerPattern;
-import net.minecraft.util.ResourceLocation;
 
 public class BannerTextures
 {

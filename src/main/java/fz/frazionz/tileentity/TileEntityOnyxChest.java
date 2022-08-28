@@ -24,21 +24,6 @@ public class TileEntityOnyxChest extends TileEntityLockableLoot implements ITick
 {
     private NonNullList<ItemStack> chestContents = NonNullList.<ItemStack>withSize(96, ItemStack.EMPTY);
 
-    /** Determines if the check for adjacent chests has taken place. */
-    public boolean adjacentChestChecked;
-
-    /** Contains the chest tile located adjacent to this one (if any) */
-    public TileEntityOnyxChest adjacentChestZNeg;
-
-    /** Contains the chest tile located adjacent to this one (if any) */
-    public TileEntityOnyxChest adjacentChestXPos;
-
-    /** Contains the chest tile located adjacent to this one (if any) */
-    public TileEntityOnyxChest adjacentChestXNeg;
-
-    /** Contains the chest tile located adjacent to this one (if any) */
-    public TileEntityOnyxChest adjacentChestZPos;
-
     /** The current angle of the lid (between 0 and 1) */
     public float lidAngle;
 
@@ -129,57 +114,7 @@ public class TileEntityOnyxChest extends TileEntityLockableLoot implements ITick
     {
         return 64;
     }
-
-    public void updateContainingBlockInfo()
-    {
-        super.updateContainingBlockInfo();
-        this.adjacentChestChecked = false;
-    }
-
-    @SuppressWarnings("incomplete-switch")
-    private void setNeighbor(TileEntityOnyxChest chestTe, EnumFacing side)
-    {
-        if (chestTe.isInvalid())
-        {
-            this.adjacentChestChecked = false;
-        }
-        else if (this.adjacentChestChecked)
-        {
-            switch (side)
-            {
-                case NORTH:
-                    if (this.adjacentChestZNeg != chestTe)
-                    {
-                        this.adjacentChestChecked = false;
-                    }
-
-                    break;
-
-                case SOUTH:
-                    if (this.adjacentChestZPos != chestTe)
-                    {
-                        this.adjacentChestChecked = false;
-                    }
-
-                    break;
-
-                case EAST:
-                    if (this.adjacentChestXPos != chestTe)
-                    {
-                        this.adjacentChestChecked = false;
-                    }
-
-                    break;
-
-                case WEST:
-                    if (this.adjacentChestXNeg != chestTe)
-                    {
-                        this.adjacentChestChecked = false;
-                    }
-            }
-        }
-    }
-
+    
     /**
      * Performs the check for adjacent chests to determine if this chest is double or not.
      */
@@ -211,20 +146,10 @@ public class TileEntityOnyxChest extends TileEntityLockableLoot implements ITick
         this.prevLidAngle = this.lidAngle;
         float f1 = 0.1F;
 
-        if (this.numPlayersUsing > 0 && this.lidAngle == 0.0F && this.adjacentChestZNeg == null && this.adjacentChestXNeg == null)
+        if (this.numPlayersUsing > 0 && this.lidAngle == 0.0F)
         {
             double d1 = (double)i + 0.5D;
             double d2 = (double)k + 0.5D;
-
-            if (this.adjacentChestZPos != null)
-            {
-                d2 += 0.5D;
-            }
-
-            if (this.adjacentChestXPos != null)
-            {
-                d1 += 0.5D;
-            }
 
             this.world.playSound((EntityPlayer)null, d1, (double)j + 0.5D, d2, SoundEvents.BLOCK_CHEST_OPEN, SoundCategory.BLOCKS, 0.5F, this.world.rand.nextFloat() * 0.1F + 0.9F);
         }
@@ -249,20 +174,10 @@ public class TileEntityOnyxChest extends TileEntityLockableLoot implements ITick
 
             float f3 = 0.5F;
 
-            if (this.lidAngle < 0.5F && f2 >= 0.5F && this.adjacentChestZNeg == null && this.adjacentChestXNeg == null)
+            if (this.lidAngle < 0.5F && f2 >= 0.5F)
             {
                 double d3 = (double)i + 0.5D;
                 double d0 = (double)k + 0.5D;
-
-                if (this.adjacentChestZPos != null)
-                {
-                    d0 += 0.5D;
-                }
-
-                if (this.adjacentChestXPos != null)
-                {
-                    d3 += 0.5D;
-                }
 
                 this.world.playSound((EntityPlayer)null, d3, (double)j + 0.5D, d0, SoundEvents.BLOCK_CHEST_CLOSE, SoundCategory.BLOCKS, 0.5F, this.world.rand.nextFloat() * 0.1F + 0.9F);
             }

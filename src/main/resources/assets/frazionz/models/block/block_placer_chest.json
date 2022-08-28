@@ -1,0 +1,8 @@
+{
+    "parent": "block/orientable",
+    "textures": {
+        "top": "frazionz:blocks/block_placer_chest_top",
+        "front": "frazionz:blocks/block_placer_chest_front",
+        "side": "frazionz:blocks/block_placer_chest_side"
+    }
+}

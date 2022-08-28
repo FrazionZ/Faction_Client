@@ -1,6 +1,6 @@
 package net.minecraft.init;
 
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 
 public class SoundEvents
@@ -555,16 +555,16 @@ public class SoundEvents
     public static final SoundEvent ENTITY_ZOMBIE_VILLAGER_HURT;
     public static final SoundEvent ENTITY_ZOMBIE_VILLAGER_STEP;
 
-    public static final SoundEvent record_fz1;
-    public static final SoundEvent record_fz2;
-    public static final SoundEvent record_fz3;    
-    public static final SoundEvent record_fz4;
-    public static final SoundEvent record_fz5;
-    public static final SoundEvent record_fz6;
-    public static final SoundEvent record_fz7;
-    public static final SoundEvent record_fz8;
-    public static final SoundEvent record_fz9;
-    public static final SoundEvent record_fz10;
+    public static final SoundEvent FZ_RECORD_1;
+    public static final SoundEvent FZ_RECORD_2;
+    public static final SoundEvent FZ_RECORD_3;    
+    public static final SoundEvent FZ_RECORD_4;
+    public static final SoundEvent FZ_RECORD_5;
+    public static final SoundEvent FZ_RECORD_6;
+    public static final SoundEvent FZ_RECORD_7;
+    public static final SoundEvent FZ_RECORD_8;
+    public static final SoundEvent FZ_RECORD_9;
+    public static final SoundEvent FZ_RECORD_10;
     
     private static SoundEvent getRegisteredSoundEvent(String id)
     {
@@ -1138,16 +1138,16 @@ public class SoundEvents
             ENTITY_ZOMBIE_VILLAGER_DEATH = getRegisteredSoundEvent("entity.zombie_villager.death");
             ENTITY_ZOMBIE_VILLAGER_HURT = getRegisteredSoundEvent("entity.zombie_villager.hurt");
             ENTITY_ZOMBIE_VILLAGER_STEP = getRegisteredSoundEvent("entity.zombie_villager.step");
-            record_fz1 = getRegisteredSoundEvent("record.fz1");
-            record_fz2 = getRegisteredSoundEvent("record.fz2");
-            record_fz3 = getRegisteredSoundEvent("record.fz3");
-            record_fz4 = getRegisteredSoundEvent("record.fz4");
-            record_fz5 = getRegisteredSoundEvent("record.fz5");
-            record_fz6 = getRegisteredSoundEvent("record.fz6");
-            record_fz7 = getRegisteredSoundEvent("record.fz7");
-            record_fz8 = getRegisteredSoundEvent("record.fz8");
-            record_fz9 = getRegisteredSoundEvent("record.fz9");
-            record_fz10 = getRegisteredSoundEvent("record.fz10");
+            FZ_RECORD_1 = getRegisteredSoundEvent("record.fz1");
+            FZ_RECORD_2 = getRegisteredSoundEvent("record.fz2");
+            FZ_RECORD_3 = getRegisteredSoundEvent("record.fz3");
+            FZ_RECORD_4 = getRegisteredSoundEvent("record.fz4");
+            FZ_RECORD_5 = getRegisteredSoundEvent("record.fz5");
+            FZ_RECORD_6 = getRegisteredSoundEvent("record.fz6");
+            FZ_RECORD_7 = getRegisteredSoundEvent("record.fz7");
+            FZ_RECORD_8 = getRegisteredSoundEvent("record.fz8");
+            FZ_RECORD_9 = getRegisteredSoundEvent("record.fz9");
+            FZ_RECORD_10 = getRegisteredSoundEvent("record.fz10");
         }
     }
 }

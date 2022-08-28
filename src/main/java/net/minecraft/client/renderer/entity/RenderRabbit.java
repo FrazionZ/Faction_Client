@@ -2,7 +2,7 @@ package net.minecraft.client.renderer.entity;
 
 import net.minecraft.client.model.ModelRabbit;
 import net.minecraft.entity.passive.EntityRabbit;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 
 public class RenderRabbit extends RenderLiving<EntityRabbit>

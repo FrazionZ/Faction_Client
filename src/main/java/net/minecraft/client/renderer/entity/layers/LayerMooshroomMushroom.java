@@ -8,8 +8,8 @@ import net.minecraft.client.renderer.entity.RenderMooshroom;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.passive.EntityMooshroom;
 import net.minecraft.init.Blocks;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.src.Config;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 
 public class LayerMooshroomMushroom implements LayerRenderer<EntityMooshroom>

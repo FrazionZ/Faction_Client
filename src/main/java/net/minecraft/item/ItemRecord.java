@@ -25,7 +25,7 @@ public class ItemRecord extends Item
     private final SoundEvent sound;
     private final String displayName;
 
-    protected ItemRecord(String recordName, SoundEvent soundIn)
+    public ItemRecord(String recordName, SoundEvent soundIn)
     {
         this.displayName = "item.record." + recordName + ".desc";
         this.sound = soundIn;

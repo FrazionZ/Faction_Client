@@ -3,7 +3,7 @@ package net.minecraft.client.renderer.entity;
 import net.minecraft.client.model.ModelShulkerBullet;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.projectile.EntityShulkerBullet;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 
 public class RenderShulkerBullet extends Render<EntityShulkerBullet>

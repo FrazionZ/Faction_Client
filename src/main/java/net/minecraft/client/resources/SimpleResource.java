@@ -13,7 +13,8 @@ import java.util.Map;
 import javax.annotation.Nullable;
 import net.minecraft.client.resources.data.IMetadataSection;
 import net.minecraft.client.resources.data.MetadataSerializer;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
+
 import org.apache.commons.io.IOUtils;
 
 public class SimpleResource implements IResource

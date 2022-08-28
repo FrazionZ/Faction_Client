@@ -1,0 +1,7 @@
+{
+    "parent": "block/cube_column",
+    "textures": {
+        "end": "frazionz:blocks/log_crimson_top",
+        "side": "frazionz:blocks/log_crimson"
+    }
+}

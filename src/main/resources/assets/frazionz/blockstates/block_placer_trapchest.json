@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "facing=north": { "model": "frazionz:block_placer_trapchest" },
+        "facing=south": { "model": "frazionz:block_placer_trapchest", "y": 180 },
+        "facing=west":  { "model": "frazionz:block_placer_trapchest", "y": 270 },
+        "facing=east":  { "model": "frazionz:block_placer_trapchest", "y": 90 }
+    }
+}

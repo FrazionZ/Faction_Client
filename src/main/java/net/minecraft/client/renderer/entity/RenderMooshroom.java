@@ -3,7 +3,7 @@ package net.minecraft.client.renderer.entity;
 import net.minecraft.client.model.ModelCow;
 import net.minecraft.client.renderer.entity.layers.LayerMooshroomMushroom;
 import net.minecraft.entity.passive.EntityMooshroom;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 public class RenderMooshroom extends RenderLiving<EntityMooshroom>
 {

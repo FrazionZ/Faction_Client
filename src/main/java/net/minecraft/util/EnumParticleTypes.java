@@ -55,7 +55,9 @@ public enum EnumParticleTypes
     //SWEEP_ATTACK("sweepAttack", 45, true),
     FALLING_DUST("fallingdust", 46, false, 1),
     TOTEM("totem", 47, false),
-    SPIT("spit", 48, true);
+    SPIT("spit", 48, true),
+	GRIMOIRE_SORTILEGE("grimoire_sortilege", 49, false),
+	;
 
     private final String particleName;
     private final int particleID;

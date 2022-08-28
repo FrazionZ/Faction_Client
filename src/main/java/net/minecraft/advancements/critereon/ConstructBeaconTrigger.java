@@ -11,8 +11,8 @@ import java.util.Set;
 import net.minecraft.advancements.ICriterionTrigger;
 import net.minecraft.advancements.PlayerAdvancements;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tileentity.TileEntityBeacon;
-import net.minecraft.util.ResourceLocation;
 
 public class ConstructBeaconTrigger implements ICriterionTrigger<ConstructBeaconTrigger.Instance>
 {

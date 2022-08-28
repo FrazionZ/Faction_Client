@@ -12,8 +12,8 @@ import javax.annotation.Nullable;
 import net.minecraft.advancements.ICriterionTrigger;
 import net.minecraft.advancements.PlayerAdvancements;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.JsonUtils;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.DimensionType;
 
 public class ChangeDimensionTrigger implements ICriterionTrigger<ChangeDimensionTrigger.Instance>

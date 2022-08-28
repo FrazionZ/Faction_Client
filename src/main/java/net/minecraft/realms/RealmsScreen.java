@@ -9,7 +9,7 @@ import net.minecraft.client.gui.GuiScreenRealmsProxy;
 import net.minecraft.client.resources.DefaultPlayerSkin;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 public class RealmsScreen
 {

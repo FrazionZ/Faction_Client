@@ -1,10 +1,10 @@
 package fz.frazionz.entity.renderer;
 
-import fz.frazionz.entity.model.ModelHerobrine1;
+import fz.frazionz.entity.model.legacy.ModelHerobrine1;
 import fz.frazionz.entity.monster.EntityHerobrine1;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 public class RenderHerobrine1<T extends EntityHerobrine1> extends RenderLiving<T>
 {

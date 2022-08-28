@@ -3,7 +3,7 @@ package fz.frazionz.entity.renderer;
 import fz.frazionz.entity.projectile.EntityDynamiteArrow;
 import net.minecraft.client.renderer.entity.RenderArrow;
 import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 public class RenderDynamiteArrow extends RenderArrow<EntityDynamiteArrow>
 {

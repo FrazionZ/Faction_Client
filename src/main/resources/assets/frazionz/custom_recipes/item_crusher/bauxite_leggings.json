@@ -1,0 +1,20 @@
+{
+	"item": "frazionz:bauxite_leggings",
+	"results": [
+		{
+			"item": "frazionz:rune_anti_malus",
+			"min": 1,
+			"max": 5
+		},
+		{
+			"item": "frazionz:rune_bonus",
+			"min": 1,
+			"max": 5
+		},
+		{
+			"item": "frazionz:rune_chance",
+			"min": 1,
+			"max": 5
+		}
+	]
+}

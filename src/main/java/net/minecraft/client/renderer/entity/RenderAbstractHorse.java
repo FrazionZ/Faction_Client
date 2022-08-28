@@ -9,7 +9,7 @@ import net.minecraft.entity.passive.EntityDonkey;
 import net.minecraft.entity.passive.EntityMule;
 import net.minecraft.entity.passive.EntitySkeletonHorse;
 import net.minecraft.entity.passive.EntityZombieHorse;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 public class RenderAbstractHorse extends RenderLiving<AbstractHorse>
 {

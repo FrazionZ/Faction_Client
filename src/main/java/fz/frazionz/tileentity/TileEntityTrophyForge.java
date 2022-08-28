@@ -3,22 +3,22 @@ package fz.frazionz.tileentity;
 import fz.frazionz.crafting.TrophyForgeRecipes;
 import fz.frazionz.inventory.ContainerTrophyForge;
 import fz.frazionz.item.ItemTrophy;
+import fz.frazionz.tileentity.renderer.TickCounter;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityLockable;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.datafix.DataFixer;
-import net.minecraft.util.datafix.FixTypes;
-import net.minecraft.util.datafix.walkers.ItemStackDataLists;
 
-public class TileEntityTrophyForge extends TileEntityLockable implements ITickable
+public class TileEntityTrophyForge extends TileEntityLockable implements ITickable, TickCounter, ISidedInventory
 {
 	
 	private static final int[] SLOT_CRAFT = new int[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
@@ -28,10 +28,14 @@ public class TileEntityTrophyForge extends TileEntityLockable implements ITickab
     private int forgeTime;
     private int totalForgeTime;
     private int isForging = 0;
-
-	
-    // Taille de L'inventaire de l'entity //
     
+    private int tickCount = 0;
+    private boolean isAnimationEnd = true;
+
+    public TileEntityTrophyForge()
+    {
+	}
+	
 	public int getSizeInventory() 
 	{
 		return this.TrophyForgeItemStacks.size();
@@ -80,7 +84,6 @@ public class TileEntityTrophyForge extends TileEntityLockable implements ITickab
      */
     public void setInventorySlotContents(int index, ItemStack stack)
     {
-    	
     	this.TrophyForgeItemStacks.set(index, stack);
     	
         if (index >= 0 && index <= this.TrophyForgeItemStacks.size())
@@ -132,7 +135,7 @@ public class TileEntityTrophyForge extends TileEntityLockable implements ITickab
 
 
 	public String getName() {
-		return "TrophyForge";
+		return "Trophy Forge";
 	}
 
 	public boolean hasCustomName() {
@@ -140,12 +143,6 @@ public class TileEntityTrophyForge extends TileEntityLockable implements ITickab
 		return false;
 		
 	}
-	
-    public static void registerFixesTrophyForge(DataFixer fixer)
-    {
-        fixer.registerWalker(FixTypes.BLOCK_ENTITY, new ItemStackDataLists(TileEntityTrophyForge.class, new String[] {"Items"}));
-    }
-    
     
     public void readFromNBT(NBTTagCompound compound)
     {
@@ -169,12 +166,17 @@ public class TileEntityTrophyForge extends TileEntityLockable implements ITickab
     }
 
 	public void update() {
-        
+		if(this.isAnimationEnd && tickCount != 0) {
+			tickCount = 0;
+		}
+		if(this.isForging() || !this.isAnimationEnd) {
+			tickCount++;
+		}
         if (!this.world.isRemote) {
-        	
         	if(this.isForging() && !this.canForge()) {
         		this.isForging = 0;
         		this.forgeTime = 0;
+        		this.world.addBlockEvent(this.pos, this.getBlockType(), 1, 0);
         	}
         	else if(this.isForging() && this.canForge()) {
         		this.forgeTime++;
@@ -279,6 +281,8 @@ public class TileEntityTrophyForge extends TileEntityLockable implements ITickab
                 
             case 2: 
             	this.isForging = value;
+            	this.world.addBlockEvent(this.pos, this.getBlockType(), 1, value);
+            	this.world.addBlockEvent(this.pos, this.getBlockType(), 2, 0);
             	break;
         }
     }
@@ -286,6 +290,20 @@ public class TileEntityTrophyForge extends TileEntityLockable implements ITickab
     public int getFieldCount()
     {
         return 3;
+    }
+    
+    public boolean receiveClientEvent(int id, int type)
+    {
+    	switch(id) {
+    		case 1:
+                this.isForging = type;
+                return true;
+    		case 2:
+                this.isAnimationEnd = type == 1;
+                return true;
+            default:
+            	return super.receiveClientEvent(id, type);
+    	}
     }
 
     public void clear()
@@ -295,5 +313,29 @@ public class TileEntityTrophyForge extends TileEntityLockable implements ITickab
     
     public boolean isForging() {
 		return this.isForging == 1;
+	}
+    
+    public boolean isAnimationEnd() {
+		return isAnimationEnd;
+	}
+    
+    @Override
+    public int getTickCount() {
+    	return tickCount;
+    }
+    
+	@Override
+	public boolean canExtractItem(int index, ItemStack stack, EnumFacing direction) {
+		return false;
+	}
+	
+	@Override
+	public boolean canInsertItem(int index, ItemStack itemStackIn, EnumFacing direction) {
+		return false;
+	}
+
+	@Override
+	public int[] getSlotsForFace(EnumFacing side) {
+		return SLOT_CRAFT;
 	}
 }

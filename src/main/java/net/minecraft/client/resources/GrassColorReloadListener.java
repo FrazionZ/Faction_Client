@@ -2,7 +2,7 @@ package net.minecraft.client.resources;
 
 import java.io.IOException;
 import net.minecraft.client.renderer.texture.TextureUtil;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.ColorizerGrass;
 
 public class GrassColorReloadListener implements IResourceManagerReloadListener

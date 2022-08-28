@@ -351,7 +351,7 @@ public class TileEntityAmeliorator extends TileEntityLockable implements ITickab
 	
 	
 	public String getGuiID() {
-		return "minecraft:ameliorator";
+		return "frazionz:ameliorator";
 	}
 	
 	

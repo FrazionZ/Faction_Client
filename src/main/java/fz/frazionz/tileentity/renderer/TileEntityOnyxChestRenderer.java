@@ -4,7 +4,7 @@ import fz.frazionz.tileentity.TileEntityOnyxChest;
 import net.minecraft.client.model.ModelChest;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 public class TileEntityOnyxChestRenderer extends TileEntitySpecialRenderer<TileEntityOnyxChest>
 {
@@ -12,7 +12,7 @@ public class TileEntityOnyxChestRenderer extends TileEntitySpecialRenderer<TileE
     private final ModelChest modelChest = new ModelChest();
 
     public void render(TileEntityOnyxChest p_192841_1_, double p_192841_2_, double p_192841_4_, double p_192841_6_, float p_192841_8_, int p_192841_9_, float p_192841_10_)
-    {
+    {	
         int i = 0;
 
         if (p_192841_1_.hasWorld())

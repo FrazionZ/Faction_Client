@@ -10,7 +10,7 @@ import com.mojang.authlib.GameProfile;
 import fz.frazionz.api.HTTPFunctions;
 import fz.frazionz.api.gsonObj.ObjPlayerSkinsInfo;
 import fz.frazionz.utils.FzSkinUtils;
-import fz.frazionz.utils.FzSkinUtils.ImageType;
+import fz.frazionz.utils.FzSkinUtils.TextureType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.network.NetworkPlayerInfo;
 import net.minecraft.client.renderer.ImageBufferDownload;
@@ -23,8 +23,8 @@ import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.passive.EntityShoulderRiding;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBow;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.src.Config;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StringUtils;
 import net.minecraft.world.GameType;
 import net.minecraft.world.World;
@@ -66,11 +66,11 @@ public abstract class AbstractClientPlayer extends EntityPlayer
         });
 
         try{
-        	capeLocation = FzSkinUtils.loadSkin(this.getGameProfile(), ImageType.CAPE);
+        	capeLocation = FzSkinUtils.loadSkin(this.getGameProfile(), TextureType.CAPE);
         }catch(Exception e) {
         }
         try{
-            skinLocation = FzSkinUtils.loadSkin(this.getGameProfile(), ImageType.SKIN);
+            skinLocation = FzSkinUtils.loadSkin(this.getGameProfile(), TextureType.SKIN);
         }catch(Exception e) {
         }
         PlayerConfigurations.getPlayerConfiguration(this);

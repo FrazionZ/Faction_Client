@@ -10,7 +10,7 @@ import java.util.Map.Entry;
 import javax.annotation.Nullable;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 public abstract class BlockStateBase implements IBlockState
 {

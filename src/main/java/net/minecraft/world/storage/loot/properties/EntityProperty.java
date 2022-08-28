@@ -5,7 +5,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonSerializationContext;
 import java.util.Random;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 public interface EntityProperty
 {

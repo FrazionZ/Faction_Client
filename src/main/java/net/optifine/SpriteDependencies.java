@@ -3,8 +3,8 @@ package net.optifine;
 import java.util.List;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.src.Config;
-import net.minecraft.util.ResourceLocation;
 import net.optifine.reflect.ReflectorForge;
 
 public class SpriteDependencies

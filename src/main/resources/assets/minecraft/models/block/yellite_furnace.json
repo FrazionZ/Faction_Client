@@ -1,8 +1,0 @@
-{
-    "parent": "block/orientable",
-    "textures": {
-        "top": "blocks/yellite_furnace_top",
-        "front": "blocks/yellite_furnace_front_off",
-        "side": "blocks/yellite_furnace_side"
-    }
-}

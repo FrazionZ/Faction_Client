@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "axis=y":    { "model": "frazionz:crimson_log" },
+        "axis=z":     { "model": "frazionz:crimson_log", "x": 90 },
+        "axis=x":     { "model": "frazionz:crimson_log", "x": 90, "y": 90 },
+        "axis=none":   { "model": "frazionz:crimson_log" }
+    }
+}

@@ -11,6 +11,7 @@ import fz.frazionz.block.BlockCrimsonFungi;
 import fz.frazionz.block.BlockCrimsonRoots;
 import fz.frazionz.block.BlockFrazionChest;
 import fz.frazionz.block.BlockHdvChest;
+import fz.frazionz.block.BlockItemCrusher;
 import fz.frazionz.block.BlockOnyxChest;
 import fz.frazionz.block.BlockYelliteChest;
 import fz.frazionz.block.BlockZDirtChest;
@@ -48,7 +49,7 @@ import net.minecraft.block.BlockStainedGlassPane;
 import net.minecraft.block.BlockStaticLiquid;
 import net.minecraft.block.BlockTallGrass;
 import net.minecraft.block.BlockTripWireHook;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 public class Blocks
 {
@@ -403,6 +404,8 @@ public class Blocks
     public static final Block BLOCK_PLACER_TRAPCHEST;
     
     public static final Block TROPHY_FORGE;
+    public static final Block GRIMOIRE_PEDESTAL;
+    public static final BlockItemCrusher ITEM_CRUSHER;
     
 
     @Nullable
@@ -688,92 +691,94 @@ public class Blocks
             CONCRETE_POWDER = getRegisteredBlock("concrete_powder");
             STRUCTURE_BLOCK = getRegisteredBlock("structure_block");
             
-            DIRT_CHEST = (BlockZDirtChest)getRegisteredBlock("dirt_chest");
+            DIRT_CHEST = (BlockZDirtChest)getRegisteredBlock("frazionz:dirt_chest");
             
-            YELLITE_ORE = getRegisteredBlock("yellite_ore");
-            YELLITE_BLOCK = getRegisteredBlock("yellite_block");
-            YELLITE_LADDER = getRegisteredBlock("yellite_ladder");
-            YELLITE_CHEST = (BlockYelliteChest)getRegisteredBlock("yellite_chest");
+            YELLITE_ORE = getRegisteredBlock("frazionz:yellite_ore");
+            YELLITE_BLOCK = getRegisteredBlock("frazionz:yellite_block");
+            YELLITE_LADDER = getRegisteredBlock("frazionz:yellite_ladder");
+            YELLITE_CHEST = (BlockYelliteChest)getRegisteredBlock("frazionz:yellite_chest");
             
-            BAUXITE_ORE = getRegisteredBlock("bauxite_ore");
-            BAUXITE_BLOCK = getRegisteredBlock("bauxite_block");
-            BAUXITE_LADDER = getRegisteredBlock("bauxite_ladder");
-            BAUXITE_CHEST = (BlockBauxiteChest)getRegisteredBlock("bauxite_chest");
+            BAUXITE_ORE = getRegisteredBlock("frazionz:bauxite_ore");
+            BAUXITE_BLOCK = getRegisteredBlock("frazionz:bauxite_block");
+            BAUXITE_LADDER = getRegisteredBlock("frazionz:bauxite_ladder");
+            BAUXITE_CHEST = (BlockBauxiteChest)getRegisteredBlock("frazionz:bauxite_chest");
             
-            ONYX_ORE = getRegisteredBlock("onyx_ore");
-            ONYX_BLOCK = getRegisteredBlock("onyx_block");
-            ONYX_LADDER = getRegisteredBlock("onyx_ladder");
-            ONYX_CHEST = (BlockOnyxChest)getRegisteredBlock("onyx_chest");
+            ONYX_ORE = getRegisteredBlock("frazionz:onyx_ore");
+            ONYX_BLOCK = getRegisteredBlock("frazionz:onyx_block");
+            ONYX_LADDER = getRegisteredBlock("frazionz:onyx_ladder");
+            ONYX_CHEST = (BlockOnyxChest)getRegisteredBlock("frazionz:onyx_chest");
             
-            FRAZION_ORE = getRegisteredBlock("frazion_ore");
-            FRAZION_BLOCK = getRegisteredBlock("frazion_block");
-            FRAZION_LADDER = getRegisteredBlock("frazion_ladder");
-            FRAZION_CHEST = (BlockFrazionChest)getRegisteredBlock("frazion_chest");
+            FRAZION_ORE = getRegisteredBlock("frazionz:frazion_ore");
+            FRAZION_BLOCK = getRegisteredBlock("frazionz:frazion_block");
+            FRAZION_LADDER = getRegisteredBlock("frazionz:frazion_ladder");
+            FRAZION_CHEST = (BlockFrazionChest)getRegisteredBlock("frazionz:frazion_chest");
             
-            Z_HOPPER = (BlockZHopper)getRegisteredBlock("z_hopper");
-            HDV_CHEST = (BlockHdvChest)getRegisteredBlock("hdv_chest");
-            CRISTAL_ROUGE = getRegisteredBlock("cristal_rouge");
-            CRISTAL_JAUNE = getRegisteredBlock("cristal_jaune");
-            CRISTAL_VIOLET = getRegisteredBlock("cristal_violet");
-            CRISTAL_VERT = getRegisteredBlock("cristal_vert");
-            CRISTAL_BLEU = getRegisteredBlock("cristal_bleu");
-            OBSIDIAN_YELLITE = getRegisteredBlock("obsidian_yellite");
-            OBSIDIAN_BAUXITE = getRegisteredBlock("obsidian_bauxite");
-            OBSIDIAN_ONYX = getRegisteredBlock("obsidian_onyx");
-            OBSIDIAN_FRAZION = getRegisteredBlock("obsidian_frazion");
-            Z_TNT = getRegisteredBlock("z_tnt");
+            Z_HOPPER = (BlockZHopper)getRegisteredBlock("frazionz:z_hopper");
+            HDV_CHEST = (BlockHdvChest)getRegisteredBlock("frazionz:hdv_chest");
+            CRISTAL_ROUGE = getRegisteredBlock("frazionz:cristal_rouge");
+            CRISTAL_JAUNE = getRegisteredBlock("frazionz:cristal_jaune");
+            CRISTAL_VIOLET = getRegisteredBlock("frazionz:cristal_violet");
+            CRISTAL_VERT = getRegisteredBlock("frazionz:cristal_vert");
+            CRISTAL_BLEU = getRegisteredBlock("frazionz:cristal_bleu");
+            OBSIDIAN_YELLITE = getRegisteredBlock("frazionz:obsidian_yellite");
+            OBSIDIAN_BAUXITE = getRegisteredBlock("frazionz:obsidian_bauxite");
+            OBSIDIAN_ONYX = getRegisteredBlock("frazionz:obsidian_onyx");
+            OBSIDIAN_FRAZION = getRegisteredBlock("frazionz:obsidian_frazion");
+            Z_TNT = getRegisteredBlock("frazionz:z_tnt");
             
-            YELLITE_FURNACE = getRegisteredBlock("yellite_furnace");
-            LIT_YELLITE_FURNACE = getRegisteredBlock("lit_yellite_furnace");
+            YELLITE_FURNACE = getRegisteredBlock("frazionz:yellite_furnace");
+            LIT_YELLITE_FURNACE = getRegisteredBlock("frazionz:lit_yellite_furnace");
             
-            BAUXITE_FURNACE = getRegisteredBlock("bauxite_furnace");
-            LIT_BAUXITE_FURNACE = getRegisteredBlock("lit_bauxite_furnace");
+            BAUXITE_FURNACE = getRegisteredBlock("frazionz:bauxite_furnace");
+            LIT_BAUXITE_FURNACE = getRegisteredBlock("frazionz:lit_bauxite_furnace");
             
-            ONYX_FURNACE = getRegisteredBlock("onyx_furnace");
-            LIT_ONYX_FURNACE = getRegisteredBlock("lit_onyx_furnace");
+            ONYX_FURNACE = getRegisteredBlock("frazionz:onyx_furnace");
+            LIT_ONYX_FURNACE = getRegisteredBlock("frazionz:lit_onyx_furnace");
             
-            FRAZION_FURNACE = getRegisteredBlock("frazion_furnace");
-            LIT_FRAZION_FURNACE = getRegisteredBlock("lit_frazion_furnace");
+            FRAZION_FURNACE = getRegisteredBlock("frazionz:frazion_furnace");
+            LIT_FRAZION_FURNACE = getRegisteredBlock("frazionz:lit_frazion_furnace");
 
-            CRIMSON_LOG = getRegisteredBlock("crimson_log");
-            CRIMSON_ROOTS = (BlockCrimsonRoots)getRegisteredBlock("crimson_roots");
-            CRIMSON_FUNGI = (BlockCrimsonFungi)getRegisteredBlock("crimson_fungi");
+            CRIMSON_LOG = getRegisteredBlock("frazionz:crimson_log");
+            CRIMSON_ROOTS = (BlockCrimsonRoots)getRegisteredBlock("frazionz:crimson_roots");
+            CRIMSON_FUNGI = (BlockCrimsonFungi)getRegisteredBlock("frazionz:crimson_fungi");
             
-            NETHER_WART_BLOCK2 = getRegisteredBlock("nether_wart_block2");
-            SANDSTONE2 = getRegisteredBlock("sandstone2");
-            STONE_ANDESITE = getRegisteredBlock("stone_andesite");
-            STONE_ANDESITE_SMOOTH = getRegisteredBlock("stone_andesite_smooth");
-            STONE_GRANITE = getRegisteredBlock("stone_granite");
-            STONE_GRANITE_SMOOTH = getRegisteredBlock("stone_granite_smooth");
-            STONE_DIORITE = getRegisteredBlock("stone_diorite");
-            STONE_DIORITE_SMOOTH = getRegisteredBlock("stone_diorite_smooth");
+            NETHER_WART_BLOCK2 = getRegisteredBlock("frazionz:nether_wart_block2");
+            SANDSTONE2 = getRegisteredBlock("frazionz:sandstone2");
+            STONE_ANDESITE = getRegisteredBlock("frazionz:stone_andesite");
+            STONE_ANDESITE_SMOOTH = getRegisteredBlock("frazionz:stone_andesite_smooth");
+            STONE_GRANITE = getRegisteredBlock("frazionz:stone_granite");
+            STONE_GRANITE_SMOOTH = getRegisteredBlock("frazionz:stone_granite_smooth");
+            STONE_DIORITE = getRegisteredBlock("frazionz:stone_diorite");
+            STONE_DIORITE_SMOOTH = getRegisteredBlock("frazionz:stone_diorite_smooth");
             
-            RANDOM_ORE = getRegisteredBlock("random_ore");
+            RANDOM_ORE = getRegisteredBlock("frazionz:random_ore");
             
-            AMELIORATOR = getRegisteredBlock("ameliorator");
+            AMELIORATOR = getRegisteredBlock("frazionz:ameliorator");
             
-            RENFORCED_SAND = getRegisteredBlock("renforced_sand");
+            RENFORCED_SAND = getRegisteredBlock("frazionz:renforced_sand");
             
-            YELLITE_BREWING_STAND = getRegisteredBlock("yellite_brewing_stand");
-            BAUXITE_BREWING_STAND = getRegisteredBlock("bauxite_brewing_stand");
-            ONYX_BREWING_STAND = getRegisteredBlock("onyx_brewing_stand");
-            FRAZION_BREWING_STAND = getRegisteredBlock("frazion_brewing_stand");
+            YELLITE_BREWING_STAND = getRegisteredBlock("frazionz:yellite_brewing_stand");
+            BAUXITE_BREWING_STAND = getRegisteredBlock("frazionz:bauxite_brewing_stand");
+            ONYX_BREWING_STAND = getRegisteredBlock("frazionz:onyx_brewing_stand");
+            FRAZION_BREWING_STAND = getRegisteredBlock("frazionz:frazion_brewing_stand");
             
-            WITHER_BLOCK = getRegisteredBlock("wither_block");
+            WITHER_BLOCK = getRegisteredBlock("frazionz:wither_block");
             
-            COMPACT_COBBLESTONE_X1 = getRegisteredBlock("compact_cobblestone_x1");
-            COMPACT_COBBLESTONE_X2 = getRegisteredBlock("compact_cobblestone_x2");
-            COMPACT_COBBLESTONE_X3 = getRegisteredBlock("compact_cobblestone_x3");
-            COMPACT_COBBLESTONE_X4 = getRegisteredBlock("compact_cobblestone_x4");
-            COMPACT_COBBLESTONE_X5 = getRegisteredBlock("compact_cobblestone_x5");
+            COMPACT_COBBLESTONE_X1 = getRegisteredBlock("frazionz:compact_cobblestone_x1");
+            COMPACT_COBBLESTONE_X2 = getRegisteredBlock("frazionz:compact_cobblestone_x2");
+            COMPACT_COBBLESTONE_X3 = getRegisteredBlock("frazionz:compact_cobblestone_x3");
+            COMPACT_COBBLESTONE_X4 = getRegisteredBlock("frazionz:compact_cobblestone_x4");
+            COMPACT_COBBLESTONE_X5 = getRegisteredBlock("frazionz:compact_cobblestone_x5");
             
-            REVERSE_FALL_BLOCK = getRegisteredBlock("reverse_fall_block");
+            REVERSE_FALL_BLOCK = getRegisteredBlock("frazionz:reverse_fall_block");
             
-            STONE_BLACKSTONE = getRegisteredBlock("stone_blackstone");
-            STONE_BLACKSTONE_SMOOTH = getRegisteredBlock("stone_blackstone_smooth");
-            BLOCK_PLACER_CHEST = getRegisteredBlock("block_placer_chest");
-            BLOCK_PLACER_TRAPCHEST = getRegisteredBlock("block_placer_trapchest");
-            TROPHY_FORGE = getRegisteredBlock("trophy_forge");
+            STONE_BLACKSTONE = getRegisteredBlock("frazionz:stone_blackstone");
+            STONE_BLACKSTONE_SMOOTH = getRegisteredBlock("frazionz:stone_blackstone_smooth");
+            BLOCK_PLACER_CHEST = getRegisteredBlock("frazionz:block_placer_chest");
+            BLOCK_PLACER_TRAPCHEST = getRegisteredBlock("frazionz:block_placer_trapchest");
+            TROPHY_FORGE = getRegisteredBlock("frazionz:trophy_forge");
+            GRIMOIRE_PEDESTAL = getRegisteredBlock("frazionz:grimoire_pedestal");
+            ITEM_CRUSHER = (BlockItemCrusher)getRegisteredBlock("frazionz:item_crusher");
             
             CACHE.clear();
         }

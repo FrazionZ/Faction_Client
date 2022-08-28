@@ -26,7 +26,7 @@ public class ItemAxe extends ItemTool
     //private static final float[] ATTACK_DAMAGES = new float[] {6.0F, 8.0F, 8.0F, 8.0F, 6.0F};
     //private static final float[] ATTACK_SPEEDS = new float[] { -3.2F, -3.2F, -3.1F, -3.0F, -3.0F};
 
-    protected ItemAxe(Item.ToolMaterial material)
+    public ItemAxe(Item.ToolMaterial material)
     {
         super(2.0F, material, EFFECTIVE_ON);
         //this.attackDamage = ATTACK_DAMAGES[material.ordinal()];

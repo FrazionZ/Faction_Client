@@ -3,7 +3,7 @@ package net.minecraft.client.renderer.entity;
 import net.minecraft.client.model.ModelPig;
 import net.minecraft.client.renderer.entity.layers.LayerSaddle;
 import net.minecraft.entity.passive.EntityPig;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 public class RenderPig extends RenderLiving<EntityPig>
 {

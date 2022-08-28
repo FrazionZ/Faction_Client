@@ -6,8 +6,8 @@ import java.util.List;
 
 import org.lwjgl.input.Keyboard;
 
-import fz.frazionz.data.FzUserData;
 import fz.frazionz.gui.buttons.GuiFzButton;
+import fz.frazionz.utils.data.FzUserData;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
