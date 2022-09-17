@@ -17,6 +17,7 @@ import com.google.common.base.Objects;
 import com.google.common.collect.Maps;
 
 import fz.frazionz.block.BlockBauxiteLadder;
+import fz.frazionz.entity.player.PlayerAttribute;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLadder;
@@ -297,10 +298,6 @@ public abstract class EntityLivingBase extends Entity
         this.getAttributeMap().registerAttribute(SharedMonsterAttributes.MOVEMENT_SPEED);
         this.getAttributeMap().registerAttribute(SharedMonsterAttributes.ARMOR);
         this.getAttributeMap().registerAttribute(SharedMonsterAttributes.ARMOR_TOUGHNESS);
-        // TROPHY_UPDATE
-        this.getAttributeMap().registerAttribute(SharedMonsterAttributes.RESISTANCE);
-        this.getAttributeMap().registerAttribute(SharedMonsterAttributes.LEECHING);
-    
     }
 
     protected void updateFallState(double y, boolean onGroundIn, IBlockState state, BlockPos pos)
@@ -1078,8 +1075,8 @@ public abstract class EntityLivingBase extends Entity
                     }
 
                     // TROPHY_UPDATE
-                    float resistanceAmount = (float)getEntityAttribute(SharedMonsterAttributes.RESISTANCE).getAttributeValue();
-                    amount *= (2 - resistanceAmount);
+                    //float resistanceAmount = (float)getEntityAttribute(PlayerAttribute.RESISTANCE).getAttributeValue();
+                    //amount *= (2 - resistanceAmount);
                     this.damageEntity(source, amount - this.lastDamage);
                     this.lastDamage = amount;
                     flag1 = false;
@@ -1109,8 +1106,8 @@ public abstract class EntityLivingBase extends Entity
                     	this.hurtResistantTime = this.maxHurtResistantTime;
                     }
                     // TROPHY_UPDATE
-                    float resistanceAmount = (float)getEntityAttribute(SharedMonsterAttributes.RESISTANCE).getAttributeValue();
-                    amount *= (2 - resistanceAmount);
+                    //float resistanceAmount = (float)getEntityAttribute(PlayerAttribute.RESISTANCE).getAttributeValue();
+                    //amount *= (2 - resistanceAmount);
                     this.damageEntity(source, amount);
                     this.maxHurtTime = 10;
                     this.hurtTime = this.maxHurtTime;
@@ -1738,7 +1735,9 @@ public abstract class EntityLivingBase extends Entity
      */
     public final float getMaxHealth()
     {
-        return (float)this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).getAttributeValue();
+    	if(!(this instanceof EntityPlayer))
+    		return (float)this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).getAttributeValue();
+        return (float)this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).getAttributeValue() + (float)this.getEntityAttribute(PlayerAttribute.HEALTH).getAttributeValue();
     }
 
     /**

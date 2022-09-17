@@ -1,0 +1,22 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "X#X",
+    "#I#",
+    "X#X"
+  ],
+  "key": {
+    "#": {
+      "item": "frazionz:bauxite"
+    },
+    "X": {
+      "item": "frazionz:bauxite_block"
+    },
+     "I":{
+      "item" : "minecraft:chest"
+    }
+  },
+  "result": {
+    "item": "frazionz:bauxite_chest"
+  }
+}

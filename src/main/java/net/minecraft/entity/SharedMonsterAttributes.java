@@ -26,8 +26,7 @@ public class SharedMonsterAttributes
     public static final IAttribute ARMOR = (new RangedAttribute((IAttribute)null, "generic.armor", 0.0D, 0.0D, 256.0D)).setShouldWatch(true);
     public static final IAttribute ARMOR_TOUGHNESS = (new RangedAttribute((IAttribute)null, "generic.armorToughness", 0.0D, 0.0D, 20.0D)).setShouldWatch(true);
     public static final IAttribute LUCK = (new RangedAttribute((IAttribute)null, "generic.luck", 0.0D, -1024.0D, 1024.0D)).setShouldWatch(true);
-    public static final IAttribute RESISTANCE = (new RangedAttribute((IAttribute)null, "generic.resistance", 1.0D, -8.0D, 8.0D)).setDescription("Resistance").setShouldWatch(true);
-    public static final IAttribute LEECHING = (new RangedAttribute((IAttribute)null, "generic.leeching", 1.0D, 0.0D, 1024.0D)).setDescription("Leeching").setShouldWatch(true);
+    
     /**
      * Creates an NBTTagList from a BaseAttributeMap, including all its AttributeInstances
      */

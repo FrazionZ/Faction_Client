@@ -1,8 +1,8 @@
 package fz.frazionz.tileentity;
 
+import fz.frazionz.client.renderer.tileentity.TickCounter;
 import fz.frazionz.crafting.ItemCrusherRecipes;
 import fz.frazionz.inventory.ContainerItemCrusher;
-import fz.frazionz.tileentity.renderer.TickCounter;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -232,7 +232,6 @@ public class TileEntityItemCrusher extends TileEntityLockable implements ITickab
 	public String getGuiID() {
 		return "minecraft:item_crusher";
 	}
-	
 	
 	public Container createContainer(InventoryPlayer playerInventory, EntityPlayer playerIn)
 	{

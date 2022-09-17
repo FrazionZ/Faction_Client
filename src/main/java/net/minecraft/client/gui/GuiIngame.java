@@ -15,9 +15,8 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Ordering;
 
-import fz.frazionz.gui.hud.ScreenPosition;
+import fz.frazionz.entity.player.PlayerAttribute;
 import fz.frazionz.mods.blockrenderer.BlockRenderer;
-import fz.frazionz.mods.impl.ModKeystrokes;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -1084,7 +1083,7 @@ public class GuiIngame extends Gui
             int l = scaledRes.getScaledWidth() / 2 - 91;
             int i1 = scaledRes.getScaledWidth() / 2 + 91;
             int j1 = scaledRes.getScaledHeight() - 39;
-            float f = (float)iattributeinstance.getAttributeValue();
+            float f = (float)iattributeinstance.getAttributeValue() + (float)entityplayer.getEntityAttribute(PlayerAttribute.HEALTH).getAttributeValue();
             int k1 = MathHelper.ceil(entityplayer.getAbsorptionAmount());
             int l1 = MathHelper.ceil((f + (float)k1) / 2.0F / 10.0F);
             int i2 = Math.max(10 - (l1 - 2), 3);

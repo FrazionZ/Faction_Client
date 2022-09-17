@@ -1,0 +1,22 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "X",
+    "Y",
+    "Z"
+  ],
+  "key": {
+    "X": {
+      "item": "frazionz:dynamite"
+    },
+    "Y": {
+      "item": "frazionz:onyx_stick"
+    },
+    "Z":{
+      "item" : "minecraft:feather"
+    }
+  },
+  "result": {
+    "item": "frazionz:dynamite_arrow"
+  }
+}

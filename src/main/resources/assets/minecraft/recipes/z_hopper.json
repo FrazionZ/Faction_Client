@@ -1,0 +1,22 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "YCY",
+    "YHY",
+    " Y "
+  ],
+  "key": {
+    "Y": {
+      "item": "frazionz:yellite_block"
+    },
+    "H": {
+      "item": "minecraft:hopper"
+    },
+     "C":{
+      "item": "frazionz:cosmic_powder"
+    }
+  },
+  "result": {
+    "item": "frazionz:z_hopper"
+  }
+}

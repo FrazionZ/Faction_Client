@@ -1,0 +1,22 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "X#X",
+    "#I#",
+    "X#X"
+  ],
+  "key": {
+    "#": {
+      "item": "frazionz:frazion_powder"
+    },
+    "X": {
+      "item": "frazionz:frazion"
+    },
+     "I":{
+      "item" : "frazionz:onyx_chest"
+    }
+  },
+  "result": {
+    "item": "frazionz:frazion_chest"
+  }
+}

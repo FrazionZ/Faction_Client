@@ -1,9 +1,9 @@
 package fz.frazionz.tileentity;
 
+import fz.frazionz.client.renderer.tileentity.TickCounter;
 import fz.frazionz.crafting.TrophyForgeRecipes;
 import fz.frazionz.inventory.ContainerTrophyForge;
 import fz.frazionz.item.ItemTrophy;
-import fz.frazionz.tileentity.renderer.TickCounter;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -229,9 +229,9 @@ public class TileEntityTrophyForge extends TileEntityLockable implements ITickab
     		
     		result.setTagCompound(new NBTTagCompound());
     		AttributeModifier attribute = item.getRandomAttributeModifier();
-    		result.addAttributeModifier(item.getMonsterAttributes().getName(), attribute, EntityEquipmentSlot.TROPHY_1);
-    		result.addAttributeModifier(item.getMonsterAttributes().getName(), attribute, EntityEquipmentSlot.TROPHY_2);
-    		result.addAttributeModifier(item.getMonsterAttributes().getName(), attribute, EntityEquipmentSlot.TROPHY_3);
+    		result.addAttributeModifier(item.getAttributes().getName(), attribute, EntityEquipmentSlot.TROPHY_1);
+    		result.addAttributeModifier(item.getAttributes().getName(), attribute, EntityEquipmentSlot.TROPHY_2);
+    		result.addAttributeModifier(item.getAttributes().getName(), attribute, EntityEquipmentSlot.TROPHY_3);
     	}
         for(int i = 0; i < 12; i++) {
         	this.TrophyForgeItemStacks.get(i).shrink(1);

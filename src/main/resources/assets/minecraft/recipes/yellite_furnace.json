@@ -1,0 +1,22 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "X#X",
+    "#I#",
+    "X#X"
+  ],
+  "key": {
+    "#": {
+      "item": "frazionz:yellite"
+    },
+    "X": {
+      "item": "frazionz:yellite_block"
+    },
+    "I":{
+      "item" : "minecraft:furnace"
+    }
+  },
+  "result": {
+    "item": "frazionz:yellite_furnace"
+  }
+}

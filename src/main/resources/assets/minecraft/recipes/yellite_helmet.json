@@ -1,0 +1,15 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "XXX",
+    "X X"
+  ],
+  "key": {
+    "X": {
+      "item": "frazionz:yellite"
+    }
+  },
+  "result": {
+    "item": "frazionz:yellite_helmet"
+  }
+}

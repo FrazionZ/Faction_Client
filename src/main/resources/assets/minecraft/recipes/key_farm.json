@@ -1,0 +1,16 @@
+{
+	"type": "crafting_shaped",
+	"pattern" : [
+	   "XXX",
+     "XXX",
+     "XXX"
+    ],
+      "key": {
+       "X": {
+        "item" : "frazionz:farm_nugget"
+        } 
+    },
+    "result": {
+      "item": "frazionz:key_farm"
+    }
+}

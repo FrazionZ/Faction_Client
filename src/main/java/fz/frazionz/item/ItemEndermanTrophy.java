@@ -44,7 +44,7 @@ public class ItemEndermanTrophy extends ItemTrophy {
     	}
     }
     
-    public IAttribute getMonsterAttributes()
+    public IAttribute getAttributes()
     {
     	return SharedMonsterAttributes.MAX_HEALTH;
     }

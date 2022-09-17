@@ -69,6 +69,6 @@ public abstract class ItemTrophy extends Item {
     
     public abstract AttributeModifier getRandomAttributeModifier();
     
-    public abstract IAttribute getMonsterAttributes();
+    public abstract IAttribute getAttributes();
 	
 }

@@ -1,0 +1,16 @@
+{
+  "type": "crafting_shaped",
+	"pattern" : [
+	 "ZZZ",
+	 "ZZZ",
+	 "ZZZ"
+    ],
+      "key": {
+       "Z": {
+        "item" : "frazionz:frazion_powder"
+        } 
+    },
+    "result": {
+      "item": "frazionz:frazion"
+    }
+}

@@ -1,0 +1,22 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "OFO",
+    "O O",
+    "XXX"
+  ],
+  "key": {
+    "O": {
+      "item": "frazionz:onyx_block"
+    },
+    "X": {
+      "item": "frazionz:compact_cobblestone_x3"
+    },
+     "F":{
+      "item": "frazionz:frazion_powder"
+    }
+  },
+  "result": {
+    "item": "frazionz:trophy_forge"
+  }
+}

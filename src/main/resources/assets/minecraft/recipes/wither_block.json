@@ -1,0 +1,23 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "X#X",
+    "#Z#",
+    "X#X"
+  ],
+  "key": {
+    "#": {
+        "item": "frazionz:compact_cobblestone_x2"
+    },
+    "Z": {
+      "item": "frazionz:withered_bone"
+    },
+    "X": {
+      "item": "minecraft:obsidian"
+    }
+  },
+  "result": {
+    "item": "frazionz:wither_block",
+    "count": 8
+  }
+}

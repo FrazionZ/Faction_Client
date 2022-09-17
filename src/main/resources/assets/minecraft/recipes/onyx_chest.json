@@ -1,0 +1,22 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "X#X",
+    "#I#",
+    "X#X"
+  ],
+  "key": {
+    "#": {
+      "item": "frazionz:onyx"
+    },
+    "X": {
+      "item": "frazionz:onyx_block"
+    },
+    "I":{
+      "item" : "minecraft:chest"
+    }
+  },
+  "result": {
+    "item": "frazionz:onyx_chest"
+  }
+}

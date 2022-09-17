@@ -1,0 +1,16 @@
+{
+  "type": "crafting_shaped",
+  "pattern" : [
+	 "XXX",
+     "XXX",
+     "XXX"
+    ],
+      "key": {
+       "X": {
+        "item" : "frazionz:cosmic_powder"
+        } 
+    },
+    "result": {
+      "item": "frazionz:cosmic_nugget"
+    }
+}

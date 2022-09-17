@@ -7,6 +7,7 @@ import java.util.UUID;
 
 import com.google.common.collect.Multimap;
 
+import fz.frazionz.entity.player.PlayerAttribute;
 import fz.frazionz.utils.MathUtils;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -44,9 +45,9 @@ public class ItemSkeletonTrophy extends ItemTrophy {
     	}
     }
     
-    public IAttribute getMonsterAttributes()
+    public IAttribute getAttributes()
     {
-    	return SharedMonsterAttributes.MOVEMENT_SPEED;
+    	return PlayerAttribute.SPEED;
     }
 	
 }

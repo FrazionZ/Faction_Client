@@ -1,0 +1,19 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "XXX",
+    "XIX",
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "item": "frazionz:nether_string"
+    },
+     "I":{
+      "item" : "frazionz:onyx_block"
+    }
+  },
+  "result": {
+    "item": "frazionz:renforced_string"
+  }
+}

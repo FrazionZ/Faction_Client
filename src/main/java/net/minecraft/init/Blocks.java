@@ -405,7 +405,7 @@ public class Blocks
     
     public static final Block TROPHY_FORGE;
     public static final Block GRIMOIRE_PEDESTAL;
-    public static final BlockItemCrusher ITEM_CRUSHER;
+    public static final Block ITEM_CRUSHER;
     
 
     @Nullable

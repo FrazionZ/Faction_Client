@@ -2,7 +2,7 @@ package fz.frazionz.tileentity;
 
 import java.util.Random;
 
-import fz.frazionz.tileentity.renderer.TickCounter;
+import fz.frazionz.client.renderer.tileentity.TickCounter;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;

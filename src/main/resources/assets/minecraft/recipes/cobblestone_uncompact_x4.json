@@ -1,0 +1,15 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "X"
+  ],
+  "key": {
+    "X": {
+      "item": "frazionz:compact_cobblestone_x5"
+    }
+  },
+  "result": {
+    "item": "frazionz:compact_cobblestone_x4",
+    "count": 9
+  }
+}

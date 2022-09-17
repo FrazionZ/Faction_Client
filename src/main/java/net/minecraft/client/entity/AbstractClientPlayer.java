@@ -9,6 +9,7 @@ import com.mojang.authlib.GameProfile;
 
 import fz.frazionz.api.HTTPFunctions;
 import fz.frazionz.api.gsonObj.ObjPlayerSkinsInfo;
+import fz.frazionz.entity.player.PlayerAttribute;
 import fz.frazionz.utils.FzSkinUtils;
 import fz.frazionz.utils.FzSkinUtils.TextureType;
 import net.minecraft.client.Minecraft;
@@ -223,7 +224,7 @@ public abstract class AbstractClientPlayer extends EntityPlayer
         }
 
         IAttributeInstance iattributeinstance = this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED);
-        f = (float)((double)f * ((iattributeinstance.getAttributeValue() / (double)this.capabilities.getWalkSpeed() + 1.0D) / 2.0D));
+        f = (float)((double)f * (((iattributeinstance.getAttributeValue()) / (double)this.capabilities.getWalkSpeed() + 1.0D) / 2.0D));
 
         if (this.capabilities.getWalkSpeed() == 0.0F || Float.isNaN(f) || Float.isInfinite(f))
         {

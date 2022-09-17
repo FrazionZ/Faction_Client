@@ -1,0 +1,25 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "iI#",
+    " X ",
+    " X "
+  ],
+  "key": {
+    "#": {
+      "item": "frazionz:yellite_pickaxe"
+    },
+    "X": {
+      "item": "minecraft:stick"
+    },
+     "I":{
+      "item": "frazionz:yellite_shovel"
+    },
+    "i":{
+      "item": "frazionz:yellite_axe"
+    }
+  },
+  "result": {
+    "item": "frazionz:yellite_multitool"
+  }
+}

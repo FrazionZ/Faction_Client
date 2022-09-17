@@ -1,0 +1,25 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "iI#",
+    " X ",
+    " X "
+  ],
+  "key": {
+    "#": {
+      "item": "frazionz:onyx_pickaxe"
+    },
+    "X": {
+      "item": "minecraft:stick"
+    },
+    "I":{
+      "item": "frazionz:onyx_shovel"
+    },
+    "i":{
+      "item": "frazionz:onyx_axe"
+    }
+  },
+  "result": {
+    "item": "frazionz:onyx_multitool"
+  }
+}

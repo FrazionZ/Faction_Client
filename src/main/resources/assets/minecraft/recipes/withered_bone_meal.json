@@ -1,0 +1,13 @@
+{
+  "type": "crafting_shapeless",
+  "group": "bonemeal",
+  "ingredients": [
+    {
+      "item": "frazionz:withered_bone"
+    }
+  ],
+  "result": {
+    "item": "frazionz:withered_bone_meal",
+    "count": 3
+  }
+}

@@ -13,7 +13,7 @@ public class RenderDemonZ<T extends EntityDemonZ> extends RenderLiving<T>
     public RenderDemonZ(RenderManager renderManagerIn)
     {
         //super(renderManagerIn, new ModelDemonZ(), 0.5F);
-        super(renderManagerIn, new JsonEntityModel("demon", true), 0.5F);
+        super(renderManagerIn, new JsonEntityModel("demon"), 0.5F);
     }
     
     /**

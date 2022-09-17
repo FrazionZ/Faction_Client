@@ -1,0 +1,15 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "X"
+  ],
+  "key": {
+    "X": {
+      "item": "frazionz:bauxite_block"
+    }
+  },
+  "result": {
+    "item": "frazionz:bauxite",
+    "count": 9
+  }
+}

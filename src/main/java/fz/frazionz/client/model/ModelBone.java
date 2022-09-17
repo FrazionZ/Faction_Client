@@ -100,7 +100,6 @@ public class ModelBone extends ModelRenderer {
     			JSONArray uv = cube.getJSONArray("uv");
     			    			
 				if(cube.has("rotation") && cube.has("pivot")) {
-					LogManager.getLogger().info("WITH ROTATION: ");
 					ModelBone part = new ModelBone(model);
 	    			part.parent = this;
 	    			
@@ -128,7 +127,6 @@ public class ModelBone extends ModelRenderer {
 	    				LogManager.getLogger().info("SubBone: " + part);
 				}
 				else {
-					LogManager.getLogger().info("Nothing: ");
 	    			ModelCube box = new ModelCube(
 	    					this, uv.getInt(0), uv.getInt(1),
 	    					originX-this.jsonPivotX, (this.parent != null ? this.jsonPivotY + originY : originY), originZ-this.jsonPivotZ,

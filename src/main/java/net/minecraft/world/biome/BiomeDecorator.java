@@ -488,25 +488,25 @@ public class BiomeDecorator
         	}
         	else if(generator == this.onyxGen) {
             	float i1 = randomFloat.nextFloat();
-            	if(i1 < 0.25F) {
+            	if(i1 < 0.30F) {
             		generator.generate(worldIn, random, blockpos);
             	}
         	}
         	else if(generator == this.bauxiteGen) {
             	float i1 = randomFloat.nextFloat();
-            	if(i1 < 0.50F) {
+            	if(i1 < 0.45F) {
             		generator.generate(worldIn, random, blockpos);
             	}
         	}
         	else if(generator == this.yelliteGen) {
             	float i1 = randomFloat.nextFloat();
-            	if(i1 < 0.70F) {
+            	if(i1 < 0.60F) {
             		generator.generate(worldIn, random, blockpos);
             	}
         	}
         	else if(generator == this.randomOreGen) {
             	float i1 = randomFloat.nextFloat();
-            	if(i1 < 0.60F) {
+            	if(i1 < 0.45F) {
             		generator.generate(worldIn, random, blockpos);
             	}
         	}

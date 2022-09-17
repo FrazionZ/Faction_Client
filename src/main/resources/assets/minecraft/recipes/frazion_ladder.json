@@ -1,0 +1,20 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "P P",
+    "###",
+    "P P"
+  ],
+  "key": {
+    "#": {
+      "item": "frazionz:frazion_stick"
+    },
+    "P": {
+      "item": "frazionz:frazion_powder"
+    }
+  },
+  "result": {
+    "item": "frazionz:frazion_ladder",
+    "count": 24
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "X#X",
+    "#I#",
+    "X#X"
+  ],
+  "key": {
+    "#": {
+      "item": "frazionz:yellite"
+    },
+    "X": {
+      "item": "frazionz:yellite_block"
+    },
+    "I":{
+      "item" : "minecraft:golden_apple",
+      "data": 0
+    }
+  },
+  "result": {
+    "item": "frazionz:yellite_apple",
+    "data": 0
+  }
+}

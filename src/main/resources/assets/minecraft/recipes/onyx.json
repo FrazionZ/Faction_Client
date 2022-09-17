@@ -1,0 +1,15 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "X"
+  ],
+  "key": {
+    "X": {
+      "item": "frazionz:onyx_block"
+    }
+  },
+  "result": {
+    "item": "frazionz:onyx",
+    "count": 9
+  }
+}

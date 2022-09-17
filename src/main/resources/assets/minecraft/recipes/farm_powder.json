@@ -1,0 +1,16 @@
+{
+	"type": "crafting_shaped",
+	"pattern" : [
+	   "XXX",
+     "XXX",
+     "XXX"
+    ],
+      "key": {
+       "X": {
+        "item" : "frazionz:loot_powder"
+        } 
+    },
+    "result": {
+      "item": "frazionz:farm_powder"
+    }
+}
