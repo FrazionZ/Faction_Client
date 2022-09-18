@@ -1,7 +1,7 @@
 package fz.frazionz.gui.shop;
 
 import fz.frazionz.api.data.ShopAPIDataStocker;
-import fz.frazionz.api.gsonObj.ShopType;
+import fz.frazionz.api.gsonObj.MarketType;
 import fz.frazionz.utils.Colors;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;

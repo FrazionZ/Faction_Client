@@ -2330,7 +2330,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
 
                     if (iattributeinstance == null)
                     {
-                        iattributeinstance = abstractattributemap.registerAttribute(new RangedAttribute((IAttribute)null, spacketentityproperties$snapshot.getName(), 0.0D, 2.2250738585072014E-308D, Double.MAX_VALUE));
+                        iattributeinstance = abstractattributemap.registerAttribute(new RangedAttribute((IAttribute)null, spacketentityproperties$snapshot.getName(), 0.0D, Double.MIN_VALUE, Double.MAX_VALUE));
                     }
 
                     iattributeinstance.setBaseValue(spacketentityproperties$snapshot.getBaseValue());

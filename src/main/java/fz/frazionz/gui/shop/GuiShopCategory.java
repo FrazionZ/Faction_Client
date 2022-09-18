@@ -5,6 +5,7 @@ import java.io.IOException;
 import fz.frazionz.Client;
 import fz.frazionz.TTFFontRenderer;
 import fz.frazionz.gui.GuiFrazionZInterface;
+import fz.frazionz.gui.utils.RoundedShaderRenderer;
 import fz.frazionz.utils.FzUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
@@ -13,8 +14,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.resources.ResourceLocation;
 
 public class GuiShopCategory extends GuiFrazionZInterface {
-	
-	private static final ResourceLocation background = new ResourceLocation("textures/gui/frazionz/interface_background.png");	
+		
 	private GuiShopCategoryList shopTypeList;
 	
 	public GuiShopCategory(GuiScreen lastScreen, Minecraft mc)
@@ -76,15 +76,7 @@ public class GuiShopCategory extends GuiFrazionZInterface {
 	
 	public void drawTopList()
 	{
-		GlStateManager.pushMatrix();
-        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-        this.mc.getTextureManager().bindTexture(background);
-        this.drawModalRectWithCustomSizedTexture(this.guiLeft + 10, this.guiTop, 10, 0, this.xSize - 20, 37, 512.0F, 512.0F);
-        
-        this.mc.getTextureManager().bindTexture(background);
-        this.drawModalRectWithCustomSizedTexture(this.guiLeft + 20, this.guiTop + 200, 20, 30, this.xSize - 40, 37, 512.0F, 512.0F);
-		GlStateManager.popMatrix();
-		
+        RoundedShaderRenderer.getInstance().drawRoundRect(this.guiLeft, this.guiTop, this.xSize, this.ySize, 8, 0x15171B);
 		
         TTFFontRenderer titleRenderer = Client.getInstance().getTTFFontRenderers().get(24);
         int titleSize = titleRenderer.getWidth(this.title);

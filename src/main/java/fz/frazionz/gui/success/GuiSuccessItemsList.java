@@ -1,7 +1,7 @@
 package fz.frazionz.gui.success;
 
-import fz.frazionz.api.gsonObj.ShopItem;
-import fz.frazionz.api.gsonObj.ShopType;
+import fz.frazionz.api.gsonObj.MarketItem;
+import fz.frazionz.api.gsonObj.MarketType;
 import fz.frazionz.api.gsonObj.SuccessObj;
 import fz.frazionz.api.gsonObj.SuccessType;
 import java.awt.Color;

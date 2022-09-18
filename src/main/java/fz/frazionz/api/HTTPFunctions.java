@@ -14,8 +14,8 @@ import fz.frazionz.api.gsonObj.BoutiqueItem;
 import fz.frazionz.api.gsonObj.BoutiqueType;
 import fz.frazionz.api.gsonObj.ObjPlayerSkinsInfo;
 import fz.frazionz.api.gsonObj.ServerData;
-import fz.frazionz.api.gsonObj.ShopItem;
-import fz.frazionz.api.gsonObj.ShopType;
+import fz.frazionz.api.gsonObj.MarketItem;
+import fz.frazionz.api.gsonObj.MarketType;
 import fz.frazionz.api.gsonObj.SuccessObj;
 import fz.frazionz.api.gsonObj.SuccessType;
 import net.minecraft.client.Minecraft;
@@ -30,16 +30,16 @@ public class HTTPFunctions {
 		return reply.getStatusCode() == 200;
 	}
 	
-	public static List<ShopType> getAllShopTypes()
+	public static List<MarketType> getAllShopTypes()
 	{
-		List<ShopType> lst = new ArrayList<>();
+		List<MarketType> lst = new ArrayList<>();
 		
-		HTTPReply reply = HTTPUtils.sendGet(HTTPEndpoints.SHOP_TYPE_LIST);
+		HTTPReply reply = HTTPUtils.sendGet(HTTPEndpoints.MARKET_TYPE_LIST);
 
 		if(reply.getStatusCode() == 200)
 		{
-			ShopType[] objs = gson.fromJson(reply.getBody(), ShopType[].class);
-			for(ShopType type : objs) {
+			MarketType[] objs = gson.fromJson(reply.getBody(), MarketType[].class);
+			for(MarketType type : objs) {
 				if(type.isActive())
 					lst.add(type);
 			}
@@ -47,16 +47,16 @@ public class HTTPFunctions {
 		return lst;
 	}
 	
-	public static List<ShopItem> getAllShopItems()
+	public static List<MarketItem> getAllShopItems()
 	{
-		List<ShopItem> lst = new ArrayList<>();
+		List<MarketItem> lst = new ArrayList<>();
 		
-		HTTPReply reply = HTTPUtils.sendGet(HTTPEndpoints.SHOP_ITEM_LIST);
+		HTTPReply reply = HTTPUtils.sendGet(HTTPEndpoints.MARKET_ITEM_LIST);
 			
 		if(reply.getStatusCode() == 200)
 		{
-			ShopItem[] objs = gson.fromJson(reply.getBody(), ShopItem[].class);
-			for(ShopItem item : objs) {
+			MarketItem[] objs = gson.fromJson(reply.getBody(), MarketItem[].class);
+			for(MarketItem item : objs) {
 				if(item.isActive())
 					lst.add(item);
 			}
@@ -68,7 +68,7 @@ public class HTTPFunctions {
 	{
 		List<BoutiqueType> lst = new ArrayList<>();
 		
-		HTTPReply reply = HTTPUtils.sendGet(HTTPEndpoints.BOUTIQUE_TYPE_LIST);
+		HTTPReply reply = HTTPUtils.sendGet(HTTPEndpoints.SHOP_TYPE_LIST);
 			
 		if(reply.getStatusCode() == 200)
 		{
@@ -99,7 +99,7 @@ public class HTTPFunctions {
 	{
 		List<BoutiqueItem> lst = new ArrayList<>();
 		
-		HTTPReply reply = HTTPUtils.sendGet(HTTPEndpoints.BOUTIQUE_ITEM_LIST);
+		HTTPReply reply = HTTPUtils.sendGet(HTTPEndpoints.SHOP_ITEM_LIST);
 			
 		if(reply.getStatusCode() == 200)
 		{

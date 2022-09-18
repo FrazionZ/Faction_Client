@@ -1,7 +1,7 @@
 package fz.frazionz.gui.shop;
 
-import fz.frazionz.api.gsonObj.ShopItem;
-import fz.frazionz.api.gsonObj.ShopType;
+import fz.frazionz.api.gsonObj.MarketItem;
+import fz.frazionz.api.gsonObj.MarketType;
 import fz.frazionz.utils.Colors;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -19,15 +19,15 @@ import net.minecraft.util.math.MathHelper;
 
 public class GuiShopItemsList extends GuiListFrazionZInterface
 {
-    private ShopType type;
+    private MarketType type;
 
-    public GuiShopItemsList(GuiScreen lastScreen, ShopType type, Minecraft mcIn, int left, int right, int top, int bottom, int slotHeight)
+    public GuiShopItemsList(GuiScreen lastScreen, MarketType type, Minecraft mcIn, int left, int right, int top, int bottom, int slotHeight)
     {
         super(lastScreen, mcIn, left, right, top, bottom, slotHeight);
         
         this.listEntries = new GuiListExtended.IGuiListEntry[type.getItems().size()];
         int i = 0;
-        for (ShopItem item : type.getItems())
+        for (MarketItem item : type.getItems())
         {
         	this.listEntries[i++] = new GuiShopItemsList.ShopEntry(item);
         }
@@ -36,7 +36,7 @@ public class GuiShopItemsList extends GuiListFrazionZInterface
     @Override
     protected void elementClicked(int slotIndex, boolean isDoubleClick, int mouseX, int mouseY)
     {
-    	ShopItem item = ((GuiShopItemsList.ShopEntry)this.listEntries[slotIndex]).getShopItem();
+    	MarketItem item = ((GuiShopItemsList.ShopEntry)this.listEntries[slotIndex]).getShopItem();
     	GuiButton guiButton = ((GuiShopItemsList.ShopEntry)this.listEntries[slotIndex]).getShopItemButton();
     	guiButton.playPressSound(this.mc.getSoundHandler());
     	this.mc.displayGuiScreen(new GuiShopItemSelect(this.lastScreen, this.mc, item));
@@ -101,11 +101,11 @@ public class GuiShopItemsList extends GuiListFrazionZInterface
 
     public class ShopEntry implements GuiListExtended.IGuiListEntry
     {
-        private final ShopItem item;
+        private final MarketItem item;
         private final GuiButton shopItemButton;
         private final ResourceLocation background = new ResourceLocation("textures/gui/frazionz/interface_background.png");	
         
-        private ShopEntry(ShopItem item)
+        private ShopEntry(MarketItem item)
         {
             this.item = item;
             ItemStack itemStack = this.item.getItemStack();
@@ -135,7 +135,7 @@ public class GuiShopItemsList extends GuiListFrazionZInterface
 		public void updatePosition(int slotIndex, int x, int y, float partialTicks) {
 		}
         
-        public ShopItem getShopItem() {
+        public MarketItem getShopItem() {
 			return this.item;
 		}
         

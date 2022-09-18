@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import fz.frazionz.api.gsonObj.ShopItem;
+import fz.frazionz.api.gsonObj.MarketItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -129,9 +129,9 @@ public class GuiJournalistRewards extends GuiScreen {
         this.drawDefaultBackground();
         this.drawBackgroundImage();
         this.drawTopList();
-        drawBackgroundItem(ShopItem.getItemStack("frazion"), 1,this.width / 2 - 160, this.guiTop + this.ySize - 160);
-        drawBackgroundItemCurrent(ShopItem.getItemStack("diamond"), 2, this.width / 2 - 35, this.guiTop + this.ySize - 165);
-        drawBackgroundItem(ShopItem.getItemStack("bauxite_sword"),3,this.width / 2 + 100, this.guiTop + this.ySize - 160);
+        drawBackgroundItem(MarketItem.getItemStack("frazion"), 1,this.width / 2 - 160, this.guiTop + this.ySize - 160);
+        drawBackgroundItemCurrent(MarketItem.getItemStack("diamond"), 2, this.width / 2 - 35, this.guiTop + this.ySize - 165);
+        drawBackgroundItem(MarketItem.getItemStack("bauxite_sword"),3,this.width / 2 + 100, this.guiTop + this.ySize - 160);
         String title = "Récompense Journalière";
         this.mc.fontRenderer.drawScaleString(title, this.width / 2 - this.fontRenderer.getStringWidth(title) / 1 + 20, this.guiTop + 8, 1.6D, Color.WHITE);
         String s = "Les récompenses sont récupérables une fois par jour.";

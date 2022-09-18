@@ -5,7 +5,7 @@ import net.minecraft.command.NumberInvalidException;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-public class ShopItem {
+public class MarketItem {
 
 	private int id;
 	private String minecraftItemName;

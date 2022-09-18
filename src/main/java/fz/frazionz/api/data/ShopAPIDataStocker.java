@@ -8,23 +8,23 @@ import org.apache.commons.lang3.StringUtils;
 import fz.frazionz.api.HTTPFunctions;
 import fz.frazionz.api.gsonObj.BoutiqueItem;
 import fz.frazionz.api.gsonObj.BoutiqueType;
-import fz.frazionz.api.gsonObj.ShopItem;
-import fz.frazionz.api.gsonObj.ShopType;
+import fz.frazionz.api.gsonObj.MarketItem;
+import fz.frazionz.api.gsonObj.MarketType;
 import net.minecraft.command.NumberInvalidException;
 import net.minecraft.item.Item;
 import net.minecraft.resources.ResourceLocation;
 
 public class ShopAPIDataStocker {
 
-	public static List<ShopItem> shopItems;
-	public static List<ShopType> shopTypes;
+	public static List<MarketItem> shopItems;
+	public static List<MarketType> shopTypes;
 	public static List<BoutiqueItem> boutiqueItems;
 	public static List<BoutiqueType> boutiqueTypes;
 	
-	public static List<ShopItem> getShopItemsFromType(ShopType type)
+	public static List<MarketItem> getShopItemsFromType(MarketType type)
 	{
-		List<ShopItem> list = new ArrayList<ShopItem>();
-		for(ShopItem item : shopItems)
+		List<MarketItem> list = new ArrayList<MarketItem>();
+		for(MarketItem item : shopItems)
 			if(item.getShopType() == type.getId())
 				list.add(item);
 		return list;
@@ -41,7 +41,7 @@ public class ShopAPIDataStocker {
 	
 	public static int getShopTypeIdByName(String name) {
 		int id = -1;
-		for(ShopType type : shopTypes) {
+		for(MarketType type : shopTypes) {
 			if(StringUtils.capitalize(type.getTypeName()) == StringUtils.capitalize(name))
 				return type.getId();
 		}
@@ -75,7 +75,7 @@ public class ShopAPIDataStocker {
 		shopTypes = HTTPFunctions.getAllShopTypes();
 		shopItems = HTTPFunctions.getAllShopItems();
 		
-		for(ShopType type : shopTypes) {
+		for(MarketType type : shopTypes) {
 			type.setItems(ShopAPIDataStocker.getShopItemsFromType(type));
 		}
 		for(BoutiqueType type : boutiqueTypes) {

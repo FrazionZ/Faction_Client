@@ -2,7 +2,7 @@ package fz.frazionz.gui.success;
 
 import fz.frazionz.api.data.ShopAPIDataStocker;
 import fz.frazionz.api.data.SuccessAPIDataStocker;
-import fz.frazionz.api.gsonObj.ShopType;
+import fz.frazionz.api.gsonObj.MarketType;
 import fz.frazionz.api.gsonObj.SuccessType;
 import fz.frazionz.gui.GuiButtonOnlyImage;
 import fz.frazionz.gui.shop.GuiListItemButton;

@@ -16,8 +16,8 @@ public class HTTPEndpoints {
 	// Faction
 	public static final String SHOP_ITEM_LIST = BASE_FACTION + "shop/items";
 	public static final String SHOP_TYPE_LIST = BASE_FACTION + "shop/types";
-	public static final String BOUTIQUE_TYPE_LIST = BASE_FACTION + "boutique/types";
-	public static final String BOUTIQUE_ITEM_LIST = BASE_FACTION + "boutique/items";
+	public static final String MARKET_TYPE_LIST = BASE_FACTION + "market/types";
+	public static final String MARKET_ITEM_LIST = BASE_FACTION + "market/items";
 	public static final String FACTION_PROFILE = BASE_FACTION + "profile/";
 
 	// Skill

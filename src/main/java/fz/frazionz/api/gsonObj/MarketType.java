@@ -8,14 +8,14 @@ import net.minecraft.command.NumberInvalidException;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-public class ShopType {
+public class MarketType {
 
 	private int id;
 	private String typeName;
 	private boolean isActive;
 	private String minecraftItemName;
 	private int minecraftItemData;
-	private List<ShopItem> items = new ArrayList<ShopItem>();
+	private List<MarketItem> items = new ArrayList<MarketItem>();
 	
 	public int getId() {
 		return id;
@@ -53,11 +53,11 @@ public class ShopType {
 	    return itemstack;
 	}
 	
-	public List<ShopItem> getItems() {
+	public List<MarketItem> getItems() {
 		return items;
 	}
 	
-	public void setItems(List<ShopItem> items) {
+	public void setItems(List<MarketItem> items) {
 		this.items = items;
 	}
 	

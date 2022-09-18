@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import fz.frazionz.Client;
 import fz.frazionz.TTFFontRenderer;
-import fz.frazionz.api.gsonObj.ShopItem;
+import fz.frazionz.api.gsonObj.MarketItem;
 import fz.frazionz.gui.GuiButtonImage;
 import fz.frazionz.gui.GuiFrazionZInterface;
 import fz.frazionz.packets.client.CPacketShopTrade;
@@ -20,11 +20,11 @@ import net.minecraft.item.ItemStack;
 
 public class GuiShopItemSelect extends GuiFrazionZInterface {
 	
-	private ShopItem item;
+	private MarketItem item;
 	private int totalSellItems = 1;
 	private int totalBuyItems = 1;
 	
-	public GuiShopItemSelect(GuiScreen lastScreen, Minecraft mc, ShopItem item) {	
+	public GuiShopItemSelect(GuiScreen lastScreen, Minecraft mc, MarketItem item) {	
 		super(item.getItemStack().getDisplayName(), lastScreen, mc);
 		this.item = item;
 		this.hasBackButton = true;

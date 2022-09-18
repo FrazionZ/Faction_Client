@@ -3,7 +3,7 @@ package fz.frazionz.gui.success;
 import java.awt.*;
 import java.io.IOException;
 
-import fz.frazionz.api.gsonObj.ShopType;
+import fz.frazionz.api.gsonObj.MarketType;
 import fz.frazionz.api.gsonObj.SuccessType;
 import fz.frazionz.gui.GuiButtonOnlyImage;
 import fz.frazionz.utils.MathUtils;
