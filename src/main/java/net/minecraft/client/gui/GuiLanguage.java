@@ -8,8 +8,8 @@ import com.google.common.collect.Maps;
 
 import fz.frazionz.Client;
 import fz.frazionz.TTFFontRenderer;
-import fz.frazionz.gui.buttons.GuiFzButton;
-import fz.frazionz.gui.buttons.GuiFzOptionButton;
+import fz.frazionz.client.gui.buttons.GuiFzButton;
+import fz.frazionz.client.gui.buttons.GuiFzOptionButton;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.resources.Language;

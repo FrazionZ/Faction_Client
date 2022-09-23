@@ -17,15 +17,15 @@ public class RangedAttribute extends BaseAttribute
 
         if (minimumValueIn > maximumValueIn)
         {
-            throw new IllegalArgumentException("Minimum value cannot be bigger than maximum value!");
+            //throw new IllegalArgumentException("Minimum value cannot be bigger than maximum value!");
         }
         else if (defaultValue < minimumValueIn)
         {
-            throw new IllegalArgumentException("Default value cannot be lower than minimum value!");
+            //throw new IllegalArgumentException("Default value cannot be lower than minimum value!");
         }
         else if (defaultValue > maximumValueIn)
         {
-            throw new IllegalArgumentException("Default value cannot be bigger than maximum value!");
+            //throw new IllegalArgumentException("Default value cannot be bigger than maximum value!");
         }
     }
 

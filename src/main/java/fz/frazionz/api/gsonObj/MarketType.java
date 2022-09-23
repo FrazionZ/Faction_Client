@@ -1,9 +1,8 @@
 package fz.frazionz.api.gsonObj;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import fz.frazionz.api.data.ShopAPIDataStocker;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import fz.frazionz.utils.ItemUtils;
 import net.minecraft.command.NumberInvalidException;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -12,17 +11,11 @@ public class MarketType {
 
 	private int id;
 	private String typeName;
-	private boolean isActive;
 	private String minecraftItemName;
 	private int minecraftItemData;
-	private List<MarketItem> items = new ArrayList<MarketItem>();
-	
+
 	public int getId() {
 		return id;
-	}
-	
-	public boolean isActive() {
-		return this.isActive;
 	}
 	
 	public String getTypeName() {
@@ -31,7 +24,7 @@ public class MarketType {
 	
 	@Override
 	public String toString() {
-		return "ShopType : " + this.typeName + " - isActive : " + this.isActive;
+		return "{MarketType : " + this.typeName + "}";
 	}
 	
 	public int getMinecraftItemData() {
@@ -45,20 +38,27 @@ public class MarketType {
 	public ItemStack getItemStack() {
 		 Item item = null;
 		 try {
-			item = ShopAPIDataStocker.getItemByText(this.getMinecraftItemName());
+			item = ItemUtils.getItemByText(this.getMinecraftItemName());
 		} catch (NumberInvalidException e) {
 			e.printStackTrace();
 		}
 	    ItemStack itemstack = new ItemStack(item, 1, this.getMinecraftItemData());
 	    return itemstack;
 	}
-	
-	public List<MarketItem> getItems() {
-		return items;
+
+	public JsonElement serialize() {
+		return new Gson().toJsonTree(this);
 	}
-	
-	public void setItems(List<MarketItem> items) {
-		this.items = items;
+
+	public JsonElement serializeList(MarketType[] types) {
+		return new Gson().toJsonTree(types);
 	}
-	
+
+	public static MarketType[] deserializeList(String json) {
+		return new Gson().fromJson(json, MarketType[].class);
+	}
+
+	public static MarketType deserialize(String json) {
+		return new Gson().fromJson(json, MarketType.class);
+	}
 }

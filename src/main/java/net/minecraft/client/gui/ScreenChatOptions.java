@@ -2,10 +2,10 @@ package net.minecraft.client.gui;
 
 import java.io.IOException;
 
-import fz.frazionz.gui.GuiFzBaseScreen;
-import fz.frazionz.gui.buttons.GuiFzButton;
-import fz.frazionz.gui.buttons.GuiFzOptionButton;
-import fz.frazionz.gui.buttons.GuiFzSlider;
+import fz.frazionz.client.gui.GuiFzBaseScreen;
+import fz.frazionz.client.gui.buttons.GuiFzButton;
+import fz.frazionz.client.gui.buttons.GuiFzOptionButton;
+import fz.frazionz.client.gui.buttons.GuiFzSlider;
 import net.minecraft.client.gui.chat.NarratorChatListener;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.settings.GameSettings;

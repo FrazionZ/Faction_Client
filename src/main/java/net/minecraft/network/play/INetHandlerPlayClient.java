@@ -1,5 +1,6 @@
 package net.minecraft.network.play;
 
+import fz.frazionz.packets.server.SPacketGuiOpener;
 import fz.frazionz.packets.server.SPacketToast;
 import fz.frazionz.packets.server.SPacketUpdateSkin;
 import net.minecraft.network.INetHandler;
@@ -398,5 +399,7 @@ public interface INetHandlerPlayClient extends INetHandler
     void handleToast(SPacketToast packetIn);
     
     void handleUpdateSkin(SPacketUpdateSkin handler);
+
+    void handleGuiOpener(SPacketGuiOpener handler);
 
 }

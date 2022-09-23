@@ -9,13 +9,12 @@ import org.apache.logging.log4j.Logger;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
-import fz.frazionz.gui.GuiChatTextField;
+import fz.frazionz.client.gui.GuiChatTextField;
 import fz.frazionz.utils.FzTabCompleter;
 import fz.frazionz.utils.FzUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ChatAllowedCharacters;
 import net.minecraft.util.ITabCompleter;
-import net.minecraft.util.TabCompleter;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;

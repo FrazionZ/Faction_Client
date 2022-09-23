@@ -2,10 +2,9 @@ package net.minecraft.client.gui;
 
 import java.io.IOException;
 
-import fz.frazionz.gui.GuiFzBaseScreen;
-import fz.frazionz.gui.buttons.GuiFzButton;
-import fz.frazionz.gui.buttons.GuiFzChoiceButton;
-import fz.frazionz.gui.buttons.GuiFzOptionButton;
+import fz.frazionz.client.gui.GuiFzBaseScreen;
+import fz.frazionz.client.gui.buttons.GuiFzButton;
+import fz.frazionz.client.gui.buttons.GuiFzOptionButton;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.audio.SoundHandler;

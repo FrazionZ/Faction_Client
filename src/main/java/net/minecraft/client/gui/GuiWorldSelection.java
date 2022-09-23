@@ -12,7 +12,7 @@ import com.google.common.collect.Lists;
 
 import fz.frazionz.Client;
 import fz.frazionz.TTFFontRenderer;
-import fz.frazionz.gui.buttons.GuiFzButton;
+import fz.frazionz.client.gui.buttons.GuiFzButton;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.resources.ResourceLocation;
 

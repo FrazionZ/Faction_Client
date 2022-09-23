@@ -1,6 +1,6 @@
 package fz.frazionz.mods;
 
-import fz.frazionz.gui.hud.HUDManager;
+import fz.frazionz.client.gui.hud.HUDManager;
 import fz.frazionz.mods.impl.ModKeystrokes;
 
 public class ModInstances {

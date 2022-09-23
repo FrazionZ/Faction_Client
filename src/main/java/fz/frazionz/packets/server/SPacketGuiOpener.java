@@ -1,53 +1,51 @@
 package fz.frazionz.packets.server;
 
-import java.io.IOException;
-
-import fz.frazionz.gui.GuiServerSwitcher;
-import fz.frazionz.gui.shop.GuiBoutiqueCategory;
-import fz.frazionz.gui.shop.GuiShopCategory;
-import fz.frazionz.gui.skills.GuiSkillList;
+import fz.frazionz.client.gui.GuiServerSwitcher;
+import fz.frazionz.enums.EnumGui;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.Packet;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.PacketThreadUtil;
 import net.minecraft.network.play.INetHandlerPlayClient;
+import net.minecraft.network.play.INetHandlerPlayServer;
+
+import java.io.IOException;
 
 public class SPacketGuiOpener implements Packet<INetHandlerPlayClient> {
 
 	Minecraft mc = Minecraft.getMinecraft();
-	private int id;
-	
+	private EnumGui gui;
+	private int info;
+
 	public SPacketGuiOpener() {
 	}
-	
-	public SPacketGuiOpener(int id) {
-		this.id = id;
+
+	public SPacketGuiOpener(EnumGui gui) {
+		this.gui = gui;
+		this.info = 0;
+	}
+	public SPacketGuiOpener(EnumGui gui, int info) {
+		this.gui = gui;
+		this.info = info;
 	}
 	
 	public void readPacketData(PacketBuffer buf) throws IOException {
-		this.id = buf.readInt();
+		this.gui = buf.readEnumValue(EnumGui.class);
+		this.info = buf.readInt();
 	}
 
 	public void processPacket(INetHandlerPlayClient handler) {
 		PacketThreadUtil.checkThreadAndEnqueue(this, handler, this.mc);
-		
-		switch(this.id) {
-			case 0:
+
+		switch (this.gui) {
+			case SERVER_SWITCHER:
 				this.mc.displayGuiScreen(new GuiServerSwitcher(this.mc.currentScreen, this.mc));
 				break;
-			case 1:
-				this.mc.displayGuiScreen(new GuiShopCategory(this.mc.currentScreen, this.mc));
-				break;
-			case 2:
-				this.mc.displayGuiScreen(new GuiBoutiqueCategory(this.mc.currentScreen, this.mc));
-				break;
-			case 3:
-				this.mc.displayGuiScreen(new GuiSkillList(this.mc.currentScreen, this.mc));
+			default:
 				break;
 		}
 	}
 
 	public void writePacketData(PacketBuffer buf) throws IOException {
-		buf.writeInt(this.id);
 	}
 }

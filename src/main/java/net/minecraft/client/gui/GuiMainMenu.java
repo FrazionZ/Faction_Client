@@ -13,7 +13,7 @@ import org.lwjgl.opengl.GLContext;
 import com.google.common.util.concurrent.Runnables;
 
 import fz.frazionz.Client;
-import fz.frazionz.gui.buttons.GuiMenuButton;
+import fz.frazionz.client.gui.buttons.GuiMenuButton;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.GuiConnecting;
 import net.minecraft.client.renderer.GlStateManager;

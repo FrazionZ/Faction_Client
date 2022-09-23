@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 import org.apache.commons.lang3.ArrayUtils;
 
-import fz.frazionz.gui.GuiKeyBinds;
+import fz.frazionz.client.gui.GuiKeyBinds;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.settings.GameSettings;

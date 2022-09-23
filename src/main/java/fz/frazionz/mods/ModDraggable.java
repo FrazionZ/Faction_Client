@@ -2,8 +2,8 @@ package fz.frazionz.mods;
 
 import java.io.File;
 
-import fz.frazionz.gui.hud.IRenderer;
-import fz.frazionz.gui.hud.ScreenPosition;
+import fz.frazionz.client.gui.hud.IRenderer;
+import fz.frazionz.client.gui.hud.ScreenPosition;
 
 public abstract class ModDraggable extends Mod implements IRenderer
 {

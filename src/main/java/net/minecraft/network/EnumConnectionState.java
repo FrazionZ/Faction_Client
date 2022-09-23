@@ -4,6 +4,7 @@ import java.util.Map;
 
 import javax.annotation.Nullable;
 
+import fz.frazionz.packets.server.*;
 import org.apache.logging.log4j.LogManager;
 
 import com.google.common.collect.BiMap;
@@ -12,13 +13,8 @@ import com.google.common.collect.Maps;
 
 import fz.frazionz.packets.client.CPacketServerSwitch;
 import fz.frazionz.packets.client.CPacketShopTrade;
-import fz.frazionz.packets.client.CPacketSkillClaimButton;
 import fz.frazionz.packets.client.CPacketStartMachine;
-import fz.frazionz.packets.server.SPacketGuiOpener;
-import fz.frazionz.packets.server.SPacketSkillUpdater;
-import fz.frazionz.packets.server.SPacketToast;
-import fz.frazionz.packets.server.SPacketUpdateData;
-import fz.frazionz.packets.server.SPacketUpdateSkin;
+import fz.frazionz.packets.client.CPacketGuiOpener;
 import net.minecraft.network.handshake.client.C00Handshake;
 import net.minecraft.network.login.client.CPacketEncryptionResponse;
 import net.minecraft.network.login.client.CPacketLoginStart;
@@ -265,8 +261,8 @@ public enum EnumConnectionState
             this.registerPacket(EnumPacketDirection.SERVERBOUND, CPacketStartMachine.class);
             this.registerPacket(EnumPacketDirection.SERVERBOUND, CPacketServerSwitch.class);
             this.registerPacket(EnumPacketDirection.SERVERBOUND, CPacketShopTrade.class);
-            this.registerPacket(EnumPacketDirection.SERVERBOUND, CPacketSkillClaimButton.class);
-            
+            this.registerPacket(EnumPacketDirection.SERVERBOUND, CPacketGuiOpener.class);
+
             this.registerPacket(EnumPacketDirection.CLIENTBOUND, SPacketGuiOpener.class);
             this.registerPacket(EnumPacketDirection.CLIENTBOUND, SPacketUpdateData.class);
             this.registerPacket(EnumPacketDirection.CLIENTBOUND, SPacketToast.class);

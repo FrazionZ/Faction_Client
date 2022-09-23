@@ -1,6 +1,8 @@
 package fz.frazionz.api.gsonObj;
 
-import fz.frazionz.api.data.ShopAPIDataStocker;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import fz.frazionz.utils.ItemUtils;
 import net.minecraft.command.NumberInvalidException;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -8,70 +10,57 @@ import net.minecraft.item.ItemStack;
 public class MarketItem {
 
 	private int id;
-	private String minecraftItemName;
-	private int minecraftItemData;
+	private String itemName;
+	private int itemData;
 	private int maxStock;
-	private int actualStock;
-	private int shopType;
-	private boolean isActive;
-	private double actualBuyPrice;
-	private double actualSellPrice;
-	
+	private int stock;
+	private double buyPrice;
+	private double sellPrice;
+
 	public int getId() {
 		return id;
 	}
-	
-	public int getActualStock() {
-		return actualStock;
-	}
-	
+
 	public int getMaxStock() {
 		return maxStock;
 	}
-	
-	public int getMinecraftItemData() {
-		return minecraftItemData;
+
+	public int getStock() {
+		return stock;
 	}
-	
-	public String getMinecraftItemName() {
-		return minecraftItemName;
+
+	public double getBuyPrice() {
+		return buyPrice;
 	}
-	
-	public int getShopType() {
-		return shopType;
+
+	public double getSellPrice() {
+		return sellPrice;
 	}
-	
-	public double getActualBuyPrice() {
-		return actualBuyPrice;
-	}
-	
-	public double getActualSellPrice() {
-		return actualSellPrice;
-	}
-	
-	public boolean isActive() {
-		return isActive;
-	}
-	
+
 	public ItemStack getItemStack() {
 		 Item item = null;
 		 try {
-			item = ShopAPIDataStocker.getItemByText(this.getMinecraftItemName());
+			item = ItemUtils.getItemByText(this.itemName);
 		} catch (NumberInvalidException e) {
 			e.printStackTrace();
 		}
-	    ItemStack itemstack = new ItemStack(item, 1, this.getMinecraftItemData());
+	    ItemStack itemstack = new ItemStack(item, 1, this.itemData);
 	    return itemstack;
 	}
 
-	public static ItemStack getItemStack(String itemName) {
-		Item item = null;
-		try {
-			item = ShopAPIDataStocker.getItemByText(itemName);
-		} catch (NumberInvalidException e) {
-			e.printStackTrace();
-		}
-		ItemStack itemstack = new ItemStack(item, 1);
-		return itemstack;
+	public JsonElement serialize() {
+		return new Gson().toJsonTree(this);
+	}
+
+	public JsonElement serializeList(MarketItem[] types) {
+		return new Gson().toJsonTree(types);
+	}
+
+	public static MarketItem[] deserializeList(String json) {
+		return new Gson().fromJson(json, MarketItem[].class);
+	}
+
+	public static MarketItem deserialize(String json) {
+		return new Gson().fromJson(json, MarketItem.class);
 	}
 }

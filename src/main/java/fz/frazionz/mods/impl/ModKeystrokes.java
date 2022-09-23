@@ -7,7 +7,7 @@ import java.util.List;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
-import fz.frazionz.gui.hud.ScreenPosition;
+import fz.frazionz.client.gui.hud.ScreenPosition;
 import fz.frazionz.mods.ModDraggable;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;

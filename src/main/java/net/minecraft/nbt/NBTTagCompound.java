@@ -639,4 +639,8 @@ public class NBTTagCompound extends NBTBase
     {
         return SIMPLE_VALUE.matcher(p_193582_0_).matches() ? p_193582_0_ : NBTTagString.quoteAndEscape(p_193582_0_);
     }
+
+    public Map<String, NBTBase> getTagMap() {
+        return tagMap;
+    }
 }

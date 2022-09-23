@@ -6,7 +6,7 @@ import javax.annotation.Nullable;
 
 import com.google.common.collect.Lists;
 
-import fz.frazionz.gui.GuiChatTextField;
+import fz.frazionz.client.gui.GuiChatTextField;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.network.play.client.CPacketTabComplete;

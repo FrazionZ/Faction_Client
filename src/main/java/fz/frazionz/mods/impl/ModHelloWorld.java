@@ -1,6 +1,6 @@
 package fz.frazionz.mods.impl;
 
-import fz.frazionz.gui.hud.ScreenPosition;
+import fz.frazionz.client.gui.hud.ScreenPosition;
 import fz.frazionz.mods.ModDraggable;
 
 

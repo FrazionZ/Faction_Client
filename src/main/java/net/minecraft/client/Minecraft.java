@@ -64,9 +64,9 @@ import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
 
 import fz.frazionz.AntiCheatResourcePack;
 import fz.frazionz.Client;
-import fz.frazionz.gui.GuiKeyBinds;
-import fz.frazionz.gui.hud.HUDConfigScreen;
-import fz.frazionz.gui.hud.HUDManager;
+import fz.frazionz.client.gui.GuiKeyBinds;
+import fz.frazionz.client.gui.hud.HUDConfigScreen;
+import fz.frazionz.client.gui.hud.HUDManager;
 import fz.frazionz.mods.ModInstances;
 import fz.frazionz.mods.impl.ModKeystrokes;
 import fz.frazionz.mods.sneak.SmoothSneak;

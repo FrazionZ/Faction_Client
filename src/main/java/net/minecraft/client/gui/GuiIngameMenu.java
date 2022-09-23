@@ -5,12 +5,10 @@ import java.util.Random;
 
 import org.lwjgl.opengl.GL11;
 
-import fz.frazionz.forgemods.smoothscrollingeverywhere.RunSixtyTimesEverySec;
-import fz.frazionz.gui.GuiJournalistRewards;
-import fz.frazionz.gui.GuiModsConfig;
-import fz.frazionz.gui.GuiRoundedButton;
-import fz.frazionz.gui.buttons.GuiMenuButton;
-import fz.frazionz.mods.blockrenderer.BlockRenderer;
+import fz.frazionz.client.gui.GuiJournalistRewards;
+import fz.frazionz.client.gui.GuiModsConfig;
+import fz.frazionz.client.gui.GuiRoundedButton;
+import fz.frazionz.client.gui.buttons.GuiMenuButton;
 import net.minecraft.client.gui.achievement.GuiStats;
 import net.minecraft.client.gui.advancements.GuiScreenAdvancements;
 import net.minecraft.client.multiplayer.WorldClient;

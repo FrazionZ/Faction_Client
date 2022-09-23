@@ -47,7 +47,6 @@ public abstract class GuiListExtended extends GuiSlot
         if (this.isMouseYWithinSlotBounds(mouseY))
         {
             int i = this.getSlotIndexFromScreenCoords(mouseX, mouseY);
-
             if (i >= 0)
             {
                 int j = this.left + this.width / 2 - this.getListWidth() / 2 + 2;

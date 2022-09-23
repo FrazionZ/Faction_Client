@@ -4,9 +4,8 @@ import java.util.HashMap;
 
 import fz.frazionz.api.HTTPFunctions;
 import fz.frazionz.api.data.FactionProfile;
-import fz.frazionz.api.data.ShopAPIDataStocker;
 import fz.frazionz.event.EventManager;
-import fz.frazionz.gui.hud.HUDManager;
+import fz.frazionz.client.gui.hud.HUDManager;
 import fz.frazionz.mods.FileManager;
 import fz.frazionz.mods.ModInstances;
 import fz.frazionz.mods.blockrenderer.BlockRenderer;
@@ -36,8 +35,6 @@ public class Client {
 		
 		EventManager.register(this);
 
-		ShopAPIDataStocker.loadAPIData();
-		//SuccessAPIDataStocker.loadAPIData();
 		this.factionProfile = HTTPFunctions.getFactionProfile();
 	}
 	

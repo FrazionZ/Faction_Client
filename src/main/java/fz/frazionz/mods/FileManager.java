@@ -18,7 +18,7 @@ import org.apache.commons.io.IOUtils;
 import com.google.common.base.Splitter;
 import com.google.gson.Gson;
 
-import fz.frazionz.gui.hud.ScreenPosition;
+import fz.frazionz.client.gui.hud.ScreenPosition;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.nbt.NBTTagCompound;
 import net.optifine.reflect.Reflector;

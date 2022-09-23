@@ -18,6 +18,8 @@ import java.util.UUID;
 
 import javax.annotation.Nullable;
 
+import fz.frazionz.packets.PacketClientHandler;
+import fz.frazionz.packets.server.SPacketGuiOpener;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -30,12 +32,11 @@ import fz.frazionz.entity.item.EntityBigXp;
 import fz.frazionz.entity.item.EntityDynamite;
 import fz.frazionz.entity.item.EntityZTNTPrimed;
 import fz.frazionz.entity.projectile.EntityDynamiteArrow;
-import fz.frazionz.gui.toasts.FzToast;
-import fz.frazionz.gui.toasts.SuccessToast;
+import fz.frazionz.client.gui.toasts.FzToast;
+import fz.frazionz.client.gui.toasts.SuccessToast;
 import fz.frazionz.packets.server.SPacketToast;
 import fz.frazionz.packets.server.SPacketUpdateSkin;
 import fz.frazionz.tileentity.TileEntityTrophyForge;
-import fz.frazionz.utils.FzSkinUtils;
 import io.netty.buffer.Unpooled;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.block.Block;
@@ -1352,6 +1353,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
         }
         else if (packetIn.getWindowId() == entityplayer.openContainer.windowId)
         {
+            System.out.println("Size Items Stack: " + packetIn.getItemStacks().size());
             entityplayer.openContainer.setAll(packetIn.getItemStacks());
         }
     }
@@ -2054,66 +2056,71 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
     {
         PacketThreadUtil.checkThreadAndEnqueue(packetIn, this, this.client);
 
-        if ("MC|TrList".equals(packetIn.getChannelName()))
-        {
-            PacketBuffer packetbuffer = packetIn.getBufferData();
+        switch(packetIn.getChannelName()) {
+            case "MC|TrList":
+                PacketBuffer packetbuffer = packetIn.getBufferData();
 
-            try
-            {
-                int k = packetbuffer.readInt();
-                GuiScreen guiscreen = this.client.currentScreen;
-
-                if (guiscreen != null && guiscreen instanceof GuiMerchant && k == this.client.player.openContainer.windowId)
+                try
                 {
-                    IMerchant imerchant = ((GuiMerchant)guiscreen).getMerchant();
-                    MerchantRecipeList merchantrecipelist = MerchantRecipeList.readFromBuf(packetbuffer);
-                    imerchant.setRecipes(merchantrecipelist);
-                }
-            }
-            catch (IOException ioexception)
-            {
-                LOGGER.error("Couldn't load trade info", (Throwable)ioexception);
-            }
-            finally
-            {
-                packetbuffer.release();
-            }
-        }
-        else if ("MC|Brand".equals(packetIn.getChannelName()))
-        {
-            this.client.player.setServerBrand(packetIn.getBufferData().readString(32767));
-        }
-        else if ("MC|BOpen".equals(packetIn.getChannelName()))
-        {
-            EnumHand enumhand = (EnumHand)packetIn.getBufferData().readEnumValue(EnumHand.class);
-            ItemStack itemstack = enumhand == EnumHand.OFF_HAND ? this.client.player.getHeldItemOffhand() : this.client.player.getHeldItemMainhand();
+                    int k = packetbuffer.readInt();
+                    GuiScreen guiscreen = this.client.currentScreen;
 
-            if (itemstack.getItem() == Items.WRITTEN_BOOK)
-            {
-                this.client.displayGuiScreen(new GuiScreenBook(this.client.player, itemstack, false));
-            }
-        }
-        else if ("MC|DebugPath".equals(packetIn.getChannelName()))
-        {
-            PacketBuffer packetbuffer1 = packetIn.getBufferData();
-            int l = packetbuffer1.readInt();
-            float f1 = packetbuffer1.readFloat();
-            Path path = Path.read(packetbuffer1);
-            ((DebugRendererPathfinding)this.client.debugRenderer.pathfinding).addPath(l, path, f1);
-        }
-        else if ("MC|DebugNeighborsUpdate".equals(packetIn.getChannelName()))
-        {
-            PacketBuffer packetbuffer2 = packetIn.getBufferData();
-            long i1 = packetbuffer2.readVarLong();
-            BlockPos blockpos = packetbuffer2.readBlockPos();
-            ((DebugRendererNeighborsUpdate)this.client.debugRenderer.neighborsUpdate).addUpdate(i1, blockpos);
-        }
-        else if ("MC|StopSound".equals(packetIn.getChannelName()))
-        {
-            PacketBuffer packetbuffer3 = packetIn.getBufferData();
-            String s = packetbuffer3.readString(32767);
-            String s1 = packetbuffer3.readString(256);
-            this.client.getSoundHandler().stop(s1, SoundCategory.getByName(s));
+                    if (guiscreen != null && guiscreen instanceof GuiMerchant && k == this.client.player.openContainer.windowId)
+                    {
+                        IMerchant imerchant = ((GuiMerchant)guiscreen).getMerchant();
+                        MerchantRecipeList merchantrecipelist = MerchantRecipeList.readFromBuf(packetbuffer);
+                        imerchant.setRecipes(merchantrecipelist);
+                    }
+                }
+                catch (IOException ioexception)
+                {
+                    LOGGER.error("Couldn't load trade info", (Throwable)ioexception);
+                }
+                finally
+                {
+                    packetbuffer.release();
+                }
+                break;
+
+            case "MC|Brand":
+                this.client.player.setServerBrand(packetIn.getBufferData().readString(32767));
+                break;
+
+            case "MC|BOpen":
+                EnumHand enumhand = (EnumHand)packetIn.getBufferData().readEnumValue(EnumHand.class);
+                ItemStack itemstack = enumhand == EnumHand.OFF_HAND ? this.client.player.getHeldItemOffhand() : this.client.player.getHeldItemMainhand();
+
+                if (itemstack.getItem() == Items.WRITTEN_BOOK)
+                {
+                    this.client.displayGuiScreen(new GuiScreenBook(this.client.player, itemstack, false));
+                }
+                break;
+
+            case "MC|DebugPath":
+                PacketBuffer packetbuffer1 = packetIn.getBufferData();
+                int l = packetbuffer1.readInt();
+                float f1 = packetbuffer1.readFloat();
+                Path path = Path.read(packetbuffer1);
+                ((DebugRendererPathfinding)this.client.debugRenderer.pathfinding).addPath(l, path, f1);
+                break;
+
+            case "MC|DebugNeighborsUpdate":
+                PacketBuffer packetbuffer2 = packetIn.getBufferData();
+                long i1 = packetbuffer2.readVarLong();
+                BlockPos blockpos = packetbuffer2.readBlockPos();
+                ((DebugRendererNeighborsUpdate)this.client.debugRenderer.neighborsUpdate).addUpdate(i1, blockpos);
+                break;
+
+            case "MC|StopSound":
+                PacketBuffer packetbuffer3 = packetIn.getBufferData();
+                String s = packetbuffer3.readString(32767);
+                String s1 = packetbuffer3.readString(256);
+                this.client.getSoundHandler().stop(s1, SoundCategory.getByName(s));
+                break;
+
+            default:
+                PacketClientHandler.handleCustomPayload(packetIn);
+                break;
         }
     }
 
@@ -2414,5 +2421,10 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
                 entityPlayer = entityPlayerMPObj;
         EntityOtherPlayerMP eopm = new EntityOtherPlayerMP(mc.world, entityPlayer.getGameProfile());
         SkinUtils.loadSkin(eopm);*/
+    }
+
+    @Override
+    public void handleGuiOpener(SPacketGuiOpener handler) {
+
     }
 }

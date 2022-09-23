@@ -2,8 +2,6 @@ package fz.frazionz.mods;
 
 import java.io.File;
 
-import fz.frazionz.gui.hud.ScreenPosition;
-
 public class ModToggle {
 	public static File getFolder(String mod) {
 		File file = new File(FileManager.MODS_DIR, mod);

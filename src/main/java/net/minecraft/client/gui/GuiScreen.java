@@ -25,9 +25,9 @@ import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
-import fz.frazionz.gui.FzGuiOptionButton;
-import fz.frazionz.gui.FzGuiQuitButton;
-import fz.frazionz.gui.FzGuiRejoindreButton;
+import fz.frazionz.client.gui.FzGuiOptionButton;
+import fz.frazionz.client.gui.FzGuiQuitButton;
+import fz.frazionz.client.gui.FzGuiRejoindreButton;
 import fz.frazionz.utils.Colors;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;

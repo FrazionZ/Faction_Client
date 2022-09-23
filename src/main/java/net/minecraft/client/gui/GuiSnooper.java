@@ -6,7 +6,7 @@ import java.util.TreeMap;
 
 import com.google.common.collect.Lists;
 
-import fz.frazionz.gui.buttons.GuiFzButton;
+import fz.frazionz.client.gui.buttons.GuiFzButton;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.settings.GameSettings;
 
