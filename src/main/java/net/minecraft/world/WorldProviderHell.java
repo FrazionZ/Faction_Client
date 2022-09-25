@@ -2,6 +2,7 @@ package net.minecraft.world;
 
 import net.minecraft.init.Biomes;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.biome.BiomeProvider;
 import net.minecraft.world.biome.BiomeProviderSingle;
 import net.minecraft.world.border.WorldBorder;
 import net.minecraft.world.gen.ChunkGeneratorHell;
@@ -17,7 +18,7 @@ public class WorldProviderHell extends WorldProvider
      */
     public void init()
     {
-        this.biomeProvider = new BiomeProviderSingle(Biomes.HELL);
+        this.biomeProvider = new BiomeProviderSingle(Biomes.HELL_FOREST);
         this.doesWaterVaporize = true;
         this.nether = true;
     }

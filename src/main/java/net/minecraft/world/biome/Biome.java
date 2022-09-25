@@ -282,11 +282,6 @@ public abstract class Biome
     {
         this.decorator.decorate(worldIn, rand, this, pos);
     }
-
-    public void netherDecorate(World worldIn, Random rand, BlockPos pos)
-    {
-        this.hellDecorator.decorate(worldIn, rand, this, pos);
-    }
     
     public int getGrassColorAtPos(BlockPos pos)
     {
@@ -548,6 +543,8 @@ public abstract class Biome
         registerBiome(165, "mutated_mesa", new BiomeMesa(true, false, (new Biome.BiomeProperties("Mesa (Bryce)")).setBaseBiome("mesa").setTemperature(2.0F).setRainfall(0.0F).setRainDisabled()));
         registerBiome(166, "mutated_mesa_rock", new BiomeMesa(false, true, (new Biome.BiomeProperties("Mesa Plateau F M")).setBaseBiome("mesa_rock").setBaseHeight(0.45F).setHeightVariation(0.3F).setTemperature(2.0F).setRainfall(0.0F).setRainDisabled()));
         registerBiome(167, "mutated_mesa_clear_rock", new BiomeMesa(false, false, (new Biome.BiomeProperties("Mesa Plateau M")).setBaseBiome("mesa_clear_rock").setBaseHeight(0.45F).setHeightVariation(0.3F).setTemperature(2.0F).setRainfall(0.0F).setRainDisabled()));
+        registerBiome(168, "hell_forest", new BiomeHellForest((new Biome.BiomeProperties("Hell Forest")).setTemperature(2.0F).setRainfall(0.0F).setRainDisabled()));
+
     }
 
     /**

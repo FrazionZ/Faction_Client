@@ -138,9 +138,9 @@ public class BlockNetherrack extends Block
         }
 
         static {
-            for (BlockNetherrack.NetherrackType blockdirt$dirttype : values())
+            for (BlockNetherrack.NetherrackType type : values())
             {
-                METADATA_LOOKUP[blockdirt$dirttype.getMetadata()] = blockdirt$dirttype;
+                METADATA_LOOKUP[type.getMetadata()] = type;
             }
         }
     }

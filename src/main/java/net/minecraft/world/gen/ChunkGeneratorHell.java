@@ -442,10 +442,10 @@ public class ChunkGeneratorHell implements IChunkGenerator
             this.quartzGen.generate(this.world, this.rand, blockpos.add(this.rand.nextInt(16), this.rand.nextInt(108) + 10, this.rand.nextInt(16)));
         }
         
-        for (int j1 = 0; j1 < 40; ++j1)
+        /*for (int j1 = 0; j1 < 40; ++j1)
         {
             this.treesGen.generate(this.world, this.rand, blockpos.add(this.rand.nextInt(16) + 8, this.rand.nextInt(120) + 4, this.rand.nextInt(16) + 8));
-        }
+        }*/
         
 
         int i2 = this.world.getSeaLevel()/* / 2 + 1*/;

@@ -83,6 +83,8 @@ public abstract class Biomes
     public static final Biome MUTATED_MESA_ROCK;
     public static final Biome MUTATED_MESA_CLEAR_ROCK;
 
+    public static final Biome HELL_FOREST;
+
     private static Biome getRegisteredBiome(String id)
     {
         Biome biome = Biome.REGISTRY.getObject(new ResourceLocation(id));
@@ -168,6 +170,7 @@ public abstract class Biomes
             MUTATED_MESA = getRegisteredBiome("mutated_mesa");
             MUTATED_MESA_ROCK = getRegisteredBiome("mutated_mesa_rock");
             MUTATED_MESA_CLEAR_ROCK = getRegisteredBiome("mutated_mesa_clear_rock");
+            HELL_FOREST = getRegisteredBiome("hell_forest");
         }
     }
 }

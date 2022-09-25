@@ -9,7 +9,8 @@ import net.minecraft.world.gen.feature.WorldGenAbstractTree;
 public class BiomeHellDecorator extends BiomeDecorator
 {
 	protected BlockPos chunkPos;
-	
+
+    @Override
     public void decorate(World worldIn, Random random, Biome biome, BlockPos pos)
     {
     	this.chunkPos = pos;
@@ -27,7 +28,6 @@ public class BiomeHellDecorator extends BiomeDecorator
     
     protected void genDecorations(Biome biomeIn, World worldIn, Random random)
     {
-
         int k1 = this.treesPerChunk;
 
         if (random.nextFloat() < this.extraTreeChance)
@@ -37,16 +37,15 @@ public class BiomeHellDecorator extends BiomeDecorator
 
         for (int j2 = 0; j2 < k1; ++j2)
         {
-            int k6 = random.nextInt(16) + 8;
-            int l = random.nextInt(16) + 8;
             WorldGenAbstractTree worldgenabstracttree = biomeIn.getRandomTreeFeature(random);
             worldgenabstracttree.setDecorationDefaults();
-            BlockPos blockpos = worldIn.getHeight(this.chunkPos.add(k6, 0, l));
-
-            if (worldgenabstracttree.generate(worldIn, random, blockpos))
-            {
-                worldgenabstracttree.generateSaplings(worldIn, random, blockpos);
-            }
+            BlockPos blockpos;
+            int tryCount = 0;
+            do {
+                int x = random.nextInt(16) + 8;
+                int z = random.nextInt(16) + 8;
+                blockpos = this.chunkPos.add(x, random.nextInt(120) + 4, z);
+            } while(!worldgenabstracttree.generate(worldIn, random, blockpos) && tryCount++ < 20);
         }
     }
 }

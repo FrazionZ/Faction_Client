@@ -15,7 +15,6 @@ public class BiomeHell extends Biome
     public BiomeHell(Biome.BiomeProperties properties)
     {
         super(properties);
-        this.decorator.treesPerChunk = 12;
         this.spawnableMonsterList.clear();
         this.spawnableCreatureList.clear();
         this.spawnableWaterCreatureList.clear();
@@ -25,15 +24,5 @@ public class BiomeHell extends Biome
         this.spawnableMonsterList.add(new Biome.SpawnListEntry(EntityMagmaCube.class, 2, 4, 4));
         this.spawnableMonsterList.add(new Biome.SpawnListEntry(EntityEnderman.class, 1, 4, 4));
         this.decorator = new BiomeHellDecorator();
-    }
-    
-    public WorldGenAbstractTree genBigTreeChance(Random rand)
-    {
-        return (WorldGenAbstractTree)(rand.nextInt(3) == 0 ? BIG_TREE_FEATURE : TREE_FEATURE);
-    }
-    
-    public void netherDecorate(World worldIn, Random rand, BlockPos pos)
-    {
-        super.netherDecorate(worldIn, rand, pos);
     }
 }
