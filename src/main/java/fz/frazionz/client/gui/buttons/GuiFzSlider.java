@@ -2,11 +2,13 @@ package fz.frazionz.client.gui.buttons;
 
 import fz.frazionz.client.gui.utils.RoundedShaderRenderer;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiHopper;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.util.math.MathHelper;
 
-public class GuiFzSlider extends GuiFzButton
+public class GuiFzSlider extends GuiHoverButton
 {
     protected float sliderValue;
     public boolean dragging;
@@ -38,16 +40,6 @@ public class GuiFzSlider extends GuiFzButton
     protected int getHoverState(boolean mouseOver)
     {
         return 1;
-    }
-
-    @Override
-    protected int getBackgroundColor() {
-    	return BLACK_4;
-    }
-    
-    @Override
-    protected boolean hasHover() {
-    	return false;
     }
     
     /**

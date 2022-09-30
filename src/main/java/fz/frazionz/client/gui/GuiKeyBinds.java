@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import fz.frazionz.Client;
 import fz.frazionz.TTFFontRenderer;
-import fz.frazionz.client.gui.buttons.GuiFzButton;
+import fz.frazionz.client.gui.buttons.GuiHoverButton;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiKeyBindingList;
@@ -47,8 +47,8 @@ public class GuiKeyBinds extends GuiScreen
     	this.title = I18n.format("controls.title");
     	
 	    this.keyBindingList = new GuiKeyBindingList(this, this.mc, 0, width, height/8, height-height/8, 20);
-	    this.buttonList.add(new GuiFzButton(200, this.width / 2 - 155 + 160, this.height - this.height/16-10, 150, 20, I18n.format("gui.done")));
-	    this.buttonReset = this.addButton(new GuiFzButton(201, this.width / 2 - 155, this.height - this.height/16-10, 150, 20, I18n.format("controls.resetAll")));
+	    this.buttonList.add(new GuiHoverButton(200, this.width / 2 - 155 + 160, this.height - this.height/16-10, 150, 20, I18n.format("gui.done")));
+	    this.buttonReset = this.addButton(new GuiHoverButton(201, this.width / 2 - 155, this.height - this.height/16-10, 150, 20, I18n.format("controls.resetAll")));
     }
 
     /**

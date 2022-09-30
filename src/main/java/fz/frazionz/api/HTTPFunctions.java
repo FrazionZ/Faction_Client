@@ -10,12 +10,8 @@ import org.apache.http.message.BasicNameValuePair;
 import com.google.gson.Gson;
 
 import fz.frazionz.api.data.FactionProfile;
-import fz.frazionz.api.gsonObj.ShopItem;
-import fz.frazionz.api.gsonObj.ShopType;
 import fz.frazionz.api.gsonObj.ObjPlayerSkinsInfo;
 import fz.frazionz.api.gsonObj.ServerData;
-import fz.frazionz.api.gsonObj.MarketItem;
-import fz.frazionz.api.gsonObj.MarketType;
 import fz.frazionz.api.gsonObj.SuccessObj;
 import fz.frazionz.api.gsonObj.SuccessType;
 import net.minecraft.client.Minecraft;

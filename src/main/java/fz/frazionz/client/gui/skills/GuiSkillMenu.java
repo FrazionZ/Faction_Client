@@ -7,9 +7,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 
-public class GuiSkillList extends GuiFrazionZInterface {
+public class GuiSkillMenu extends GuiFrazionZInterface {
 
-	public GuiSkillList(GuiScreen lastScreen, Minecraft mc) {
+	public GuiSkillMenu(GuiScreen lastScreen, Minecraft mc) {
 		super("Skills", lastScreen, mc);
 		this.hasBackButton = true;
 		this.drawButtonLater = true;

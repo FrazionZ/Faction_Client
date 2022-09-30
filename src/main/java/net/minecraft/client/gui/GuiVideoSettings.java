@@ -1,9 +1,9 @@
 package net.minecraft.client.gui;
 
 import fz.frazionz.client.gui.GuiFzBaseScreen;
-import fz.frazionz.client.gui.buttons.GuiFzButton;
 import fz.frazionz.client.gui.buttons.GuiFzOptionButton;
 import fz.frazionz.client.gui.buttons.GuiFzSlider;
+import fz.frazionz.client.gui.buttons.GuiHoverButton;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.src.Config;
@@ -68,21 +68,21 @@ public class GuiVideoSettings extends GuiFzBaseScreen
         int l = this.height/2 + 21 * (videoOptions.length / 2) - 100;
         int i1 = 0;
         i1 = this.width / 2 - 155 + 0;
-        this.buttonList.add(new GuiFzButton(231, i1, l, 150, 20, Lang.get("of.options.shaders")));
+        this.buttonList.add(new GuiHoverButton(231, i1, l, 150, 20, Lang.get("of.options.shaders")));
         i1 = this.width / 2 - 155 + 160;
-        this.buttonList.add(new GuiFzButton(202, i1, l, 150, 20, Lang.get("of.options.quality")));
+        this.buttonList.add(new GuiHoverButton(202, i1, l, 150, 20, Lang.get("of.options.quality")));
         l = l + 21;
         i1 = this.width / 2 - 155 + 0;
-        this.buttonList.add(new GuiFzButton(201, i1, l, 150, 20, Lang.get("of.options.details")));
+        this.buttonList.add(new GuiHoverButton(201, i1, l, 150, 20, Lang.get("of.options.details")));
         i1 = this.width / 2 - 155 + 160;
-        this.buttonList.add(new GuiFzButton(212, i1, l, 150, 20, Lang.get("of.options.performance")));
+        this.buttonList.add(new GuiHoverButton(212, i1, l, 150, 20, Lang.get("of.options.performance")));
         l = l + 21;
         i1 = this.width / 2 - 155 + 0;
-        this.buttonList.add(new GuiFzButton(211, i1, l, 150, 20, Lang.get("of.options.animations")));
+        this.buttonList.add(new GuiHoverButton(211, i1, l, 150, 20, Lang.get("of.options.animations")));
         i1 = this.width / 2 - 155 + 160;
-        this.buttonList.add(new GuiFzButton(222, i1, l, 150, 20, Lang.get("of.options.other")));
+        this.buttonList.add(new GuiHoverButton(222, i1, l, 150, 20, Lang.get("of.options.other")));
         l = l + 21;
-        this.buttonList.add(new GuiFzButton(200, this.width / 2 - 100, this.height /2 + 94, I18n.format("gui.done")));
+        this.buttonList.add(new GuiHoverButton(200, this.width / 2 - 100, this.height /2 + 94, I18n.format("gui.done")));
     }
 
     /**

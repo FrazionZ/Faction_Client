@@ -9,7 +9,7 @@ import com.google.common.collect.Lists;
 
 import fz.frazionz.Client;
 import fz.frazionz.TTFFontRenderer;
-import fz.frazionz.client.gui.buttons.GuiFzButton;
+import fz.frazionz.client.gui.buttons.GuiHoverButton;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.resources.ResourcePackListEntry;
@@ -45,8 +45,8 @@ public class GuiScreenResourcePacks extends GuiScreen
     {
     	this.title = I18n.format("resourcePack.title");
     	
-    	this.buttonList.add(new GuiFzButton(2, this.width / 2 - 154, this.height - this.height/16 - 10, 150, 20, I18n.format("resourcePack.openFolder")));
-    	this.buttonList.add(new GuiFzButton(1, this.width / 2 + 4, this.height - this.height/16 - 10, 150, 20, I18n.format("gui.done")));
+    	this.buttonList.add(new GuiHoverButton(2, this.width / 2 - 154, this.height - this.height/16 - 10, 150, 20, I18n.format("resourcePack.openFolder")));
+    	this.buttonList.add(new GuiHoverButton(1, this.width / 2 + 4, this.height - this.height/16 - 10, 150, 20, I18n.format("gui.done")));
     	
         if (!this.changed)
         {

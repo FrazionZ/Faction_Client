@@ -4,9 +4,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import fz.frazionz.client.gui.buttons.GuiHoverButton;
 import org.lwjgl.input.Keyboard;
 
-import fz.frazionz.client.gui.buttons.GuiFzButton;
 import fz.frazionz.utils.data.FzUserData;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -50,7 +50,7 @@ public class GuiMacro extends GuiFzBaseScreen
         this.macroFields.add(new GuiFzTextField(0, width/2 - 100, height/2 - 12, 200, 30, "3. /", this.fontRenderer));
         this.macroFields.add(new GuiFzTextField(0, width/2 - 100, height/2 + 22, 200, 30, "4. /", this.fontRenderer));
             
-        this.buttonList.add(new GuiFzButton(200, this.width / 2 - 100, this.height / 2 + 86, I18n.format("gui.done")));
+        this.buttonList.add(new GuiHoverButton(200, this.width / 2 - 100, this.height / 2 + 86, I18n.format("gui.done")));
     	        
         for(int i = 0; i < this.macroFields.size(); i++) {
         	GuiTextField macro = this.macroFields.get(i);

@@ -40,7 +40,10 @@ public class TTFFontRenderer {
             e.printStackTrace();
         }
     }
- 
+
+    public void drawCenteredStringVertically(String text, int x, int y, int color) {
+        drawString(text, x, y - getHeight()/2, color);
+    }
     public void drawString(String text, float x, float y, int color) {
         ScaledResolution res = new ScaledResolution(Minecraft.getMinecraft());
         if(res.getScaleFactor() != scaleFactor) {

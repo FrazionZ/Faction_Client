@@ -22,11 +22,17 @@ public class GuiFrazionZInterface extends GuiScreen {
 	protected final int ySize = 238;
 	protected int guiLeft;
 	protected int guiTop;
-	protected String title;
+	protected String title = "Default Title";
 	protected GuiBackButton backButton;
 	protected boolean hasBackButton;
 	protected boolean drawButtonLater;
 
+	public GuiFrazionZInterface(GuiScreen lastScreen, Minecraft mc) {
+		this.lastScreen = lastScreen;
+		this.hasBackButton = false;
+		this.drawButtonLater = false;
+		this.mc = mc;
+	}
 	public GuiFrazionZInterface(String title, GuiScreen lastScreen, Minecraft mc) {
 		this.lastScreen = lastScreen;
 		this.mc = mc;

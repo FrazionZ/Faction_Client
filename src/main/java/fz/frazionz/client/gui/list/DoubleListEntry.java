@@ -13,7 +13,7 @@ public class DoubleListEntry implements GuiListExtended.IGuiListEntry {
     public DoubleListEntry(int id, String name)
     {
         this.id = id;
-        this.buttonType = new GuiHoverButton(0, name, 0, 0, 298, 36);
+        this.buttonType = new GuiHoverButton(0, 0, 0, 298, 36, name);
     }
 
     public int getId() {

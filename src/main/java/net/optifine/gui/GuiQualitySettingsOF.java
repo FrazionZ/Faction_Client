@@ -1,9 +1,9 @@
 package net.optifine.gui;
 
 import fz.frazionz.client.gui.GuiFzBaseScreen;
-import fz.frazionz.client.gui.buttons.GuiFzButton;
 import fz.frazionz.client.gui.buttons.GuiFzOptionButton;
 import fz.frazionz.client.gui.buttons.GuiFzSlider;
+import fz.frazionz.client.gui.buttons.GuiHoverButton;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
@@ -48,7 +48,7 @@ public class GuiQualitySettingsOF extends GuiFzBaseScreen
 	            }
 	        }
 	
-	        this.buttonList.add(new GuiFzButton(200, this.width/2 - 100, this.height/2 + 94, I18n.format("gui.done")));
+	        this.buttonList.add(new GuiHoverButton(200, this.width/2 - 100, this.height/2 + 94, I18n.format("gui.done")));
     }
 
     /**

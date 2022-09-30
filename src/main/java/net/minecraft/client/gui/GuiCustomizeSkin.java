@@ -3,9 +3,9 @@ package net.minecraft.client.gui;
 import java.io.IOException;
 
 import fz.frazionz.client.gui.GuiFzBaseScreen;
-import fz.frazionz.client.gui.buttons.GuiFzButton;
 import fz.frazionz.client.gui.buttons.GuiFzChoiceButton;
 import fz.frazionz.client.gui.buttons.GuiFzOptionButton;
+import fz.frazionz.client.gui.buttons.GuiHoverButton;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.entity.player.EnumPlayerModelParts;
@@ -42,7 +42,7 @@ public class GuiCustomizeSkin extends GuiFzBaseScreen
             ++i;
         }
 
-        this.buttonList.add(new GuiFzButton(200, this.width / 2 - 100, this.height / 2 + 86, I18n.format("gui.done")));
+        this.buttonList.add(new GuiHoverButton(200, this.width / 2 - 100, this.height / 2 + 86, I18n.format("gui.done")));
         //this.buttonList.add(new GuiFzButton(210, this.width/2 - 100, this.height / 6 + 24 * (i >> 1), I18n.format("of.options.skinCustomisation.ofCape")));
         i = i + 2;   
     }

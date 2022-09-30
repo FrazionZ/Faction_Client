@@ -4,10 +4,7 @@ import java.io.IOException;
 
 import fz.frazionz.client.gui.GuiFzBaseScreen;
 import fz.frazionz.client.gui.GuiMacro;
-import fz.frazionz.client.gui.buttons.GuiFzButton;
-import fz.frazionz.client.gui.buttons.GuiFzChoiceButton;
-import fz.frazionz.client.gui.buttons.GuiFzOptionButton;
-import fz.frazionz.client.gui.buttons.GuiFzSlider;
+import fz.frazionz.client.gui.buttons.*;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.util.text.TextComponentTranslation;
@@ -75,16 +72,16 @@ public class GuiOptions extends GuiFzBaseScreen
             }
         }	
     	
-        this.buttonList.add(new GuiFzButton(110, this.width / 2 - 155, this.height / 2 - 58, 150, 20, I18n.format("options.skinCustomisation")));
-        this.buttonList.add(new GuiFzButton(106, this.width / 2 + 5, this.height / 2 - 58, 150, 20, I18n.format("options.sounds")));
-        this.buttonList.add(new GuiFzButton(101, this.width / 2 - 155, this.height / 2 - 34, 150, 20, I18n.format("options.video")));
-        this.buttonList.add(new GuiFzButton(100, this.width / 2 + 5, this.height / 2 - 34, 150, 20, I18n.format("options.controls")));
-        this.buttonList.add(new GuiFzButton(102, this.width / 2 - 155, this.height / 2 - 10, 150, 20, I18n.format("options.language")));
-        this.buttonList.add(new GuiFzButton(103, this.width / 2 + 5, this.height / 2 - 10, 150, 20, I18n.format("options.chat.title")));
-        this.buttonList.add(new GuiFzButton(105, this.width / 2 - 155, this.height / 2 + 14, 150, 20, I18n.format("options.resourcepack")));
-        this.buttonList.add(new GuiFzButton(104, this.width / 2 + 5, this.height / 2 + 14, 150, 20, I18n.format("options.snooper.view")));
-        this.buttonList.add(new GuiFzButton(203, this.width / 2 - 100, this.height / 2 + 38, "Macro"));
-        this.buttonList.add(new GuiFzButton(200, this.width / 2 - 100, this.height / 2 + 86, I18n.format("gui.done")));
+        this.buttonList.add(new GuiHoverButton(110, this.width / 2 - 155, this.height / 2 - 58, 150, 20, I18n.format("options.skinCustomisation")));
+        this.buttonList.add(new GuiHoverButton(106, this.width / 2 + 5, this.height / 2 - 58, 150, 20, I18n.format("options.sounds")));
+        this.buttonList.add(new GuiHoverButton(101, this.width / 2 - 155, this.height / 2 - 34, 150, 20, I18n.format("options.video")));
+        this.buttonList.add(new GuiHoverButton(100, this.width / 2 + 5, this.height / 2 - 34, 150, 20, I18n.format("options.controls")));
+        this.buttonList.add(new GuiHoverButton(102, this.width / 2 - 155, this.height / 2 - 10, 150, 20, I18n.format("options.language")));
+        this.buttonList.add(new GuiHoverButton(103, this.width / 2 + 5, this.height / 2 - 10, 150, 20, I18n.format("options.chat.title")));
+        this.buttonList.add(new GuiHoverButton(105, this.width / 2 - 155, this.height / 2 + 14, 150, 20, I18n.format("options.resourcepack")));
+        this.buttonList.add(new GuiHoverButton(104, this.width / 2 + 5, this.height / 2 + 14, 150, 20, I18n.format("options.snooper.view")));
+        this.buttonList.add(new GuiHoverButton(203, this.width / 2 - 100, this.height / 2 + 38, "Macro"));
+        this.buttonList.add(new GuiHoverButton(200, this.width / 2 - 100, this.height / 2 + 86, I18n.format("gui.done")));
     
     }
 

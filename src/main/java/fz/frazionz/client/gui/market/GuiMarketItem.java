@@ -1,4 +1,4 @@
-package fz.frazionz.client.gui.shop;
+package fz.frazionz.client.gui.market;
 
 import java.io.IOException;
 

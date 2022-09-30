@@ -1,5 +1,8 @@
 package fz.frazionz.client.gui.custom.help;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
 public class CustomObject {
 
     private String name;
@@ -18,5 +21,10 @@ public class CustomObject {
 
     public String toJson() {
         return "{\"name\": \"" + name + "\"}";
+    }
+
+    public static CustomObject fromJson(String json) {
+        JsonObject object = new JsonParser().parse(json).getAsJsonObject();
+        return new CustomObject(object.get("name").getAsString());
     }
 }

@@ -8,8 +8,8 @@ import com.google.common.collect.Maps;
 
 import fz.frazionz.Client;
 import fz.frazionz.TTFFontRenderer;
-import fz.frazionz.client.gui.buttons.GuiFzButton;
 import fz.frazionz.client.gui.buttons.GuiFzOptionButton;
+import fz.frazionz.client.gui.buttons.GuiHoverButton;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.resources.Language;
@@ -34,7 +34,7 @@ public class GuiLanguage extends GuiScreen
     private GuiFzOptionButton forceUnicodeFontBtn;
 
     /** The button to confirm the current settings. */
-    private GuiFzButton confirmSettingsBtn;
+    private GuiHoverButton confirmSettingsBtn;
     
     private GuiScreen lastScreen;
     private String title;
@@ -57,7 +57,7 @@ public class GuiLanguage extends GuiScreen
     	this.title = I18n.format("options.language");
     	
         this.forceUnicodeFontBtn = (GuiFzOptionButton)this.addButton(new GuiFzOptionButton(100, this.width / 2 - 155, this.height - this.height/16 - 10, I18n.format(GameSettings.Options.FORCE_UNICODE_FONT.getTranslation()), this.game_settings_3.getKeyBinding(GameSettings.Options.FORCE_UNICODE_FONT)));
-        this.confirmSettingsBtn = (GuiFzButton)this.addButton(new GuiFzButton(6, this.width / 2 - 155 + 160, this.height - this.height/16 - 10, 150, 20, I18n.format("gui.done")));
+        this.confirmSettingsBtn = this.addButton(new GuiHoverButton(6, this.width / 2 - 155 + 160, this.height - this.height/16 - 10, 150, 20, I18n.format("gui.done")));
         this.list = new GuiLanguage.List(this.mc, 0, width, height/8, height-height/8, 20);
         this.list.registerScrollButtons(7, 8);
     }

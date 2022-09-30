@@ -6,7 +6,7 @@ import java.util.TreeMap;
 
 import com.google.common.collect.Lists;
 
-import fz.frazionz.client.gui.buttons.GuiFzButton;
+import fz.frazionz.client.gui.buttons.GuiHoverButton;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.settings.GameSettings;
 
@@ -47,8 +47,8 @@ public class GuiSnooper extends GuiScreen
         this.desc = (String[])list.toArray(new String[list.size()]);
         this.keys.clear();
         this.values.clear();
-        this.toggleButton = this.addButton(new GuiFzButton(1, this.width / 2 - 152, this.height - 30, 150, 20, this.game_settings_2.getKeyBinding(GameSettings.Options.SNOOPER_ENABLED)));
-        this.buttonList.add(new GuiFzButton(2, this.width / 2 + 2, this.height - 30, 150, 20, I18n.format("gui.done")));
+        this.toggleButton = this.addButton(new GuiHoverButton(1, this.width / 2 - 152, this.height - 30, 150, 20, this.game_settings_2.getKeyBinding(GameSettings.Options.SNOOPER_ENABLED)));
+        this.buttonList.add(new GuiHoverButton(2, this.width / 2 + 2, this.height - 30, 150, 20, I18n.format("gui.done")));
         boolean flag = this.mc.getIntegratedServer() != null && this.mc.getIntegratedServer().getPlayerUsageSnooper() != null;
 
         for (Entry<String, String> entry : (new TreeMap<String, String>(this.mc.getPlayerUsageSnooper().getCurrentStats())).entrySet())

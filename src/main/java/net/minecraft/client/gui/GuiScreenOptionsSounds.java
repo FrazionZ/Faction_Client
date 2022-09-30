@@ -3,8 +3,8 @@ package net.minecraft.client.gui;
 import java.io.IOException;
 
 import fz.frazionz.client.gui.GuiFzBaseScreen;
-import fz.frazionz.client.gui.buttons.GuiFzButton;
 import fz.frazionz.client.gui.buttons.GuiFzOptionButton;
+import fz.frazionz.client.gui.buttons.GuiHoverButton;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.audio.SoundHandler;
@@ -55,7 +55,7 @@ public class GuiScreenOptionsSounds extends GuiFzBaseScreen
 	    int k = this.height/2 - 82;
 	    ++i;
 	    this.buttonList.add(new GuiFzOptionButton(201, j, k + 24 * (i >> 1), GameSettings.Options.SHOW_SUBTITLES, I18n.format(GameSettings.Options.SHOW_SUBTITLES.getTranslation()), this.game_settings_4.getKeyBinding(GameSettings.Options.SHOW_SUBTITLES)));
-	    this.buttonList.add(new GuiFzButton(200, this.width/2 - 100, this.height/2 + 86, I18n.format("gui.done")));
+	    this.buttonList.add(new GuiHoverButton(200, this.width/2 - 100, this.height/2 + 86, I18n.format("gui.done")));
     }
 
     /**
@@ -99,7 +99,7 @@ public class GuiScreenOptionsSounds extends GuiFzBaseScreen
         return f == 0.0F ? "Off" : (int)(f * 100.0F) + "%";
     }
 
-    class Button extends GuiFzButton
+    class Button extends GuiHoverButton
     {
         private final SoundCategory category;
         private final String categoryName;

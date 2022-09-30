@@ -10,85 +10,116 @@ import net.minecraft.item.ItemStack;
 public class ShopItem {
 
 	private int id;
-	private String boutiqueItemName;
-	private String material;
-	private String minecraftItemName;
-	private int minecraftItemData;
+	private String name;
+	private double pricePbs;
+	private double priceCoins;
+	private boolean multipleBuy;
 	private String description;
-	private double buyPrice;
-	private int boutiqueType;
-	private boolean isActive;
-	private String permissionNeeded;
-	private String permission;
-	
+	private String customCategoryName;
+	private int color1;
+	private int color2;
+	private int position;
+	private ShopCategory category;
+
+	public ShopItem(int id, String name, double pricePbs, double priceCoins, boolean multipleBuy, String description, String customCategoryName, int color1, int color2, int position, ShopCategory category) {
+		this.id = id;
+		this.name = name;
+		this.pricePbs = pricePbs;
+		this.priceCoins = priceCoins;
+		this.multipleBuy = multipleBuy;
+		this.description = description;
+		this.customCategoryName = customCategoryName;
+		this.color1 = color1;
+		this.color2 = color2;
+		this.position = position;
+		this.category = category;
+	}
+
 	public int getId() {
 		return id;
 	}
-	
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public double getPricePbs() {
+		return pricePbs;
+	}
+
+	public void setPricePbs(double pricePbs) {
+		this.pricePbs = pricePbs;
+	}
+
+	public double getPriceCoins() {
+		return priceCoins;
+	}
+
+	public void setPriceCoins(double priceCoins) {
+		this.priceCoins = priceCoins;
+	}
+
+	public boolean isMultipleBuy() {
+		return multipleBuy;
+	}
+
+	public void setMultipleBuy(boolean multipleBuy) {
+		this.multipleBuy = multipleBuy;
+	}
+
 	public String getDescription() {
 		return description;
 	}
-	
-	public double getBuyPrice() {
-		return buyPrice;
-	}
-	
-	public String getMaterial() {
-		return material;
-	}
-	
-	public int getMinecraftItemData() {
-		return minecraftItemData;
-	}
-	
-	public String getMinecraftItemName() {
-		return minecraftItemName;
-	}
-	
-	public int getBoutiqueType() {
-		return boutiqueType;
-	}
-	
-	public boolean isActive() {
-		return isActive;
-	}
-	
-	public String getBoutiqueItemName() {
-		return boutiqueItemName;
-	}
-	
-	public String getPermissionNeeded() {
-		return permissionNeeded;
-	}
-	
-	public String getPermission() {
-		return permission;
-	}
-	
-	public ItemStack getItemStack() {
-		 Item item = null;
-		 try {
-			item = ItemUtils.getItemByText(this.getMinecraftItemName());
-		} catch (NumberInvalidException e) {
-			e.printStackTrace();
-		}
-	    ItemStack itemstack = new ItemStack(item, 1, this.getMinecraftItemData());
-	    return itemstack;
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
-	public JsonElement serialize() {
-		return new Gson().toJsonTree(this);
+	public String getCustomCategoryName() {
+		return customCategoryName;
 	}
 
-	public JsonElement serializeList(ShopItem[] types) {
-		return new Gson().toJsonTree(types);
+	public void setCustomCategoryName(String customCategoryName) {
+		this.customCategoryName = customCategoryName;
 	}
 
-	public static ShopItem[] deserializeList(String json) {
-		return new Gson().fromJson(json, ShopItem[].class);
+	public int getColor1() {
+		return color1;
 	}
 
-	public static ShopItem deserialize(String json) {
-		return new Gson().fromJson(json, ShopItem.class);
+	public void setColor1(int color1) {
+		this.color1 = color1;
+	}
+
+	public int getColor2() {
+		return color2;
+	}
+
+	public void setColor2(int color2) {
+		this.color2 = color2;
+	}
+
+	public int getPosition() {
+		return position;
+	}
+
+	public void setPosition(int position) {
+		this.position = position;
+	}
+
+	public ShopCategory getCategory() {
+		return category;
+	}
+
+	public void setCategory(ShopCategory category) {
+		this.category = category;
 	}
 }

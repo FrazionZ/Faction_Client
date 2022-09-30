@@ -1,5 +1,6 @@
-package fz.frazionz.client.gui.shop;
+package fz.frazionz.client.gui.list;
 
+import fz.frazionz.client.gui.list.DoubleListEntry;
 import fz.frazionz.utils.Colors;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiListExtended;
@@ -11,7 +12,7 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.math.MathHelper;
 import org.lwjgl.input.Mouse;
 
-public abstract class GuiListFrazionZInterface extends GuiListExtended
+public class GuiListFrazionZInterface extends GuiListExtended
 {
     protected final Minecraft mc;
     protected GuiListExtended.IGuiListEntry[] listEntries;
@@ -36,6 +37,15 @@ public abstract class GuiListFrazionZInterface extends GuiListExtended
     public GuiListExtended.IGuiListEntry getListEntry(int index)
     {
         return this.listEntries[index];
+    }
+
+    public void setListEntry(GuiListExtended.IGuiListEntry[] entries) {
+        this.listEntries = new GuiListExtended.IGuiListEntry[entries.length];
+        int i = 0;
+        for (GuiListExtended.IGuiListEntry entry : entries)
+        {
+            this.listEntries[i++] = entry;
+        }
     }
 
     /**

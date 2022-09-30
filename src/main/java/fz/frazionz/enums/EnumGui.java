@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 public enum EnumGui {
 
+    NULL("FZ|Null"),
     MARKET_LIST("FZ|Market_List"),
     MARKET_ITEM_LIST("FZ|Market_Item_List"),
     MARKET_ITEM("FZ|Market_Item"),
@@ -12,7 +13,6 @@ public enum EnumGui {
     SKILL_MENU("FZ|Skill_Menu"),
     SERVER_SWITCHER("FZ|Server_Switcher"),
     CUSTOM_GUI("FZ|Custom_Gui"),
-    NULL("FZ|Null"),
     ;
 
     public String key;

@@ -4,12 +4,9 @@ import java.io.IOException;
 
 import fz.frazionz.client.gui.GuiFzBaseScreen;
 import fz.frazionz.client.gui.GuiKeyBinds;
-import fz.frazionz.client.gui.GuiRoundedButton;
-import fz.frazionz.client.gui.GuiRoundedOptionsButton;
-import fz.frazionz.client.gui.GuiRoundedSlider;
-import fz.frazionz.client.gui.buttons.GuiFzButton;
 import fz.frazionz.client.gui.buttons.GuiFzOptionButton;
 import fz.frazionz.client.gui.buttons.GuiFzSlider;
+import fz.frazionz.client.gui.buttons.GuiHoverButton;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.settings.GameSettings;
 import net.optifine.Lang;
@@ -56,9 +53,9 @@ public class GuiControls extends GuiFzBaseScreen
             ++i;
         }
         
-        this.buttonList.add(new GuiFzButton(201, this.width / 2 - 155, this.height / 2 - 34, 150, 20, Lang.get("options.controls")));
+        this.buttonList.add(new GuiHoverButton(201, this.width / 2 - 155, this.height / 2 - 34, 150, 20, Lang.get("options.controls")));
         
-        this.buttonList.add(new GuiFzButton(200, this.width / 2 - 100, this.height / 2 + 86, I18n.format("gui.done")));
+        this.buttonList.add(new GuiHoverButton(200, this.width / 2 - 100, this.height / 2 + 86, I18n.format("gui.done")));
         
         super.initGui();
     	

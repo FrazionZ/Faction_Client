@@ -12,7 +12,7 @@ public class GuiItemstackButton extends GuiHoverButton {
 
     public GuiItemstackButton(int buttonId, ItemStack itemToDisplay, String displayString, int x, int y, int width, int height)
     {
-        super(buttonId, displayString, x, y, width, height);
+        super(buttonId, x, y, width, height, displayString);
         this.itemToDisplay = itemToDisplay;
     }
 
