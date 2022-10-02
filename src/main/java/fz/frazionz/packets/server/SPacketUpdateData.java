@@ -6,7 +6,7 @@ import java.lang.reflect.Method;
 
 import org.apache.logging.log4j.LogManager;
 
-import fz.frazionz.Client;
+import fz.frazionz.FzClient;
 import fz.frazionz.api.data.FactionProfile;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.Packet;
@@ -55,7 +55,7 @@ public class SPacketUpdateData implements Packet<INetHandlerPlayClient>   {
 		switch(this.table) {
 			case "FactionProfile":
 				try {
-					FactionProfile profile = Client.getInstance().getFactionProfile();
+					FactionProfile profile = FzClient.getInstance().getFactionProfile();
 					if(profile == null)
 						return;
 					Method method = profile.getClass().getDeclaredMethod("set" + fz.frazionz.utils.StringUtils.capitalize(key), Object.class);

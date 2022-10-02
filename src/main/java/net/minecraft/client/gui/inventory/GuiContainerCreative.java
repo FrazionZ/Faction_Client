@@ -2,8 +2,6 @@ package net.minecraft.client.gui.inventory;
 
 import com.google.common.collect.Lists;
 
-import fz.frazionz.Client;
-
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;

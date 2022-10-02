@@ -1,6 +1,6 @@
 package fz.frazionz.client.gui;
 
-import fz.frazionz.Client;
+import fz.frazionz.FzClient;
 import fz.frazionz.TTFFontRenderer;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
@@ -60,7 +60,7 @@ public class GuiFzBaseScreen extends GuiScreen
      * Draw the title.
      */
     protected void drawTitle() {
-        TTFFontRenderer titleRenderer = Client.getInstance().getTTFFontRenderers().get(24);
+        TTFFontRenderer titleRenderer = FzClient.getInstance().getTTFFontRenderers().get(24);
         int titleSize = titleRenderer.getWidth(this.title);
 		
 		// draw title background

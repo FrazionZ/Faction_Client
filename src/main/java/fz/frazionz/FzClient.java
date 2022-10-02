@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import fz.frazionz.api.HTTPFunctions;
 import fz.frazionz.api.data.FactionProfile;
+import fz.frazionz.client.cache.CacheManager;
 import fz.frazionz.event.EventManager;
 import fz.frazionz.client.gui.hud.HUDManager;
 import fz.frazionz.mods.FileManager;
@@ -13,20 +14,15 @@ import fz.frazionz.utils.discord.DiscordRP;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 
-public class Client {
+public class FzClient {
 
-	private static final Client INSTANCE = new Client();
+	private static final FzClient INSTANCE = new FzClient();
 	public HashMap<Integer, TTFFontRenderer> ttfFontRenderers = new HashMap<>();
-	
-	public static final Client getInstance() {
-		return INSTANCE;
-	}
-	
-	private DiscordRP discordRP = new DiscordRP();
-	
-	private HUDManager hudManager;
 
+	private DiscordRP discordRP = new DiscordRP();
+	private HUDManager hudManager;
 	private FactionProfile factionProfile;
+	private CacheManager cacheManager;
 	
 	public void init() {
 		FileManager.init();
@@ -37,11 +33,16 @@ public class Client {
 
 		this.factionProfile = HTTPFunctions.getFactionProfile();
 	}
+
+	public static final FzClient getInstance() {
+		return INSTANCE;
+	}
 	
 	public void postMinecraftInit() {
 		this.ttfFontRenderers.put(24, new TTFFontRenderer(new ResourceLocation("font/font.ttf"), 24));
 		this.ttfFontRenderers.put(20, new TTFFontRenderer(new ResourceLocation("font/font.ttf"), 20));
 		this.ttfFontRenderers.put(16, new TTFFontRenderer(new ResourceLocation("font/font.ttf"), 16));
+
 	}
 	
 	
@@ -49,11 +50,11 @@ public class Client {
 		hudManager = HUDManager.getInstance();
 		ModInstances.register(hudManager);
 		new BlockRenderer();
+		cacheManager = new CacheManager();
 	}
 	
 	public void shutdown() {
 		discordRP.shutdown();
-		
 	}
 	
 	public DiscordRP getDiscordRP() {
@@ -66,5 +67,9 @@ public class Client {
 	
 	public HashMap<Integer, TTFFontRenderer> getTTFFontRenderers() {
 		return ttfFontRenderers;
+	}
+
+	public CacheManager getCacheManager() {
+		return cacheManager;
 	}
 }

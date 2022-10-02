@@ -1,11 +1,6 @@
-package fz.frazionz.api.gsonObj;
+package fz.frazionz.client.gui.shop;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import fz.frazionz.utils.ItemUtils;
-import net.minecraft.command.NumberInvalidException;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 
 public class ShopItem {
 
@@ -121,5 +116,13 @@ public class ShopItem {
 
 	public void setCategory(ShopCategory category) {
 		this.category = category;
+	}
+
+	public static ShopItem deserialize(String json) {
+		return new Gson().fromJson(json, ShopItem.class);
+	}
+
+	public static ShopItem[] deserializeList(String json) {
+		return new Gson().fromJson(json, ShopItem[].class);
 	}
 }

@@ -1,6 +1,6 @@
 package fz.frazionz.client.gui.custom;
 
-import fz.frazionz.Client;
+import fz.frazionz.FzClient;
 import fz.frazionz.client.gui.GuiFrazionZInterface;
 import fz.frazionz.client.gui.buttons.GuiHoverButton;
 import fz.frazionz.client.gui.custom.help.CustomGui;
@@ -63,7 +63,7 @@ public class GuiCustom extends GuiFrazionZInterface {
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         super.drawScreen(mouseX, mouseY, partialTicks);
         this.list.drawScreen(mouseX, mouseY, partialTicks);
-        Client.getInstance().getTTFFontRenderers().get(16).drawCenteredStringVertically(gui.getInfos(), this.guiLeft + 40, this.guiTop + 35, 0xFFFFFFFF);
+        FzClient.getInstance().getTTFFontRenderers().get(16).drawCenteredStringVertically(gui.getInfos(), this.guiLeft + 40, this.guiTop + 35, 0xFFFFFFFF);
         this.drawButtons(mouseX, mouseY, partialTicks);
     }
 
@@ -86,7 +86,7 @@ public class GuiCustom extends GuiFrazionZInterface {
         public void drawEntry(int slotIndex, int x, int y, int width, int height, int mouseX, int mouseY, boolean isSelected, float partialTicks)
         {
             RoundedShaderRenderer.getInstance().drawRoundRect(x, y, width, height, 2, BLACK_2);
-            Client.getInstance().getTTFFontRenderers().get(20).drawCenteredStringVertically(name, x + 10, y + (height/2), 0xFFFFFFFF);
+            FzClient.getInstance().getTTFFontRenderers().get(20).drawCenteredStringVertically(name, x + 10, y + (height/2), 0xFFFFFFFF);
         }
 
         public boolean mousePressed(int slotIndex, int mouseX, int mouseY, int mouseEvent, int relativeX, int relativeY)

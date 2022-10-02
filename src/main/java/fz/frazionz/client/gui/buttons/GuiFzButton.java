@@ -1,15 +1,9 @@
 package fz.frazionz.client.gui.buttons;
 
-import fz.frazionz.Client;
+import fz.frazionz.FzClient;
 import fz.frazionz.client.gui.utils.RoundedShaderRenderer;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.PositionedSoundRecord;
-import net.minecraft.client.audio.SoundHandler;
-import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.init.SoundEvents;
-import net.minecraft.resources.ResourceLocation;
 
 public class GuiFzButton extends GuiButton
 {
@@ -32,7 +26,7 @@ public class GuiFzButton extends GuiButton
         if (this.visible) {
             RoundedShaderRenderer.getInstance().drawRoundRect(this.x, this.y, this.width, this.height, 2, buttonColor());
             if(drawString())
-                Client.getInstance().getTTFFontRenderers().get(16).drawCenteredStringVertically(this.displayString, this.x + (this.width/2), this.y + (this.height / 2), textColor());
+                FzClient.getInstance().getTTFFontRenderers().get(16).drawCenteredStringVertically(this.displayString, this.x + (this.width/2), this.y + (this.height / 2), textColor());
         }
     }
 

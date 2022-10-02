@@ -6,7 +6,7 @@ import java.util.Map;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
-import fz.frazionz.Client;
+import fz.frazionz.FzClient;
 import fz.frazionz.TTFFontRenderer;
 import fz.frazionz.client.gui.buttons.GuiFzOptionButton;
 import fz.frazionz.client.gui.buttons.GuiHoverButton;
@@ -107,7 +107,7 @@ public class GuiLanguage extends GuiScreen
      */
     public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {        
-    	TTFFontRenderer titleRenderer = Client.getInstance().getTTFFontRenderers().get(24);
+    	TTFFontRenderer titleRenderer = FzClient.getInstance().getTTFFontRenderers().get(24);
     	int titleSize = titleRenderer.getWidth(this.title);
     	
     	this.drawRect(0, 0, width, height, BLACK_3);

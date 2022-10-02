@@ -1,14 +1,9 @@
 package fz.frazionz.utils;
 
-import fz.frazionz.Client;
-
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.URL;
-import java.text.NumberFormat;
-import java.util.Currency;
-import java.util.Locale;
 
 public class FzUtils {
 

@@ -12,7 +12,7 @@ import org.lwjgl.opengl.GLContext;
 
 import com.google.common.util.concurrent.Runnables;
 
-import fz.frazionz.Client;
+import fz.frazionz.FzClient;
 import fz.frazionz.client.gui.buttons.GuiMenuButton;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.GuiConnecting;
@@ -178,7 +178,7 @@ public class GuiMainMenu extends GuiScreen
     	this.menuWidth = 220;
     	this.menuHeight = this.height;
 
-        Client.getInstance().getDiscordRP().update("Menu Principal", "www.frazionz.net");
+        FzClient.getInstance().getDiscordRP().update("Menu Principal", "www.frazionz.net");
         this.viewportTexture = new DynamicTexture(256, 256);
         this.backgroundTexture = this.mc.getTextureManager().getDynamicTextureLocation("background", this.viewportTexture);
         this.widthCopyright = this.fontRenderer.getStringWidth("Copyright Mojang AB. Do not distribute!");

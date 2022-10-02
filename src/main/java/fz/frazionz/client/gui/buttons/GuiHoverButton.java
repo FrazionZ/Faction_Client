@@ -1,9 +1,8 @@
 package fz.frazionz.client.gui.buttons;
 
-import fz.frazionz.Client;
+import fz.frazionz.FzClient;
 import fz.frazionz.client.gui.utils.RoundedShaderRenderer;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiButton;
 
 public class GuiHoverButton extends GuiFzButton {
     protected int hoveredValue = 0;
@@ -31,7 +30,7 @@ public class GuiHoverButton extends GuiFzButton {
                 RoundedShaderRenderer.getInstance().drawRoundRect(this.x - hoveredValue + 1, this.y - hoveredValue + 1, this.width+2*hoveredValue - 2, this.height + 2*hoveredValue - 2, 3.5f, hoverColor());
             RoundedShaderRenderer.getInstance().drawRoundRect(this.x, this.y, this.width, this.height, 2, buttonColor());
             if(drawString())
-                Client.getInstance().getTTFFontRenderers().get(16).drawCenteredString(this.displayString, this.x + (this.width/2), this.y + (this.height / 2), textColor());
+                FzClient.getInstance().getTTFFontRenderers().get(16).drawCenteredString(this.displayString, this.x + (this.width/2), this.y + (this.height / 2), textColor());
         }
     }
 }

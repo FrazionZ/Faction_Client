@@ -5,7 +5,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Executors;
 
-import fz.frazionz.Client;
+import fz.frazionz.FzClient;
 import fz.frazionz.TTFFontRenderer;
 import fz.frazionz.api.HTTPFunctions;
 import fz.frazionz.packets.client.CPacketServerSwitch;
@@ -28,8 +28,8 @@ public class GuiServerSwitcher extends GuiFrazionZInterface {
 	public void initGui() {
 		String ip = "185.157.246.85";
 
-		SwitcherButton faction = new SwitcherButton(2, "Faction", (this.width / 2) - 103, (this.height / 2) - 59, 84, 141, 0, 0, this.fontRenderer, Client.getInstance().getTTFFontRenderers().get(24), 4, 1);
-		SwitcherButton minage  = new SwitcherButton(3, "Minage", (this.width / 2) + 23, (this.height / 2) - 59, 84, 141, 0, 0, this.fontRenderer, Client.getInstance().getTTFFontRenderers().get(24), 3, 0);
+		SwitcherButton faction = new SwitcherButton(2, "Faction", (this.width / 2) - 103, (this.height / 2) - 59, 84, 141, 0, 0, this.fontRenderer, FzClient.getInstance().getTTFFontRenderers().get(24), 4, 1);
+		SwitcherButton minage  = new SwitcherButton(3, "Minage", (this.width / 2) + 23, (this.height / 2) - 59, 84, 141, 0, 0, this.fontRenderer, FzClient.getInstance().getTTFFontRenderers().get(24), 3, 0);
 		this.buttonList.add(faction);
 		this.buttonList.add(minage);
 

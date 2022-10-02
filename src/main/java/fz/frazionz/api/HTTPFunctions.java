@@ -19,12 +19,6 @@ import net.minecraft.client.Minecraft;
 public class HTTPFunctions {
 
 	private static final Gson gson = new Gson();
-	
-	public static boolean isAPIUp()
-	{
-		HTTPReply reply = HTTPUtils.sendGet(HTTPEndpoints.BASE);
-		return reply.getStatusCode() == 200;
-	}
 
 	public static FactionProfile getFactionProfile()
 	{
@@ -81,42 +75,6 @@ public class HTTPFunctions {
 		}
 		return lst;
 	}
-	
-	
-	/*public static double getPlayerMoney() {
-		Minecraft mc = Minecraft.getMinecraft();
-		List<NameValuePair> params = new ArrayList<NameValuePair>();
-		params.add(new BasicNameValuePair("name", mc.getSession().getUsername()));
-		
-		HTTPReply reply = HTTPUtils.sendGet(HTTPEndpoints.PLAYER_MONEY, params);
-		
-		if(reply.getStatusCode() == 200)
-		{
-			ObjPlayerMoney obj = gson.fromJson(reply.getBody(), ObjPlayerMoney.class);
-			return obj.getMoney();
-		}
-		return 0;
-	}
-	
-	public static List getPlayerStats()
-	{
-		List lst = null;
-		
-		Minecraft mc = Minecraft.getMinecraft();
-		List<NameValuePair> params = new ArrayList<NameValuePair>();
-		params.add(new BasicNameValuePair("name", mc.getSession().getUsername()));
-		
-		HTTPReply reply = HTTPUtils.sendGet(HTTPEndpoints.PLAYER_STATS, params);
-		
-		if(reply.getStatusCode() == 200 || reply.getStatusCode() == 304)
-		{
-			ObjPlayerStats[] obj = gson.fromJson(reply.getBody(), ObjPlayerStats[].class);
-			lst = Arrays.asList(obj[0].getPlayerName(), obj[0].getPoints(), obj[0].getKills(), obj[0].getDeaths(), obj[0].getFactionId(), obj[0].getMoney());
-			return lst;
-		}
-		
-		return lst;
-	}*/
 	
 	public static ObjPlayerSkinsInfo getPlayerSkinInfo(String username)
 	{

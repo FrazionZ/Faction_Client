@@ -1,4 +1,4 @@
-package fz.frazionz.api.gsonObj;
+package fz.frazionz.client.gui.market;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;

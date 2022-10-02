@@ -2,9 +2,8 @@ package fz.frazionz.client.gui.market;
 
 import java.io.IOException;
 
-import fz.frazionz.Client;
+import fz.frazionz.FzClient;
 import fz.frazionz.TTFFontRenderer;
-import fz.frazionz.api.gsonObj.MarketItem;
 import fz.frazionz.client.gui.GuiFrazionZInterface;
 import fz.frazionz.client.gui.list.DoubleListItemEntry;
 import fz.frazionz.client.gui.list.GuiDoubleList;
@@ -68,7 +67,7 @@ public class GuiMarketItemList extends GuiFrazionZInterface {
         this.drawTopList();
         this.drawButtons(mouseX, mouseY, partialTicks);
 
-        double money = (double)(Client.getInstance().getFactionProfile().getMoney());
+        double money = (double)(FzClient.getInstance().getFactionProfile().getMoney());
         String s = "\u00A76M\u00A7foney : " + FzUtils.convertMoney(money) + " Coins";
         this.fontRenderer.drawString(s, this.width / 2 - this.fontRenderer.getStringWidth(s) / 2, this.guiTop + this.ySize - 22, 16777215, true);
 	}
@@ -84,7 +83,7 @@ public class GuiMarketItemList extends GuiFrazionZInterface {
     
 	public void drawTopList()
 	{
-        TTFFontRenderer titleRenderer = Client.getInstance().getTTFFontRenderers().get(24);
+        TTFFontRenderer titleRenderer = FzClient.getInstance().getTTFFontRenderers().get(24);
         int titleSize = titleRenderer.getWidth(this.title);
 		
 		// draw title background

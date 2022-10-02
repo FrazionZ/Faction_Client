@@ -1,6 +1,6 @@
 package fz.frazionz.client.gui.buttons;
 
-import fz.frazionz.Client;
+import fz.frazionz.FzClient;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
@@ -60,7 +60,7 @@ public class GuiMenuButton extends GuiButton
             }
             this.mouseDragged(mc, mouseX, mouseY);
 
-            Client.getInstance().getTTFFontRenderers().get(20).drawCenteredString(displayString, this.x + this.width / 2, this.y + this.height/2, 0xFFFFFFFF);
+            FzClient.getInstance().getTTFFontRenderers().get(20).drawCenteredString(displayString, this.x + this.width / 2, this.y + this.height/2, 0xFFFFFFFF);
         }
     }
 }

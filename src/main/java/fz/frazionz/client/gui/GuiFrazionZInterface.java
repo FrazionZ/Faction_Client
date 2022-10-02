@@ -2,7 +2,7 @@ package fz.frazionz.client.gui;
 
 import java.io.IOException;
 
-import fz.frazionz.Client;
+import fz.frazionz.FzClient;
 import fz.frazionz.TTFFontRenderer;
 import fz.frazionz.client.gui.utils.RoundedShaderRenderer;
 import net.minecraft.client.Minecraft;
@@ -88,7 +88,7 @@ public class GuiFrazionZInterface extends GuiScreen {
 	}
 	
 	public void drawTitle() {
-        TTFFontRenderer titleRenderer = Client.getInstance().getTTFFontRenderers().get(24);
+        TTFFontRenderer titleRenderer = FzClient.getInstance().getTTFFontRenderers().get(24);
         int titleSize = titleRenderer.getWidth(this.title);
 		
 		// draw title background

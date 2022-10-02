@@ -63,7 +63,7 @@ import com.mojang.authlib.properties.PropertyMap;
 import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
 
 import fz.frazionz.AntiCheatResourcePack;
-import fz.frazionz.Client;
+import fz.frazionz.FzClient;
 import fz.frazionz.client.gui.GuiKeyBinds;
 import fz.frazionz.client.gui.hud.HUDConfigScreen;
 import fz.frazionz.client.gui.hud.HUDManager;
@@ -557,7 +557,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo
      */
     private void init() throws LWJGLException, IOException
     {
-    	Client.getInstance().init();
+    	FzClient.getInstance().init();
         this.fzUserData = new FzUserData();
         this.gameSettings = new GameSettings(this, this.gameDir);
         this.creativeSettings = new CreativeSettings(this, this.gameDir);
@@ -681,7 +681,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo
 
         this.renderGlobal.makeEntityOutlineShader();
         
-        Client.getInstance().start();
+        FzClient.getInstance().start();
         
         // ADD_MODS //
         
@@ -721,7 +721,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo
             e.printStackTrace();
         }*/
 		
-		Client.getInstance().postMinecraftInit();
+		FzClient.getInstance().postMinecraftInit();
     }
     
     public ArrayList<String> getMacAddressList() throws SocketException
@@ -1262,7 +1262,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo
     {
         try
         {
-        	Client.getInstance().shutdown();
+        	FzClient.getInstance().shutdown();
         	
             LOGGER.info("Stopping!");
 
@@ -2806,7 +2806,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo
         networkmanager.sendPacket(new C00Handshake(socketaddress.toString(), 0, EnumConnectionState.LOGIN));
         networkmanager.sendPacket(new CPacketLoginStart(this.getSession().getProfile(), this.getSession().getToken()));
         this.networkManager = networkmanager;
-        Client.getInstance().getDiscordRP().update("", "www.frazionz.net");
+        FzClient.getInstance().getDiscordRP().update("", "www.frazionz.net");
 
     }
 

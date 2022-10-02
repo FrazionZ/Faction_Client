@@ -7,7 +7,7 @@ import java.util.List;
 
 import com.google.common.collect.Lists;
 
-import fz.frazionz.Client;
+import fz.frazionz.FzClient;
 import fz.frazionz.TTFFontRenderer;
 import fz.frazionz.client.gui.buttons.GuiHoverButton;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -196,7 +196,7 @@ public class GuiScreenResourcePacks extends GuiScreen
         this.drawRect(0, 0, this.width, this.height/8, this.BLACK_4);
 	    this.drawRect(0, this.height - this.height/8, this.width, this.height, this.BLACK_4);
        
-        TTFFontRenderer titleRenderer = Client.getInstance().getTTFFontRenderers().get(24);
+        TTFFontRenderer titleRenderer = FzClient.getInstance().getTTFFontRenderers().get(24);
         int titleSize = titleRenderer.getWidth(this.title);
         titleRenderer.drawCenteredString(this.title, this.width / 2, this.height/16, 0xFFFFFFFF);
         
