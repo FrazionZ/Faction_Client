@@ -12,8 +12,7 @@ import java.util.List;
 
 public class CacheManager {
 
-    private static File cacheDir = new File(Minecraft.getMinecraft().gameDir, "cache");
-
+    private static File cacheDir = new File( Minecraft.getMinecraft().fileAssets + File.separator + "frazionz" + File.separator + "cache");
     private List<AbstractCache> caches = new ArrayList<>();
 
     public CacheManager() {
