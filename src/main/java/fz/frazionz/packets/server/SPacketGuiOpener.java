@@ -1,6 +1,7 @@
 package fz.frazionz.packets.server;
 
 import fz.frazionz.client.gui.GuiServerSwitcher;
+import fz.frazionz.client.gui.auth.GuiAuthCodeMenu;
 import fz.frazionz.enums.EnumGui;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.Packet;
@@ -38,10 +39,16 @@ public class SPacketGuiOpener implements Packet<INetHandlerPlayClient> {
 	public void processPacket(INetHandlerPlayClient handler) {
 		PacketThreadUtil.checkThreadAndEnqueue(this, handler, this.mc);
 
+
 		switch (this.gui) {
 			case SERVER_SWITCHER:
 				this.mc.displayGuiScreen(new GuiServerSwitcher(this.mc.currentScreen, this.mc));
 				break;
+			case AUTH_CODE_MENU:
+				this.mc.displayGuiScreen(new GuiAuthCodeMenu(this.mc.currentScreen, this.mc));
+				break;
+			case NULL:
+				this.mc.displayGuiScreen(null);
 			default:
 				break;
 		}

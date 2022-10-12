@@ -13,6 +13,8 @@ public enum EnumGui {
     SKILL_MENU("FZ|Skill_Menu"),
     SERVER_SWITCHER("FZ|Server_Switcher"),
     CUSTOM_GUI("FZ|Custom_Gui"),
+    AUTH_CODE_MENU("FZ|Auth_Code_Menu"),
+
     ;
 
     public String key;

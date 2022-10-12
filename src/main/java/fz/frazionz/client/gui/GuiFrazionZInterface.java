@@ -77,7 +77,7 @@ public class GuiFrazionZInterface extends GuiScreen {
 	}
 	
 	public void drawBackgroundImage() {
-		RoundedShaderRenderer.getInstance().drawRoundRect(this.guiLeft, this.guiTop, this.xSize, this.ySize, 8, 0x0E1014);
+		RoundedShaderRenderer.getInstance().drawRoundRect(this.guiLeft, this.guiTop, this.xSize, this.ySize, 8, BLACK_4);
 	}
 	
 	public void drawIcon(int x, int y, int iconX, int iconY) {

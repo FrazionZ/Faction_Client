@@ -2,6 +2,7 @@ package net.minecraft.client.gui.inventory;
 
 import java.io.IOException;
 
+import fz.frazionz.client.gui.auth.GuiAuthCodeMenu;
 import fz.frazionz.enums.EnumGui;
 import fz.frazionz.packets.client.CPacketGuiOpener;
 import net.minecraft.client.Minecraft;
@@ -238,7 +239,8 @@ public class GuiInventory extends InventoryEffectRenderer implements IRecipeShow
             this.mc.player.connection.sendPacket(new CPacketGuiOpener(EnumGui.SHOP_MENU));
         }
         else if(button.id == 26) {
-            this.mc.player.connection.sendPacket(new CPacketGuiOpener(EnumGui.MARKET_LIST));
+            this.mc.displayGuiScreen(new GuiAuthCodeMenu(this, mc));
+            //this.mc.player.connection.sendPacket(new CPacketGuiOpener(EnumGui.MARKET_LIST));
         }
     }
 

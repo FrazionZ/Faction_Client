@@ -7,6 +7,10 @@ import net.minecraft.client.gui.GuiButton;
 
 public class GuiFzButton extends GuiButton
 {
+    private int backgroundColor = BLACK_3;
+    private int textColor = 0xFFFFFFFF;
+    private int hoverColor = 0xFFFFFFFF;
+
     public GuiFzButton(int buttonId, int x, int y, String buttonText)
     {
         this(buttonId, x, y, 200, 20, buttonText);
@@ -35,15 +39,30 @@ public class GuiFzButton extends GuiButton
     }
 
     protected int buttonColor() {
-        return BLACK_4;
+        return backgroundColor;
     }
 
     protected int hoverColor() {
-        return 0xFFFFFFFF;
+        return hoverColor;
     }
 
     protected int textColor() {
-        return 0xFFFFFFFF;
+        return textColor;
+    }
+
+    public GuiFzButton setBackgroundColor(int backgroundColor) {
+        this.backgroundColor = backgroundColor;
+        return this;
+    }
+
+    public GuiFzButton setHoverColor(int hoverColor) {
+        this.hoverColor = hoverColor;
+        return this;
+    }
+
+    public GuiFzButton setTextColor(int textColor) {
+        this.textColor = textColor;
+        return this;
     }
 }
 
