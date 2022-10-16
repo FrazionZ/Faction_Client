@@ -239,8 +239,7 @@ public class GuiInventory extends InventoryEffectRenderer implements IRecipeShow
             this.mc.player.connection.sendPacket(new CPacketGuiOpener(EnumGui.SHOP_MENU));
         }
         else if(button.id == 26) {
-            this.mc.displayGuiScreen(new GuiAuthCodeMenu(this, mc));
-            //this.mc.player.connection.sendPacket(new CPacketGuiOpener(EnumGui.MARKET_LIST));
+            this.mc.player.connection.sendPacket(new CPacketGuiOpener(EnumGui.MARKET_LIST));
         }
     }
 
