@@ -1,0 +1,12 @@
+{
+    "variants": {
+        "age=0": { "model": "frazionz:strawberry_stage_0" },
+        "age=1": { "model": "frazionz:strawberry_stage_1" },
+        "age=2": { "model": "frazionz:strawberry_stage_2" },
+        "age=3": { "model": "frazionz:strawberry_stage_3" },
+        "age=4": { "model": "frazionz:strawberry_stage_3" },
+        "age=5": { "model": "frazionz:strawberry_stage_3" },
+        "age=6": { "model": "frazionz:strawberry_stage_3" },
+        "age=7": { "model": "frazionz:strawberry_stage_4" }
+    }
+}

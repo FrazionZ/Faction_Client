@@ -43,19 +43,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemArmor;
-import net.minecraft.item.ItemAxe;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemBlockSpecial;
-import net.minecraft.item.ItemFood;
-import net.minecraft.item.ItemHoe;
-import net.minecraft.item.ItemMultiTexture;
-import net.minecraft.item.ItemPickaxe;
-import net.minecraft.item.ItemRecord;
-import net.minecraft.item.ItemSpade;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemSword;
+import net.minecraft.item.*;
 import net.minecraft.resources.ResourceLocation;
 
 public class ItemManager {
@@ -154,7 +142,7 @@ public class ItemManager {
         registerItem(1068, "key_rare", (new Item()).setFull3D().setTranslationKey("key_rare").setCreativeTab(CreativeTabs.MATERIALS));
         registerItem(1069, "key_legendary", (new Item()).setFull3D().setTranslationKey("key_legendary").setCreativeTab(CreativeTabs.MATERIALS));
         
-        registerItem(1078, "strawberry", (new ItemFood(2, 1.0F, false)).setAlwaysEdible().setTranslationKey("strawberry"));
+        registerItem(1078, "strawberry", (new ItemSeedFood(2, 1.0F, Blocks.STRAWBERRIES, Blocks.FARMLAND)).setTranslationKey("strawberry"));
         registerItem(1079, "banana", (new ItemBanana(4, 2.5F, true)).setAlwaysEdible().setTranslationKey("banana"));
         registerItem(1080, "pizza", (new ItemPizza(10, 2.5F, true)).setAlwaysEdible().setTranslationKey("pizza"));
         registerItem(1081, "donuts", (new ItemDonuts(4, 2.0F, false)).setAlwaysEdible().setTranslationKey("donuts"));

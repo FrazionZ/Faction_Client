@@ -80,6 +80,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import org.lwjgl.Sys;
 
 public abstract class EntityLivingBase extends Entity
 {

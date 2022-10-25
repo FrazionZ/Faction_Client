@@ -406,6 +406,8 @@ public class Blocks
     public static final Block TROPHY_FORGE;
     public static final Block GRIMOIRE_PEDESTAL;
     public static final Block ITEM_CRUSHER;
+
+    public static final Block STRAWBERRIES;
     
 
     @Nullable
@@ -779,6 +781,8 @@ public class Blocks
             TROPHY_FORGE = getRegisteredBlock("frazionz:trophy_forge");
             GRIMOIRE_PEDESTAL = getRegisteredBlock("frazionz:grimoire_pedestal");
             ITEM_CRUSHER = (BlockItemCrusher)getRegisteredBlock("frazionz:item_crusher");
+
+            STRAWBERRIES = getRegisteredBlock("frazionz:strawberries");
             
             CACHE.clear();
         }

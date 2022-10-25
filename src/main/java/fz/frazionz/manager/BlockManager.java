@@ -1,51 +1,7 @@
 package fz.frazionz.manager;
 
-import fz.frazionz.block.BlockAmeliorator;
-import fz.frazionz.block.BlockBauxiteBrewingStand;
-import fz.frazionz.block.BlockBauxiteChest;
-import fz.frazionz.block.BlockBauxiteFurnace;
-import fz.frazionz.block.BlockBauxiteLadder;
-import fz.frazionz.block.BlockBlockPlacer;
-import fz.frazionz.block.BlockCrimsonFungi;
-import fz.frazionz.block.BlockCrimsonRoots;
-import fz.frazionz.block.BlockCrystal;
-import fz.frazionz.block.BlockDarkAndesite;
-import fz.frazionz.block.BlockFrazionChest;
-import fz.frazionz.block.BlockFrazionFurnace;
-import fz.frazionz.block.BlockFrazionLadder;
-import fz.frazionz.block.BlockGrimoirePedestal;
-import fz.frazionz.block.BlockHdvChest;
-import fz.frazionz.block.BlockItemCrusher;
-import fz.frazionz.block.BlockMoreAndesiteSmoothVariant;
-import fz.frazionz.block.BlockMoreAndesiteVariant;
-import fz.frazionz.block.BlockMoreDioriteSmoothVariant;
-import fz.frazionz.block.BlockMoreDioriteVariant;
-import fz.frazionz.block.BlockMoreGraniteSmoothVariant;
-import fz.frazionz.block.BlockMoreGraniteVariant;
-import fz.frazionz.block.BlockMoreNWBVariant;
-import fz.frazionz.block.BlockMoreSandstoneVariant;
-import fz.frazionz.block.BlockNetherLog;
-import fz.frazionz.block.BlockOnyxChest;
-import fz.frazionz.block.BlockOnyxFurnace;
-import fz.frazionz.block.BlockOnyxLadder;
-import fz.frazionz.block.BlockRandomOre;
-import fz.frazionz.block.BlockRenforcedSand;
-import fz.frazionz.block.BlockReverseFall;
-import fz.frazionz.block.BlockSmoothDarkAndesite;
-import fz.frazionz.block.BlockTrophyForge;
-import fz.frazionz.block.BlockWitherBlock;
-import fz.frazionz.block.BlockYelliteBrewingStand;
-import fz.frazionz.block.BlockYelliteChest;
-import fz.frazionz.block.BlockYelliteFurnace;
-import fz.frazionz.block.BlockYelliteLadder;
-import fz.frazionz.block.BlockZDirtChest;
-import fz.frazionz.block.BlockZHopper;
-import fz.frazionz.block.BlockZTNT;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockBrewingStand;
-import net.minecraft.block.BlockObsidian;
-import net.minecraft.block.BlockOre;
-import net.minecraft.block.SoundType;
+import fz.frazionz.block.*;
+import net.minecraft.block.*;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
@@ -144,7 +100,9 @@ public class BlockManager {
         registerBlock(523, "trophy_forge", (new BlockTrophyForge()).setHardness(25.0F).setResistance(1000.0F).setSoundType(SoundType.STONE).setTranslationKey("trophy_forge"));
         registerBlock(524, "grimoire_pedestal", (new BlockGrimoirePedestal()).setHardness(25.0F).setResistance(1000.0F).setSoundType(SoundType.STONE).setTranslationKey("grimoire_pedestal"));
         registerBlock(525, "item_crusher", (new BlockItemCrusher()).setHardness(25.0F).setResistance(1000.0F).setSoundType(SoundType.STONE).setTranslationKey("item_crusher"));
-	}
+
+        registerBlock(530, "strawberries", (new BlockStrawberry()).setTranslationKey("strawberries"));
+    }
 	
     private static void registerBlock(int id, ResourceLocation textualID, Block block_)
     {

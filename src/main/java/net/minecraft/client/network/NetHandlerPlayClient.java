@@ -1353,7 +1353,6 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
         }
         else if (packetIn.getWindowId() == entityplayer.openContainer.windowId)
         {
-            System.out.println("Size Items Stack: " + packetIn.getItemStacks().size());
             entityplayer.openContainer.setAll(packetIn.getItemStacks());
         }
     }

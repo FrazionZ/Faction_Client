@@ -1,0 +1,6 @@
+{
+    "parent": "block/crop",
+    "textures": {
+        "crop": "frazionz:blocks/strawberry_stage_0"
+    }
+}

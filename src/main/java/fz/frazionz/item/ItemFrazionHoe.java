@@ -9,6 +9,7 @@ import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockCrops;
 import net.minecraft.block.BlockDirt;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -131,7 +132,7 @@ public class ItemFrazionHoe extends ItemTool
     public boolean onBlockDestroyed(ItemStack breaker, World w, IBlockState state, BlockPos pos, EntityLivingBase e)
     {
     	
-    	if(state.getBlock() == Blocks.CARROTS || state.getBlock() == Blocks.POTATOES || state.getBlock() == Blocks.WHEAT || state.getBlock() == Blocks.NETHER_WART || state.getBlock() == Blocks.BEETROOTS) 
+    	if(state.getBlock() == Blocks.CARROTS || state.getBlock() == Blocks.STRAWBERRIES || state.getBlock() == Blocks.POTATOES || state.getBlock() == Blocks.WHEAT || state.getBlock() == Blocks.NETHER_WART || state.getBlock() == Blocks.BEETROOTS)
     	{
     		
         	if (e instanceof EntityPlayer && !w.isRemote)
@@ -183,6 +184,15 @@ public class ItemFrazionHoe extends ItemTool
                 	removeItems(p, new ItemStack(Items.BEETROOT_SEEDS), 1);
                 	
                 	return true;
+                }
+
+                else if(state.getBlock() == Blocks.STRAWBERRIES && p.inventory.hasItemStack(new ItemStack(Items.STRAWBERRY)))
+                {
+                    w.setBlockState(pos, Blocks.STRAWBERRIES.getDefaultState());
+                    breaker.damageItem(1, e);
+                    removeItems(p, new ItemStack(Items.STRAWBERRY), 1);
+
+                    return true;
                 }
                 
                 else {
