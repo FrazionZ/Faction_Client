@@ -101,7 +101,7 @@ public class BlockManager {
         registerBlock(524, "grimoire_pedestal", (new BlockGrimoirePedestal()).setHardness(25.0F).setResistance(1000.0F).setSoundType(SoundType.STONE).setTranslationKey("grimoire_pedestal"));
         registerBlock(525, "item_crusher", (new BlockItemCrusher()).setHardness(25.0F).setResistance(1000.0F).setSoundType(SoundType.STONE).setTranslationKey("item_crusher"));
 
-        registerBlock(530, "strawberries", (new BlockStrawberry()).setTranslationKey("strawberries"));
+        registerBlock(530, "strawberries", (new BlockStrawberries()).setTranslationKey("strawberries"));
     }
 	
     private static void registerBlock(int id, ResourceLocation textualID, Block block_)
@@ -113,5 +113,4 @@ public class BlockManager {
     {
         registerBlock(id, new ResourceLocation("frazionz", textualID), block_);
     }
-	
 }
