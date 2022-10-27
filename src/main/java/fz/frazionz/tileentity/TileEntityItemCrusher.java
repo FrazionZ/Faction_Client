@@ -230,7 +230,7 @@ public class TileEntityItemCrusher extends TileEntityLockable implements ITickab
     }
 	
 	public String getGuiID() {
-		return "minecraft:item_crusher";
+		return "frazionz:item_crusher";
 	}
 	
 	public Container createContainer(InventoryPlayer playerInventory, EntityPlayer playerIn)

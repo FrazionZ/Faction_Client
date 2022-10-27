@@ -9,6 +9,7 @@ import javax.annotation.Nullable;
 import com.google.common.collect.Sets;
 import com.google.common.collect.UnmodifiableIterator;
 
+import fz.frazionz.item.ItemFrazionHoe;
 import fz.frazionz.manager.BlockManager;
 import net.minecraft.block.material.EnumPushReaction;
 import net.minecraft.block.material.MapColor;
@@ -1040,6 +1041,8 @@ public class Block
         else
         {
             int i = EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, stack);
+            if(stack.getItem() instanceof ItemFrazionHoe)
+                i++;
             this.dropBlockAsItem(worldIn, pos, state, i);
         }
     }

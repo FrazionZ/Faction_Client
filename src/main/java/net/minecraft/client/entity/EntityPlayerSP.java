@@ -893,7 +893,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
         {
             this.mc.displayGuiScreen(new GuiTrophyForge(this.inventory, chestInventory));
         }
-        else if ("minecraft:item_crusher".equals(s))
+        else if ("frazionz:item_crusher".equals(s))
         {
             this.mc.displayGuiScreen(new GuiItemCrusher(this.inventory, chestInventory));
         }

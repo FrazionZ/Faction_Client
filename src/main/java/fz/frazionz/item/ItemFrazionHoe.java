@@ -14,11 +14,13 @@ import net.minecraft.block.BlockDirt;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Enchantments;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -38,7 +40,9 @@ public class ItemFrazionHoe extends ItemTool
     		Blocks.HAY_BLOCK,
     		Blocks.NETHER_WART_BLOCK2,
     		Blocks.NETHER_WART_BLOCK,
-    		Blocks.SPONGE
+    		Blocks.SPONGE,
+            Blocks.MELON_BLOCK,
+            Blocks.PUMPKIN
     		);
 	
     protected Item.ToolMaterial theToolMaterial;
@@ -261,9 +265,14 @@ public class ItemFrazionHoe extends ItemTool
     
     public void addInformation(ItemStack stack, @Nullable World playerIn, List<String> tooltip, ITooltipFlag advanced)
     {
-    		tooltip.add(" ");
-    		tooltip.add("\u00A76\u00bb \u00A7ePermet de replanter les plantations cassées");
-    		tooltip.add(" ");
+        int fortuneLevel = EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, stack);
+        fortuneLevel++;
+        tooltip.add(" ");
+        tooltip.add("\u00A76\u00bb \u00A7ePermet de replanter les plantations cassées");
+        tooltip.add("\u00A76\u00bb \u00A7eUtilise les graines dans l'inventaire");
+        tooltip.add(" ");
+        tooltip.add("\u00A76\u00bb \u00A7eUn niveau de Fortune supplémentaire");
+        tooltip.add("\u00A76\u00bb \u00A7eFortune: \u00A76" + fortuneLevel);
+        tooltip.add(" ");
     }
-    
 }

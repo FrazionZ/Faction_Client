@@ -31,14 +31,14 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import org.lwjgl.Sys;
 
 public class BlockTrophyForge extends BlockContainer
 {
 	public static final PropertyDirection FACING = BlockHorizontal.FACING;
 	public static final AxisAlignedBB FULL_BLOCK = new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 1.0D, 0.9375D);
     public static final PropertyEnum<BlockTrophyForge.EnumTrophyForgeHalf> PARTS = PropertyEnum.<BlockTrophyForge.EnumTrophyForgeHalf>create("parts", BlockTrophyForge.EnumTrophyForgeHalf.class);
-    
-	private static boolean keepInventory;
+
     
     public BlockTrophyForge()
     {
@@ -88,7 +88,7 @@ public class BlockTrophyForge extends BlockContainer
             IBlockState iblockstate1 = worldIn.getBlockState(pos.south());
             IBlockState iblockstate2 = worldIn.getBlockState(pos.west());
             IBlockState iblockstate3 = worldIn.getBlockState(pos.east());
-            EnumFacing enumfacing = (EnumFacing)state.getValue(FACING);
+            EnumFacing enumfacing = state.getValue(FACING);
 
             if (enumfacing == EnumFacing.NORTH && iblockstate.isFullBlock() && !iblockstate1.isFullBlock())
             {
@@ -158,14 +158,11 @@ public class BlockTrophyForge extends BlockContainer
     
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
     {
-    	if (!keepInventory)
-        {
-    		TileEntity tileentity = worldIn.getTileEntity(pos);
+        TileEntity tileentity = worldIn.getTileEntity(pos);
 
-	        if (tileentity instanceof TileEntityTrophyForge)
-	        {
-	            InventoryHelper.dropInventoryItems(worldIn, pos, (TileEntityTrophyForge)tileentity);
-	        }
+        if (tileentity instanceof TileEntityTrophyForge)
+        {
+            InventoryHelper.dropInventoryItems(worldIn, pos, (TileEntityTrophyForge)tileentity);
         }
 
         super.breakBlock(worldIn, pos, state);
@@ -245,7 +242,7 @@ public class BlockTrophyForge extends BlockContainer
      */
     public IBlockState withRotation(IBlockState state, Rotation rot)
     {
-        return state.withProperty(FACING, rot.rotate((EnumFacing)state.getValue(FACING)));
+        return state.withProperty(FACING, rot.rotate(state.getValue(FACING)));
     }
 
     /**
@@ -254,7 +251,7 @@ public class BlockTrophyForge extends BlockContainer
      */
     public IBlockState withMirror(IBlockState state, Mirror mirrorIn)
     {
-        return state.withRotation(mirrorIn.toRotation((EnumFacing)state.getValue(FACING)));
+        return state.withRotation(mirrorIn.toRotation(state.getValue(FACING)));
     }
 
     protected BlockStateContainer createBlockState()

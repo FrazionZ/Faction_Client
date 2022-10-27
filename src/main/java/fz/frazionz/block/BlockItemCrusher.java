@@ -243,7 +243,7 @@ public class BlockItemCrusher extends BlockContainer
      */
     public IBlockState withRotation(IBlockState state, Rotation rot)
     {
-        return state.withProperty(FACING, rot.rotate((EnumFacing)state.getValue(FACING)));
+        return state.withProperty(FACING, rot.rotate(state.getValue(FACING)));
     }
 
     /**
@@ -252,12 +252,12 @@ public class BlockItemCrusher extends BlockContainer
      */
     public IBlockState withMirror(IBlockState state, Mirror mirrorIn)
     {
-        return state.withRotation(mirrorIn.toRotation((EnumFacing)state.getValue(FACING)));
+        return state.withRotation(mirrorIn.toRotation(state.getValue(FACING)));
     }
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {PARTS, FACING});
+        return new BlockStateContainer(this, PARTS, FACING);
     }
     
     private void placeItemCrusher(World worldIn, BlockPos pos, EnumFacing facing)

@@ -26,11 +26,13 @@ import net.minecraft.world.World;
 public class ItemHoe extends ItemTool
 {
     private static final Set<Block> EFFECTIVE_ON = Sets.newHashSet(
-    		Blocks.HAY_BLOCK,
-    		Blocks.NETHER_WART_BLOCK2,
-    		Blocks.NETHER_WART_BLOCK,
-    		Blocks.SPONGE
-    		);
+            Blocks.HAY_BLOCK,
+            Blocks.NETHER_WART_BLOCK2,
+            Blocks.NETHER_WART_BLOCK,
+            Blocks.SPONGE,
+            Blocks.MELON_BLOCK,
+            Blocks.PUMPKIN
+    );
     
     protected Item.ToolMaterial toolMaterial;
 
