@@ -303,11 +303,6 @@ public class TileEntityItemCrusher extends TileEntityLockable implements ITickab
 		return this.isCrushing == 1;
 	}
 
-	@Override
-	public int getTickCount() {
-		return tickCount;
-	}
-	
 	public boolean isAnimationEnd() {
 		return isAnimationEnd;
 	}
@@ -363,7 +358,12 @@ public class TileEntityItemCrusher extends TileEntityLockable implements ITickab
 	    }
 	    return this.pos;
 	}
-	
+
+	@Override
+	public int getTickCount() {
+		return tickCount;
+	}
+
 	@Override
 	public boolean canExtractItem(int index, ItemStack stack, EnumFacing direction) {
 		return false;

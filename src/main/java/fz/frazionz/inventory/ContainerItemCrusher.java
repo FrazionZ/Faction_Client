@@ -15,7 +15,6 @@ public class ContainerItemCrusher extends Container implements TileMachine {
 	private final IInventory tileEntity;
 	private int crushingTime;
 	private int totalCrushingTime;
-	private int SlotLimit = 1;
 	private int isCrushing;
 
 	public ContainerItemCrusher(InventoryPlayer playerInventory, IInventory crusherInventory) {
@@ -41,12 +40,14 @@ public class ContainerItemCrusher extends Container implements TileMachine {
 		}
 	}
 
-	public void addListener(IContainerListener listener) {
+	public void addListener(IContainerListener listener)
+	{
 		super.addListener(listener);
 		listener.sendAllWindowProperties(this, this.tileEntity);
 	}
 
-	public void detectAndSendChanges() {
+	public void detectAndSendChanges()
+	{
 		super.detectAndSendChanges();
 
 		for (int i = 0; i < this.listeners.size(); ++i) {
@@ -126,13 +127,6 @@ public class ContainerItemCrusher extends Container implements TileMachine {
 		this.tileEntity.setField(2, 1);
 	}
 
-	public boolean isForging() {
-		return this.isCrushing == 1;
-	}
-
-	public IInventory getTileEntity() {
-		return tileEntity;
-	}
 
 	public ItemStack[] getRecipeResult(int id) {
 		return ItemCrusherRecipes.getResult(this.inventorySlots.get(id).getStack());
@@ -145,4 +139,10 @@ public class ContainerItemCrusher extends Container implements TileMachine {
 		return canCrush;
 	}
 
+	public boolean isForging() {
+		return this.isCrushing == 1;
+	}
+	public IInventory getTileEntity() {
+		return tileEntity;
+	}
 }

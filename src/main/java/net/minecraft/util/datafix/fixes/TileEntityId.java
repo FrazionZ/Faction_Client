@@ -52,22 +52,22 @@ public class TileEntityId implements IFixableData
         OLD_TO_NEW_ID_MAP.put("Structure", "minecraft:structure_block");
         OLD_TO_NEW_ID_MAP.put("Trap", "minecraft:dispenser");
         
-        OLD_TO_NEW_ID_MAP.put("z_hopper", "minecraft:z_hopper");
-        OLD_TO_NEW_ID_MAP.put("dirt_chest", "minecraft:dirt_chest");
-        OLD_TO_NEW_ID_MAP.put("hdv_chest", "minecraft:hdv_chest");
-        OLD_TO_NEW_ID_MAP.put("spawner_inventory", "minecraft:spawner_inventory");
-        OLD_TO_NEW_ID_MAP.put("onyx_chest", "minecraft:onyx_chest");
-        OLD_TO_NEW_ID_MAP.put("yellite_furnace", "minecraft:yellite_furnace");
-        OLD_TO_NEW_ID_MAP.put("bauxite_furnace", "minecraft:bauxite_furnace");
-        OLD_TO_NEW_ID_MAP.put("onyx_furnace", "minecraft:onyx_furnace");
-        OLD_TO_NEW_ID_MAP.put("frazion_furnace", "minecraft:frazion_furnace");
+        OLD_TO_NEW_ID_MAP.put("z_hopper", "frazionz:z_hopper");
+        OLD_TO_NEW_ID_MAP.put("dirt_chest", "frazionz:dirt_chest");
+        OLD_TO_NEW_ID_MAP.put("hdv_chest", "frazionz:hdv_chest");
+        OLD_TO_NEW_ID_MAP.put("spawner_inventory", "frazionz:spawner_inventory");
+        OLD_TO_NEW_ID_MAP.put("onyx_chest", "frazionz:onyx_chest");
+        OLD_TO_NEW_ID_MAP.put("yellite_furnace", "frazionz:yellite_furnace");
+        OLD_TO_NEW_ID_MAP.put("bauxite_furnace", "frazionz:bauxite_furnace");
+        OLD_TO_NEW_ID_MAP.put("onyx_furnace", "frazionz:onyx_furnace");
+        OLD_TO_NEW_ID_MAP.put("frazion_furnace", "frazionz:frazion_furnace");
         OLD_TO_NEW_ID_MAP.put("ameliorator", "frazionz:ameliorator");
-        OLD_TO_NEW_ID_MAP.put("yellite_brewing_stand", "minecraft:yellite_brewing_stand");
-        OLD_TO_NEW_ID_MAP.put("bauxite_brewing_stand", "minecraft:bauxite_brewing_stand");
-        OLD_TO_NEW_ID_MAP.put("onyx_brewing_stand", "minecraft:onyx_brewing_stand");
-        OLD_TO_NEW_ID_MAP.put("frazion_brewing_stand", "minecraft:frazion_brewing_stand");
-        OLD_TO_NEW_ID_MAP.put("trophy_forge", "minecraft:trophy_forge");
-        OLD_TO_NEW_ID_MAP.put("grimoire_pedestal", "minecraft:grimoire_pedestal");
+        OLD_TO_NEW_ID_MAP.put("yellite_brewing_stand", "frazionz:yellite_brewing_stand");
+        OLD_TO_NEW_ID_MAP.put("bauxite_brewing_stand", "frazionz:bauxite_brewing_stand");
+        OLD_TO_NEW_ID_MAP.put("onyx_brewing_stand", "frazionz:onyx_brewing_stand");
+        OLD_TO_NEW_ID_MAP.put("frazion_brewing_stand", "frazionz:frazion_brewing_stand");
+        OLD_TO_NEW_ID_MAP.put("trophy_forge", "frazionz:trophy_forge");
+        OLD_TO_NEW_ID_MAP.put("grimoire_pedestal", "frazionz:grimoire_pedestal");
         
     }
 }

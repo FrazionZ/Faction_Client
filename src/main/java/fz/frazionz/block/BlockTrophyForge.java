@@ -37,7 +37,7 @@ public class BlockTrophyForge extends BlockContainer
 {
 	public static final PropertyDirection FACING = BlockHorizontal.FACING;
 	public static final AxisAlignedBB FULL_BLOCK = new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 1.0D, 0.9375D);
-    public static final PropertyEnum<BlockTrophyForge.EnumTrophyForgeHalf> PARTS = PropertyEnum.<BlockTrophyForge.EnumTrophyForgeHalf>create("parts", BlockTrophyForge.EnumTrophyForgeHalf.class);
+    public static final PropertyEnum<EnumTrophyForgeHalf> PARTS = PropertyEnum.<EnumTrophyForgeHalf>create("parts", EnumTrophyForgeHalf.class);
 
     
     public BlockTrophyForge()
@@ -125,7 +125,7 @@ public class BlockTrophyForge extends BlockContainer
     
     public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
     {
-        return pos.getY() >= 255 ? false : super.canPlaceBlockAt(worldIn, pos) && super.canPlaceBlockAt(worldIn, pos.up());
+        return pos.getY() < 256 && super.canPlaceBlockAt(worldIn, pos) && super.canPlaceBlockAt(worldIn, pos.up());
     }
     
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing heldItem, float side, float hitX, float hitY)
@@ -232,7 +232,7 @@ public class BlockTrophyForge extends BlockContainer
     public int getMetaFromState(IBlockState state)
     {
         if (state.getValue(PARTS) == EnumTrophyForgeHalf.BASE)
-        	return ((EnumFacing)state.getValue(FACING)).getIndex()+1;
+        	return state.getValue(FACING).getIndex() + 1;
         return 0;
     }
 
@@ -256,20 +256,20 @@ public class BlockTrophyForge extends BlockContainer
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {PARTS, FACING});
+        return new BlockStateContainer(this, PARTS, FACING);
     }
     
     private void placeTrophyForge(World worldIn, BlockPos pos, EnumFacing facing)
     {
-        BlockPos blockpos2 = pos.up();
+        BlockPos posUp = pos.up();
         IBlockState iblockstate = this.getDefaultState();
         worldIn.setBlockState(pos, iblockstate.withProperty(FACING, facing).withProperty(PARTS, EnumTrophyForgeHalf.BASE), 2);
-        worldIn.setBlockState(blockpos2, iblockstate.withProperty(PARTS, EnumTrophyForgeHalf.OTHER), 2);
+        worldIn.setBlockState(posUp, iblockstate.withProperty(PARTS, EnumTrophyForgeHalf.OTHER), 2);
         worldIn.notifyNeighborsOfStateChange(pos, this, false);
-        worldIn.notifyNeighborsOfStateChange(blockpos2, this, false);
+        worldIn.notifyNeighborsOfStateChange(posUp, this, false);
     }
     
-    public static enum EnumTrophyForgeHalf implements IStringSerializable
+    public enum EnumTrophyForgeHalf implements IStringSerializable
     {
         BASE,
         OTHER;

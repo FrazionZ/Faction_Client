@@ -399,8 +399,8 @@ public class ItemIntIDToString implements IFixableData
         ID_MAP[521] = "minecraft:block_placer_chest";
         ID_MAP[522] = "minecraft:block_placer_trapchest";
         
-        ID_MAP[523] = "minecraft:trophy_forge";
-        ID_MAP[525] = "minecraft:grimoire_pedestal";
+        ID_MAP[523] = "frazionz:trophy_forge";
+        ID_MAP[525] = "frazionz:grimoire_pedestal";
         
         ID_MAP[1000] = "minecraft:yellite";
         ID_MAP[1001] = "minecraft:bauxite";

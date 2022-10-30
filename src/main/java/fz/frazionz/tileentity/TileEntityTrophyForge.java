@@ -18,9 +18,10 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.NonNullList;
 
+import java.util.List;
+
 public class TileEntityTrophyForge extends TileEntityLockable implements ITickable, TickCounter, ISidedInventory
 {
-	
 	private static final int[] SLOT_CRAFT = new int[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
     
     private NonNullList<ItemStack> TrophyForgeItemStacks = NonNullList.<ItemStack>withSize(12, ItemStack.EMPTY);
@@ -32,16 +33,17 @@ public class TileEntityTrophyForge extends TileEntityLockable implements ITickab
     private int tickCount = 0;
     private boolean isAnimationEnd = true;
 
-    public TileEntityTrophyForge()
-    {
-	}
+    public TileEntityTrophyForge() {}
 	
-	public int getSizeInventory() 
-	{
+	public int getSizeInventory() {
 		return this.TrophyForgeItemStacks.size();
 	}
 
-	public boolean isEmpty()
+    public List<ItemStack> getInventory() {
+        return TrophyForgeItemStacks;
+    }
+
+    public boolean isEmpty()
     {
         for (ItemStack itemstack : this.TrophyForgeItemStacks)
         {
@@ -187,9 +189,7 @@ public class TileEntityTrophyForge extends TileEntityLockable implements ITickab
                 	this.totalForgeTime = this.getForgeTime();
                     this.forgeItem();
                 }
-        		
         	}
-            
             this.markDirty();
         }
         
@@ -197,7 +197,7 @@ public class TileEntityTrophyForge extends TileEntityLockable implements ITickab
 
     public int getForgeTime()
     {
-    	return 100;
+    	return 2400;
     }
     
     public ItemStack getRecipeResult() {
@@ -241,7 +241,7 @@ public class TileEntityTrophyForge extends TileEntityLockable implements ITickab
     }
 	
 	public String getGuiID() {
-		return "minecraft:trophy_forge";
+		return "frazionz:trophy_forge";
 	}
 	
 	
@@ -252,7 +252,8 @@ public class TileEntityTrophyForge extends TileEntityLockable implements ITickab
 	
 	public int getField(int id)
     {
-        switch (id) {
+        switch (id)
+        {
             case 0:
                 return this.forgeTime;
 

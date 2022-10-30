@@ -16,7 +16,6 @@ public class ContainerTrophyForge extends Container implements TileMachine
 	private final IInventory tileTrophyForge;
     private int forgeTime;
     private int totalForgeTime;
-    private int SlotLimit = 1;
 	private int isForging;
 	
 	public ContainerTrophyForge(InventoryPlayer playerInventory, IInventory furnaceInventory)

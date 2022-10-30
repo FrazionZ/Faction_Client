@@ -69,26 +69,26 @@ public class BlockEntityTag implements IDataWalker
         map.put("minecraft:furnace", "Furnace");
         map.put("minecraft:lit_furnace", "Furnace");
         
-        map.put("minecraft:yellite_furnace", "yellite_furnace");
-        map.put("minecraft:lit_yellite_furnace", "yellite_furnace");
-        map.put("minecraft:bauxite_furnace", "bauxite_furnace");
-        map.put("minecraft:lit_bauxite_furnace", "bauxite_furnace");
-        map.put("minecraft:onyx_furnace", "onyx_furnace");
-        map.put("minecraft:lit_onyx_furnace", "onyx_furnace");
-        map.put("minecraft:frazion_furnace", "frazion_furnace");
-        map.put("minecraft:lit_frazion_furnace", "frazion_furnace");
+        map.put("frazionz:yellite_furnace", "yellite_furnace");
+        map.put("frazionz:lit_yellite_furnace", "yellite_furnace");
+        map.put("frazionz:bauxite_furnace", "bauxite_furnace");
+        map.put("frazionz:lit_bauxite_furnace", "bauxite_furnace");
+        map.put("frazionz:onyx_furnace", "onyx_furnace");
+        map.put("frazionz:lit_onyx_furnace", "onyx_furnace");
+        map.put("frazionz:frazion_furnace", "frazion_furnace");
+        map.put("frazionz:lit_frazion_furnace", "frazion_furnace");
         map.put("frazionz:ameliorator", "ameliorator");
-        map.put("minecraft:trophy_forge", "trophy_forge");
-        map.put("minecraft:grimoire_pedestal", "grimoire_pedestal");
+        map.put("frazionz:trophy_forge", "trophy_forge");
+        map.put("frazionz:grimoire_pedestal", "grimoire_pedestal");
         
         map.put("minecraft:chest", "Chest");
         
-        map.put("minecraft:dirt_chest", "dirt_chest");
-        map.put("minecraft:yellite_chest", "yellite_chest");
-        map.put("minecraft:bauxite_chest", "bauxite_chest");
-        map.put("minecraft:frazion_chest", "frazion_chest");
-        map.put("minecraft:hdv_chest", "hdv_chest");
-        map.put("minecraft:onyx_chest", "onyx_chest");
+        map.put("frazionz:dirt_chest", "dirt_chest");
+        map.put("frazionz:yellite_chest", "yellite_chest");
+        map.put("frazionz:bauxite_chest", "bauxite_chest");
+        map.put("frazionz:frazion_chest", "frazion_chest");
+        map.put("frazionz:hdv_chest", "hdv_chest");
+        map.put("frazionz:onyx_chest", "onyx_chest");
         
         map.put("minecraft:trapped_chest", "Chest");
         map.put("minecraft:ender_chest", "EnderChest");
@@ -105,7 +105,7 @@ public class BlockEntityTag implements IDataWalker
         map.put("minecraft:skull", "Skull");
         map.put("minecraft:daylight_detector", "DLDetector");
         map.put("minecraft:hopper", "Hopper");
-        map.put("minecraft:z_hopper", "z_hopper");
+        map.put("frazionz:z_hopper", "z_hopper");
 
         map.put("minecraft:banner", "Banner");
         map.put("minecraft:flower_pot", "FlowerPot");
@@ -124,11 +124,11 @@ public class BlockEntityTag implements IDataWalker
         map.put("minecraft:end_gateway", "EndGateway");
         map.put("minecraft:shield", "Shield");
         
-        map.put("minecraft:spawner_inventory", "spawner_inventory");
-        map.put("minecraft:yellite_brewing_stand", "yellite_brewing_stand");
-        map.put("minecraft:bauxite_brewing_stand", "bauxite_brewing_stand");
-        map.put("minecraft:onyx_brewing_stand", "onyx_brewing_stand");
-        map.put("minecraft:frazion_brewing_stand", "frazion_brewing_stand");
+        map.put("frazionz:spawner_inventory", "spawner_inventory");
+        map.put("frazionz:yellite_brewing_stand", "yellite_brewing_stand");
+        map.put("frazionz:bauxite_brewing_stand", "bauxite_brewing_stand");
+        map.put("frazionz:onyx_brewing_stand", "onyx_brewing_stand");
+        map.put("frazionz:frazion_brewing_stand", "frazion_brewing_stand");
         
         map = ITEM_ID_TO_BLOCK_ENTITY_ID;
         map.put("minecraft:furnace", "minecraft:furnace");
@@ -143,7 +143,7 @@ public class BlockEntityTag implements IDataWalker
         map.put("minecraft:mob_spawner", "minecraft:mob_spawner");
         map.put("minecraft:noteblock", "minecraft:noteblock");
         map.put("minecraft:brewing_stand", "minecraft:brewing_stand");
-        map.put("minecraft:enhanting_table", "minecraft:enchanting_table");
+        map.put("minecraft:enchanting_table", "minecraft:enchanting_table");
         map.put("minecraft:command_block", "minecraft:command_block");
         map.put("minecraft:beacon", "minecraft:beacon");
         map.put("minecraft:skull", "minecraft:skull");
@@ -184,29 +184,29 @@ public class BlockEntityTag implements IDataWalker
         map.put("minecraft:end_gateway", "minecraft:end_gateway");
         map.put("minecraft:shield", "minecraft:shield");
     
-        map.put("minecraft:yellite_furnace", "minecraft:yellite_furnace");
-        map.put("minecraft:lit_yellite_furnace", "minecraft:yellite_furnace");
-        map.put("minecraft:bauxite_furnace", "minecraft:bauxite_furnace");
-        map.put("minecraft:lit_bauxite_furnace", "minecraft:bauxite_furnace");
-        map.put("minecraft:onyx_furnace", "minecraft:onyx_furnace");
-        map.put("minecraft:lit_onyx_furnace", "minecraft:onyx_furnace");
-        map.put("minecraft:frazion_furnace", "minecraft:frazion_furnace");
-        map.put("minecraft:lit_frazion_furnace", "minecraft:frazion_furnace");
+        map.put("frazionz:yellite_furnace", "frazionz:yellite_furnace");
+        map.put("frazionz:lit_yellite_furnace", "frazionz:yellite_furnace");
+        map.put("frazionz:bauxite_furnace", "frazionz:bauxite_furnace");
+        map.put("frazionz:lit_bauxite_furnace", "frazionz:bauxite_furnace");
+        map.put("frazionz:onyx_furnace", "frazionz:onyx_furnace");
+        map.put("frazionz:lit_onyx_furnace", "frazionz:onyx_furnace");
+        map.put("frazionz:frazion_furnace", "frazionz:frazion_furnace");
+        map.put("frazionz:lit_frazion_furnace", "frazionz:frazion_furnace");
         map.put("frazionz:ameliorator", "frazionz:ameliorator");
-        map.put("minecraft:trophy_forge", "minecraft:trophy_forge");
-        map.put("minecraft:dirt_chest", "minecraft:dirt_chest");
-        map.put("minecraft:yellite_chest", "minecraft:yellite_chest");
-        map.put("minecraft:bauxite_chest", "minecraft:bauxite_chest");
-        map.put("minecraft:frazion_chest", "minecraft:frazion_chest");
-        map.put("minecraft:hdv_chest", "minecraft:hdv_chest");
-        map.put("minecraft:spawner_inventory", "minecraft:spawner_inventory");
-        map.put("minecraft:onyx_chest", "minecraft:onyx_chest");
-        map.put("minecraft:z_hopper", "minecraft:z_hopper");
-        map.put("minecraft:yellite_brewing_stand", "minecraft:yellite_brewing_stand");
-        map.put("minecraft:bauxite_brewing_stand", "minecraft:bauxite_brewing_stand");
-        map.put("minecraft:onyx_brewing_stand", "minecraft:onyx_brewing_stand");
-        map.put("minecraft:frazion_brewing_stand", "minecraft:frazion_brewing_stand");
-        map.put("minecraft:grimoire_pedestal", "minecraft:grimoire_pedestal");
+        map.put("frazionz:trophy_forge", "frazionz:trophy_forge");
+        map.put("frazionz:dirt_chest", "frazionz:dirt_chest");
+        map.put("frazionz:yellite_chest", "frazionz:yellite_chest");
+        map.put("frazionz:bauxite_chest", "frazionz:bauxite_chest");
+        map.put("frazionz:frazion_chest", "frazionz:frazion_chest");
+        map.put("frazionz:hdv_chest", "frazionz:hdv_chest");
+        map.put("frazionz:spawner_inventory", "frazionz:spawner_inventory");
+        map.put("frazionz:onyx_chest", "frazionz:onyx_chest");
+        map.put("frazionz:z_hopper", "frazionz:z_hopper");
+        map.put("frazionz:yellite_brewing_stand", "frazionz:yellite_brewing_stand");
+        map.put("frazionz:bauxite_brewing_stand", "frazionz:bauxite_brewing_stand");
+        map.put("frazionz:onyx_brewing_stand", "frazionz:onyx_brewing_stand");
+        map.put("frazionz:frazion_brewing_stand", "frazionz:frazion_brewing_stand");
+        map.put("frazionz:grimoire_pedestal", "frazionz:grimoire_pedestal");
     
     }
 }

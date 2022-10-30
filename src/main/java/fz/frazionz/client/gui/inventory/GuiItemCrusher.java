@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.resources.ResourceLocation;
+import org.lwjgl.Sys;
 
 public class GuiItemCrusher extends GuiContainer
 {
