@@ -392,6 +392,7 @@ public class Items
     
     public static final Item BOTTLEXP;
     public static final Item FACTION_TOKEN;
+    public static final Item IRON_TOOTH;
 
     private static Item getRegisteredItem(String name)
     {
@@ -795,6 +796,7 @@ public class Items
             
             BOTTLEXP = getRegisteredItem("frazionz:bottle_xp");
             FACTION_TOKEN = getRegisteredItem("frazionz:faction_token");
+            IRON_TOOTH = getRegisteredItem("frazionz:iron_tooth");
         }
     }
 }

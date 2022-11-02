@@ -1,0 +1,19 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "XXX",
+    "III",
+    " I "
+  ],
+  "key": {
+    "X": {
+      "item": "frazionz:onyx_block"
+    },
+    "I": {
+      "item": "iron_block"
+    }
+  },
+  "result": {
+    "item": "frazionz:iron_tooth"
+  }
+}

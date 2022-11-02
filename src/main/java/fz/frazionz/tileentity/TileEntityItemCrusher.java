@@ -1,7 +1,7 @@
 package fz.frazionz.tileentity;
 
 import fz.frazionz.client.renderer.tileentity.TickCounter;
-import fz.frazionz.crafting.ItemCrusherRecipes;
+import fz.frazionz.client.recipes.ItemCrusherRecipes;
 import fz.frazionz.inventory.ContainerItemCrusher;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;

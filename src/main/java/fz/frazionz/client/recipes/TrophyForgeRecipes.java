@@ -1,22 +1,14 @@
-package fz.frazionz.crafting;
+package fz.frazionz.client.recipes;
 
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Maps;
-import com.google.common.collect.Multimap;
 
-import fz.frazionz.item.ItemTrophy;
-import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.init.Items;
-import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 
 public class TrophyForgeRecipes
 {

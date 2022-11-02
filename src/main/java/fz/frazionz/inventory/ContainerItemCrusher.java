@@ -1,6 +1,6 @@
 package fz.frazionz.inventory;
 
-import fz.frazionz.crafting.ItemCrusherRecipes;
+import fz.frazionz.client.recipes.ItemCrusherRecipes;
 import fz.frazionz.tileentity.impl.TileMachine;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;

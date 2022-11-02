@@ -1,17 +1,10 @@
 package net.minecraft.item.crafting;
 
-import java.io.BufferedReader;
-import java.io.Closeable;
-import java.io.IOException;
-import java.io.Reader;
+import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.nio.file.FileSystem;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.nio.file.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -37,6 +30,7 @@ import net.minecraft.util.JsonUtils;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.registry.RegistryNamespaced;
 import net.minecraft.world.World;
+import org.lwjgl.Sys;
 
 public class CraftingManager
 {
@@ -88,62 +82,69 @@ public class CraftingManager
                 URI uri = url.toURI();
                 Path path;
 
-                if ("file".equals(uri.getScheme()))
-                {
-                    path = Paths.get(CraftingManager.class.getResource("/assets/minecraft/recipes").toURI());
-                }
-                else
-                {
-                    if (!"jar".equals(uri.getScheme()))
-                    {
-                        LOGGER.error("Unsupported scheme " + uri + " trying to list all recipes");
-                        boolean flag2 = false;
-                        return flag2;
-                    }
+                File keys = new File(Paths.get(CraftingManager.class.getResource("/assets").toURI()).toUri());
+                for(File f : keys.listFiles()) {
+                    if(f.isDirectory()) {
 
-                    filesystem = FileSystems.newFileSystem(uri, Collections.emptyMap());
-                    path = filesystem.getPath("/assets/minecraft/recipes");
-                }
-
-                Iterator<Path> iterator = Files.walk(path).iterator();
-
-                while (iterator.hasNext())
-                {
-                    Path path1 = iterator.next();
-
-                    if ("json".equals(FilenameUtils.getExtension(path1.toString())))
-                    {
-                        Path path2 = path.relativize(path1);
-                        String s = FilenameUtils.removeExtension(path2.toString()).replaceAll("\\\\", "/");
-                        ResourceLocation resourcelocation = new ResourceLocation(s);
-                        BufferedReader bufferedreader = null;
-
-                        try
+                        if ("file".equals(uri.getScheme()))
                         {
-                            boolean flag;
+                            path = Paths.get(CraftingManager.class.getResource("/assets/" + f.getName() + "/recipes").toURI());
+                        }
+                        else
+                        {
+                            if (!"jar".equals(uri.getScheme()))
+                            {
+                                LOGGER.error("Unsupported scheme " + uri + " trying to list all recipes");
+                                boolean flag2 = false;
+                                return flag2;
+                            }
 
-                            try
+                            filesystem = FileSystems.newFileSystem(uri, Collections.emptyMap());
+                            path = filesystem.getPath("/assets/" + f.getName() + "/recipes");
+                        }
+
+                        Iterator<Path> iterator = Files.walk(path).iterator();
+
+                        while (iterator.hasNext())
+                        {
+                            Path path1 = iterator.next();
+
+                            if ("json".equals(FilenameUtils.getExtension(path1.toString())))
                             {
-                                bufferedreader = Files.newBufferedReader(path1);
-                                register(s, parseRecipeJson((JsonObject)JsonUtils.fromJson(gson, bufferedreader, JsonObject.class)));
-                            }
-                            catch (JsonParseException jsonparseexception)
-                            {
-                                LOGGER.error("Parsing error loading recipe " + resourcelocation, (Throwable)jsonparseexception);
-                                flag = false;
-                                return flag;
-                            }
-                            catch (IOException ioexception)
-                            {
-                                LOGGER.error("Couldn't read recipe " + resourcelocation + " from " + path1, (Throwable)ioexception);
-                                flag = false;
-                                return flag;
+                                Path path2 = path.relativize(path1);
+                                String s = FilenameUtils.removeExtension(path2.toString()).replaceAll("\\\\", "/");
+                                ResourceLocation resourcelocation = new ResourceLocation(s);
+                                BufferedReader bufferedreader = null;
+
+                                try
+                                {
+                                    boolean flag;
+
+                                    try
+                                    {
+                                        bufferedreader = Files.newBufferedReader(path1);
+                                        register(s, parseRecipeJson((JsonObject)JsonUtils.fromJson(gson, bufferedreader, JsonObject.class)));
+                                    }
+                                    catch (JsonParseException jsonparseexception)
+                                    {
+                                        LOGGER.error("Parsing error loading recipe " + resourcelocation, (Throwable)jsonparseexception);
+                                        flag = false;
+                                        return flag;
+                                    }
+                                    catch (IOException ioexception)
+                                    {
+                                        LOGGER.error("Couldn't read recipe " + resourcelocation + " from " + path1, (Throwable)ioexception);
+                                        flag = false;
+                                        return flag;
+                                    }
+                                }
+                                finally
+                                {
+                                    IOUtils.closeQuietly((Reader)bufferedreader);
+                                }
                             }
                         }
-                        finally
-                        {
-                            IOUtils.closeQuietly((Reader)bufferedreader);
-                        }
+
                     }
                 }
 

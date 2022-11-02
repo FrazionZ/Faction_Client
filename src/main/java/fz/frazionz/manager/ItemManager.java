@@ -366,6 +366,8 @@ public class ItemManager {
         registerItem(1306, "rune_regeneration", (new Item()).setFull3D().setTranslationKey("rune_regeneration").setCreativeTab(CreativeTabs.MATERIALS));
         registerItem(1307, "rune_resistance", (new Item()).setFull3D().setTranslationKey("rune_resistance").setCreativeTab(CreativeTabs.MATERIALS));
         registerItem(1308, "rune_speed", (new Item()).setFull3D().setTranslationKey("rune_speed").setCreativeTab(CreativeTabs.MATERIALS));
+
+        registerItem(1320, "iron_tooth", (new Item()).setFull3D().setTranslationKey("iron_tooth").setCreativeTab(CreativeTabs.MATERIALS));
         
 	}
 	

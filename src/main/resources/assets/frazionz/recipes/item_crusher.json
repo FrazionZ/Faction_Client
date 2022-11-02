@@ -1,0 +1,25 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "RXR",
+    "TTT",
+    "XVX"
+  ],
+  "key": {
+    "X": {
+      "item": "frazionz:onyx_block"
+    },
+    "R": {
+      "item": "redstone_block"
+    },
+    "T": {
+      "item": "frazionz:iron_tooth"
+    },
+    "V": {
+      "item": "hopper"
+    }
+  },
+  "result": {
+    "item": "frazionz:item_crusher"
+  }
+}

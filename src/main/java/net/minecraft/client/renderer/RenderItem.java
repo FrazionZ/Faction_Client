@@ -1619,6 +1619,8 @@ public class RenderItem implements IResourceManagerReloadListener
         
         this.registerBlock(Blocks.GRIMOIRE_PEDESTAL, "frazionz:grimoire_pedestal");
         this.registerBlock(Blocks.ITEM_CRUSHER, "frazionz:item_crusher");
+
+        this.registerItem(Items.IRON_TOOTH, "frazionz:iron_tooth");
         
         
         if (Reflector.ModelLoader_onRegisterItems.exists())

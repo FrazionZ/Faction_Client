@@ -1,7 +1,7 @@
 package fz.frazionz.tileentity;
 
 import fz.frazionz.client.renderer.tileentity.TickCounter;
-import fz.frazionz.crafting.TrophyForgeRecipes;
+import fz.frazionz.client.recipes.TrophyForgeRecipes;
 import fz.frazionz.inventory.ContainerTrophyForge;
 import fz.frazionz.item.ItemTrophy;
 import net.minecraft.entity.ai.attributes.AttributeModifier;

@@ -1,6 +1,6 @@
 package fz.frazionz.inventory;
 
-import fz.frazionz.crafting.TrophyForgeRecipes;
+import fz.frazionz.client.recipes.TrophyForgeRecipes;
 import fz.frazionz.tileentity.impl.TileMachine;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;

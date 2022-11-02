@@ -55,10 +55,10 @@ item.cosmic_powder.name=§bCosmic Powder
 item.cosmic_nugget.name=§bCosmic Nugget
 item.cosmic_ingot.name=§bCosmic Ingot
 
-item.banana.name=§eBanane
-item.strawberry.name=§cFraise
-item.pizza.name=§ePizza
-item.donuts.name=§eDonuts
+item.banana.name=Banane
+item.strawberry.name=Fraise
+item.pizza.name=Pizza
+item.donuts.name=Donuts
 
 item.key_vote.name=§bVote Crystal
 item.key_farm.name=§6Farm Crystal
@@ -230,8 +230,9 @@ tile.yellite_apple.name=§eYellite Apple
 tile.bauxite_apple.name=§6Bauxite Apple
 tile.onyx_apple.name=§7Onyx Apple
 tile.frazion_apple.name=§dFrazion Apple
-tile.trophy_forge.name=§eTrophy Forge
-item.trophy_forge.name=§eTrophy Forge
+tile.trophy_forge.name=Trophy Forge
+item.trophy_forge.name=Trophy Forge
+tile.item_crusher.name=Item Crusher
 tile.grimoide_pedestal.name=Grimoide Pedestal
 
 tile.hellrock.default.name=Netherrack
@@ -257,27 +258,27 @@ item.record.fz7.desc=§e§oDiggy Diggy Hole
 item.record.fz8.desc=§e§oKana Boon - Silhouette
 item.record.fz9.desc=§e§oFall Out Boy - The Phoenix
 item.record.fz10.desc=§e§oBiglo&Oli - La vie de reve
-tile.random_ore.name=§bRandom Ore
-tile.crimson_roots.name=§cCrimson Roots
-tile.crimson_fungi.name=§cCrimson Fungi
-tile.bauxite_chest.name=§6Bauxite Chest
-tile.frazion_chest.name=§dFrazion Chest
+tile.random_ore.name=Random Ore
+tile.crimson_roots.name=Crimson Roots
+tile.crimson_fungi.name=Crimson Fungi
+tile.bauxite_chest.name=Bauxite Chest
+tile.frazion_chest.name=Frazion Chest
 
 item.spawner_pickaxe.name=§aSpawner Pickaxe
 item.farm_sword.name=§aFarm Sword
 item.dynamite_arrow.name=Dynamite Arrow
 item.dynamite.name=Dynamite
 tile.renforced_sand.name=Renforced Sand
-tile.obsidian_yellite.name=§eYellite Obsidian
-tile.obsidian_bauxite.name=§6Bauxite Obsidian
-tile.obsidian_onyx.name=§7Onyx Obsidian
-tile.obsidian_frazion.name=§dFrazion Obsidian
-entity.illager.name=§dCosmicker
-entity.herobrine_1.name=§eHerobrine
+tile.obsidian_yellite.name=Yellite Obsidian
+tile.obsidian_bauxite.name=Bauxite Obsidian
+tile.obsidian_onyx.name=Onyx Obsidian
+tile.obsidian_frazion.name=Frazion Obsidian
+entity.illager.name=Cosmicker
+entity.herobrine_1.name=Herobrine
 
-item.frazion_dagger.name=§dFrazion Dagger
+item.frazion_dagger.name=Frazion Dagger
 
-item.billet.name=§7Billet
+item.billet.name=Billet
 
 container.dirtchest=Dirt Chest
 container.YelliteChest=Yellite Chest
@@ -306,8 +307,8 @@ splash_potion.effect.nofall=Splash Potion of No Fall
 lingering_potion.effect.nofall=Lingering Potion of No Fall
 tipped_arrow.effect.nofall=Arrow of No Fall
 
-item.bottlexp.name=§6Bottle XP
-item.faction_token.name=§6Faction Token
+item.bottlexp.name=Bottle XP
+item.faction_token.name=Faction Token
 
 fz.options.frazionz.UI=FrazionZ UI
 
@@ -326,5 +327,7 @@ tile.stone_blackstone_smooth.chiseled.name=Smooth Blackstone Chiseled
 
 tile.block_placer_chest.name=Admin Block Placer Chest
 tile.block_placer_trapchest.name=Admin Block Placer Trapped Chest
-item.frazion.name=§dFrazion
-item.bottle_xp.name=§6Bottle XP
+item.frazion.name=Frazion
+item.bottle_xp.name=Bottle XP
+
+item.iron_tooth.name=Iron Tooth
