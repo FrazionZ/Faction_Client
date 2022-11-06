@@ -1,26 +1,18 @@
 package fz.frazionz.item;
 
 import java.util.*;
-import java.util.Map.Entry;
-
-import com.google.common.collect.Multimap;
 
 import fz.frazionz.client.stats.EnumStats;
-import fz.frazionz.utils.MathUtils;
+import fz.frazionz.item.interfaces.IStatItem;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.ai.attributes.IAttribute;
-import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 
-public abstract class ItemTrophy extends Item {
+public abstract class ItemTrophy extends Item implements IStatItem {
 
 	public ItemTrophy() {
 		this.setCreativeTab(CreativeTabs.MATERIALS);
@@ -62,14 +54,14 @@ public abstract class ItemTrophy extends Item {
         setBaseStatValue(stack, getRandomStatModifier());
     }
     public int getBaseStatValue(ItemStack stack) {
-        return getOtherStatValue(stack, getBaseStat());
+        return getStatValue(stack, getBaseStat());
     }
 
     public void setBaseStatValue(ItemStack stack, int statValue) {
-        setOtherStatValue(stack, getBaseStat(), statValue);
+        setStatValue(stack, getBaseStat(), statValue);
     }
 
-    public void setOtherStatValue(ItemStack stack, EnumStats stat, int value) {
+    public void setStatValue(ItemStack stack, EnumStats stat, int value) {
         NBTTagCompound nbt = stack.getTagCompound();
         if(nbt == null) {
             nbt = new NBTTagCompound();
@@ -78,7 +70,7 @@ public abstract class ItemTrophy extends Item {
         stack.setTagCompound(nbt);
     }
 
-    public int getOtherStatValue(ItemStack stack, EnumStats stat) {
+    public int getStatValue(ItemStack stack, EnumStats stat) {
         NBTTagCompound nbt = stack.getTagCompound();
         if(nbt != null) {
             if(nbt.hasKey(stat.name())) {

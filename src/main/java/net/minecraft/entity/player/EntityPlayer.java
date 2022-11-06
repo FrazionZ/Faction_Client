@@ -2,6 +2,7 @@ package net.minecraft.entity.player;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.annotation.Nullable;
@@ -10,6 +11,9 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
 import com.mojang.authlib.GameProfile;
 
+import fz.frazionz.client.stats.EnumStats;
+import fz.frazionz.client.stats.PlayerStats;
+import fz.frazionz.client.stats.SimpleStat;
 import fz.frazionz.tileentity.TileEntityItemCrusher;
 import fz.frazionz.tileentity.TileEntityTrophyForge;
 import net.minecraft.block.Block;
@@ -98,6 +102,8 @@ import net.minecraft.world.World;
 @SuppressWarnings("incomplete-switch")
 public abstract class EntityPlayer extends EntityLivingBase
 {
+    private PlayerStats stats;
+
     private static final DataParameter<Float> ABSORPTION = EntityDataManager.<Float>createKey(EntityPlayer.class, DataSerializers.FLOAT);
     private static final DataParameter<Integer> PLAYER_SCORE = EntityDataManager.<Integer>createKey(EntityPlayer.class, DataSerializers.VARINT);
     protected static final DataParameter<Byte> PLAYER_MODEL_FLAG = EntityDataManager.<Byte>createKey(EntityPlayer.class, DataSerializers.BYTE);
@@ -233,6 +239,7 @@ public abstract class EntityPlayer extends EntityLivingBase
         BlockPos blockpos = worldIn.getSpawnPoint();
         this.setLocationAndAngles((double)blockpos.getX() + 0.5D, (double)(blockpos.getY() + 1), (double)blockpos.getZ() + 0.5D, 0.0F, 0.0F);
         this.unused180 = 180.0F;
+        this.stats = new PlayerStats(this);
     }
 
     protected void applyEntityAttributes()
@@ -266,8 +273,6 @@ public abstract class EntityPlayer extends EntityLivingBase
      */
     public void onUpdate()
     {
-    	//System.out.println("HEALTH: " + this.getHealth());
-    	//System.out.println("MAX HEALTH: " + this.getMaxHealth());
     	this.tickCount++;
         this.noClip = this.isSpectator();
 
@@ -364,6 +369,8 @@ public abstract class EntityPlayer extends EntityLivingBase
 
             this.itemStackMainHand = itemstack.isEmpty() ? ItemStack.EMPTY : itemstack.copy();
         }
+
+        this.stats.update();
 
         this.cooldownTracker.tick();
         this.updateSize();
@@ -3027,6 +3034,10 @@ public abstract class EntityPlayer extends EntityLivingBase
     
     public void setHasGrimoire(boolean hasGrimoire) {
     	this.hasGrimoire = hasGrimoire;
+    }
+
+    public PlayerStats getStats() {
+        return stats;
     }
 
     public static enum EnumChatVisibility
