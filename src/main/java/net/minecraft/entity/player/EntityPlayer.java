@@ -2,7 +2,6 @@ package net.minecraft.entity.player;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 import javax.annotation.Nullable;
@@ -13,7 +12,6 @@ import com.mojang.authlib.GameProfile;
 
 import fz.frazionz.client.stats.EnumStats;
 import fz.frazionz.client.stats.PlayerStats;
-import fz.frazionz.client.stats.SimpleStat;
 import fz.frazionz.tileentity.TileEntityItemCrusher;
 import fz.frazionz.tileentity.TileEntityTrophyForge;
 import net.minecraft.block.Block;
@@ -98,6 +96,7 @@ import net.minecraft.world.GameType;
 import net.minecraft.world.IInteractionObject;
 import net.minecraft.world.LockCode;
 import net.minecraft.world.World;
+import org.apache.logging.log4j.LogManager;
 
 @SuppressWarnings("incomplete-switch")
 public abstract class EntityPlayer extends EntityLivingBase
@@ -1255,6 +1254,8 @@ public abstract class EntityPlayer extends EntityLivingBase
         	
             damageAmount = this.applyArmorCalculations(damageSrc, damageAmount);
             damageAmount = this.applyPotionDamageCalculations(damageSrc, damageAmount);
+            damageAmount = applyResistanceStatsCalculations(damageSrc, damageAmount);
+
             float f = damageAmount;
             damageAmount = Math.max(damageAmount - this.getAbsorptionAmount(), 0.0F);
             this.setAbsorptionAmount(this.getAbsorptionAmount() - (f - damageAmount));
@@ -3102,5 +3103,9 @@ public abstract class EntityPlayer extends EntityLivingBase
         TOO_FAR_AWAY,
         OTHER_PROBLEM,
         NOT_SAFE;
+    }
+
+    public float applyResistanceStatsCalculations(DamageSource source, float damage) {
+    	return damage / (this.stats.getStat(EnumStats.RESISTANCE)/100f);
     }
 }

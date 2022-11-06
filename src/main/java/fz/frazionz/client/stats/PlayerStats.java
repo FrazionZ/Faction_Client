@@ -48,6 +48,7 @@ public class PlayerStats {
             }
         }
     }
+
     public int getStat(EnumStats stat) {
         return stats.get(stat).getValue();
     }
