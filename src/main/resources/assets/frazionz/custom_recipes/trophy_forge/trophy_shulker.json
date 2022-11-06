@@ -1,0 +1,21 @@
+{
+  "pattern": [
+    "IRI",
+    "RPR",
+    "IRI"
+  ],
+  "key": {
+    "I": {
+      "item": "minecraft:shulker_shell"
+    },
+    "R": {
+      "item": "frazionz:rune_resistance"
+    },
+    "P":{
+      "item": "frazionz:cosmic_powder"
+    }
+  },
+  "result": {
+    "item": "frazionz:trophy_shulker"
+  }
+}

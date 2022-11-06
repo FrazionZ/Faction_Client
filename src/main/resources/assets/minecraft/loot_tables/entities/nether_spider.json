@@ -41,7 +41,7 @@
             "entries": [
                 {
                     "type": "item",
-                    "name": "minecraft:nether_string",
+                    "name": "frazionz:nether_string",
                     "weight": 1
                 }
             ]

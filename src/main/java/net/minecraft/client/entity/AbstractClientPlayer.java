@@ -9,7 +9,6 @@ import com.mojang.authlib.GameProfile;
 
 import fz.frazionz.api.HTTPFunctions;
 import fz.frazionz.api.gsonObj.ObjPlayerSkinsInfo;
-import fz.frazionz.entity.player.PlayerAttribute;
 import fz.frazionz.utils.FzSkinUtils;
 import fz.frazionz.utils.FzSkinUtils.TextureType;
 import net.minecraft.client.Minecraft;

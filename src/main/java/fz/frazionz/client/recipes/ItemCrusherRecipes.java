@@ -62,11 +62,12 @@ public class ItemCrusherRecipes {
     public static ItemStack[] getResult(ItemStack item)
     {
         Iterator<Entry<ItemStack, CrushResult>> it = RECIPES.entrySet().iterator();
-        
+
+        ItemStack[] result = null;
         while(it.hasNext())
         {
             Entry <ItemStack, CrushResult>entry = it.next();
-            if (areItemStackEqual(entry.getKey(), item)) 
+            if (areItemStackEqual(entry.getKey(), item))
             {
                 return entry.getValue().getItems();
             }
@@ -207,7 +208,7 @@ public class ItemCrusherRecipes {
     		List<CrushItem> items = new ArrayList<>();
     		for(int i = 0; i < json.size(); i++) {
     			CrushItem item = new CrushItem(json.get(i).getAsJsonObject());
-    			if(item.isValid() && item.randomChance())
+    			if(item.isValid())
     				items.add(item);
     		}
     		this.stacks = new CrushItem[items.size()];
@@ -217,8 +218,10 @@ public class ItemCrusherRecipes {
     	
     	public ItemStack[] getItems() {
     		ItemStack[] stack = new ItemStack[stacks.length];
-    		for(int i = 0; i < stacks.length; i++)
-    			stack[i] = stacks[i].getItem();
+    		for(int i = 0; i < stacks.length; i++) {
+                if(stacks[i].randomChance())
+                    stack[i] = stacks[i].getItem();
+            }
     		return stack;
     	}
     }

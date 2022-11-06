@@ -331,3 +331,9 @@ item.frazion.name=Frazion
 item.bottle_xp.name=Bottle XP
 
 item.iron_tooth.name=Iron Tooth
+
+frazionz.stat.health.name=Health
+frazionz.stat.damage.name=Damage
+frazionz.stat.resistance.name=Resistance
+frazionz.stat.regeneration.name=Regeneration
+frazionz.stat.speed.name=Speed

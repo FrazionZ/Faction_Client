@@ -10,7 +10,6 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
 import com.mojang.authlib.GameProfile;
 
-import fz.frazionz.entity.player.PlayerAttribute;
 import fz.frazionz.tileentity.TileEntityItemCrusher;
 import fz.frazionz.tileentity.TileEntityTrophyForge;
 import net.minecraft.block.Block;
@@ -239,7 +238,6 @@ public abstract class EntityPlayer extends EntityLivingBase
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        PlayerAttribute.registerAllAttribute(this);
         this.getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(1.0D);
         
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.10000000149011612D);

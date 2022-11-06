@@ -856,64 +856,61 @@ public final class ItemStack
             }
         }
 
-        if(!(this.getItem() instanceof ItemTrophy)) {
-	        for (EntityEquipmentSlot entityequipmentslot : EntityEquipmentSlot.values())
-	        {
-	            Multimap<String, AttributeModifier> multimap = this.getAttributeModifiers(entityequipmentslot);
+        for (EntityEquipmentSlot entityequipmentslot : EntityEquipmentSlot.values())
+        {
+            Multimap<String, AttributeModifier> multimap = this.getAttributeModifiers(entityequipmentslot);
 	
-	            if (!multimap.isEmpty() && (i1 & 2) == 0)
-	            {
-	                list.add("");
-	                list.add(I18n.translateToLocal("item.modifiers." + entityequipmentslot.getName()));
+            if (!multimap.isEmpty() && (i1 & 2) == 0)
+            {
+                list.add("");
+                list.add(I18n.translateToLocal("item.modifiers." + entityequipmentslot.getName()));
 	
-	                for (Entry<String, AttributeModifier> entry : multimap.entries())
-	                {
-	                    AttributeModifier attributemodifier = entry.getValue();
-	                    double d0 = attributemodifier.getAmount();
-	                    boolean flag = false;
+                for (Entry<String, AttributeModifier> entry : multimap.entries())
+                {
+                    AttributeModifier attributemodifier = entry.getValue();
+                    double d0 = attributemodifier.getAmount();
+                    boolean flag = false;
 	
-	                    if (playerIn != null)
+                    if (playerIn != null)
+                    {
+                        if (attributemodifier.getID() == Item.ATTACK_DAMAGE_MODIFIER)
+                        {
+                            d0 = d0 + playerIn.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getBaseValue();
+                            d0 = d0 + (double)EnchantmentHelper.getModifierForCreature(this, EnumCreatureAttribute.UNDEFINED);
+                            flag = true;
+                        }
+                        /*else if (attributemodifier.getID() == Item.ATTACK_SPEED_MODIFIER)
 	                    {
-	                        if (attributemodifier.getID() == Item.ATTACK_DAMAGE_MODIFIER)
-	                        {
-	                            d0 = d0 + playerIn.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getBaseValue();
-	                            d0 = d0 + (double)EnchantmentHelper.getModifierForCreature(this, EnumCreatureAttribute.UNDEFINED);
-	                            flag = true;
-	                        }
-	                        /*else if (attributemodifier.getID() == Item.ATTACK_SPEED_MODIFIER)
-	                        {
-	                            d0 += playerIn.getEntityAttribute(SharedMonsterAttributes.ATTACK_SPEED).getBaseValue();
-	                            flag = true;
-	                        }*/
-	                    }
-	
-	                    double d1;
-	
-	                    if (attributemodifier.getOperation() != 1 && attributemodifier.getOperation() != 2)
-	                    {
-	                        d1 = d0;
-	                    }
-	                    else
-	                    {
-	                        d1 = d0 * 100.0D;
-	                    }
-	
-	                    if (flag)
-	                    {
-	                        list.add(" " + I18n.translateToLocalFormatted("attribute.modifier.equals." + attributemodifier.getOperation(), DECIMALFORMAT.format(d1), I18n.translateToLocal("attribute.name." + (String)entry.getKey())));
-	                    }
-	                    else if (d0 > 0.0D)
-	                    {
-	                        list.add(TextFormatting.BLUE + " " + I18n.translateToLocalFormatted("attribute.modifier.plus." + attributemodifier.getOperation(), DECIMALFORMAT.format(d1), I18n.translateToLocal("attribute.name." + (String)entry.getKey())));
-	                    }
-	                    else if (d0 < 0.0D)
-	                    {
-	                        d1 = d1 * -1.0D;
-	                        list.add(TextFormatting.RED + " " + I18n.translateToLocalFormatted("attribute.modifier.take." + attributemodifier.getOperation(), DECIMALFORMAT.format(d1), I18n.translateToLocal("attribute.name." + (String)entry.getKey())));
-	                    }
-	                }
-	            }
-	        }
+	                        d0 += playerIn.getEntityAttribute(SharedMonsterAttributes.ATTACK_SPEED).getBaseValue();
+	                        flag = true;
+	                     }*/
+                    }
+                    double d1;
+
+                    if (attributemodifier.getOperation() != 1 && attributemodifier.getOperation() != 2)
+                    {
+                        d1 = d0;
+                    }
+                    else
+                    {
+                        d1 = d0 * 100.0D;
+                    }
+
+                    if (flag)
+                    {
+                        list.add(" " + I18n.translateToLocalFormatted("attribute.modifier.equals." + attributemodifier.getOperation(), DECIMALFORMAT.format(d1), I18n.translateToLocal("attribute.name." + (String)entry.getKey())));
+                    }
+                    else if (d0 > 0.0D)
+                    {
+                        list.add(TextFormatting.BLUE + " " + I18n.translateToLocalFormatted("attribute.modifier.plus." + attributemodifier.getOperation(), DECIMALFORMAT.format(d1), I18n.translateToLocal("attribute.name." + (String)entry.getKey())));
+                    }
+                    else if (d0 < 0.0D)
+                    {
+                        d1 = d1 * -1.0D;
+                        list.add(TextFormatting.RED + " " + I18n.translateToLocalFormatted("attribute.modifier.take." + attributemodifier.getOperation(), DECIMALFORMAT.format(d1), I18n.translateToLocal("attribute.name." + (String)entry.getKey())));
+                    }
+                }
+            }
         }
 
         if (this.hasTagCompound() && this.getTagCompound().getBoolean("Unbreakable") && (i1 & 4) == 0)

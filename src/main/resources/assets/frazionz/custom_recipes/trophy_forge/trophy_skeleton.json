@@ -1,0 +1,21 @@
+{
+  "pattern": [
+    "IRI",
+    "RPR",
+    "IRI"
+  ],
+  "key": {
+    "I": {
+      "item": "minecraft:bone"
+    },
+    "R": {
+      "item": "frazionz:rune_speed"
+    },
+    "P":{
+      "item": "frazionz:cosmic_powder"
+    }
+  },
+  "result": {
+    "item": "frazionz:trophy_skeleton"
+  }
+}

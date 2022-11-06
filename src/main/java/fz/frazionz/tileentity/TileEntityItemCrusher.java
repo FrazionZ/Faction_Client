@@ -220,6 +220,8 @@ public class TileEntityItemCrusher extends TileEntityLockable implements ITickab
             if(result != null) {
             	this.itemstacks.get(id).shrink(1);
             	for(ItemStack stack : result) {
+					if(stack == null)
+						continue;
             		addItemToInventory(stack);
             		if(!stack.isEmpty()) {
             			Block.spawnAsEntity(world, getFrontPosition(), stack);

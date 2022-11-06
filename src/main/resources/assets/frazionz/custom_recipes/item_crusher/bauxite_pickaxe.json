@@ -1,20 +1,17 @@
 {
-	"item": "frazionz:yellite_shovel",
+	"item": "frazionz:bauxite_pickaxe",
 	"results": [
 		{
-			"item": "frazionz:rune_anti_malus",
+			"item": "frazionz:rune_speed",
 			"min": 1,
-			"max": 5
+			"max": 2,
+			"chance": 0.155
 		},
 		{
-			"item": "frazionz:rune_bonus",
-			"min": 1,
-			"max": 5
-		},
-		{
-			"item": "frazionz:rune_chance",
-			"min": 1,
-			"max": 5
+			"item": "frazionz:rune_mining",
+			"min": 2,
+			"max": 3,
+			"chance": 0.155
 		}
 	]
 }

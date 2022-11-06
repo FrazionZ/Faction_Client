@@ -2,19 +2,22 @@
 	"item": "frazionz:yellite_sword",
 	"results": [
 		{
-			"item": "frazionz:rune_anti_malus",
+			"item": "frazionz:rune_damage",
 			"min": 1,
-			"max": 5
+			"max": 2,
+			"chance": 0.08
 		},
 		{
-			"item": "frazionz:rune_bonus",
+			"item": "frazionz:rune_resistance",
 			"min": 1,
-			"max": 5
+			"max": 3,
+			"chance": 0.08
 		},
 		{
-			"item": "frazionz:rune_chance",
+			"item": "frazionz:rune_speed",
 			"min": 1,
-			"max": 5
+			"max": 3,
+			"chance": 0.08
 		}
 	]
 }

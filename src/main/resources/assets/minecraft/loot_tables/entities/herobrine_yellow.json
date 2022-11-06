@@ -5,7 +5,7 @@
             "entries": [
                 {
                     "type": "item",
-                    "name": "minecraft:cosmic_ingot",
+                    "name": "frazionz:cosmic_ingot",
                     "weight": 1,
                     "functions": [
                         {
@@ -24,7 +24,7 @@
             "entries": [
                 {
                     "type": "item",
-                    "name": "minecraft:cosmic_powder",
+                    "name": "frazionz:cosmic_powder",
                     "weight": 1,
                     "functions": [
                         {
@@ -43,7 +43,7 @@
             "entries": [
                 {
                     "type": "item",
-                    "name": "minecraft:frazion",
+                    "name": "frazionz:frazion",
                     "weight": 1,
                     "functions": [
                         {

@@ -18,18 +18,20 @@ public class ContainerTrophyForge extends Container implements TileMachine
     private int totalForgeTime;
 	private int isForging;
 	
-	public ContainerTrophyForge(InventoryPlayer playerInventory, IInventory furnaceInventory)
+	public ContainerTrophyForge(InventoryPlayer playerInventory, IInventory trophyForgeInventory)
     {
-        this.tileTrophyForge = furnaceInventory;
+        this.tileTrophyForge = trophyForgeInventory;
         for(int i = 0; i < 3; ++i) {
         	for(int j = 0; j < 3; ++j) {
-        		this.addSlotToContainer(new Slot(furnaceInventory, j + i * 3, 44 + i*22, 24 + j*22));
+        		this.addSlotToContainer(new Slot(trophyForgeInventory, j + i * 3, 53 + i*22, 24 + j*22));
         	}
         }
         
         for(int i = 0; i < 3; i++) {
-        	this.addSlotToContainer(new Slot(furnaceInventory, 9 + i, 138, 24 + i*22));
+        	this.addSlotToContainer(new Slot(trophyForgeInventory, 9 + i, 144, 24 + i*22));
         }
+
+        this.addSlotToContainer(new Slot(trophyForgeInventory, 12, 194, 37));
         
         for (int i = 0; i < 3; ++i)
         {
@@ -102,9 +104,9 @@ public class ContainerTrophyForge extends Container implements TileMachine
             ItemStack itemstack1 = slot.getStack();
             itemstack = itemstack1.copy();
             
-            if (index >= 0 && index < 12)
+            if (index >= 0 && index < 13)
             {
-                if (!this.mergeItemStack(itemstack1, 12, 48, false))
+                if (!this.mergeItemStack(itemstack1, 13, 49, false))
                 {
                     return ItemStack.EMPTY;
                 }
@@ -112,24 +114,24 @@ public class ContainerTrophyForge extends Container implements TileMachine
             
             else if (!this.mergeItemStack(itemstack1, 0, 9, false))
             {
-                        return ItemStack.EMPTY;
+                return ItemStack.EMPTY;
             }
-            else if (index >= 12 && index < 39)
+            else if (index >= 13 && index < 40)
                 {
-                    if (!this.mergeItemStack(itemstack1, 39, 48, false))
+                    if (!this.mergeItemStack(itemstack1, 40, 49, false))
                     {
                         return ItemStack.EMPTY;
                     }
                 }
-            else if (index >= 39 && index < 48)
+            else if (index >= 40 && index < 49)
             {
-                 if (!this.mergeItemStack(itemstack1, 12, 39, false))
+                 if (!this.mergeItemStack(itemstack1, 13, 40, false))
                  {
                         return ItemStack.EMPTY;
                  }
             }
             
-            else if (!this.mergeItemStack(itemstack1, 12, 48, false))
+            else if (!this.mergeItemStack(itemstack1, 13, 49, false))
             {
                 return ItemStack.EMPTY;
             }
@@ -160,7 +162,7 @@ public class ContainerTrophyForge extends Container implements TileMachine
     
     public boolean canForge()
     {
-        return TrophyForgeRecipes.getTrophyForgeResult(new ItemStack[] {
+        return TrophyForgeRecipes.getResult(new ItemStack[] {
         		this.inventorySlots.get(0).getStack(),
         		this.inventorySlots.get(1).getStack(),
         		this.inventorySlots.get(2).getStack(),
@@ -170,7 +172,8 @@ public class ContainerTrophyForge extends Container implements TileMachine
         		this.inventorySlots.get(6).getStack(),
         		this.inventorySlots.get(7).getStack(),
         		this.inventorySlots.get(8).getStack(),
-        		}) != null;
+        		}) != null
+                && this.inventorySlots.get(12).getStack().isEmpty();
     }
     
     public boolean isForging() {

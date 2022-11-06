@@ -52,7 +52,7 @@
                 },
                 {
                     "type": "item",
-                    "name": "minecraft:withered_bone",
+                    "name": "frazionz:withered_bone",
                     "weight": 1,
                     "functions": [
                         {

@@ -1,0 +1,13 @@
+{
+  "type": "surrounded",
+  "center_key": {
+    "item": "frazion:onyx_helmet"
+  },
+  "around_key": {
+    "item": "frazionz:frazion",
+    "amount": 5
+  },
+  "result": {
+    "item": "frazionz:frazion_helmet"
+  }
+}

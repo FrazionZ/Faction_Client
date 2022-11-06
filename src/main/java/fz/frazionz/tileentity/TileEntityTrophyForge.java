@@ -22,9 +22,9 @@ import java.util.List;
 
 public class TileEntityTrophyForge extends TileEntityLockable implements ITickable, TickCounter, ISidedInventory
 {
-	private static final int[] SLOT_CRAFT = new int[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
+	private static final int[] SLOT_CRAFT = new int[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
     
-    private NonNullList<ItemStack> TrophyForgeItemStacks = NonNullList.<ItemStack>withSize(12, ItemStack.EMPTY);
+    private NonNullList<ItemStack> TrophyForgeItemStacks = NonNullList.<ItemStack>withSize(13, ItemStack.EMPTY);
     
     private int forgeTime;
     private int totalForgeTime;
@@ -149,7 +149,7 @@ public class TileEntityTrophyForge extends TileEntityLockable implements ITickab
     public void readFromNBT(NBTTagCompound compound)
     {
         super.readFromNBT(compound);
-        this.TrophyForgeItemStacks = NonNullList.<ItemStack>withSize(this.getSizeInventory(), ItemStack.EMPTY);
+        this.TrophyForgeItemStacks = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
         ItemStackHelper.loadAllItems(compound, this.TrophyForgeItemStacks);
         this.forgeTime = compound.getShort("ForgeTime");
         this.totalForgeTime = compound.getShort("TotalForgeTime");
@@ -201,7 +201,7 @@ public class TileEntityTrophyForge extends TileEntityLockable implements ITickab
     }
     
     public ItemStack getRecipeResult() {
-        return TrophyForgeRecipes.getTrophyForgeResult(new ItemStack[] {
+        return TrophyForgeRecipes.getResult(new ItemStack[] {
         		this.TrophyForgeItemStacks.get(0),
         		this.TrophyForgeItemStacks.get(1),
         		this.TrophyForgeItemStacks.get(2),
@@ -226,18 +226,13 @@ public class TileEntityTrophyForge extends TileEntityLockable implements ITickab
         ItemStack result = this.getRecipeResult();
     	if(result.getItem() instanceof ItemTrophy) {
     		ItemTrophy item = (ItemTrophy) result.getItem();
-    		
-    		result.setTagCompound(new NBTTagCompound());
-    		AttributeModifier attribute = item.getRandomAttributeModifier();
-    		result.addAttributeModifier(item.getAttributes().getName(), attribute, EntityEquipmentSlot.TROPHY_1);
-    		result.addAttributeModifier(item.getAttributes().getName(), attribute, EntityEquipmentSlot.TROPHY_2);
-    		result.addAttributeModifier(item.getAttributes().getName(), attribute, EntityEquipmentSlot.TROPHY_3);
+            item.randomBaseStat(result);
     	}
         for(int i = 0; i < 12; i++) {
         	this.TrophyForgeItemStacks.get(i).shrink(1);
         }
         
-        this.TrophyForgeItemStacks.set(4, result.copy());
+        this.TrophyForgeItemStacks.set(12, result.copy());
     }
 	
 	public String getGuiID() {

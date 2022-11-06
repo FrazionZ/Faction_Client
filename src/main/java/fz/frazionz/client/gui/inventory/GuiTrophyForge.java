@@ -11,8 +11,8 @@ import net.minecraft.resources.ResourceLocation;
 
 public class GuiTrophyForge extends GuiContainer
 {
-    private static final ResourceLocation FORGE_GUI_TEXTURES = new ResourceLocation("textures/gui/frazionz/container/trophy_forge/trophy_forge.png");
-    private static final ResourceLocation FORGE_GUI_TEXTURES_OVERLAY = new ResourceLocation("textures/gui/frazionz/container/trophy_forge/trophy_forge_overlay.png");
+    private static final ResourceLocation FORGE_GUI_TEXTURES = new ResourceLocation("frazionz", "textures/gui/container/trophy_forge/trophy_forge.png");
+    private static final ResourceLocation FORGE_GUI_TEXTURES_OVERLAY = new ResourceLocation("frazionz", "textures/gui/container/trophy_forge/trophy_forge_overlay.png");
 
     /** The player inventory bound to this GUI. */
     private final InventoryPlayer playerInventory;
@@ -46,7 +46,7 @@ public class GuiTrophyForge extends GuiContainer
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
     {
         String p = this.playerInventory.getDisplayName().getUnformattedText();
-        this.fontRenderer.drawString(p, 44, this.ySize - 96 + 2, 16777215, true);
+        this.fontRenderer.drawString(p, 44, this.ySize - 96 + 2, 6710886, true);
     }
 
     /**
@@ -66,7 +66,7 @@ public class GuiTrophyForge extends GuiContainer
         if (forging)
         {
             int l = this.getCookProgressScaled(184);
-            this.drawTexturedModalRect(i + 15, j + 8 + 184-l, 0, 184-l, 14, l);
+            this.drawTexturedModalRect(i + 13, j + 8 + 184-l, 0, 184-l, 14, l);
         }
         
         this.mc.getTextureManager().bindTexture(FORGE_GUI_TEXTURES_OVERLAY);
@@ -78,12 +78,12 @@ public class GuiTrophyForge extends GuiContainer
         }
         
         if(this.container.canForge() && !forging) {
-        	this.drawTexturedModalRect(i + 169, j + 45, 14, 0, 61, 18);
-        	this.fontRenderer.drawString(text, i + 200 - (this.fontRenderer.getStringWidth(text)/2), j + 45 + 5, 16777215, true);
+        	this.drawTexturedModalRect(i + 171, j + 66, 14, 0, 62, 18);
+        	this.fontRenderer.drawString(text, i + 202 - (this.fontRenderer.getStringWidth(text)/2), j + 66 + 5, 16777215, true);
         }
         else {
-        	this.drawTexturedModalRect(i + 169, j + 45, 14, 18, 61, 18);
-        	this.fontRenderer.drawString(text, i + 200 - (this.fontRenderer.getStringWidth(text)/2), j + 45 + 5, 6710886, true);
+        	this.drawTexturedModalRect(i + 171, j + 66, 14, 18, 62, 18);
+        	this.fontRenderer.drawString(text, i + 202 - (this.fontRenderer.getStringWidth(text)/2), j + 66 + 5, 6710886, true);
         }
     }
     
@@ -97,10 +97,10 @@ public class GuiTrophyForge extends GuiContainer
         int j = (this.height - this.ySize) / 2;
         
         
-        int x = mouseX - (i + 169);
-        int y = mouseY - (j + 45);
+        int x = mouseX - (i + 171);
+        int y = mouseY - (j + 66);
 
-        if (x >= 0 && y >= 0 && x < 61 && y < 18 && this.container.canForge())
+        if (x >= 0 && y >= 0 && x < 66 && y < 18 && this.container.canForge())
         {
             this.mc.playerController.sendStartMachinePacket(this.container.windowId);
             this.tileTrophyForge.setField(2, 1);

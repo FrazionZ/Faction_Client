@@ -17,7 +17,6 @@ import com.google.common.base.Objects;
 import com.google.common.collect.Maps;
 
 import fz.frazionz.block.BlockBauxiteLadder;
-import fz.frazionz.entity.player.PlayerAttribute;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLadder;
@@ -1736,9 +1735,7 @@ public abstract class EntityLivingBase extends Entity
      */
     public final float getMaxHealth()
     {
-    	if(!(this instanceof EntityPlayer))
-    		return (float)this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).getAttributeValue();
-        return (float)this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).getAttributeValue() + (float)this.getEntityAttribute(PlayerAttribute.HEALTH).getAttributeValue();
+        return (float)this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).getAttributeValue();
     }
 
     /**
