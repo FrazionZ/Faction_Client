@@ -101,7 +101,7 @@ import org.apache.logging.log4j.LogManager;
 @SuppressWarnings("incomplete-switch")
 public abstract class EntityPlayer extends EntityLivingBase
 {
-    private PlayerStats stats;
+    private PlayerStats stats = new PlayerStats(this);
 
     private static final DataParameter<Float> ABSORPTION = EntityDataManager.<Float>createKey(EntityPlayer.class, DataSerializers.FLOAT);
     private static final DataParameter<Integer> PLAYER_SCORE = EntityDataManager.<Integer>createKey(EntityPlayer.class, DataSerializers.VARINT);
@@ -238,7 +238,6 @@ public abstract class EntityPlayer extends EntityLivingBase
         BlockPos blockpos = worldIn.getSpawnPoint();
         this.setLocationAndAngles((double)blockpos.getX() + 0.5D, (double)(blockpos.getY() + 1), (double)blockpos.getZ() + 0.5D, 0.0F, 0.0F);
         this.unused180 = 180.0F;
-        this.stats = new PlayerStats(this);
     }
 
     protected void applyEntityAttributes()
@@ -906,7 +905,7 @@ public abstract class EntityPlayer extends EntityLivingBase
 
     public float getDigSpeed(IBlockState state)
     {
-        float f = this.inventory.getDestroySpeed(state);
+        float f = this.inventory.getDestroySpeed(state) * (this.stats.getStat(EnumStats.MINING_SPEED)/100f);
 
         if (f > 1.0F)
         {
@@ -1399,7 +1398,7 @@ public abstract class EntityPlayer extends EntityLivingBase
         {
             if (!targetEntity.hitByEntity(this))
             {
-                float f = (float)this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue();
+                float f = (float)this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue() * (this.getStats().getStat(EnumStats.DAMAGE)/100f);
                 
                 int i = 0;
                 float f1 = 0.0F;
@@ -3107,5 +3106,16 @@ public abstract class EntityPlayer extends EntityLivingBase
 
     public float applyResistanceStatsCalculations(DamageSource source, float damage) {
     	return damage / (this.stats.getStat(EnumStats.RESISTANCE)/100f);
+    }
+
+    /**
+     * Returns the maximum health of the entity (what it is able to regenerate up to, what it spawned with, etc)
+     */
+    public float getMaxHealth()
+    {
+        float f = 0.0f;
+        if(this.stats != null)
+            f = (this.stats.getStat(EnumStats.HEALTH)/10f);
+        return (float)this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).getAttributeValue() + f;
     }
 }

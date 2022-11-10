@@ -564,7 +564,6 @@ public class Minecraft implements IThreadListener, ISnooperInfo
         this.defaultResourcePacks.add(this.defaultResourcePack);
         this.ResourcePacksAntiCheat.add(this.antiCheatResourcePack);
         this.startTimerHackThread();
-
         if (this.gameSettings.overrideHeight > 0 && this.gameSettings.overrideWidth > 0)
         {
             this.displayWidth = this.gameSettings.overrideWidth;
@@ -576,7 +575,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo
         this.setInitialDisplayMode();
         this.createDisplay();
         OpenGlHelper.initializeTextures();
-        this.framebuffer = new Framebuffer(this.displayWidth, this.displayHeight, true);
+        /* error */this.framebuffer = new Framebuffer(this.displayWidth, this.displayHeight, true);
         this.framebuffer.setFramebufferColor(0.0F, 0.0F, 0.0F, 0.0F);
         this.registerMetadataSerializers();
         this.resourcePackRepository = new ResourcePackRepository(this.fileResourcepacks, new File(this.gameDir, "server-resource-packs"), this.defaultResourcePack, this.metadataSerializer, this.gameSettings);
@@ -586,15 +585,13 @@ public class Minecraft implements IThreadListener, ISnooperInfo
         this.refreshResources();
         this.renderEngine = new TextureManager(this.resourceManager);
         this.resourceManager.registerReloadListener(this.renderEngine);
-        this.drawSplashScreen(this.renderEngine);
+        /* error */ this.drawSplashScreen(this.renderEngine);
         this.skinManager = new SkinManager(this.renderEngine, new File(this.fileAssets, "frazionz/skins"), this.sessionService);
         this.saveLoader = new AnvilSaveConverter(new File(this.gameDir, "saves"), this.dataFixer);
         this.soundHandler = new SoundHandler(this.resourceManager, this.gameSettings);
         this.resourceManager.registerReloadListener(this.soundHandler);
         this.musicTicker = new MusicTicker(this);
-        
-        this.fontRenderer = new FontRenderer(this.gameSettings, new ResourceLocation("textures/font/ascii.png"), this.renderEngine, false);
-
+        /* error */this.fontRenderer = new FontRenderer(this.gameSettings, new ResourceLocation("textures/font/ascii.png"), this.renderEngine, false);
         ////////////////////////////////
         // INIT FrazionZ FontRenderer //
         ////////////////////////////////
@@ -623,11 +620,11 @@ public class Minecraft implements IThreadListener, ISnooperInfo
         GlStateManager.matrixMode(5889);
         GlStateManager.loadIdentity();
         GlStateManager.matrixMode(5888);
-        this.checkGLError("Startup");
         this.textureMapBlocks = new TextureMap("textures");
         this.textureMapBlocks.setMipmapLevels(this.gameSettings.mipmapLevels);
         this.renderEngine.loadTickableTexture(TextureMap.LOCATION_BLOCKS_TEXTURE, this.textureMapBlocks);
         this.renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+        this.checkGLError("46464654");
         this.textureMapBlocks.setBlurMipmapDirect(false, this.gameSettings.mipmapLevels > 0);
         this.modelManager = new ModelManager(this.textureMapBlocks);
         this.resourceManager.registerReloadListener(this.modelManager);
@@ -637,11 +634,12 @@ public class Minecraft implements IThreadListener, ISnooperInfo
         this.renderManager = new RenderManager(this.renderEngine, this.renderItem);
         this.itemRenderer = new ItemRenderer(this);
         this.resourceManager.registerReloadListener(this.renderItem);
+        this.checkGLError("888888");
         this.entityRenderer = new EntityRenderer(this, this.resourceManager);
         this.resourceManager.registerReloadListener(this.entityRenderer);
         this.blockRenderDispatcher = new BlockRendererDispatcher(this.modelManager.getBlockModelShapes(), this.blockColors);
         this.resourceManager.registerReloadListener(this.blockRenderDispatcher);
-        this.renderGlobal = new RenderGlobal(this);
+        /* error */this.renderGlobal = new RenderGlobal(this);
         this.resourceManager.registerReloadListener(this.renderGlobal);
         this.populateSearchTreeManager();
         this.resourceManager.registerReloadListener(this.searchTreeManager);
@@ -682,8 +680,6 @@ public class Minecraft implements IThreadListener, ISnooperInfo
         this.renderGlobal.makeEntityOutlineShader();
         
         FzClient.getInstance().start();
-        
-        // ADD_MODS //
         
         if(this.gameSettings.keystrokesMod == true) {
         	ModKeystrokes keystrokes = ModInstances.getModKeystrokes();
@@ -1241,7 +1237,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo
     /**
      * Checks for an OpenGL error. If there is one, prints the error ID and error string.
      */
-    private void checkGLError(String message)
+    public void checkGLError(String message)
     {
         int i = GlStateManager.glGetError();
 
@@ -1326,6 +1322,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo
         this.profiler.endStartSection("preRenderErrors");
         long i1 = System.nanoTime() - l;
         this.checkGLError("Pre render");
+
         this.profiler.endStartSection("sound");
         this.soundHandler.setListener(this.player, this.timer.renderPartialTicks);
         this.profiler.endSection();
@@ -1345,7 +1342,6 @@ public class Minecraft implements IThreadListener, ISnooperInfo
             this.toastGui.drawToast(new ScaledResolution(this));
             this.profiler.endSection();
         }
-
         this.profiler.endSection();
 
         if (this.gameSettings.showDebugInfo && this.gameSettings.showDebugProfilerChart && !this.gameSettings.hideGUI)
@@ -1375,6 +1371,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo
         this.profiler.startSection("root");
         this.updateDisplay();
         Thread.yield();
+
         this.checkGLError("Post render");
         ++this.fpsCounter;
         boolean flag = this.isSingleplayer() && this.currentScreen != null && this.currentScreen.doesGuiPauseGame() && !this.integratedServer.getPublic();

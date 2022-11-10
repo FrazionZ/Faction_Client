@@ -33,6 +33,15 @@ public class PlayerStats {
         }
         updateStats(player.getHeldItemMainhand());
         updateStats(player.getHeldItemOffhand());
+
+        for(SimpleStat stat : stats.values()) {
+            if(stat.getValue() < stat.getStat().getMinValue()) {
+                stat.setValue(stat.getStat().getMinValue());
+            }
+            else if(stat.getValue() > stat.getStat().getMaxValue()) {
+                stat.setValue(stat.getStat().getMaxValue());
+            }
+        }
     }
 
     private void updateStats(ItemStack stack) {

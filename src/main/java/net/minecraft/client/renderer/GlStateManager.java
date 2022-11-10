@@ -4,12 +4,15 @@ import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import javax.annotation.Nullable;
+
+import net.minecraft.client.Minecraft;
 import net.minecraft.src.Config;
 import net.optifine.SmartAnimations;
 import net.optifine.render.GlAlphaState;
 import net.optifine.render.GlBlendState;
 import net.optifine.shaders.Shaders;
 import net.optifine.util.LockCounter;
+import org.apache.logging.log4j.LogManager;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
@@ -592,7 +595,10 @@ public class GlStateManager
 
     public static void glTexSubImage2D(int target, int level, int xOffset, int yOffset, int width, int height, int format, int type, IntBuffer pixels)
     {
-        GL11.glTexSubImage2D(target, level, xOffset, yOffset, width, height, format, type, pixels);
+        //LogManager.getLogger().info("glTexSubImage2D, target: " + target + ", level: " + level + ", xOffset: " + xOffset + ", yOffset: " + yOffset + ", width: " + width + ", height: " + height + ", format: " + format + ", type: " + type + ", pixels: " + pixels);
+
+        GL11.glTexSubImage2D(GL11.GL_TEXTURE_BINDING_2D, level, xOffset, yOffset, width, height, format, type, pixels);
+        //Minecraft.getMinecraft().checkGLError("glTexSubImage2D");
     }
 
     public static void glCopyTexSubImage2D(int target, int level, int xOffset, int yOffset, int x, int y, int width, int height)

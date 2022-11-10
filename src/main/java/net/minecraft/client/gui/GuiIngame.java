@@ -1082,7 +1082,8 @@ public class GuiIngame extends Gui
             int l = scaledRes.getScaledWidth() / 2 - 91;
             int i1 = scaledRes.getScaledWidth() / 2 + 91;
             int j1 = scaledRes.getScaledHeight() - 39;
-            float f = (float)iattributeinstance.getAttributeValue();
+            //float f = (float)iattributeinstance.getAttributeValue();
+            float f = entityplayer.getMaxHealth();
             int k1 = MathHelper.ceil(entityplayer.getAbsorptionAmount());
             int l1 = MathHelper.ceil((f + (float)k1) / 2.0F / 10.0F);
             int i2 = Math.max(10 - (l1 - 2), 3);

@@ -332,8 +332,11 @@ item.bottle_xp.name=Bottle XP
 
 item.iron_tooth.name=Iron Tooth
 
-frazionz.stat.health.name=Health
-frazionz.stat.damage.name=Damage
-frazionz.stat.resistance.name=Resistance
-frazionz.stat.regeneration.name=Regeneration
-frazionz.stat.speed.name=Speed
+frazionz.stat.health.name=&c❤ Health
+frazionz.stat.damage.name=&c✴ Damage
+frazionz.stat.resistance.name=&2✵&a Resistance
+frazionz.stat.regeneration.name=&c✤ Regeneration
+frazionz.stat.speed.name=&f✦ Speed
+frazionz.stat.mining_speed.name=&6⸕ Mining Speed
+frazionz.stat.mining_fortune.name=&6☘ Mining Fortune
+frazionz.stat.farming_fortune.name=&6☘ Farming Fortune

@@ -1733,7 +1733,7 @@ public abstract class EntityLivingBase extends Entity
     /**
      * Returns the maximum health of the entity (what it is able to regenerate up to, what it spawned with, etc)
      */
-    public final float getMaxHealth()
+    public float getMaxHealth()
     {
         return (float)this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).getAttributeValue();
     }

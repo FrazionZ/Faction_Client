@@ -2,8 +2,8 @@ package fz.frazionz.client.stats;
 
 public enum EnumStats {
 
-    HEALTH(0, 20, 40),
-    REGENERATION(50, 100, 200),
+    HEALTH(-100, 0, 100),
+    REGENERATION(-50, 0, 50),
     SPEED(50, 100, 200),
     DAMAGE(50, 100, 200),
     RESISTANCE(50, 100, 200),

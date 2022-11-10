@@ -1,5 +1,6 @@
 package net.minecraft.util;
 
+import fz.frazionz.client.stats.EnumStats;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
@@ -77,7 +78,7 @@ public class FoodStats
 
             if (this.foodTimer >= 80)
             {
-                player.heal(1.0F);
+                player.heal(1.0F + player.getStats().getStat(EnumStats.REGENERATION)/100f);
                 this.addExhaustion(6.0F);
                 this.foodTimer = 0;
             }
