@@ -595,10 +595,7 @@ public class GlStateManager
 
     public static void glTexSubImage2D(int target, int level, int xOffset, int yOffset, int width, int height, int format, int type, IntBuffer pixels)
     {
-        //LogManager.getLogger().info("glTexSubImage2D, target: " + target + ", level: " + level + ", xOffset: " + xOffset + ", yOffset: " + yOffset + ", width: " + width + ", height: " + height + ", format: " + format + ", type: " + type + ", pixels: " + pixels);
-
-        GL11.glTexSubImage2D(GL11.GL_TEXTURE_BINDING_2D, level, xOffset, yOffset, width, height, format, type, pixels);
-        //Minecraft.getMinecraft().checkGLError("glTexSubImage2D");
+        GL11.glTexSubImage2D(target, level, xOffset, yOffset, width, height, format, type, pixels);
     }
 
     public static void glCopyTexSubImage2D(int target, int level, int xOffset, int yOffset, int x, int y, int width, int height)

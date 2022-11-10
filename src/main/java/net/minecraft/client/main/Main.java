@@ -10,6 +10,7 @@ import java.net.InetSocketAddress;
 import java.net.PasswordAuthentication;
 import java.net.Proxy;
 import java.net.Proxy.Type;
+import java.util.Arrays;
 import java.util.List;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
@@ -50,6 +51,7 @@ public class Main
 		OptionSpec<String> optionspec41 = optionparser.accepts("discordRPC").withOptionalArg().defaultsTo("true");
         OptionSpec<String> optionspec42 = optionparser.accepts("dev-debug").withOptionalArg().defaultsTo("false");
         OptionSpec<String> optionspec20 = optionparser.nonOptions();
+        System.out.println(Arrays.toString(p_main_0_));
         OptionSet optionset = optionparser.parse(p_main_0_);
         List<String> list = optionset.valuesOf(optionspec20);
 
