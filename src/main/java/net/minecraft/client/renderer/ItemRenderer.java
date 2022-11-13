@@ -431,10 +431,10 @@ public class ItemRenderer
 	                        this.transformSideFirstPerson(enumhandside, p_187457_7_, true, true, swingProgress);
 	                        break;
 
-                        case BLOCK:
+                        /*case BLOCK:
 	                    	// PVP_UPDATE
 	                        this.transformSideFirstPerson(enumhandside, p_187457_7_, true, false, 0.0f);
-	                        break;
+	                        break;*/
 	                        
 	                        
 	                    // PVP_UPDATE

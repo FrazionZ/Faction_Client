@@ -2,6 +2,8 @@ package net.minecraft.entity.monster;
 
 import java.util.Collection;
 import javax.annotation.Nullable;
+
+import fz.frazionz.block.enums.ExplosiveType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAreaEffectCloud;
 import net.minecraft.entity.EntityLiving;
@@ -309,7 +311,7 @@ public class EntityCreeper extends EntityMob
             boolean flag = this.world.getGameRules().getBoolean("mobGriefing");
             float f = this.getPowered() ? 2.0F : 1.0F;
             this.dead = true;
-            this.world.createExplosion(this, this.posX, this.posY, this.posZ, (float)this.explosionRadius * f, flag);
+            this.world.createExplosion(this, this.posX, this.posY, this.posZ, (float)this.explosionRadius * f, flag, ExplosiveType.CREEPER);
             this.setDead();
             this.spawnLingeringCloud();
         }

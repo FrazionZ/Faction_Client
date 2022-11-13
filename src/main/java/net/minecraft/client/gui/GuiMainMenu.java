@@ -225,7 +225,7 @@ public class GuiMainMenu extends GuiScreen
         {
  	       case 1:
  		    	//this.mc.displayGuiScreen(new GuiConnecting(this, mc, "localhost", 25565));
- 		    	this.mc.displayGuiScreen(new GuiConnecting(this, mc, "185.157.246.85", 25587));
+ 		    	this.mc.displayGuiScreen(new GuiConnecting(this, mc, "frazionz.net", 25565));
  		       	break;
  	       case 2:
  	           this.mc.displayGuiScreen(new GuiWorldSelection(this));

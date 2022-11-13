@@ -12,12 +12,7 @@ import java.util.Set;
 import java.util.UUID;
 import javax.annotation.Nullable;
 import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockFence;
-import net.minecraft.block.BlockFenceGate;
-import net.minecraft.block.BlockLiquid;
-import net.minecraft.block.BlockWall;
-import net.minecraft.block.SoundType;
+import net.minecraft.block.*;
 import net.minecraft.block.material.EnumPushReaction;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -1079,7 +1074,7 @@ public abstract class Entity implements ICommandSender
                 double d16 = this.posY - d11;
                 double d17 = this.posZ - d1;
 
-                if (block != Blocks.LADDER || block != Blocks.BAUXITE_LADDER || block != Blocks.YELLITE_LADDER || block != Blocks.ONYX_LADDER || block != Blocks.FRAZION_LADDER)
+                if (!(block instanceof BlockLadder))
                 {
                     d16 = 0.0D;
                 }

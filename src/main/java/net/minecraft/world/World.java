@@ -12,6 +12,8 @@ import java.util.Random;
 import java.util.UUID;
 import java.util.function.Supplier;
 import javax.annotation.Nullable;
+
+import fz.frazionz.block.enums.ExplosiveType;
 import net.minecraft.advancements.AdvancementManager;
 import net.minecraft.advancements.FunctionManager;
 import net.minecraft.block.Block;
@@ -2328,20 +2330,15 @@ public abstract class World implements IBlockAccess
      */
     public Explosion createExplosion(@Nullable Entity entityIn, double x, double y, double z, float strength, boolean damagesTerrain)
     {
-        return this.newExplosion(entityIn, x, y, z, strength, false, damagesTerrain);
-    }
-    
-    public Explosion createZExplosion(@Nullable Entity entityIn, double x, double y, double z, float strength, boolean isSmoking)
-    {
-        return this.newZExplosion(entityIn, x, y, z, strength, false, isSmoking);
+        return this.newExplosion(entityIn, x, y, z, strength, false, damagesTerrain, ExplosiveType.TNT);
     }
 
-    public Explosion newZExplosion(@Nullable Entity entityIn, double x, double y, double z, float strength, boolean isFlaming, boolean isSmoking)
+    /**
+     * Creates an explosion in the world.
+     */
+    public Explosion createExplosion(@Nullable Entity entityIn, double x, double y, double z, float strength, boolean damagesTerrain, ExplosiveType type)
     {
-        Explosion explosion = new Explosion(this, entityIn, x, y, z, strength, isFlaming, isSmoking);
-        explosion.doZExplosionA();
-        explosion.doZExplosionB(true);
-        return explosion;
+        return this.newExplosion(entityIn, x, y, z, strength, false, damagesTerrain, type);
     }
 
     /**
@@ -2349,9 +2346,17 @@ public abstract class World implements IBlockAccess
      */
     public Explosion newExplosion(@Nullable Entity entityIn, double x, double y, double z, float strength, boolean causesFire, boolean damagesTerrain)
     {
+        return this.newExplosion(entityIn, x, y, z, strength, causesFire, damagesTerrain, ExplosiveType.TNT);
+    }
+
+    /**
+     * returns a new explosion. Does initiation (at time of writing Explosion is not finished)
+     */
+    public Explosion newExplosion(@Nullable Entity entityIn, double x, double y, double z, float strength, boolean causesFire, boolean damagesTerrain, ExplosiveType type)
+    {
         Explosion explosion = new Explosion(this, entityIn, x, y, z, strength, causesFire, damagesTerrain);
         explosion.doExplosionA();
-        explosion.doExplosionB(true);
+        explosion.doExplosionB(false, type);
         return explosion;
     }
 

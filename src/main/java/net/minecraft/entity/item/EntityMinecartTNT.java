@@ -1,5 +1,6 @@
 package net.minecraft.entity.item;
 
+import fz.frazionz.block.enums.ExplosiveType;
 import net.minecraft.block.BlockRailBase;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -131,7 +132,7 @@ public class EntityMinecartTNT extends EntityMinecart
                 d0 = 5.0D;
             }
 
-            this.world.createExplosion(this, this.posX, this.posY, this.posZ, (float)(4.0D + this.rand.nextDouble() * 1.5D * d0), true);
+            this.world.createExplosion(this, this.posX, this.posY, this.posZ, (float)(4.0D + this.rand.nextDouble() * 1.5D * d0), true, ExplosiveType.MINECART_TNT);
             this.setDead();
         }
     }

@@ -202,13 +202,6 @@ public class ModelBiped extends ModelBase
             case ITEM:
                 this.bipedLeftArm.rotateAngleX = this.bipedLeftArm.rotateAngleX * 0.5F - ((float)Math.PI / 10F);
                 this.bipedLeftArm.rotateAngleY = 0.0F;
-	            break;
-	        	
-	        // PVP_UPDATE
-	        case BLOCK_SWORD:
-	            this.bipedLeftArm.rotateAngleX = this.bipedLeftArm.rotateAngleX * 0.5F - ((float)Math.PI / 10F) * 3.0F;
-	            this.bipedLeftArm.rotateAngleY = 0.5235988F;
-	            break;
         }
 
         switch (this.rightArmPose)
@@ -225,13 +218,6 @@ public class ModelBiped extends ModelBase
             case ITEM:
                 this.bipedRightArm.rotateAngleX = this.bipedRightArm.rotateAngleX * 0.5F - ((float)Math.PI / 10F);
                 this.bipedRightArm.rotateAngleY = 0.0F;
-	            break;
-		          
-	        // PVP_UPDATE
-	        case BLOCK_SWORD:
-	            this.bipedRightArm.rotateAngleX = this.bipedRightArm.rotateAngleX * 0.5F - ((float)Math.PI / 10F) * 3.0F;
-	            this.bipedRightArm.rotateAngleY = -0.5235988F;
-	            break;
         }
 
         if (this.swingProgress > 0.0F)
@@ -334,7 +320,7 @@ public class ModelBiped extends ModelBase
 
     public void postRenderArm(float scale, EnumHandSide side)
     {
-        //this.getArmForSide(side).postRender(scale);
+        this.getArmForSide(side).postRender(scale);
     }
 
     protected ModelRenderer getArmForSide(EnumHandSide side)
@@ -356,14 +342,12 @@ public class ModelBiped extends ModelBase
         }
     }
 
-    public static enum ArmPose
+    public enum ArmPose
     {
         EMPTY,
         ITEM,
         BLOCK,
         BOW_AND_ARROW,
-        // PVP_UPDATE
-        BLOCK_SWORD,
         ;
     }
 }

@@ -205,10 +205,6 @@ public class EntityPlayerMP extends EntityPlayer implements IContainerListener
      * True when the player has left the End using an the exit portal, but has not yet been respawned in the overworld
      */
     public boolean queuedEndExit;
-    
-    private boolean setArmorEffect = false;
-    private boolean setWeaponEffect = false;
-    private Item effectItem = null;
 
     public EntityPlayerMP(MinecraftServer server, WorldServer worldIn, GameProfile profile, PlayerInteractionManager interactionManagerIn)
     {
@@ -458,36 +454,6 @@ public class EntityPlayerMP extends EntityPlayer implements IContainerListener
 
         this.advancements.flushDirty(this);
     }
-
-    private void applyWeaponEffect() {
-    	EntityPlayer player = (EntityPlayer) this;
-		ItemWeaponEffects weapon = (ItemWeaponEffects) player.getHeldItemMainhand().getItem();
-		this.effectItem = weapon;
-		for(EffectItem effect : weapon.getEffectList()) {
-			player.addPotionEffect(new PotionEffect(effect.getEffect(), effect.getDuration(), effect.getLevel()));
-		}
-    }
-    
-    private void applyArmorEffect() {
-    	EntityPlayer player = (EntityPlayer) this;
-		ItemArmor.ArmorMaterial armorMat = ((ItemArmor) player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem()).getArmorMaterial();
-		if(armorMat.hasEffect()) {
-    		for(EffectItem effect : armorMat.getEffectList()) {
-    			player.addPotionEffect(new PotionEffect(effect.getEffect(), effect.getDuration(), effect.getLevel()));
-    		}
-		}
-    }
-    
-    private void applyArmorAntiEffect()
-    {
-    	EntityPlayer player = (EntityPlayer) this;
-		ItemArmor.ArmorMaterial armorMat = ((ItemArmor) player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem()).getArmorMaterial();
-		if(armorMat.hasAntiEffect()) {
-    		for(Potion effect : armorMat.getAntiEffect()) {
-    			player.removePotionEffect(effect);
-    		}
-		}
-    }
     
     public void onUpdateEntity()
     {
@@ -563,62 +529,6 @@ public class EntityPlayerMP extends EntityPlayer implements IContainerListener
             if (this.ticksExisted % 20 == 0)
             {
                 CriteriaTriggers.LOCATION.trigger(this);
-            }
-            
-            if (this.ticksExisted % 5 == 0) {
-            	
-            	EntityPlayer player = (EntityPlayer) this;
-            	boolean frazion70 = player.isWearingFullArmor(ItemArmor.ArmorMaterial.FRAZION_70);
-            	boolean frazion100 = player.isWearingFullArmor(ItemArmor.ArmorMaterial.FRAZION_100);
-            	boolean travelers = player.isWearingFullArmor(ItemArmor.ArmorMaterial.TRAVELERS);
-            	boolean legendaryScythe = player.hasItemInMainHand(Items.LEGENDARY_SCYTHE);
-            	boolean legendarySword = player.hasItemInMainHand(Items.LEGENDARY_SWORD);
-            	boolean legendaryDagger = player.hasItemInMainHand(Items.LEGENDARY_DAGGER);
-            	
-            	if(!this.setArmorEffect && (frazion70 || frazion100 || travelers)) {
-            		this.applyArmorEffect();
-            		this.setArmorEffect = true;
-            	}
-            	else if(this.setArmorEffect && !travelers && !frazion70 && !frazion100){
-            		this.setArmorEffect = false;
-            		ArrayList<PotionEffect> listOfValues = new ArrayList<PotionEffect>(player.getActivePotionEffects());
-            		Iterator<PotionEffect> potionEffect = listOfValues.iterator();
-	            	while(potionEffect.hasNext()) {
-	            		PotionEffect potion = potionEffect.next();
-	                	if(potion.getDuration() >= 100000 && potion.getPotion() != MobEffects.NIGHT_VISION) {
-	                		player.removePotionEffect(potion.getPotion());
-	                	}
-	            	}
-	            	if(legendaryDagger || legendaryScythe || legendarySword) {
-	            		this.applyWeaponEffect();
-	            	}
-            	}
-            	else if(frazion70 || frazion100 || travelers) {
-            		this.applyArmorAntiEffect();
-            	}
-            	
-            	if(!this.setWeaponEffect && (legendaryDagger || legendaryScythe || legendarySword)) {
-            		this.applyWeaponEffect();
-            		this.setWeaponEffect = true;
-            	}
-            	else if((this.setWeaponEffect && !legendaryScythe && !legendaryDagger && !legendarySword) || this.setWeaponEffect && this.effectItem != player.getHeldItemMainhand().getItem()) {
-            		ArrayList<PotionEffect> listOfValues = new ArrayList<PotionEffect>(player.getActivePotionEffects());
-            		Iterator<PotionEffect> potionEffect = listOfValues.iterator();
-	            	while(potionEffect.hasNext()) {
-	            		PotionEffect potion = potionEffect.next();
-	                	if(potion.getDuration() >= 100000 && potion.getPotion() != MobEffects.NIGHT_VISION) {
-	                		player.removePotionEffect(potion.getPotion());
-	                	}
-	            	}
-	            	if(frazion70 || frazion100 || travelers){
-	            		this.applyArmorEffect();
-	            	}
-	            	this.setWeaponEffect = false;
-	            	if(this.effectItem != player.getHeldItemMainhand().getItem() && (legendaryDagger || legendaryScythe || legendarySword)) {
-	            		this.applyWeaponEffect();
-	            		this.setWeaponEffect = true;
-	            	}
-            	}
             }
         }
         catch (Throwable throwable)

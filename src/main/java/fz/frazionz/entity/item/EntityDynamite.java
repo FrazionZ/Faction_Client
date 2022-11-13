@@ -1,5 +1,6 @@
 package fz.frazionz.entity.item;
 
+import fz.frazionz.block.enums.ExplosiveType;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.init.PotionTypes;
@@ -50,7 +51,7 @@ public class EntityDynamite extends EntityThrowable
             this.setDead();
             
             float f = 2.0F;
-            this.world.createExplosion(this, this.posX, this.posY + (double)(this.height / 16.0F), this.posZ, f, true);
+            this.world.createExplosion(this, this.posX, this.posY + (double)(this.height / 16.0F), this.posZ, f, true, ExplosiveType.DYNAMITE);
         }
     }
 }

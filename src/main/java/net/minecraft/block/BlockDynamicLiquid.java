@@ -256,7 +256,7 @@ public class BlockDynamicLiquid extends BlockLiquid
     {
         Block block = worldIn.getBlockState(pos).getBlock();
 
-        if (!(block instanceof BlockDoor) && block != Blocks.STANDING_SIGN && block != Blocks.LADDER && block != Blocks.BAUXITE_LADDER && block != Blocks.YELLITE_LADDER && block != Blocks.ONYX_LADDER && block != Blocks.FRAZION_LADDER && block != Blocks.REEDS)
+        if (!(block instanceof BlockDoor) && block != Blocks.STANDING_SIGN && !(block instanceof BlockLadder) && block != Blocks.REEDS)
         {
             return block.material != Material.PORTAL && block.material != Material.STRUCTURE_VOID ? block.material.blocksMovement() : true;
         }

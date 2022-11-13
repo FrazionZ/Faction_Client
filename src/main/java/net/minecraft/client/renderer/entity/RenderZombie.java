@@ -1,8 +1,11 @@
 package net.minecraft.client.renderer.entity;
 
+import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelZombie;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.layers.LayerBipedArmor;
 import net.minecraft.entity.monster.EntityZombie;
+import net.minecraft.item.ItemStack;
 import net.minecraft.resources.ResourceLocation;
 
 public class RenderZombie extends RenderBiped<EntityZombie>

@@ -11,10 +11,16 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 
+import fz.frazionz.block.enums.ExplosiveType;
+import fz.frazionz.block.interfaces.FzExplosionChance;
+import fz.frazionz.client.stats.EnumStats;
+import fz.frazionz.client.stats.StatHelper;
 import fz.frazionz.item.ItemSpawnerPickaxe;
 import fz.frazionz.item.ItemTrophy;
+import fz.frazionz.utils.StringUtils;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockChest;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.enchantment.Enchantment;
@@ -807,6 +813,18 @@ public final class ItemStack
 
         if (this.hasTagCompound())
         {
+            if(isStatItem()) {
+                NBTTagCompound stats = this.getTagCompound().getCompoundTag("stats");
+                list.add(" ");
+                for(EnumStats stat : EnumStats.values()) {
+                    if(stats.hasKey(stat.name())) {
+                        int value = stats.getInteger(stat.name());
+                        list.add("\u00A7e" + I18n.translateToLocal("frazionz.stat." + stat.name().toLowerCase() + ".name") + " \u00A77" + value);
+                    }
+                }
+                list.add(" ");
+            }
+
             if ((i1 & 1) == 0)
             {
                 NBTTagList nbttaglist = this.getEnchantmentTagList();
@@ -980,6 +998,24 @@ public final class ItemStack
             if (this.hasTagCompound())
             {
                 list.add(TextFormatting.DARK_GRAY + I18n.translateToLocalFormatted("item.nbt_tags", this.getTagCompound().getKeySet().size()));
+            }
+        }
+
+        if(this.getItem() instanceof ItemBlock)
+        {
+            Block block = ((ItemBlock)this.getItem()).getBlock();
+            if(block instanceof FzExplosionChance) {
+                list.add(" ");
+                list.add(TextFormatting.GOLD + "Chance de Destruction");
+                list.add(" ");
+                for(ExplosiveType type : ExplosiveType.values()) {
+                    if(((FzExplosionChance) block).getExplosionChance(type) > 0) {
+                        list.add(TextFormatting.YELLOW + StringUtils.capitalize(type.name().toLowerCase().replaceAll("_", " "))
+                                + ": " + TextFormatting.GOLD + (((FzExplosionChance) block).getExplosionChance(type)*100) + "%");
+                    }
+                }
+                list.add(TextFormatting.YELLOW + "Autre: " + TextFormatting.GOLD + "Indestructible");
+                list.add(" ");
             }
         }
 
@@ -1303,4 +1339,9 @@ public final class ItemStack
 	public void setStackSize(int size) {
 		this.stackSize = size;
 	}
+
+    public boolean isStatItem()
+    {
+        return StatHelper.hasStats(this);
+    }
 }

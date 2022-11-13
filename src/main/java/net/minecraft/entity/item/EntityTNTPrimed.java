@@ -1,6 +1,8 @@
 package net.minecraft.entity.item;
 
 import javax.annotation.Nullable;
+
+import fz.frazionz.block.enums.ExplosiveType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.MoverType;
@@ -113,7 +115,7 @@ public class EntityTNTPrimed extends Entity
     private void explode()
     {
         float f = 4.0F;
-        this.world.createExplosion(this, this.posX, this.posY + (double)(this.height / 16.0F), this.posZ, 4.0F, true);
+        this.world.createExplosion(this, this.posX, this.posY + (double)(this.height / 16.0F), this.posZ, 4.0F, true, ExplosiveType.TNT);
     }
 
     /**

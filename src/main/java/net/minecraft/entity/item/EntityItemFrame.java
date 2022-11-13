@@ -22,6 +22,7 @@ import net.minecraft.util.datafix.walkers.ItemStackData;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.MapData;
+import org.apache.logging.log4j.LogManager;
 
 public class EntityItemFrame extends EntityHanging
 {
@@ -64,13 +65,12 @@ public class EntityItemFrame extends EntityHanging
         }
         else if (!source.isExplosion() && !this.getDisplayedItem().isEmpty())
         {
-            if (!this.world.isRemote)
+            if (!this.world.isRemote && this.isEntityAlive())
             {
                 this.dropItemOrSelf(source.getTrueSource(), false);
                 this.playSound(SoundEvents.ENTITY_ITEMFRAME_REMOVE_ITEM, 1.0F, 1.0F);
                 this.setDisplayedItem(ItemStack.EMPTY);
             }
-
             return true;
         }
         else

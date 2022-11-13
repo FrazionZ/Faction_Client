@@ -49,7 +49,7 @@ public class BlockManager {
         registerBlock(486, "frazion_furnace", (new BlockFrazionFurnace(false)).setHardness(3.5F).setSoundType(SoundType.STONE).setTranslationKey("frazion_furnace").setCreativeTab(CreativeTabs.DECORATIONS));
         registerBlock(487, "lit_frazion_furnace", (new BlockFrazionFurnace(true)).setHardness(3.5F).setSoundType(SoundType.STONE).setLightLevel(0.875F).setTranslationKey("frazion_furnace"));
         
-        registerBlock(488, "bauxite_ladder", (new BlockBauxiteLadder()).setHardness(0.4F).setSoundType(SoundType.LADDER).setTranslationKey("bauxite_ladder"));
+        registerBlock(488, "bauxite_ladder", (new BlockLadder()).setHardness(0.4F).setSoundType(SoundType.LADDER).setTranslationKey("bauxite_ladder"));
         
         registerBlock(489, "crimson_log", (new BlockNetherLog()).setTranslationKey("crimson_log").setSoundType(SoundType.WOOD));
         registerBlock(490, "crimson_roots", (new BlockCrimsonRoots()).setHardness(0.0F).setSoundType(SoundType.PLANT).setTranslationKey("crimson_roots"));
@@ -68,9 +68,9 @@ public class BlockManager {
         
         registerBlock(501, "ameliorator", (new BlockAmeliorator()).setLightLevel(0.500F).setHardness(25.0F).setResistance(1000.0F).setSoundType(SoundType.STONE).setTranslationKey("ameliorator"));
         
-        registerBlock(502, "yellite_ladder", (new BlockYelliteLadder()).setHardness(0.4F).setSoundType(SoundType.LADDER).setTranslationKey("yellite_ladder"));
-        registerBlock(503, "onyx_ladder", (new BlockOnyxLadder()).setHardness(0.4F).setSoundType(SoundType.LADDER).setTranslationKey("onyx_ladder"));
-        registerBlock(504, "frazion_ladder", (new BlockFrazionLadder()).setHardness(0.4F).setSoundType(SoundType.LADDER).setTranslationKey("frazion_ladder"));
+        registerBlock(502, "yellite_ladder", (new BlockLadder()).setHardness(0.4F).setSoundType(SoundType.LADDER).setTranslationKey("yellite_ladder"));
+        registerBlock(503, "onyx_ladder", (new BlockLadder()).setHardness(0.4F).setSoundType(SoundType.LADDER).setTranslationKey("onyx_ladder"));
+        registerBlock(504, "frazion_ladder", (new BlockLadder()).setHardness(0.4F).setSoundType(SoundType.LADDER).setTranslationKey("frazion_ladder"));
         
         registerBlock(505, "bauxite_chest", (new BlockBauxiteChest()).setHardness(2.5F).setResistance(10.0F).setSoundType(SoundType.METAL).setTranslationKey("bauxite_chest"));
         registerBlock(506, "frazion_chest", (new BlockFrazionChest()).setHardness(2.5F).setResistance(20.0F).setSoundType(SoundType.METAL).setTranslationKey("frazion_chest"));
@@ -83,11 +83,11 @@ public class BlockManager {
         registerBlock(511, "frazion_brewing_stand", (new BlockBrewingStand()).setHardness(0.5F).setLightLevel(0.125F).setTranslationKey("frazion_brewing_stand"));
         
         registerBlock(512, "wither_block", (new BlockWitherBlock()).setHardness(10.0F).setResistance(2000.0F).setSoundType(SoundType.STONE).setTranslationKey("wither_block"));
-        registerBlock(513, "compact_cobblestone_x1", (new Block(Material.ROCK)).setHardness(2.0F).setResistance(12.0F).setSoundType(SoundType.STONE).setTranslationKey("compact_cobblestone_x1").setCreativeTab(CreativeTabs.BUILDING_BLOCKS));
-        registerBlock(514, "compact_cobblestone_x2", (new Block(Material.ROCK)).setHardness(2.3F).setResistance(16.0F).setSoundType(SoundType.STONE).setTranslationKey("compact_cobblestone_x2").setCreativeTab(CreativeTabs.BUILDING_BLOCKS));
-        registerBlock(515, "compact_cobblestone_x3", (new Block(Material.ROCK)).setHardness(2.6F).setResistance(20.0F).setSoundType(SoundType.STONE).setTranslationKey("compact_cobblestone_x3").setCreativeTab(CreativeTabs.BUILDING_BLOCKS));
-        registerBlock(516, "compact_cobblestone_x4", (new Block(Material.ROCK)).setHardness(3.0F).setResistance(24.0F).setSoundType(SoundType.STONE).setTranslationKey("compact_cobblestone_x4").setCreativeTab(CreativeTabs.BUILDING_BLOCKS));
-        registerBlock(517, "compact_cobblestone_x5", (new Block(Material.ROCK)).setHardness(3.4F).setResistance(35.0F).setSoundType(SoundType.STONE).setTranslationKey("compact_cobblestone_x5").setCreativeTab(CreativeTabs.BUILDING_BLOCKS));
+        registerBlock(513, "compact_cobblestone_x1", (new BlockCompactCobblestone()).setHardness(2.0F).setResistance(12.0F).setSoundType(SoundType.STONE).setTranslationKey("compact_cobblestone_x1").setCreativeTab(CreativeTabs.BUILDING_BLOCKS));
+        registerBlock(514, "compact_cobblestone_x2", (new BlockCompactCobblestone()).setHardness(2.3F).setResistance(16.0F).setSoundType(SoundType.STONE).setTranslationKey("compact_cobblestone_x2").setCreativeTab(CreativeTabs.BUILDING_BLOCKS));
+        registerBlock(515, "compact_cobblestone_x3", (new BlockCompactCobblestone()).setHardness(2.6F).setResistance(20.0F).setSoundType(SoundType.STONE).setTranslationKey("compact_cobblestone_x3").setCreativeTab(CreativeTabs.BUILDING_BLOCKS));
+        registerBlock(516, "compact_cobblestone_x4", (new BlockCompactCobblestone()).setHardness(3.0F).setResistance(24.0F).setSoundType(SoundType.STONE).setTranslationKey("compact_cobblestone_x4").setCreativeTab(CreativeTabs.BUILDING_BLOCKS));
+        registerBlock(517, "compact_cobblestone_x5", (new BlockCompactCobblestone()).setHardness(3.4F).setResistance(35.0F).setSoundType(SoundType.STONE).setTranslationKey("compact_cobblestone_x5").setCreativeTab(CreativeTabs.BUILDING_BLOCKS));
         registerBlock(518, "reverse_fall_block", (new BlockReverseFall()).setHardness(0.25F).setResistance(10.0F).setSoundType(SoundType.SLIME).setTranslationKey("reverse_fall_block").setCreativeTab(CreativeTabs.BUILDING_BLOCKS));
         
         

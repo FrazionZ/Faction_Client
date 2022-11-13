@@ -27,9 +27,4 @@ public class RenderBiped<T extends EntityLiving> extends RenderLiving<T>
     {
         return DEFAULT_RES_LOC;
     }
-
-    public void transformHeldFull3DItemLayer()
-    {
-        GlStateManager.translate(0.0F, 0.1875F, 0.0F);
-    }
 }

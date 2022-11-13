@@ -1,14 +1,13 @@
 package net.minecraft.item;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 import com.google.common.base.Predicates;
 import com.google.common.collect.Multimap;
 
-import fz.frazionz.utils.EffectItem;
+import fz.frazionz.client.stats.EnumStats;
+import fz.frazionz.client.stats.StatCapModifier;
+import fz.frazionz.client.stats.StatModifier;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
@@ -21,11 +20,9 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
-import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.potion.Potion;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.EnumActionResult;
@@ -304,41 +301,39 @@ public class ItemArmor extends Item
     	}
     }
 
-    public static enum ArmorMaterial
+    public enum ArmorMaterial
     {
         LEATHER("leather", 3, new int[]{1, 1, 1, 1}, 15, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0.0F),
         CHAIN("chainmail", 7, new int[]{2, 2, 2, 2}, 12, SoundEvents.ITEM_ARMOR_EQUIP_CHAIN, 0.0F),
         IRON("iron", 8, new int[] {3, 4, 3, 2}, 9, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0.0F),
         GOLD("gold", 2, new int[]{3, 4, 3, 2}, 25, SoundEvents.ITEM_ARMOR_EQUIP_GOLD, 0.0F),
-        DIAMOND("diamond", 10, new int[]{4, 5, 4, 3}, 10, SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 0.0f/*0.25F*/),
-        YELLITE("yellite", 25, new int[]{4, 5, 5, 4}, 12, SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 0.0f/*0.50F*/),
-        BAUXITE("bauxite", 30, new int[]{5, 6, 6, 5}, 12, SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 0.0f/*0.80F*/),
-        ONYX("onyx", 35, new int[]{6, 7, 7, 6}, 12, SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 0.0f/*1.0F*/),
-        FRAZION_45("frazion", 45, new int[]{7, 8, 8, 7}, 12, SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 0.0f/*1.2F*/),
-        FRAZION_70("frazion_70", 65, new int[]{7, 8, 8, 7}, 12, SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 0.3125f/*1.5F*/,
-        		Arrays.asList(new EffectItem(MobEffects.SPEED, 200000, 0),
-        				new EffectItem(MobEffects.FIRE_RESISTANCE, 200000, 0)),
-        		Arrays.asList(MobEffects.POISON)
-        		),
-        FRAZION_100("frazion_100", 80, new int[]{7, 8, 8, 7}, 12, SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 0.625f/*1.8F*/,
-        		Arrays.asList(
-        				new EffectItem(MobEffects.SPEED, 200000, 0),
-        				new EffectItem(MobEffects.RESISTANCE, 200000, 0),
-        				new EffectItem(MobEffects.FIRE_RESISTANCE, 200000, 0),
-        				new EffectItem(MobEffects.STRENGTH, 200000, 0)),
-        		Arrays.asList(
-        				MobEffects.POISON,
-        				MobEffects.SLOWNESS,
-        				MobEffects.BLINDNESS)
-        		), 
-        TRAVELERS("travelers", 18, new int[]{4, 5, 4, 3}, 12, SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 0.0f/*1.0F*/, 
-        		Arrays.asList(
-        				new EffectItem(MobEffects.SPEED, 200000, 2),
-        				new EffectItem(MobEffects.FIRE_RESISTANCE, 200000, 0),
-        				new EffectItem(MobEffects.HASTE, 200000, 0),
-        				new EffectItem(MobEffects.NO_FALL, 200000, 0),
-        				new EffectItem(MobEffects.SATURATION, 200000, 0))
-        		),
+        DIAMOND("diamond", 10, new int[]{4, 5, 4, 3}, 10, SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 0.0f),
+        YELLITE("yellite", 25, new int[]{4, 5, 5, 4}, 12, SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 0.0f),
+        BAUXITE("bauxite", 30, new int[]{5, 6, 6, 5}, 12, SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 0.0f),
+        ONYX("onyx", 35, new int[]{6, 7, 7, 6}, 12, SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 0.0f),
+        FRAZION_45("frazion", 45, new int[]{7, 8, 8, 7}, 12, SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 0.0f),
+        FRAZION_70("frazion_70", 65, new int[]{7, 8, 8, 7}, 12, SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 0.3125f,
+                new HashMap<EnumStats, Integer>() {{
+                    put(EnumStats.SPEED, 8);
+                    put(EnumStats.RESISTANCE, 3);
+                    put(EnumStats.DAMAGE, 1);
+                }}),
+        FRAZION_100("frazion_100", 80, new int[]{7, 8, 8, 7}, 12, SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 0.625f,
+                new HashMap<EnumStats, Integer>() {{
+                    put(EnumStats.SPEED, 15);
+                    put(EnumStats.DAMAGE, 5);
+                    put(EnumStats.RESISTANCE, 5);
+                    put(EnumStats.HEALTH, 10);
+                }}),
+        TRAVELERS("travelers", 18, new int[]{4, 5, 4, 3}, 12, SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 0.0f,
+                new HashMap<EnumStats, Integer>() {{
+        	        put(EnumStats.SPEED, 60);
+        	        put(EnumStats.MINING_SPEED, 50);
+                }},
+                new ArrayList<StatModifier>() {{
+                    add(new StatCapModifier(StatCapModifier.StatCapType.MAX, EnumStats.SPEED, 160));
+                }}
+                ),
         ;
     	
         private final String name;
@@ -347,8 +342,9 @@ public class ItemArmor extends Item
         private final int enchantability;
         private final SoundEvent soundEvent;
         private final float toughness;
-        private List<EffectItem> effectList = new ArrayList<EffectItem>();
-        private List<Potion> antiEffect = new ArrayList<Potion>();
+        private final HashMap<EnumStats, Integer> stats;
+        private final List<StatModifier> modifiers;
+
 
         private ArmorMaterial(String nameIn, int maxDamageFactorIn, int[] damageReductionAmountArrayIn, int enchantabilityIn, SoundEvent soundEventIn, float toughnessIn)
         {
@@ -358,9 +354,11 @@ public class ItemArmor extends Item
             this.enchantability = enchantabilityIn;
             this.soundEvent = soundEventIn;
             this.toughness = toughnessIn;
+            this.stats = new HashMap<EnumStats, Integer>();
+            this.modifiers = new ArrayList<StatModifier>();
         }
-        
-        private ArmorMaterial(String nameIn, int maxDamageFactorIn, int[] damageReductionAmountArrayIn, int enchantabilityIn, SoundEvent soundEventIn, float toughnessIn, List<EffectItem> effectList)
+
+        private ArmorMaterial(String nameIn, int maxDamageFactorIn, int[] damageReductionAmountArrayIn, int enchantabilityIn, SoundEvent soundEventIn, float toughnessIn, HashMap<EnumStats, Integer> stats)
         {
             this.name = nameIn;
             this.maxDamageFactor = maxDamageFactorIn;
@@ -368,10 +366,11 @@ public class ItemArmor extends Item
             this.enchantability = enchantabilityIn;
             this.soundEvent = soundEventIn;
             this.toughness = toughnessIn;
-            this.effectList = effectList;
+            this.stats = stats;
+            this.modifiers = new ArrayList<StatModifier>();
         }
-        
-        private ArmorMaterial(String nameIn, int maxDamageFactorIn, int[] damageReductionAmountArrayIn, int enchantabilityIn, SoundEvent soundEventIn, float toughnessIn, List<EffectItem> effectList, List<Potion> antiEffect)
+
+        private ArmorMaterial(String nameIn, int maxDamageFactorIn, int[] damageReductionAmountArrayIn, int enchantabilityIn, SoundEvent soundEventIn, float toughnessIn, HashMap<EnumStats, Integer> stats, List<StatModifier> modifiers)
         {
             this.name = nameIn;
             this.maxDamageFactor = maxDamageFactorIn;
@@ -379,26 +378,10 @@ public class ItemArmor extends Item
             this.enchantability = enchantabilityIn;
             this.soundEvent = soundEventIn;
             this.toughness = toughnessIn;
-            this.effectList = effectList;
-            this.antiEffect = antiEffect;
+            this.stats = stats;
+            this.modifiers = modifiers;
         }
-        
-        public boolean hasAntiEffect() {
-        	return !this.antiEffect.isEmpty();
-        }
-        
-        public boolean hasEffect() {
-        	return !this.effectList.isEmpty();
-        }
-        
-        public List<Potion> getAntiEffect() {
-        	return this.antiEffect;
-        }
-        
-        public List<EffectItem> getEffectList()
-        {
-        	return this.effectList;
-        }
+
 
         public int getDurability(EntityEquipmentSlot armorType)
         {
@@ -422,52 +405,29 @@ public class ItemArmor extends Item
 
         public Item getRepairItem()
         {
-            if (this == LEATHER)
-            {
-                return Items.LEATHER;
-            }
-            else if (this == CHAIN)
-            {
-                return Items.IRON_INGOT;
-            }
-            else if (this == GOLD)
-            {
-                return Items.GOLD_INGOT;
-            }
-            else if (this == IRON)
-            {
-                return Items.IRON_INGOT;
-            }
-            else if (this == YELLITE)
-            {
-                return Items.YELLITE;
-            }
-            else if (this == BAUXITE)
-            {
-                return Items.BAUXITE;
-            }
-            else if (this == ONYX)
-            {
-                return Items.ONYX;
-            }
-            else if (this == FRAZION_45)
-            {
-                return Items.FRAZION;
-            }
-            else if (this == FRAZION_70)
-            {
-                return Items.FRAZION;
-            }
-            else if (this == FRAZION_100)
-            {
-                return Items.FRAZION;
-            }
-            else if (this == TRAVELERS) {
-            	return Items.ONYX;
-            }
-            else
-            {
-                return this == DIAMOND ? Items.DIAMOND : null;
+            switch(this) {
+                case LEATHER:
+                    return Items.LEATHER;
+                case CHAIN:
+                case IRON:
+                    return Items.IRON_INGOT;
+                case GOLD:
+                    return Items.GOLD_INGOT;
+                case DIAMOND:
+                    return Items.DIAMOND;
+                case YELLITE:
+                    return Items.YELLITE;
+                case BAUXITE:
+                    return Items.BAUXITE;
+                case ONYX:
+                case TRAVELERS:
+                    return Items.ONYX;
+                case FRAZION_45:
+                case FRAZION_70:
+                case FRAZION_100:
+                    return Items.FRAZION;
+                default:
+                    return null;
             }
         }
 
@@ -479,6 +439,14 @@ public class ItemArmor extends Item
         public float getToughness()
         {
             return this.toughness;
+        }
+
+        public HashMap<EnumStats, Integer> getStats() {
+        	return this.stats;
+        }
+
+        public List<StatModifier> getModifiers() {
+        	return this.modifiers;
         }
     }
 }

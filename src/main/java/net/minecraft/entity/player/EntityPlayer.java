@@ -1398,7 +1398,8 @@ public abstract class EntityPlayer extends EntityLivingBase
         {
             if (!targetEntity.hitByEntity(this))
             {
-                float f = (float)this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue() * (this.getStats().getStat(EnumStats.DAMAGE)/100f);
+                float f = (float)this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue()
+                        * (this.getStats().getStat(EnumStats.DAMAGE)/100f);
                 
                 int i = 0;
                 float f1 = 0.0F;
@@ -2825,18 +2826,32 @@ public abstract class EntityPlayer extends EntityLivingBase
         return (((Byte)this.getDataManager().get(PLAYER_MODEL_FLAG)).byteValue() & part.getPartMask()) == part.getPartMask();
     }
     
-    public boolean isWearingFullArmor(ItemArmor.ArmorMaterial armorMat)
+    public boolean isWearingFullArmorSet(ItemArmor.ArmorMaterial armorMat)
     {
-    	ItemStack helmet = this.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
-    	ItemStack chestplate = this.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
-    	ItemStack leggings = this.getItemStackFromSlot(EntityEquipmentSlot.LEGS);
-    	ItemStack boots = this.getItemStackFromSlot(EntityEquipmentSlot.FEET);
-    	
-    	if(helmet.getItem() instanceof ItemArmor && chestplate.getItem() instanceof ItemArmor && leggings.getItem() instanceof ItemArmor && boots.getItem() instanceof ItemArmor) {
-    		
-    		return ((ItemArmor)helmet.getItem()).getArmorMaterial().equals(armorMat) && ((ItemArmor)chestplate.getItem()).getArmorMaterial().equals(armorMat) && ((ItemArmor)leggings.getItem()).getArmorMaterial().equals(armorMat) && ((ItemArmor)boots.getItem()).getArmorMaterial().equals(armorMat);
-    	}
-    	return false;
+        return this.inventory.armorInventory.stream().allMatch(stack -> stack.getItem() instanceof ItemArmor && ((ItemArmor)stack.getItem()).getArmorMaterial() == armorMat);
+    }
+
+    public boolean isWearingFullArmorSet()
+    {
+        ItemStack helmet = this.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
+        ItemStack chestplate = this.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
+        ItemStack leggings = this.getItemStackFromSlot(EntityEquipmentSlot.LEGS);
+        ItemStack boots = this.getItemStackFromSlot(EntityEquipmentSlot.FEET);
+
+        if(helmet.getItem() instanceof ItemArmor && chestplate.getItem() instanceof ItemArmor
+                && leggings.getItem() instanceof ItemArmor && boots.getItem() instanceof ItemArmor) {
+            ItemArmor h = ((ItemArmor)helmet.getItem());
+            ItemArmor c = ((ItemArmor)chestplate.getItem());
+            ItemArmor l = ((ItemArmor)leggings.getItem());
+            ItemArmor b = ((ItemArmor)boots.getItem());
+            return h.getArmorMaterial() == c.getArmorMaterial() && h.getArmorMaterial() == l.getArmorMaterial() && h.getArmorMaterial() == b.getArmorMaterial();
+        }
+        return false;
+    }
+
+    public ItemArmor.ArmorMaterial getFullArmorMaterial()
+    {
+        return ((ItemArmor)this.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem()).getArmorMaterial();
     }
     
     public boolean hasItemInMainHand(Item item)

@@ -16,7 +16,6 @@ import org.apache.logging.log4j.Logger;
 import com.google.common.base.Objects;
 import com.google.common.collect.Maps;
 
-import fz.frazionz.block.BlockBauxiteLadder;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLadder;
@@ -1531,10 +1530,10 @@ public abstract class EntityLivingBase extends Entity
             IBlockState iblockstate = this.world.getBlockState(pos.down());
 
             if (iblockstate.getBlock() == Blocks.LADDER && iblockstate.getValue(BlockLadder.FACING) == state.getValue(BlockTrapDoor.FACING)
-            		|| (iblockstate.getBlock() == Blocks.BAUXITE_LADDER && iblockstate.getValue(BlockBauxiteLadder.FACING) == state.getValue(BlockTrapDoor.FACING))
-            		|| (iblockstate.getBlock() == Blocks.YELLITE_LADDER && iblockstate.getValue(BlockBauxiteLadder.FACING) == state.getValue(BlockTrapDoor.FACING))
-            		|| (iblockstate.getBlock() == Blocks.ONYX_LADDER && iblockstate.getValue(BlockBauxiteLadder.FACING) == state.getValue(BlockTrapDoor.FACING))
-            		|| (iblockstate.getBlock() == Blocks.FRAZION_LADDER && iblockstate.getValue(BlockBauxiteLadder.FACING) == state.getValue(BlockTrapDoor.FACING)))
+            		|| (iblockstate.getBlock() == Blocks.BAUXITE_LADDER && iblockstate.getValue(BlockLadder.FACING) == state.getValue(BlockTrapDoor.FACING))
+            		|| (iblockstate.getBlock() == Blocks.YELLITE_LADDER && iblockstate.getValue(BlockLadder.FACING) == state.getValue(BlockTrapDoor.FACING))
+            		|| (iblockstate.getBlock() == Blocks.ONYX_LADDER && iblockstate.getValue(BlockLadder.FACING) == state.getValue(BlockTrapDoor.FACING))
+            		|| (iblockstate.getBlock() == Blocks.FRAZION_LADDER && iblockstate.getValue(BlockLadder.FACING) == state.getValue(BlockTrapDoor.FACING)))
             {
                 return true;
             }

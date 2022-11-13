@@ -115,7 +115,7 @@ public class RenderPlayer extends RenderLivingBase<AbstractClientPlayer>
                     // PVP_UPDATE
                     else if (enumaction == EnumAction.BLOCK_SWORD)
                     {
-                        modelbiped$armpose = ModelBiped.ArmPose.BLOCK_SWORD;
+                        modelbiped$armpose = ModelBiped.ArmPose.BLOCK;
                     }
                     else if (enumaction == EnumAction.BOW)
                     {
@@ -139,7 +139,7 @@ public class RenderPlayer extends RenderLivingBase<AbstractClientPlayer>
                     // PVP_UPDATE
                     else if (enumaction1 == EnumAction.BLOCK_SWORD)
                     {
-                        modelbiped$armpose1 = ModelBiped.ArmPose.BLOCK_SWORD;
+                        modelbiped$armpose1 = ModelBiped.ArmPose.BLOCK;
                     }
                     else if (enumaction1 == EnumAction.BOW)
                     {
@@ -167,11 +167,6 @@ public class RenderPlayer extends RenderLivingBase<AbstractClientPlayer>
     public ResourceLocation getEntityTexture(AbstractClientPlayer entity)
     {
         return entity.getLocationSkin();
-    }
-
-    public void transformHeldFull3DItemLayer()
-    {
-        GlStateManager.translate(0.0F, 0.1875F, 0.0F);
     }
 
     /**

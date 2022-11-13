@@ -1216,7 +1216,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
     {
         PacketThreadUtil.checkThreadAndEnqueue(packetIn, this, this.client);
         Explosion explosion = new Explosion(this.client.world, (Entity)null, packetIn.getX(), packetIn.getY(), packetIn.getZ(), packetIn.getStrength(), packetIn.getAffectedBlockPositions());
-        explosion.doExplosionB(true);
+        explosion.doExplosionB(false);
         this.client.player.motionX += (double)packetIn.getMotionX();
         this.client.player.motionY += (double)packetIn.getMotionY();
         this.client.player.motionZ += (double)packetIn.getMotionZ();
