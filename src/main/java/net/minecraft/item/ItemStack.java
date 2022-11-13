@@ -874,6 +874,24 @@ public final class ItemStack
             }
         }
 
+        if(this.getItem() instanceof ItemBlock)
+        {
+            Block block = ((ItemBlock)this.getItem()).getBlock();
+            if(block instanceof FzExplosionChance) {
+                list.add(" ");
+                list.add(TextFormatting.GOLD + "Chance de Destruction");
+                list.add(" ");
+                for(ExplosiveType type : ExplosiveType.values()) {
+                    if(((FzExplosionChance) block).getExplosionChance(type) > 0) {
+                        list.add(TextFormatting.YELLOW + StringUtils.capitalize(type.name().toLowerCase().replaceAll("_", " "))
+                                + ": " + TextFormatting.GOLD + (((FzExplosionChance) block).getExplosionChance(type)*100) + "%");
+                    }
+                }
+                list.add(TextFormatting.YELLOW + "Autre: " + TextFormatting.GOLD + "Indestructible");
+                list.add(" ");
+            }
+        }
+
         for (EntityEquipmentSlot entityequipmentslot : EntityEquipmentSlot.values())
         {
             Multimap<String, AttributeModifier> multimap = this.getAttributeModifiers(entityequipmentslot);
@@ -998,24 +1016,6 @@ public final class ItemStack
             if (this.hasTagCompound())
             {
                 list.add(TextFormatting.DARK_GRAY + I18n.translateToLocalFormatted("item.nbt_tags", this.getTagCompound().getKeySet().size()));
-            }
-        }
-
-        if(this.getItem() instanceof ItemBlock)
-        {
-            Block block = ((ItemBlock)this.getItem()).getBlock();
-            if(block instanceof FzExplosionChance) {
-                list.add(" ");
-                list.add(TextFormatting.GOLD + "Chance de Destruction");
-                list.add(" ");
-                for(ExplosiveType type : ExplosiveType.values()) {
-                    if(((FzExplosionChance) block).getExplosionChance(type) > 0) {
-                        list.add(TextFormatting.YELLOW + StringUtils.capitalize(type.name().toLowerCase().replaceAll("_", " "))
-                                + ": " + TextFormatting.GOLD + (((FzExplosionChance) block).getExplosionChance(type)*100) + "%");
-                    }
-                }
-                list.add(TextFormatting.YELLOW + "Autre: " + TextFormatting.GOLD + "Indestructible");
-                list.add(" ");
             }
         }
 

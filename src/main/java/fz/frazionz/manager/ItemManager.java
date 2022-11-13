@@ -129,10 +129,10 @@ public class ItemManager {
         registerItemBlock(Blocks.CRISTAL_VIOLET);
         registerItemBlock(Blocks.CRISTAL_VERT);
         registerItemBlock(Blocks.CRISTAL_BLEU);
-        registerItemBlock(Blocks.OBSIDIAN_YELLITE, (new ItemBlockLore(Blocks.OBSIDIAN_YELLITE, " ", "\u00A76\u00bb \u00A7e\u00A7nChance de destruction par Tnt", " ", "\u00A76\u00bb \u00A7eTnt :\u00A76 5%", "\u00A76\u00bb \u00A7eZ Tnt :\u00A76 100%", " ")));
-        registerItemBlock(Blocks.OBSIDIAN_BAUXITE, (new ItemBlockLore(Blocks.OBSIDIAN_BAUXITE, " ", "\u00A76\u00bb \u00A7e\u00A7nChance de destruction par Tnt", " ","\u00A76\u00bb \u00A7eTnt :\u00A76 2%", "\u00A76\u00bb \u00A7eZ Tnt :\u00A76 50%", " ")));
-        registerItemBlock(Blocks.OBSIDIAN_ONYX, (new ItemBlockLore(Blocks.OBSIDIAN_ONYX, " ", "\u00A76\u00bb \u00A7eIndestructible aux Wither", " ", "\u00A76\u00bb \u00A7e\u00A7nChance de destruction par Tnt", " ", "\u00A76\u00bb \u00A7eTnt :\u00A76 Indestructible", "\u00A76\u00bb \u00A7eZ Tnt :\u00A76 20%", " ")));
-        registerItemBlock(Blocks.OBSIDIAN_FRAZION, (new ItemBlockLore(Blocks.OBSIDIAN_FRAZION, " ", "\u00A76\u00bb \u00A7eIndestructible aux Wither", " ", "\u00A76\u00bb \u00A7e\u00A7nChance de destruction par Tnt", " ", "\u00A76\u00bb \u00A7eTnt :\u00A76 Indestructible", "\u00A76\u00bb \u00A7eZ Tnt :\u00A76 5%", " ")));
+        registerItemBlock(Blocks.OBSIDIAN_YELLITE, (new ItemBlock(Blocks.OBSIDIAN_YELLITE)));
+        registerItemBlock(Blocks.OBSIDIAN_BAUXITE, (new ItemBlock(Blocks.OBSIDIAN_BAUXITE)));
+        registerItemBlock(Blocks.OBSIDIAN_ONYX, (new ItemBlock(Blocks.OBSIDIAN_ONYX)));
+        registerItemBlock(Blocks.OBSIDIAN_FRAZION, (new ItemBlock(Blocks.OBSIDIAN_FRAZION)));
         registerItemBlock(Blocks.Z_TNT);
         registerItemBlock(Blocks.BAUXITE_BLOCK);
         registerItem(1065, "key_farm", (new Item()).setFull3D().setTranslationKey("key_farm").setCreativeTab(CreativeTabs.MATERIALS));
@@ -140,7 +140,7 @@ public class ItemManager {
         registerItem(1067, "key_common", (new Item()).setFull3D().setTranslationKey("key_common").setCreativeTab(CreativeTabs.MATERIALS));
         registerItem(1068, "key_rare", (new Item()).setFull3D().setTranslationKey("key_rare").setCreativeTab(CreativeTabs.MATERIALS));
         registerItem(1069, "key_legendary", (new Item()).setFull3D().setTranslationKey("key_legendary").setCreativeTab(CreativeTabs.MATERIALS));
-        
+
         registerItem(1078, "strawberry", (new ItemSeedFood(2, 1.0F, Blocks.STRAWBERRIES, Blocks.FARMLAND)).setTranslationKey("strawberry"));
         registerItem(1079, "banana", (new ItemBanana(4, 2.5F, true)).setAlwaysEdible().setTranslationKey("banana"));
         registerItem(1080, "pizza", (new ItemPizza(10, 2.5F, true)).setAlwaysEdible().setTranslationKey("pizza"));
@@ -294,7 +294,7 @@ public class ItemManager {
         registerItem(1211, "onyx_brewing_stand", (new ItemBlockSpecial(Blocks.ONYX_BREWING_STAND)).setTranslationKey("onyx_brewing_stand").setCreativeTab(CreativeTabs.BREWING));
         registerItem(1212, "frazion_brewing_stand", (new ItemBlockSpecial(Blocks.FRAZION_BREWING_STAND)).setTranslationKey("frazion_brewing_stand").setCreativeTab(CreativeTabs.BREWING));
         
-        registerItemBlock(Blocks.RENFORCED_SAND, (new ItemBlockLore(Blocks.RENFORCED_SAND, " ", "\u00A76\u00bb \u00A7e\u00A7nChance de destruction par Tnt", " ", "\u00A76\u00bb \u00A7eTnt :\u00A76 33.33%", "\u00A76\u00bb \u00A7eZ Tnt :\u00A76 100%", " ")));
+        registerItemBlock(Blocks.RENFORCED_SAND, (new ItemBlock(Blocks.RENFORCED_SAND)));
         
         registerItem(1213, "obsidian_tower", (new Item()).setFull3D().setTranslationKey("obsidian_tower").setCreativeTab(CreativeTabs.MATERIALS));
         
@@ -309,11 +309,11 @@ public class ItemManager {
         registerItem(1220, "faction_token", (new ItemLore(" ", "\u00A76\u00bb \u00A7eClique droit pour ajouter le Token à ta Faction.", " ")).setTranslationKey("faction_token").setCreativeTab(CreativeTabs.MATERIALS));
         
         registerItemBlock(Blocks.WITHER_BLOCK, (new ItemBlockLore(Blocks.WITHER_BLOCK, " ", "\u00A76\u00bb \u00A7eIndestructible aux Wither", " ", "\u00A76\u00bb \u00A7e\u00A7nChance de destruction par Tnt", " ", "\u00A76\u00bb \u00A7eTnt :\u00A76 5%", "\u00A76\u00bb \u00A7eZ Tnt :\u00A76 100%", " ")));
-        registerItemBlock(Blocks.COMPACT_COBBLESTONE_X1, (new ItemBlockCobblestoneCompact(Blocks.COMPACT_COBBLESTONE_X1, 1, " ", "\u00A76\u00bb \u00A7e\u00A7nChance de destruction par Tnt", " ", "\u00A76\u00bb \u00A7eTnt :\u00A76 100%", "\u00A76\u00bb \u00A7eZ Tnt :\u00A76 100%", " ")));
-        registerItemBlock(Blocks.COMPACT_COBBLESTONE_X2, (new ItemBlockCobblestoneCompact(Blocks.COMPACT_COBBLESTONE_X2, 2, " ", "\u00A76\u00bb \u00A7e\u00A7nChance de destruction par Tnt", " ", "\u00A76\u00bb \u00A7eTnt :\u00A76 100%", "\u00A76\u00bb \u00A7eZ Tnt :\u00A76 100%", " ")));
-        registerItemBlock(Blocks.COMPACT_COBBLESTONE_X3, (new ItemBlockCobblestoneCompact(Blocks.COMPACT_COBBLESTONE_X3, 3, " ", "\u00A76\u00bb \u00A7e\u00A7nChance de destruction par Tnt", " ", "\u00A76\u00bb \u00A7eTnt :\u00A76 20%", "\u00A76\u00bb \u00A7eZ Tnt :\u00A76 100%", " ")));
-        registerItemBlock(Blocks.COMPACT_COBBLESTONE_X4, (new ItemBlockCobblestoneCompact(Blocks.COMPACT_COBBLESTONE_X4, 4, " ", "\u00A76\u00bb \u00A7e\u00A7nChance de destruction par Tnt", " ", "\u00A76\u00bb \u00A7eTnt :\u00A76 Indestructible", "\u00A76\u00bb \u00A7eZ Tnt :\u00A76 80%", " ")));
-        registerItemBlock(Blocks.COMPACT_COBBLESTONE_X5, (new ItemBlockCobblestoneCompact(Blocks.COMPACT_COBBLESTONE_X5, 5, " ", "\u00A76\u00bb \u00A7eIndestructible aux Wither", " ", "\u00A76\u00bb \u00A7e\u00A7nChance de destruction par Tnt", " ", "\u00A76\u00bb \u00A7eTnt :\u00A76 Indestructible", "\u00A76\u00bb \u00A7eZ Tnt :\u00A76 Indestructible", " ")));
+        registerItemBlock(Blocks.COMPACT_COBBLESTONE_X1, (new ItemBlockCobblestoneCompact(Blocks.COMPACT_COBBLESTONE_X1, 1)));
+        registerItemBlock(Blocks.COMPACT_COBBLESTONE_X2, (new ItemBlockCobblestoneCompact(Blocks.COMPACT_COBBLESTONE_X2, 2)));
+        registerItemBlock(Blocks.COMPACT_COBBLESTONE_X3, (new ItemBlockCobblestoneCompact(Blocks.COMPACT_COBBLESTONE_X3, 3)));
+        registerItemBlock(Blocks.COMPACT_COBBLESTONE_X4, (new ItemBlockCobblestoneCompact(Blocks.COMPACT_COBBLESTONE_X4, 4)));
+        registerItemBlock(Blocks.COMPACT_COBBLESTONE_X5, (new ItemBlockCobblestoneCompact(Blocks.COMPACT_COBBLESTONE_X5, 5)));
         
         registerItemBlock(Blocks.REVERSE_FALL_BLOCK, (new ItemBlockLore(Blocks.REVERSE_FALL_BLOCK, " ", "\u00A76\u00bb \u00A7eAucun dégats chute en tombant dessus.", "\u00A76\u00bb \u00A7eCependant, si vous avez l'effet No Fall, vous en prendrez.", " ")));
     
