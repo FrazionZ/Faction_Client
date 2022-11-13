@@ -16,7 +16,4 @@ public class StatCapModifier extends StatModifier {
         MAX,
         MIN
     }
-
-
-
 }

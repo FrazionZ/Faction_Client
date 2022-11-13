@@ -695,7 +695,7 @@ public class Item
         registerItemBlock(Blocks.TNT);
         registerItemBlock(Blocks.BOOKSHELF);
         registerItemBlock(Blocks.MOSSY_COBBLESTONE);
-        registerItemBlock(Blocks.OBSIDIAN, (new ItemBlockLore(Blocks.OBSIDIAN, " ", "\u00A76\u00bb \u00A7e\u00A7nChance de destruction par Tnt", " ", "\u00A76\u00bb \u00A7eTnt :\u00A76 8%", "\u00A76\u00bb \u00A7eZ Tnt :\u00A76 100%", " ")));
+        registerItemBlock(Blocks.OBSIDIAN, (new ItemBlock(Blocks.OBSIDIAN)));
         registerItemBlock(Blocks.TORCH);
         registerItemBlock(Blocks.END_ROD);
         registerItemBlock(Blocks.CHORUS_PLANT);

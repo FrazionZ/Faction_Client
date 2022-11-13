@@ -41,5 +41,4 @@ public class StatHelper {
     public static boolean playerWearFullArmorSet(EntityPlayer player, ItemArmor.ArmorMaterial armor) {
         return player.isWearingFullArmorSet(armor);
     }
-
 }

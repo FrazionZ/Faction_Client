@@ -7,8 +7,6 @@ import fz.frazionz.block.interfaces.FzExplosionChance;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 

@@ -36,5 +36,4 @@ public class ItemShulkerTrophy extends ItemTrophy {
     {
     	return EnumStats.RESISTANCE;
     }
-	
 }

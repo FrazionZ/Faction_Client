@@ -10,6 +10,9 @@ public enum ExplosiveType {
     FIREBALL,
     CREEPER,
     WITHER,
+    WITHER_SKULL,
+    BED,
+    ENDER_CRYSTAL,
     ;
 
 }
