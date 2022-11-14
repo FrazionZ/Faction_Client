@@ -905,7 +905,7 @@ public abstract class EntityPlayer extends EntityLivingBase
 
     public float getDigSpeed(IBlockState state)
     {
-        float f = this.inventory.getDestroySpeed(state) * (this.stats.getStat(EnumStats.MINING_SPEED)/100f);
+        float f = this.inventory.getDestroySpeed(state);
 
         if (f > 1.0F)
         {
@@ -917,6 +917,8 @@ public abstract class EntityPlayer extends EntityLivingBase
                 f += (float)(i * i + 1);
             }
         }
+
+        f *= (this.stats.getStat(EnumStats.MINING_SPEED)/100f);
 
         if (this.isPotionActive(MobEffects.HASTE))
         {
