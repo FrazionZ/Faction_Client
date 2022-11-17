@@ -806,11 +806,6 @@ public final class ItemStack
             i1 = this.stackTagCompound.getInteger("HideFlags");
         }
 
-        if ((i1 & 32) == 0)
-        {
-            this.getItem().addInformation(this, playerIn == null ? null : playerIn.world, list, advanced);
-        }
-
         if (this.hasTagCompound())
         {
             if(isStatItem()) {
@@ -819,7 +814,7 @@ public final class ItemStack
                 for(EnumStats stat : EnumStats.values()) {
                     if(stats.hasKey(stat.name())) {
                         int value = stats.getInteger(stat.name());
-                        list.add("\u00A7e" + I18n.translateToLocal("frazionz.stat." + stat.name().toLowerCase() + ".name") + " \u00A77" + value);
+                        list.add(stat.toString() + value);
                     }
                 }
                 list.add(" ");
@@ -872,6 +867,11 @@ public final class ItemStack
                     }
                 }
             }
+        }
+
+        if ((i1 & 32) == 0)
+        {
+            this.getItem().addInformation(this, playerIn == null ? null : playerIn.world, list, advanced);
         }
 
         if(this.getItem() instanceof ItemBlock)
@@ -1017,6 +1017,10 @@ public final class ItemStack
             {
                 list.add(TextFormatting.DARK_GRAY + I18n.translateToLocalFormatted("item.nbt_tags", this.getTagCompound().getKeySet().size()));
             }
+        }
+
+        if(this.hasTagCompound()) {
+            list.add(this.getTagCompound().toString());
         }
 
         return list;

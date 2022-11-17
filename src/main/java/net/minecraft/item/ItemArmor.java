@@ -8,6 +8,7 @@ import com.google.common.collect.Multimap;
 import fz.frazionz.client.stats.EnumStats;
 import fz.frazionz.client.stats.StatCapModifier;
 import fz.frazionz.client.stats.StatModifier;
+import fz.frazionz.utils.StringUtils;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
@@ -31,6 +32,8 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 
 public class ItemArmor extends Item
@@ -263,42 +266,24 @@ public class ItemArmor extends Item
 
         return multimap;
     }
-    
+
     @Override
     public void addInformation(ItemStack stack, World playerIn, List<String> tooltip, ITooltipFlag advanced) {
-    	
-    	if(this.getArmorMaterial() == ArmorMaterial.TRAVELERS) {
-        	tooltip.add(" ");
-        	tooltip.add("\u00A76\u00bb \u00A7eEffects Full Armure :");
-        	tooltip.add("\u00A76\u00bb \u00A7eSpeed 3");
-        	tooltip.add("\u00A76\u00bb \u00A7eHaste 1");
-        	tooltip.add("\u00A76\u00bb \u00A7eFire Resistance 1");
-        	tooltip.add("\u00A76\u00bb \u00A7eNo Fall");
-        	tooltip.add("\u00A76\u00bb \u00A7eSaturation 1");
-        	tooltip.add(" ");
-    	}
-    	else if(this.getArmorMaterial() == ArmorMaterial.FRAZION_100) {
-        	tooltip.add(" ");
-        	tooltip.add("\u00A76\u00bb \u00A7eEffects Full Armure :");
-        	tooltip.add("\u00A76\u00bb \u00A7eSpeed 1");
-        	tooltip.add("\u00A76\u00bb \u00A7eForce 1");
-        	tooltip.add("\u00A76\u00bb \u00A7eResistance 1");
-        	tooltip.add("\u00A76\u00bb \u00A7eFire Resistance 1");
-        	tooltip.add(" ");
-        	tooltip.add("\u00A76\u00bb \u00A7eAnti Blindness");
-        	tooltip.add("\u00A76\u00bb \u00A7eAnti Slowness");
-        	tooltip.add("\u00A76\u00bb \u00A7eAnti Poison");
-        	tooltip.add(" ");
-    	}
-    	else if(this.getArmorMaterial() == ArmorMaterial.FRAZION_70) {
-        	tooltip.add(" ");
-        	tooltip.add("\u00A76\u00bb \u00A7eEffects Full Armure :");
-        	tooltip.add("\u00A76\u00bb \u00A7eSpeed 1");
-        	tooltip.add("\u00A76\u00bb \u00A7eFire Resistance 1");
-        	tooltip.add(" ");
-        	tooltip.add("\u00A76\u00bb \u00A7eAnti Poison");
-        	tooltip.add(" ");
-    	}
+        if (!((ItemArmor) stack.getItem()).getArmorMaterial().getStats().isEmpty()) {
+            tooltip.add(" ");
+            tooltip.add(TextFormatting.DARK_GRAY.toString() + "Full set bonus:");
+            for (Map.Entry<EnumStats, Integer> entry : ((ItemArmor) stack.getItem()).getArmorMaterial().getStats().entrySet()) {
+                tooltip.add(TextFormatting.DARK_GRAY + entry.getKey().toString() + TextFormatting.GRAY + entry.getValue());
+            }
+        }
+        if(!((ItemArmor) stack.getItem()).getArmorMaterial().getModifiers().isEmpty()) {
+            tooltip.add(" ");
+            tooltip.add(TextFormatting.GRAY.toString() + "Modifiers:");
+            for (StatModifier modifier : ((ItemArmor) stack.getItem()).getArmorMaterial().getModifiers()) {
+                tooltip.add(TextFormatting.GRAY + modifier.toString());
+            }
+            tooltip.add(" ");
+        }
     }
 
     public enum ArmorMaterial
@@ -327,11 +312,11 @@ public class ItemArmor extends Item
                 }}),
         TRAVELERS("travelers", 18, new int[]{4, 5, 4, 3}, 12, SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 0.0f,
                 new HashMap<EnumStats, Integer>() {{
-        	        put(EnumStats.SPEED, 60);
+        	        put(EnumStats.SPEED, 100);
         	        put(EnumStats.MINING_SPEED, 50);
                 }},
                 new ArrayList<StatModifier>() {{
-                    add(new StatCapModifier(StatCapModifier.StatCapType.MAX, EnumStats.SPEED, 160));
+                    add(new StatCapModifier(StatCapModifier.StatCapType.MAX, EnumStats.SPEED, 240));
                 }}
                 ),
         ;

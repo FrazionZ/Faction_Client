@@ -228,9 +228,9 @@ public class GuiStats extends GuiScreen implements IProgressMeter
         protected int sortColumn = -1;
         protected int sortOrder;
 
-        protected Stats(Minecraft p_i47550_2_)
+        protected Stats(Minecraft mc)
         {
-            super(p_i47550_2_, 0, 0, 0, 0, 0);
+            super(mc, GuiStats.this.width, GuiStats.this.height, 32, GuiStats.this.height - 64, GuiStats.this.fontRenderer.FONT_HEIGHT * 4);
             this.setShowSelectionBox(false);
             this.setHasListHeader(true, 20);
         }

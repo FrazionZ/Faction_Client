@@ -1,5 +1,7 @@
 package fz.frazionz.client.stats;
 
+import net.minecraft.util.text.translation.I18n;
+
 public class StatModifier {
 
     protected EnumStats stat;
@@ -16,5 +18,9 @@ public class StatModifier {
 
     public int getValue() {
         return value;
+    }
+
+    public String toString() {
+        return I18n.translateToLocal("frazionz.stat." + stat.name().toLowerCase() + ".name") + ": " + value;
     }
 }

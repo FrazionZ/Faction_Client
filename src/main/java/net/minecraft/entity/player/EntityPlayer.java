@@ -629,7 +629,8 @@ public abstract class EntityPlayer extends EntityLivingBase
 
         if (!this.world.isRemote)
         {
-            iattributeinstance.setBaseValue((double)this.capabilities.getWalkSpeed() * (this.stats.getStat(EnumStats.SPEED)/100f));
+            iattributeinstance.setBaseValue((double)this.capabilities.getWalkSpeed()
+                    * ( 1 + ((this.stats.getStat(EnumStats.SPEED)-100)/200f) ) );
         }
 
         this.jumpMovementFactor = this.speedInAir;

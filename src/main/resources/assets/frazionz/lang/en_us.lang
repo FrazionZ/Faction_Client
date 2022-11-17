@@ -332,11 +332,42 @@ item.bottle_xp.name=Bottle XP
 
 item.iron_tooth.name=Iron Tooth
 
-frazionz.stat.health.name=§c❤ Health
-frazionz.stat.damage.name=§c✴ Damage
-frazionz.stat.resistance.name=§2✵§a Resistance
-frazionz.stat.regeneration.name=§c✤ Regeneration
-frazionz.stat.speed.name=§f✦ Speed
-frazionz.stat.mining_speed.name=§6⸕ Mining Speed
-frazionz.stat.mining_fortune.name=§6☘ Mining Fortune
-frazionz.stat.farming_fortune.name=§6☘ Farming Fortune
+frazionz.stat.health.name=Health
+frazionz.stat.health.prefix=❤
+frazionz.stat.health.suffix= 
+frazionz.stat.health.color=§c
+
+frazionz.stat.damage.name=Damage
+frazionz.stat.damage.prefix=✴
+frazionz.stat.damage.suffix= 
+frazionz.stat.damage.color=§c
+
+frazionz.stat.resistance.name=Resistance
+frazionz.stat.resistance.prefix=✵
+frazionz.stat.resistance.suffix= 
+frazionz.stat.resistance.color=§a
+
+frazionz.stat.regeneration.name=Regeneration
+frazionz.stat.regeneration.prefix=✤
+frazionz.stat.regeneration.suffix= 
+frazionz.stat.regeneration.color=§c
+
+frazionz.stat.speed.name=Speed
+frazionz.stat.speed.prefix=✦
+frazionz.stat.speed.suffix= 
+frazionz.stat.speed.color=§f
+
+frazionz.stat.mining_speed.name=Mining Speed
+frazionz.stat.mining_speed.prefix=⸕
+frazionz.stat.mining_speed.suffix= 
+frazionz.stat.mining_speed.color=§6
+
+frazionz.stat.mining_fortune.name=Mining Fortune
+frazionz.stat.mining_fortune.prefix=☘
+frazionz.stat.mining_fortune.suffix= 
+frazionz.stat.mining_fortune.color=§6
+
+frazionz.stat.farming_fortune.name=Farming Fortune
+frazionz.stat.farming_fortune.prefix=☘
+frazionz.stat.farming_fortune.suffix= 
+frazionz.stat.farming_fortune.color=§6
