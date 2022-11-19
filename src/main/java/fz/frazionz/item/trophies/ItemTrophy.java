@@ -1,4 +1,4 @@
-package fz.frazionz.item;
+package fz.frazionz.item.trophies;
 
 import java.util.*;
 

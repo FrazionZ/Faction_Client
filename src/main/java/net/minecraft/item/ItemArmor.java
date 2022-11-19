@@ -6,9 +6,10 @@ import com.google.common.base.Predicates;
 import com.google.common.collect.Multimap;
 
 import fz.frazionz.client.stats.EnumStats;
-import fz.frazionz.client.stats.StatCapModifier;
-import fz.frazionz.client.stats.StatModifier;
-import fz.frazionz.utils.StringUtils;
+import fz.frazionz.client.stats.modifiers.StatFallDamageModifier;
+import fz.frazionz.client.stats.modifiers.StatFireDamageModifier;
+import fz.frazionz.client.stats.modifiers.StatValueCappingModifier;
+import fz.frazionz.client.stats.modifiers.StatModifier;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
@@ -33,7 +34,6 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 
 public class ItemArmor extends Item
@@ -316,7 +316,9 @@ public class ItemArmor extends Item
         	        put(EnumStats.MINING_SPEED, 50);
                 }},
                 new ArrayList<StatModifier>() {{
-                    add(new StatCapModifier(StatCapModifier.StatCapType.MAX, EnumStats.SPEED, 240));
+                    add(new StatValueCappingModifier(StatValueCappingModifier.StatCapType.MAX, EnumStats.SPEED, 240));
+                    add(new StatFallDamageModifier(false));
+                    add(new StatFireDamageModifier(false));
                 }}
                 ),
         ;

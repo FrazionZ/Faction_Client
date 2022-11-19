@@ -93,6 +93,7 @@ public class SharedMonsterAttributes
 
             if (iattributeinstance == null)
             {
+                list.removeTag(i);
                 LOGGER.warn("Ignoring unknown attribute '{}'", (Object)nbttagcompound.getString("Name"));
             }
             else

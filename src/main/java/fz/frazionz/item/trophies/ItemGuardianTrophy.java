@@ -1,13 +1,12 @@
-package fz.frazionz.item;
+package fz.frazionz.item.trophies;
+
+import fz.frazionz.client.stats.EnumStats;
 
 import java.util.Random;
 
-import fz.frazionz.client.stats.EnumStats;
-import fz.frazionz.utils.MathUtils;
+public class ItemGuardianTrophy extends ItemTrophy {
 
-public class ItemSkeletonTrophy extends ItemTrophy {
-	
-	public ItemSkeletonTrophy() {
+	public ItemGuardianTrophy() {
 		super();
 	}
     
@@ -34,7 +33,7 @@ public class ItemSkeletonTrophy extends ItemTrophy {
     
     public EnumStats getBaseStat()
     {
-    	return EnumStats.SPEED;
+    	return EnumStats.MINING_SPEED;
     }
 	
 }

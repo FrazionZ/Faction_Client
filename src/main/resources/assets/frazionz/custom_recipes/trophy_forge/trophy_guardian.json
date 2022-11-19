@@ -1,0 +1,21 @@
+{
+  "pattern": [
+    "IRI",
+    "RPR",
+    "IRI"
+  ],
+  "key": {
+    "I": {
+      "item": "minecraft:prismarine_shard"
+    },
+    "R": {
+      "item": "frazionz:rune_mining"
+    },
+    "P":{
+      "item": "frazionz:cosmic_powder"
+    }
+  },
+  "result": {
+    "item": "frazionz:trophy_guardian"
+  }
+}

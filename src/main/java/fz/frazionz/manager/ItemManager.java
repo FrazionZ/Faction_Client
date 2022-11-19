@@ -31,8 +31,7 @@ import fz.frazionz.item.ItemLore;
 import fz.frazionz.item.ItemMultiTool;
 import fz.frazionz.item.ItemOnyxApple;
 import fz.frazionz.item.ItemPizza;
-import fz.frazionz.item.ItemShulkerTrophy;
-import fz.frazionz.item.ItemSkeletonTrophy;
+import fz.frazionz.item.trophies.*;
 import fz.frazionz.item.ItemSpawnerPickaxe;
 import fz.frazionz.item.ItemUltraBow;
 import fz.frazionz.item.ItemWitheredBoneMeal;
@@ -343,8 +342,8 @@ public class ItemManager {
         registerItem(1251, "trophy_blaze", (new ItemSkeletonTrophy()).setFull3D().setTranslationKey("trophy_blaze"));
         registerItem(1252, "trophy_creeper", (new ItemSkeletonTrophy()).setFull3D().setTranslationKey("trophy_creeper"));
         registerItem(1253, "trophy_enderman", (new ItemSkeletonTrophy()).setFull3D().setTranslationKey("trophy_enderman"));
-        registerItem(1254, "trophy_ghast", (new ItemSkeletonTrophy()).setFull3D().setTranslationKey("trophy_ghast"));
-        registerItem(1255, "trophy_guardian", (new ItemSkeletonTrophy()).setFull3D().setTranslationKey("trophy_guardian"));
+        registerItem(1254, "trophy_ghast", (new ItemGhastTrophy()).setFull3D().setTranslationKey("trophy_ghast"));
+        registerItem(1255, "trophy_guardian", (new ItemGuardianTrophy()).setFull3D().setTranslationKey("trophy_guardian"));
         registerItem(1256, "trophy_villager", (new ItemSkeletonTrophy()).setFull3D().setTranslationKey("trophy_villager"));
         registerItem(1257, "trophy_shulker", (new ItemShulkerTrophy()).setFull3D().setTranslationKey("trophy_shulker"));
         registerItem(1258, "trophy_spider", (new ItemSkeletonTrophy()).setFull3D().setTranslationKey("trophy_spider"));
@@ -353,7 +352,7 @@ public class ItemManager {
         registerItem(1261, "trophy_squid", (new ItemSkeletonTrophy()).setFull3D().setTranslationKey("trophy_squid"));
         registerItem(1262, "trophy_pig", (new ItemSkeletonTrophy()).setFull3D().setTranslationKey("trophy_pig"));
         registerItem(1263, "trophy_sheep", (new ItemSkeletonTrophy()).setFull3D().setTranslationKey("trophy_sheep"));
-        registerItem(1264, "trophy_iron_golem", (new ItemSkeletonTrophy()).setFull3D().setTranslationKey("trophy_iron_golem"));
+        registerItem(1264, "trophy_iron_golem", (new ItemIronGolemTrophy()).setFull3D().setTranslationKey("trophy_iron_golem"));
         registerItem(1265, "trophy_silverfish", (new ItemSkeletonTrophy()).setFull3D().setTranslationKey("trophy_silverfish"));
         
         registerItem(1300, "rune_anti_malus", (new Item()).setFull3D().setTranslationKey("rune_anti_malus").setCreativeTab(CreativeTabs.MATERIALS));

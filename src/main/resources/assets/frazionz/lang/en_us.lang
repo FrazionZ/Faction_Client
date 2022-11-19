@@ -371,3 +371,15 @@ frazionz.stat.farming_fortune.name=Farming Fortune
 frazionz.stat.farming_fortune.prefix=☘
 frazionz.stat.farming_fortune.suffix= 
 frazionz.stat.farming_fortune.color=§6
+
+frazionz.stat.modifier.hasDrowningDamage.enable=Dégats de Noyade Activé
+frazionz.stat.modifier.hasDrowningDamage.disable=Aucun Dégats de Noyade
+
+frazionz.stat.modifier.hasExplosionDamage.enable=Dégats d'Explosion Activé
+frazionz.stat.modifier.hasExplosionDamage.disable=Aucun Dégats d'Explosion
+
+frazionz.stat.modifier.hasFallDamage.enable=Dégats de Chute Activé
+frazionz.stat.modifier.hasFallDamage.disable=Aucun Dégats de Chute
+
+frazionz.stat.modifier.hasfiredamage.enable=Dégats de Feu Activé
+frazionz.stat.modifier.hasfiredamage.disable=Aucun Dégats de Feu

@@ -1152,6 +1152,13 @@ public abstract class EntityPlayer extends EntityLivingBase
                         entity = ((EntityArrow)entity).shootingEntity;
                     }
 
+                    if(source == DamageSource.DROWN && !this.getStats().hasDrowningDamage)
+                        return false;
+                    if(source == DamageSource.FALL && !this.getStats().hasFallDamage)
+                        return false;
+                    if((source == DamageSource.IN_FIRE || source == DamageSource.LAVA || source == DamageSource.ON_FIRE) && !this.getStats().hasFireDamage)
+                        return false;
+
                     return super.attackEntityFrom(source, amount);
                 }
             }
@@ -2229,7 +2236,12 @@ public abstract class EntityPlayer extends EntityLivingBase
                 this.addStat(StatList.FALL_ONE_CM, (int)Math.round((double)distance * 100.0D));
             }
 
-            super.fall(distance, damageMultiplier);
+            if(!this.getStats().hasFallDamage)
+            {
+                super.fall(distance, 0.0F);
+                return;
+            }
+            super.fall(distance, 1.0F);
         }
     }
 

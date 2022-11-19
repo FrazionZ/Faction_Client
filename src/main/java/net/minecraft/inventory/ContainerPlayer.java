@@ -5,7 +5,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import fz.frazionz.item.ItemTrophy;
+import fz.frazionz.item.trophies.ItemTrophy;
 import net.minecraft.client.Minecraft;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLiving;

@@ -1,13 +1,14 @@
-package fz.frazionz.client.stats;
+package fz.frazionz.client.stats.modifiers;
 
+import fz.frazionz.client.stats.EnumStats;
 import net.minecraft.util.text.translation.I18n;
 
-public class StatModifier {
+public class StatValueModifier extends StatModifier {
 
     protected EnumStats stat;
     protected int value;
 
-    public StatModifier(EnumStats stat, int value) {
+    public StatValueModifier(EnumStats stat, int value) {
         this.stat = stat;
         this.value = value;
     }
@@ -23,4 +24,5 @@ public class StatModifier {
     public String toString() {
         return I18n.translateToLocal("frazionz.stat." + stat.name().toLowerCase() + ".name") + ": " + value;
     }
+
 }

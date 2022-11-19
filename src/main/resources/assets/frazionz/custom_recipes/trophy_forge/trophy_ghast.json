@@ -1,0 +1,21 @@
+{
+  "pattern": [
+    "IRI",
+    "RPR",
+    "IRI"
+  ],
+  "key": {
+    "I": {
+      "item": "minecraft:ghast_tear"
+    },
+    "R": {
+      "item": "frazionz:rune_damage"
+    },
+    "P":{
+      "item": "frazionz:cosmic_powder"
+    }
+  },
+  "result": {
+    "item": "frazionz:trophy_ghast"
+  }
+}

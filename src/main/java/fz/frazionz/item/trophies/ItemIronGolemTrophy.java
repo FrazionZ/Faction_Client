@@ -1,12 +1,12 @@
-package fz.frazionz.item;
+package fz.frazionz.item.trophies;
 
 import fz.frazionz.client.stats.EnumStats;
 
 import java.util.Random;
 
-public class ItemShulkerTrophy extends ItemTrophy {
-	
-	public ItemShulkerTrophy() {
+public class ItemIronGolemTrophy extends ItemTrophy {
+
+	public ItemIronGolemTrophy() {
 		super();
 	}
 
@@ -16,24 +16,24 @@ public class ItemShulkerTrophy extends ItemTrophy {
 		float randFloat = rand.nextFloat();
 		if(randFloat <= 0.5)
 		{
-			return 1 + rand.nextInt(7);
+			return 1 + rand.nextInt(3);
 		}
 		else if(randFloat <= 0.80)
 		{
-			return 9 + rand.nextInt(6);
+			return 4 + rand.nextInt(3);
 		}
 		else if(randFloat <= 0.95)
 		{
-			return 15 + rand.nextInt(5);
+			return 8 + rand.nextInt(2);
 		}
 		else
 		{
-			return 21 + rand.nextInt(4);
+			return 11 + rand.nextInt(4);
 		}
 	}
 
 	public EnumStats getBaseStat()
     {
-    	return EnumStats.RESISTANCE;
+    	return EnumStats.HEALTH;
     }
 }
