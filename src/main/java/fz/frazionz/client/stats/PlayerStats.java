@@ -42,6 +42,10 @@ public class PlayerStats {
             minCapping.put(stat, stat.getMinValue());
             maxCapping.put(stat, stat.getMaxValue());
         }
+        hasFallDamage = true;
+        hasFireDamage = true;
+        hasDrowningDamage = true;
+        hasExplosionDamage = true;
     }
 
     private void applyAllItemStat() {
