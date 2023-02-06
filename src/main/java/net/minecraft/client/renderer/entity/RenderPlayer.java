@@ -166,7 +166,7 @@ public class RenderPlayer extends RenderLivingBase<AbstractClientPlayer>
      */
     public ResourceLocation getEntityTexture(AbstractClientPlayer entity)
     {
-        return entity.getLocationSkin();
+        return entity.getSkinLocation();
     }
 
     /**

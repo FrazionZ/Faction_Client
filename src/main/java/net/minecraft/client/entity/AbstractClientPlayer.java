@@ -7,10 +7,10 @@ import javax.annotation.Nullable;
 
 import com.mojang.authlib.GameProfile;
 
+import fz.frazionz.api.HTTPEndpoints;
 import fz.frazionz.api.HTTPFunctions;
-import fz.frazionz.api.gsonObj.ObjPlayerSkinsInfo;
+import fz.frazionz.api.gsonObj.UserSkinsInfo;
 import fz.frazionz.utils.FzSkinUtils;
-import fz.frazionz.utils.FzSkinUtils.TextureType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.network.NetworkPlayerInfo;
 import net.minecraft.client.renderer.ImageBufferDownload;
@@ -28,9 +28,9 @@ import net.minecraft.src.Config;
 import net.minecraft.util.StringUtils;
 import net.minecraft.world.GameType;
 import net.minecraft.world.World;
-import net.optifine.player.CapeUtils;
 import net.optifine.player.PlayerConfigurations;
 import net.optifine.reflect.Reflector;
+import org.lwjgl.Sys;
 
 public abstract class AbstractClientPlayer extends EntityPlayer
 {
@@ -40,7 +40,7 @@ public abstract class AbstractClientPlayer extends EntityPlayer
     public float rotateElytraZ;
     private ResourceLocation capeLocation = null;
     private ResourceLocation skinLocation = null;
-    private ObjPlayerSkinsInfo playerSkinsInfo = null;
+    private UserSkinsInfo playerSkinsInfo = null;
     private long reloadCapeTimeMs = 0L;
     private boolean elytraOfCape = false;
     private String nameClear = null;
@@ -58,25 +58,11 @@ public abstract class AbstractClientPlayer extends EntityPlayer
             this.nameClear = StringUtils.stripControlCodes(this.nameClear);
         }
 
-        Executors.newCachedThreadPool().execute(new Runnable() {
-			@Override
-			public void run() {
-				playerSkinsInfo = HTTPFunctions.getPlayerSkinInfo(getName());
-			}
-        });
-
-        try{
-        	capeLocation = FzSkinUtils.loadSkin(this.getGameProfile(), TextureType.CAPE);
-        }catch(Exception e) {
-        }
-        try{
-            skinLocation = FzSkinUtils.loadSkin(this.getGameProfile(), TextureType.SKIN);
-        }catch(Exception e) {
-        }
+        this.updateSkins();
         PlayerConfigurations.getPlayerConfiguration(this);
     }
     
-    public ObjPlayerSkinsInfo getPlayerSkinsInfo() {
+    public UserSkinsInfo getPlayerSkinsInfo() {
     	return this.playerSkinsInfo;
     }
 
@@ -126,22 +112,20 @@ public abstract class AbstractClientPlayer extends EntityPlayer
     /**
      * Returns the ResourceLocation associated with the player's skin
      */
-    public ResourceLocation getLocationSkin()
+    public ResourceLocation getSkinLocation()
     {
         if (this.skinLocation != null)
         {
             return this.skinLocation;
         }
         else {
-        	
 	        NetworkPlayerInfo networkplayerinfo = this.getPlayerInfo();
 	        return networkplayerinfo == null ? DefaultPlayerSkin.getDefaultSkin(this.getUniqueID()) : networkplayerinfo.getLocationSkin();
-        
         }
     }
 
     @Nullable
-    public ResourceLocation getLocationCape()
+    public ResourceLocation getCapeLocation()
     {
         if (!Config.isShowCapes())
         {
@@ -149,11 +133,11 @@ public abstract class AbstractClientPlayer extends EntityPlayer
         }
         else
         {
-            if (this.reloadCapeTimeMs != 0L && System.currentTimeMillis() > this.reloadCapeTimeMs)
+            /*if (this.reloadCapeTimeMs != 0L && System.currentTimeMillis() > this.reloadCapeTimeMs)
             {
                 CapeUtils.reloadCape(this);
                 this.reloadCapeTimeMs = 0L;
-            }
+            }*/
 
             if (this.capeLocation != null)
             {
@@ -190,7 +174,12 @@ public abstract class AbstractClientPlayer extends EntityPlayer
 
         if (itextureobject == null)
         {
-            itextureobject = new ThreadDownloadImageData((File)null, String.format("https://frazionz.net/api/skins/" + Minecraft.getMinecraft().getSession().getUsername() + "/", StringUtils.stripControlCodes(username)), DefaultPlayerSkin.getDefaultSkin(getOfflineUUID(username)), new ImageBufferDownload());
+            itextureobject = new ThreadDownloadImageData(
+                    (File)null,
+                    String.format(HTTPEndpoints.API_USER_UUID_SKIN_DISPLAY.replace("{UUID}", StringUtils.stripControlCodes(username))),
+                    DefaultPlayerSkin.getDefaultSkin(getOfflineUUID(username)),
+                    new ImageBufferDownload()
+            );
             texturemanager.loadTexture(resourceLocationIn, itextureobject);
         }
 
@@ -200,9 +189,10 @@ public abstract class AbstractClientPlayer extends EntityPlayer
     /**
      * Returns true if the username has an associated skin.
      */
-    public static ResourceLocation getLocationSkin(String username)
+    public static ResourceLocation getSkinLocation(String username)
     {
-        return new ResourceLocation("skins/" + StringUtils.stripControlCodes(username));
+        System.out.println("getSkinLocation: " + username);
+        return new ResourceLocation("frazionz", "cache/skins/" + StringUtils.stripControlCodes(username));
     }
 
     public String getSkinType()
@@ -210,7 +200,7 @@ public abstract class AbstractClientPlayer extends EntityPlayer
     	if(this.playerSkinsInfo != null && this.playerSkinsInfo.isSkinExist())
     		return this.playerSkinsInfo.getSkinType().getTps();
     	else
-    		return ObjPlayerSkinsInfo.SkinType.STEVE.getTps();
+    		return UserSkinsInfo.SkinType.CLASSIC.getTps();
     }
 
     public float getFovModifier()
@@ -255,19 +245,10 @@ public abstract class AbstractClientPlayer extends EntityPlayer
         return this.nameClear;
     }
 
-    public ResourceLocation getLocationOfCape()
-    {
-        return this.capeLocation;
-    }
-
-    public void setLocationOfCape(ResourceLocation p_setLocationOfCape_1_)
-    {
-        this.capeLocation = p_setLocationOfCape_1_;
-    }
 
     public boolean hasElytraCape()
     {
-        ResourceLocation resourcelocation = this.getLocationCape();
+        ResourceLocation resourcelocation = this.getCapeLocation();
 
         if (resourcelocation == null)
         {
@@ -279,9 +260,9 @@ public abstract class AbstractClientPlayer extends EntityPlayer
         }
     }
 
-    public void setElytraOfCape(boolean p_setElytraOfCape_1_)
+    public void setElytraOfCape(boolean elytraOfCape)
     {
-        this.elytraOfCape = p_setElytraOfCape_1_;
+        this.elytraOfCape = elytraOfCape;
     }
 
     public boolean isElytraOfCape()
@@ -294,18 +275,60 @@ public abstract class AbstractClientPlayer extends EntityPlayer
         return this.reloadCapeTimeMs;
     }
 
-    public void setReloadCapeTimeMs(long p_setReloadCapeTimeMs_1_)
+    public void setReloadCapeTimeMs(long time)
     {
-        this.reloadCapeTimeMs = p_setReloadCapeTimeMs_1_;
-    }
-    
-    public ResourceLocation getLocationOfSkin()
-    {
-        return this.skinLocation;
+        this.reloadCapeTimeMs = time;
     }
 
-    public void setLocationOfSkin(ResourceLocation p_setLocationOfSkin_1_)
+
+    /**
+     * Sets the location of the player's skin.
+     * @param resourceLocation
+     */
+    public void setSkinLocation(ResourceLocation resourceLocation)
     {
-        this.skinLocation = p_setLocationOfSkin_1_;
+        this.skinLocation = resourceLocation;
+    }
+
+    /**
+     * Sets the location of the player's cape.
+     * @param resourceLocation
+     */
+    public void setCapeLocation(ResourceLocation resourceLocation)
+    {
+        this.capeLocation = resourceLocation;
+    }
+
+    /**
+     * Update the player's skin and cape.
+     */
+    private void updateSkins() {
+        Executors.newCachedThreadPool().execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    playerSkinsInfo = HTTPFunctions.getPlayerSkinInfo(getUniqueID());
+
+
+                    try {
+                        playerSkinsInfo.setCapeId(HTTPFunctions.getPlayerCapeId(getUniqueID()));
+                        capeLocation = FzSkinUtils.loadCape(getGameProfile(), playerSkinsInfo);
+                    } catch (Exception e) {
+                        System.out.println("Error loading cape for " + getGameProfile().getName());
+                        e.printStackTrace();
+                    }
+                    try {
+                        skinLocation = FzSkinUtils.loadSkin(getGameProfile(), playerSkinsInfo);
+                    } catch (Exception e) {
+                        System.out.println("Error loading skin for " + getGameProfile().getName());
+                        e.printStackTrace();
+                    }
+                }
+                catch (Exception e) {
+                    System.out.println("Error loading skin info for " + getGameProfile().getName());
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 }

@@ -116,7 +116,7 @@ public class RealmsScreen
 
     public static void bindFace(String p_bindFace_0_, String p_bindFace_1_)
     {
-        ResourceLocation resourcelocation = AbstractClientPlayer.getLocationSkin(p_bindFace_1_);
+        ResourceLocation resourcelocation = AbstractClientPlayer.getSkinLocation(p_bindFace_1_);
 
         if (resourcelocation == null)
         {

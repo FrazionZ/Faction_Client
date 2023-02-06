@@ -3,14 +3,14 @@ package fz.frazionz.api;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
+import com.google.gson.JsonObject;
 
 import com.google.gson.Gson;
 
 import fz.frazionz.api.data.FactionProfile;
-import fz.frazionz.api.gsonObj.ObjPlayerSkinsInfo;
+import fz.frazionz.api.gsonObj.UserSkinsInfo;
 import fz.frazionz.api.gsonObj.ServerData;
 import fz.frazionz.api.gsonObj.SuccessObj;
 import fz.frazionz.api.gsonObj.SuccessType;
@@ -76,20 +76,35 @@ public class HTTPFunctions {
 		return lst;
 	}
 	
-	public static ObjPlayerSkinsInfo getPlayerSkinInfo(String username)
+	public static UserSkinsInfo getPlayerSkinInfo(UUID uuid)
 	{
-		Minecraft mc = Minecraft.getMinecraft();
-		List<NameValuePair> params = new ArrayList<NameValuePair>();
-		params.add(new BasicNameValuePair("username", username));
-		
-		HTTPReply reply = HTTPUtils.sendGet(HTTPEndpoints.PLAYER_SKIN_INFO, params);
-		
+		HTTPReply reply = HTTPUtils.sendGet(HTTPEndpoints.API_USER_UUID_SKIN_DATA.replace("{UUID}", uuid.toString()));
+
 		if(reply.getStatusCode() == 200 || reply.getStatusCode() == 304)
 		{
-			ObjPlayerSkinsInfo obj = gson.fromJson(reply.getBody(), ObjPlayerSkinsInfo.class);
-			return obj;
+			return UserSkinsInfo.fromJSON(reply.getBody());
 		}
 		
+		return null;
+	}
+
+	public static int getPlayerCapeId(UUID uuid) {
+		String body = get(HTTPEndpoints.API_USER_UUID_CAPE_DATA.replace("{UUID}", uuid.toString()));
+		if(body != null)
+		{
+			JsonObject obj = gson.fromJson(body, JsonObject.class);
+			return obj.get("cape_id").getAsInt();
+		}
+		return -1;
+	}
+
+	public static String get(String url)
+	{
+		HTTPReply reply = HTTPUtils.sendGet(url);
+		if(reply.getStatusCode() == 200 || reply.getStatusCode() == 304)
+		{
+			return reply.getBody();
+		}
 		return null;
 	}
 	

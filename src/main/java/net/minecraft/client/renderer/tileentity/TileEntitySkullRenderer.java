@@ -6,12 +6,12 @@ import java.util.UUID;
 
 import javax.annotation.Nullable;
 
-import org.apache.commons.lang3.StringUtils;
-
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture.Type;
 
+import fz.frazionz.api.HTTPFunctions;
+import fz.frazionz.api.gsonObj.UserSkinsInfo;
 import fz.frazionz.utils.FzSkinUtils;
 import fz.frazionz.utils.FzSkinUtils.TextureType;
 import net.minecraft.client.Minecraft;
@@ -122,8 +122,10 @@ public class TileEntitySkullRenderer extends TileEntitySpecialRenderer<TileEntit
                     
                     if (profile != null)
                     {
-                        resourcelocation1 = FzSkinUtils.loadSkin(profile, TextureType.SKIN);
-                        File cacheFile = FzSkinUtils.getProfileCacheFile(profile, TextureType.SKIN);
+                        // TODO: Make async
+                        UserSkinsInfo playerSkinsInfo = HTTPFunctions.getPlayerSkinInfo(profile.getId());
+                        resourcelocation1 = FzSkinUtils.loadSkin(profile, playerSkinsInfo);
+                        File cacheFile = FzSkinUtils.getCacheFile(profile.getId().toString(), TextureType.SKIN);
                         if(!cacheFile.exists() && cacheFile.length() < 100)
                         	resourcelocation1 = DefaultPlayerSkin.getDefaultSkinLegacy();
                     }

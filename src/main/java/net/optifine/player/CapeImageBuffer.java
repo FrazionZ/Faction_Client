@@ -28,7 +28,7 @@ public class CapeImageBuffer extends ImageBufferDownload
     {
         if (this.player != null)
         {
-            this.player.setLocationOfCape(this.resourceLocation);
+            this.player.setCapeLocation(this.resourceLocation);
             this.player.setElytraOfCape(this.elytraOfCape);
         }
 

@@ -42,7 +42,7 @@ public class PlayerItemModel
 
         if (this.usePlayerTexture)
         {
-            texturemanager.bindTexture(player.getLocationSkin());
+            texturemanager.bindTexture(player.getSkinLocation());
         }
         else if (this.textureLocation != null)
         {

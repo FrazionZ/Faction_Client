@@ -586,7 +586,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo
         this.renderEngine = new TextureManager(this.resourceManager);
         this.resourceManager.registerReloadListener(this.renderEngine);
         /* error */ this.drawSplashScreen(this.renderEngine);
-        this.skinManager = new SkinManager(this.renderEngine, new File(this.fileAssets, "frazionz/skins"), this.sessionService);
+        this.skinManager = new SkinManager(this.renderEngine, new File(this.fileAssets, "frazionz/cache/skins"), this.sessionService);
         this.saveLoader = new AnvilSaveConverter(new File(this.gameDir, "saves"), this.dataFixer);
         this.soundHandler = new SoundHandler(this.resourceManager, this.gameSettings);
         this.resourceManager.registerReloadListener(this.soundHandler);

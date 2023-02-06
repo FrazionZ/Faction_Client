@@ -519,7 +519,7 @@ public class Gui
         
         GL11.glPushMatrix();
         
-        Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("frazionz/skins/" + username));
+        Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("frazionz/cache/skins/" + username));
         GL11.glScalef(width/width, height/width, 1f);
         bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
         bufferbuilder.pos((double)(left + 0), (double)(top + width), (double)zLevel).tex((double)((float)(32 + 0) * 0.00390625F), (double)((float)(32 + 32) * 0.00390625F)).color(1f, 1f, 1f, 1f).endVertex();
@@ -528,7 +528,7 @@ public class Gui
         bufferbuilder.pos((double)(left + 0), (double)(top + 0), (double)zLevel).tex((double)((float)(32 + 0) * 0.00390625F), (double)((float)(32 + 0) * 0.00390625F)).color(1f, 1f, 1f, 1f).endVertex();
         tessellator.draw();
         
-        Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("frazionz/skins/" + username));
+        Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("frazionz/cache/skins/" + username));
         GL11.glScalef(width/width, height/width, 1f);
         GlStateManager.enableAlpha();
         bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);

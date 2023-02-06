@@ -67,7 +67,7 @@ public class SkinManager
      */
     public ResourceLocation loadSkin(final MinecraftProfileTexture profileTexture, final Type textureType, @Nullable final SkinManager.SkinAvailableCallback skinAvailableCallback)
     {
-        final ResourceLocation resourcelocation = new ResourceLocation("frazionz/skins/" + profileTexture.getHash());
+        final ResourceLocation resourcelocation = new ResourceLocation("frazionz/cache/skins/" + profileTexture.getHash());
         ITextureObject itextureobject = this.textureManager.getTexture(resourcelocation);
 
         if (itextureobject != null)

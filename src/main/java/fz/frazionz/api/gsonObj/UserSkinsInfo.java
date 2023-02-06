@@ -4,25 +4,26 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import org.apache.commons.lang3.StringUtils;
 
-public class ObjPlayerSkinsInfo {
+public class UserSkinsInfo {
 
+	private String username;
 	private boolean exist;
-	private String name;
 	private boolean hasSkin = true;
 	private String skinSHA1;
 	private SkinType skinType = SkinType.CLASSIC;
+	private int capeId = -1;
 
-	public ObjPlayerSkinsInfo(boolean exist, String name, boolean hasSkin, String skinSHA1, String skinType) {
+	public UserSkinsInfo(boolean exist, String name, boolean hasSkin, String skinSHA1, String skinType) {
 		this.exist = exist;
-		this.name = name;
+		this.username = name;
 		this.hasSkin = hasSkin;
 		this.skinSHA1 = skinSHA1;
 		this.skinType = SkinType.valueOf(StringUtils.upperCase(skinType));
 	}
 
 	
-	public String getName() {
-		return name;
+	public String getUsername() {
+		return username;
 	}
 	
 	public SkinType getSkinType() {
@@ -45,14 +46,22 @@ public class ObjPlayerSkinsInfo {
 		return this.exist;
 	}
 
-	public static ObjPlayerSkinsInfo fromJSON(String json) {
+	public int getCapeId() {
+		return this.capeId;
+	}
+
+	public void setCapeId(int capeId) {
+		this.capeId = capeId;
+	}
+
+	public static UserSkinsInfo fromJSON(String json) {
 		JsonObject obj = new Gson().fromJson(json, JsonObject.class);
 		boolean exist = obj.get("exist").getAsBoolean();
-		String name = obj.get("name").getAsString();
+		String username = obj.get("name").getAsString();
 		boolean hasSkin = obj.get("skin_exist").getAsBoolean();
 		String skinSHA1 = obj.get("skin_sha1").getAsString();
 		String skinType = obj.get("skin_type").getAsString();
-		return new ObjPlayerSkinsInfo(exist, name, hasSkin, skinSHA1, skinType);
+		return new UserSkinsInfo(exist, username, hasSkin, skinSHA1, skinType);
 	}
 
 
