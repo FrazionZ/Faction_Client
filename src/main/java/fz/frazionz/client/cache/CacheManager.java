@@ -25,8 +25,6 @@ public class CacheManager {
         }
 
         caches.add(new ShopCache());
-        //caches.add(new SkinCache());
-        caches.add(new CapeCache());
 
         for(AbstractCache cache : caches) {
             cache.load();

@@ -72,8 +72,6 @@ public class FzSkinUtils
     
     public static ResourceLocation loadTexture(String fileName, TextureType textureType, String downloadURL, ResourceLocation resourceLocation)
     {
-        System.out.println("Download URL: " + downloadURL);
-
         TextureManager texturemanager = Minecraft.getMinecraft().getTextureManager();
         ITextureObject itextureobject = texturemanager.getTexture(resourceLocation);
 
@@ -96,7 +94,7 @@ public class FzSkinUtils
         else
         {
             File cacheFile = getCacheFile(fileName, textureType);
-        	ThreadDownloadImageData threaddownloadimagedata1 = new ThreadDownloadImageData(cacheFile, downloadURL, (ResourceLocation)null, null);
+        	ThreadDownloadImageData threaddownloadimagedata1 = new ThreadDownloadImageData(cacheFile, downloadURL, null, null);
             threaddownloadimagedata1.pipeline = true;
             texturemanager.loadTexture(resourceLocation, threaddownloadimagedata1);
     		return resourceLocation;

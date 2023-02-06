@@ -191,7 +191,6 @@ public abstract class AbstractClientPlayer extends EntityPlayer
      */
     public static ResourceLocation getSkinLocation(String username)
     {
-        System.out.println("getSkinLocation: " + username);
         return new ResourceLocation("frazionz", "cache/skins/" + StringUtils.stripControlCodes(username));
     }
 
@@ -311,16 +310,16 @@ public abstract class AbstractClientPlayer extends EntityPlayer
 
 
                     try {
+                        skinLocation = FzSkinUtils.loadSkin(getGameProfile(), playerSkinsInfo);
+                    } catch (Exception e) {
+                        System.out.println("Error loading skin for " + getGameProfile().getName());
+                        e.printStackTrace();
+                    }
+                    try {
                         playerSkinsInfo.setCapeId(HTTPFunctions.getPlayerCapeId(getUniqueID()));
                         capeLocation = FzSkinUtils.loadCape(getGameProfile(), playerSkinsInfo);
                     } catch (Exception e) {
                         System.out.println("Error loading cape for " + getGameProfile().getName());
-                        e.printStackTrace();
-                    }
-                    try {
-                        skinLocation = FzSkinUtils.loadSkin(getGameProfile(), playerSkinsInfo);
-                    } catch (Exception e) {
-                        System.out.println("Error loading skin for " + getGameProfile().getName());
                         e.printStackTrace();
                     }
                 }

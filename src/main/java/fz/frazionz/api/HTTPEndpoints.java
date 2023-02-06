@@ -26,10 +26,10 @@ public class HTTPEndpoints {
 	public static final String API_MOJANG_GET_ONLINE_PLAYERS = "https://minecraft-api.com/api/ping/online/";
 
 	// API USER
-	public static final String API_USER_UUID_SKIN_DATA = "https://api.frazionz.net/user/{UUID}/skin/data/";
-	public static final String API_USER_UUID_SKIN_DISPLAY = "https://api.frazionz.net/user/{UUID}/skin/display/";
-	public static final String API_USER_UUID_CAPE_DATA = "https://api.frazionz.net/user/{UUID}/cape/data/";
+	public static final String API_USER_UUID_SKIN_DATA = "https://api.frazionz.net/user/{UUID}/skin/data";
+	public static final String API_USER_UUID_SKIN_DISPLAY = "https://api.frazionz.net/user/{UUID}/skin/display";
+	public static final String API_USER_UUID_CAPE_DATA = "https://api.frazionz.net/user/{UUID}/cape/data";
 	public static final String API_CAPES_DISPLAY_BRUT_ID = "https://api.frazionz.net/capes/display/brut/{ID}";
-	public static final String API_CAPES_LIBRARY = "https://api.frazionz.net/capes/library/";
+	public static final String API_CAPES_LIBRARY = "https://api.frazionz.net/capes/library";
 
 }
