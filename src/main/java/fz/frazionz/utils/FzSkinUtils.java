@@ -18,6 +18,7 @@ import net.minecraft.client.renderer.ThreadDownloadImageData;
 import net.minecraft.client.renderer.texture.ITextureObject;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.resources.ResourceLocation;
+import net.optifine.texture.TextureType;
 import org.lwjgl.Sys;
 
 public class FzSkinUtils
@@ -53,7 +54,8 @@ public class FzSkinUtils
                 id,
                 TextureType.CAPE,
                 HTTPEndpoints.API_CAPES_DISPLAY_BRUT_ID.replace("{ID}", id),
-                new ResourceLocation("frazionz", "cache/capes/" + id)
+                new ResourceLocation("frazionz", "cache/capes/" + id),
+                null
         );
     }
 
@@ -66,39 +68,45 @@ public class FzSkinUtils
                 id,
                 TextureType.SKIN,
                 HTTPEndpoints.API_USER_UUID_SKIN_DISPLAY.replace("{UUID}", id),
-                new ResourceLocation("frazionz", "cache/skins/" + id)
+                new ResourceLocation("frazionz", "cache/skins/" + id),
+                userSkinsInfo.getSkinSHA1()
         );
     }
     
-    public static ResourceLocation loadTexture(String fileName, TextureType textureType, String downloadURL, ResourceLocation resourceLocation)
+    public static ResourceLocation loadTexture(String fileName, TextureType textureType, String downloadURL, ResourceLocation resourceLocation, String sha1)
     {
-        TextureManager texturemanager = Minecraft.getMinecraft().getTextureManager();
-        ITextureObject itextureobject = texturemanager.getTexture(resourceLocation);
+        TextureManager textureManager = Minecraft.getMinecraft().getTextureManager();
+        ITextureObject itextureObject = textureManager.getTexture(resourceLocation);
 
-        if (itextureobject != null && itextureobject instanceof ThreadDownloadImageData)
-        {
-            ThreadDownloadImageData threaddownloadimagedata = (ThreadDownloadImageData)itextureobject;
-
-            if (threaddownloadimagedata.imageFound != null) {
-                if (threaddownloadimagedata.imageFound.booleanValue()) {
-                    return resourceLocation;
+        if(itextureObject instanceof ThreadDownloadImageData) {
+            System.out.println("itextureObject is ThreadDownloadImageData");
+            File cacheFile = ((ThreadDownloadImageData) itextureObject).getCacheFile();
+            try {
+                if (!SHA1Utils.calcSHA1(cacheFile).equals(sha1)) {
+                    cacheFile.delete();
+                    ThreadDownloadImageData threaddownloadimagedata1 = new ThreadDownloadImageData(cacheFile, downloadURL, null, null);
+                    threaddownloadimagedata1.pipeline = true;
+                    textureManager.loadTexture(resourceLocation, threaddownloadimagedata1);
                 }
-                else {
-                	return resourceLocation;
-                }
-            }
-            else {
-            	return resourceLocation;
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
-        else
-        {
+        else {
+            System.out.println("itextureObject is null");
             File cacheFile = getCacheFile(fileName, textureType);
-        	ThreadDownloadImageData threaddownloadimagedata1 = new ThreadDownloadImageData(cacheFile, downloadURL, null, null);
+            try {
+                if (!SHA1Utils.calcSHA1(cacheFile).equals(sha1)) {
+                    cacheFile.delete();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            ThreadDownloadImageData threaddownloadimagedata1 = new ThreadDownloadImageData(cacheFile, downloadURL, null, null);
             threaddownloadimagedata1.pipeline = true;
-            texturemanager.loadTexture(resourceLocation, threaddownloadimagedata1);
-    		return resourceLocation;
+            textureManager.loadTexture(resourceLocation, threaddownloadimagedata1);
         }
+        return resourceLocation;
     }
 
     public static File getCacheFile(String fileName, TextureType imgType) {

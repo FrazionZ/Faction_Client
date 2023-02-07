@@ -308,23 +308,23 @@ public abstract class AbstractClientPlayer extends EntityPlayer
                 try {
                     playerSkinsInfo = HTTPFunctions.getPlayerSkinInfo(getUniqueID());
 
-
                     try {
                         skinLocation = FzSkinUtils.loadSkin(getGameProfile(), playerSkinsInfo);
                     } catch (Exception e) {
-                        System.out.println("Error loading skin for " + getGameProfile().getName());
+                        System.out.println("Error while loading skin for " + getGameProfile().getName());
                         e.printStackTrace();
                     }
+
                     try {
                         playerSkinsInfo.setCapeId(HTTPFunctions.getPlayerCapeId(getUniqueID()));
                         capeLocation = FzSkinUtils.loadCape(getGameProfile(), playerSkinsInfo);
                     } catch (Exception e) {
-                        System.out.println("Error loading cape for " + getGameProfile().getName());
+                        System.out.println("Error while loading cape for " + getGameProfile().getName());
                         e.printStackTrace();
                     }
                 }
                 catch (Exception e) {
-                    System.out.println("Error loading skin info for " + getGameProfile().getName());
+                    System.out.println("Error while loading skin info for " + getGameProfile().getName());
                     e.printStackTrace();
                 }
             }
