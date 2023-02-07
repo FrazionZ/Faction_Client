@@ -77,36 +77,29 @@ public class FzSkinUtils
     {
         TextureManager textureManager = Minecraft.getMinecraft().getTextureManager();
         ITextureObject itextureObject = textureManager.getTexture(resourceLocation);
+        File cacheFile;
 
         if(itextureObject instanceof ThreadDownloadImageData) {
-            System.out.println("itextureObject is ThreadDownloadImageData");
-            File cacheFile = ((ThreadDownloadImageData) itextureObject).getCacheFile();
-            try {
-                if (!SHA1Utils.calcSHA1(cacheFile).equals(sha1)) {
-                    cacheFile.delete();
-                    ThreadDownloadImageData threaddownloadimagedata1 = new ThreadDownloadImageData(cacheFile, downloadURL, null, null);
-                    threaddownloadimagedata1.pipeline = true;
-                    textureManager.loadTexture(resourceLocation, threaddownloadimagedata1);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
+            cacheFile = ((ThreadDownloadImageData) itextureObject).getCacheFile();
+            if (sha1 != null && !SHA1Utils.equals(cacheFile, sha1)) {
+                cacheFile.delete();
+                loadOrDownloadTexture(resourceLocation, downloadURL, cacheFile, textureManager);
             }
         }
         else {
-            System.out.println("itextureObject is null");
-            File cacheFile = getCacheFile(fileName, textureType);
-            try {
-                if (!SHA1Utils.calcSHA1(cacheFile).equals(sha1)) {
-                    cacheFile.delete();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
+            cacheFile = getCacheFile(fileName, textureType);
+            if (sha1 != null && !SHA1Utils.equals(cacheFile, sha1)) {
+                cacheFile.delete();
             }
-            ThreadDownloadImageData threaddownloadimagedata1 = new ThreadDownloadImageData(cacheFile, downloadURL, null, null);
-            threaddownloadimagedata1.pipeline = true;
-            textureManager.loadTexture(resourceLocation, threaddownloadimagedata1);
+            loadOrDownloadTexture(resourceLocation, downloadURL, cacheFile, textureManager);
         }
         return resourceLocation;
+    }
+
+    private static void loadOrDownloadTexture(ResourceLocation resourceLocation, String downloadURL, File cacheFile, TextureManager textureManager) {
+        ThreadDownloadImageData threadDownloadImageData = new ThreadDownloadImageData(cacheFile, downloadURL, null, null);
+        threadDownloadImageData.pipeline = true;
+        textureManager.loadTexture(resourceLocation, threadDownloadImageData);
     }
 
     public static File getCacheFile(String fileName, TextureType imgType) {
