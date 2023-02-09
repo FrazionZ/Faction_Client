@@ -34,8 +34,6 @@ public class SHA1Utils {
     }
 
     public static boolean equals(String sha11, String sha12) {
-        System.out.println(sha11 + " =?= " + sha12 + " = " + sha11.equalsIgnoreCase(sha12));
         return sha11.equalsIgnoreCase(sha12);
     }
-
 }

@@ -22,7 +22,7 @@ public class ContainerMerchant extends Container
         this.merchantInventory = new InventoryMerchant(playerInventory.player, merchant);
         this.addSlotToContainer(new Slot(this.merchantInventory, 0, 36, 53));
         this.addSlotToContainer(new Slot(this.merchantInventory, 1, 62, 53));
-        this.addSlotToContainer(new SlotMerchantResult(playerInventory.player, merchant, this.merchantInventory, 2, 125, 75));
+        this.addSlotToContainer(new SlotMerchantResult(playerInventory.player, merchant, this.merchantInventory, 2, 120, 53));
 
         for (int i = 0; i < 3; ++i)
         {

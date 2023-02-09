@@ -2,6 +2,7 @@ package net.minecraft.client.resources;
 
 import java.util.UUID;
 
+import fz.frazionz.api.gsonObj.UserSkinsInfo;
 import net.minecraft.resources.ResourceLocation;
 
 public class DefaultPlayerSkin
@@ -29,6 +30,13 @@ public class DefaultPlayerSkin
     }
 
     /**
+     * Retrieves the default skin for this player. Depending on the model used this will be Alex or Steve.
+     */
+    public static ResourceLocation getDefaultSkin(UserSkinsInfo.SkinType skinType) {
+        return skinType == UserSkinsInfo.SkinType.SLIM ? TEXTURE_ALEX : TEXTURE_STEVE;
+    }
+
+    /**
      * Retrieves the type of skin that a player is using. The Alex model is slim while the Steve model is default.
      */
     public static String getSkinType(UUID playerUUID)
@@ -42,5 +50,13 @@ public class DefaultPlayerSkin
     private static boolean isSlimSkin(UUID playerUUID)
     {
         return (playerUUID.hashCode() & 1) == 1;
+    }
+
+    public static ResourceLocation getTextureAlex() {
+        return TEXTURE_ALEX;
+    }
+
+    public static ResourceLocation getTextureSteve() {
+        return TEXTURE_STEVE;
     }
 }

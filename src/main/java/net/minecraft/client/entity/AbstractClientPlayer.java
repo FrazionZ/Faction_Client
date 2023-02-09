@@ -120,7 +120,12 @@ public abstract class AbstractClientPlayer extends EntityPlayer
         }
         else {
 	        NetworkPlayerInfo networkplayerinfo = this.getPlayerInfo();
-	        return networkplayerinfo == null ? DefaultPlayerSkin.getDefaultSkin(this.getUniqueID()) : networkplayerinfo.getLocationSkin();
+            return networkplayerinfo == null ?
+                    (playerSkinsInfo != null ?
+                            DefaultPlayerSkin.getDefaultSkin(playerSkinsInfo.getSkinType())
+                            : DefaultPlayerSkin.getDefaultSkinLegacy())
+                    : networkplayerinfo.getLocationSkin();
+	        //return networkplayerinfo == null ? DefaultPlayerSkin.getDefaultSkin(this.getUniqueID()) : networkplayerinfo.getLocationSkin();
         }
     }
 
