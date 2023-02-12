@@ -160,8 +160,8 @@ public class GuiMerchant extends GuiContainer
                 this.mc.getTextureManager().bindTexture(MERCHANT_GUI_TEXTURE);
                 GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
                 GlStateManager.disableLighting();
-                this.drawTexturedModalRect(this.guiLeft + 83, this.guiTop + 21, 212, 0, 28, 21);
-                this.drawTexturedModalRect(this.guiLeft + 83, this.guiTop + 51, 212, 0, 28, 21);
+                this.drawTexturedModalRect(this.guiLeft + 86, this.guiTop + 24, 225, 3, 22, 15);
+                //this.drawTexturedModalRect(this.guiLeft + 83, this.guiTop + 51, 212, 0, 28, 21);
             }
         }
     }
@@ -205,7 +205,7 @@ public class GuiMerchant extends GuiContainer
             this.itemRender.zLevel = 0.0F;
             GlStateManager.disableLighting();
 
-            if (this.isPointInRegion(36, 24, 16, 16, mouseX, mouseY) && !itemstack.isEmpty())
+            /*if (this.isPointInRegion(36, 24, 16, 16, mouseX, mouseY) && !itemstack.isEmpty())
             {
                 this.renderToolTip(itemstack, mouseX, mouseY);
             }
@@ -220,7 +220,7 @@ public class GuiMerchant extends GuiContainer
             else if (merchantrecipe.isRecipeDisabled() && (this.isPointInRegion(88, 43, 28, 21, mouseX, mouseY) || this.isPointInRegion(88, 73, 28, 21, mouseX, mouseY)))
             {
                 this.drawHoveringText(I18n.format("merchant.deprecated"), mouseX, mouseY);
-            }
+            }*/
 
             GlStateManager.popMatrix();
             GlStateManager.enableLighting();

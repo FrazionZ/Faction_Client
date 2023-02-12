@@ -18,7 +18,7 @@ public class PlayerMenuObject implements ISpectatorMenuObject
     public PlayerMenuObject(GameProfile profileIn)
     {
         this.profile = profileIn;
-        this.resourceLocation = AbstractClientPlayer.getLocationSkin(profileIn.getName());
+        this.resourceLocation = AbstractClientPlayer.getSkinLocation(profileIn.getName());
         AbstractClientPlayer.getDownloadImageSkin(this.resourceLocation, profileIn.getName());
     }
 

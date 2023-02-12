@@ -153,7 +153,7 @@ public class ItemRenderer
 
     private void renderArm(EnumHandSide p_187455_1_)
     {
-        this.mc.getTextureManager().bindTexture(this.mc.player.getLocationSkin());
+        this.mc.getTextureManager().bindTexture(this.mc.player.getSkinLocation());
         Render<AbstractClientPlayer> render = this.renderManager.<AbstractClientPlayer>getEntityRenderObject(this.mc.player);
         RenderPlayer renderplayer = (RenderPlayer)render;
         GlStateManager.pushMatrix();
@@ -260,7 +260,7 @@ public class ItemRenderer
         GlStateManager.rotate(f * f6 * 70.0F, 0.0F, 1.0F, 0.0F);
         GlStateManager.rotate(f * f5 * -20.0F, 0.0F, 0.0F, 1.0F);
         AbstractClientPlayer abstractclientplayer = this.mc.player;
-        this.mc.getTextureManager().bindTexture(abstractclientplayer.getLocationSkin());
+        this.mc.getTextureManager().bindTexture(abstractclientplayer.getSkinLocation());
         GlStateManager.translate(f * -1.0F, 3.6F, 3.5F);
         GlStateManager.rotate(f * 120.0F, 0.0F, 0.0F, 1.0F);
         GlStateManager.rotate(200.0F, 1.0F, 0.0F, 0.0F);

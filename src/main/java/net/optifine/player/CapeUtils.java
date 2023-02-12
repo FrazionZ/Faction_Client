@@ -21,7 +21,7 @@ public class CapeUtils
 {
     private static final Pattern PATTERN_USERNAME = Pattern.compile("[a-zA-Z0-9_]+");
 
-    public static void downloadCape(AbstractClientPlayer player)
+    /*public static void downloadCape(AbstractClientPlayer player)
     {
         String s = player.getNameClear();
 
@@ -40,7 +40,7 @@ public class CapeUtils
                 {
                     if (threaddownloadimagedata.imageFound.booleanValue())
                     {
-                        player.setLocationOfCape(resourcelocation);
+                        player.setCapeLocation(resourcelocation);
 
                         if (threaddownloadimagedata.getImageBuffer() instanceof CapeImageBuffer)
                         {
@@ -59,7 +59,7 @@ public class CapeUtils
             threaddownloadimagedata1.pipeline = true;
             texturemanager.loadTexture(resourcelocation, threaddownloadimagedata1);
         }
-    }
+    }*/
 
     public static BufferedImage parseCape(BufferedImage img)
     {
@@ -98,8 +98,8 @@ public class CapeUtils
             texturemanager.deleteTexture(resourcelocation);
         }
 
-        player.setLocationOfCape((ResourceLocation)null);
+        player.setCapeLocation((ResourceLocation)null);
         player.setElytraOfCape(false);
-        downloadCape(player);
+        //downloadCape(player);
     }
 }

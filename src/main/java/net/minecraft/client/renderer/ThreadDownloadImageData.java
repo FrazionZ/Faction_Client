@@ -13,6 +13,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
 
+import fz.frazionz.api.SHA1Utils;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -288,5 +289,24 @@ public class ThreadDownloadImageData extends SimpleTexture
     public IImageBuffer getImageBuffer()
     {
         return this.imageBuffer;
+    }
+
+    public boolean SHA1Equals(String sha1) {
+        String sha = null;
+        try {
+            sha = SHA1Utils.calcSHA1(cacheFile);
+            System.out.println("cacheFile: " + cacheFile);
+            System.out.println("calcSHA1: " + sha);
+        }
+        catch (Exception e) {
+            System.out.println("Error while checking sha1");
+        }
+
+        assert sha != null;
+        return sha.equalsIgnoreCase(sha1);
+    }
+
+    public File getCacheFile() {
+        return cacheFile;
     }
 }

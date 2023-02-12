@@ -5,10 +5,10 @@ import com.google.gson.JsonParser;
 import fz.frazionz.api.HTTPReply;
 import fz.frazionz.api.HTTPUtils;
 
-public class ShopCache extends AbstractCache {
+public class SkinCache extends AbstractCache {
 
-    public ShopCache() {
-        super("shop");
+    public SkinCache() {
+        super("skins");
     }
 
     @Override

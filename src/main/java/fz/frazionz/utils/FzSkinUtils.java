@@ -4,84 +4,107 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
 import java.io.File;
-import java.io.IOException;
-import java.io.RandomAccessFile;
-import java.net.MalformedURLException;
-import java.net.URL;
 
-import javax.imageio.ImageIO;
-
-import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang3.StringUtils;
+import fz.frazionz.api.HTTPEndpoints;
+import fz.frazionz.api.HTTPUtils;
+import fz.frazionz.api.SHA1Utils;
+import fz.frazionz.api.gsonObj.UserSkinsInfo;
 
 import com.mojang.authlib.GameProfile;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.AbstractClientPlayer;
+import net.minecraft.client.renderer.ImageBufferDownload;
 import net.minecraft.client.renderer.ThreadDownloadImageData;
 import net.minecraft.client.renderer.texture.ITextureObject;
-import net.minecraft.client.renderer.texture.SimpleTexture;
 import net.minecraft.client.renderer.texture.TextureManager;
-import net.minecraft.client.resources.DefaultPlayerSkin;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.src.Config;
+import net.optifine.texture.TextureType;
+import org.lwjgl.Sys;
 
 public class FzSkinUtils
 {
 	// Player Skin
-    public static BufferedImage parseSkin(BufferedImage p_parseSkin_0_)
+    public static BufferedImage parseSkin(BufferedImage skinImage)
     {
         int i = 64;
         int j = 64;
-        int k = p_parseSkin_0_.getWidth();
+        int k = skinImage.getWidth();
 
-        for (int l = p_parseSkin_0_.getHeight(); i < k || j < l; j *= 2)
+        for (int l = skinImage.getHeight(); i < k || j < l; j *= 2)
         {
             i *= 2;
         }
 
         BufferedImage bufferedimage = new BufferedImage(i, j, 2);
         Graphics graphics = bufferedimage.getGraphics();
-        graphics.drawImage(p_parseSkin_0_, 0, 0, (ImageObserver)null);
+        graphics.drawImage(skinImage, 0, 0, (ImageObserver)null);
         graphics.dispose();
         return bufferedimage;
     }
-    
-    public static ResourceLocation loadSkin(GameProfile profile, TextureType imgType) {
-    	
-    	String username = StringUtils.lowerCase(profile.getName());
-        String downloadURL = "https://api.frazionz.net/" + imgType.getFolder() + "/display?username=" + username;
-        
-    	ResourceLocation resourcelocation = new ResourceLocation("frazionz/" + imgType.getFolder() + "/" + String.valueOf(profile.getId().toString()));
-        TextureManager texturemanager = Minecraft.getMinecraft().getTextureManager();
-        ITextureObject itextureobject = texturemanager.getTexture(resourcelocation);
 
-        if (itextureobject != null && itextureobject instanceof ThreadDownloadImageData)
-        {
-            ThreadDownloadImageData threaddownloadimagedata = (ThreadDownloadImageData)itextureobject;
+    public static ResourceLocation loadCape(GameProfile profile, UserSkinsInfo userSkinsInfo) {
+        if(userSkinsInfo == null) {
+            return null;
+        }
+        if(userSkinsInfo.getCapeId() == -1) {
+            return null;
+        }
+        String id = String.valueOf(userSkinsInfo.getCapeId());
+        return loadTexture(
+                id,
+                TextureType.CAPE,
+                HTTPEndpoints.API_CAPES_DISPLAY_BRUT_ID.replace("{ID}", id),
+                new ResourceLocation("frazionz", "cache/capes/" + id),
+                null
+        );
+    }
 
-            if (threaddownloadimagedata.imageFound != null){
-                if (threaddownloadimagedata.imageFound.booleanValue()){
-                    return resourcelocation;
-                }else {
-                	return resourcelocation;
-                }
-            }else {
-            	return resourcelocation;
-            }
+    public static ResourceLocation loadSkin(GameProfile profile, UserSkinsInfo userSkinsInfo) {
+        if(userSkinsInfo == null || !userSkinsInfo.isSkinExist() || !userSkinsInfo.hasSkin()) {
+            return null;
         }
-        else
-        {
-            File cacheFile = getProfileCacheFile(profile, imgType);
-        	ThreadDownloadImageData threaddownloadimagedata1 = new ThreadDownloadImageData(cacheFile, downloadURL, (ResourceLocation)null, null);
-            threaddownloadimagedata1.pipeline = true;
-            texturemanager.loadTexture(resourcelocation, threaddownloadimagedata1);
-    		return resourcelocation;
-        }
+        String id = profile.getId().toString();
+        return loadTexture(
+                id,
+                TextureType.SKIN,
+                HTTPEndpoints.API_USER_UUID_SKIN_DISPLAY.replace("{UUID}", id),
+                new ResourceLocation("frazionz", "cache/skins/" + id),
+                userSkinsInfo.getSkinSHA1()
+        );
     }
     
-    public static File getProfileCacheFile(GameProfile profile, TextureType imgType) {
-    	return  new File(Minecraft.getMinecraft().fileAssets + File.separator + "frazionz" + File.separator + imgType.getFolder(), String.valueOf(profile.getId().toString()));
+    public static ResourceLocation loadTexture(String fileName, TextureType textureType, String downloadURL, ResourceLocation resourceLocation, String sha1)
+    {
+        TextureManager textureManager = Minecraft.getMinecraft().getTextureManager();
+        ITextureObject itextureObject = textureManager.getTexture(resourceLocation);
+        File cacheFile;
+
+        if(itextureObject instanceof ThreadDownloadImageData) {
+            cacheFile = ((ThreadDownloadImageData) itextureObject).getCacheFile();
+            if (sha1 != null && !SHA1Utils.equals(cacheFile, sha1)) {
+                cacheFile.delete();
+                loadOrDownloadTexture(resourceLocation, downloadURL, cacheFile, textureManager);
+            }
+        }
+        else {
+            cacheFile = getCacheFile(fileName, textureType);
+            if (sha1 != null && !SHA1Utils.equals(cacheFile, sha1)) {
+                cacheFile.delete();
+            }
+            loadOrDownloadTexture(resourceLocation, downloadURL, cacheFile, textureManager);
+        }
+        return resourceLocation;
+    }
+
+    private static void loadOrDownloadTexture(ResourceLocation resourceLocation, String downloadURL, File cacheFile, TextureManager textureManager) {
+        ThreadDownloadImageData threadDownloadImageData = new ThreadDownloadImageData(cacheFile, downloadURL, null, null);
+        threadDownloadImageData.pipeline = true;
+        textureManager.loadTexture(resourceLocation, threadDownloadImageData);
+    }
+
+    public static File getCacheFile(String fileName, TextureType imgType) {
+    	return  new File(
+                Minecraft.getMinecraft().fileAssets + File.separator + "frazionz" + File.separator + "cache" + File.separator + imgType.getFolder(), fileName);
     }
     
     public enum TextureType {

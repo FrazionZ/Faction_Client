@@ -45,9 +45,9 @@ public class LayerElytra implements LayerRenderer<EntityLivingBase>
                 {
                     this.renderPlayer.bindTexture(abstractclientplayer.getLocationElytra());
                 }
-                else if (abstractclientplayer.hasElytraCape() && abstractclientplayer.hasPlayerInfo() && abstractclientplayer.getLocationCape() != null && abstractclientplayer.isWearing(EnumPlayerModelParts.CAPE))
+                else if (abstractclientplayer.hasElytraCape() && abstractclientplayer.hasPlayerInfo() && abstractclientplayer.getCapeLocation() != null && abstractclientplayer.isWearing(EnumPlayerModelParts.CAPE))
                 {
-                    this.renderPlayer.bindTexture(abstractclientplayer.getLocationCape());
+                    this.renderPlayer.bindTexture(abstractclientplayer.getCapeLocation());
                 }
                 else
                 {

@@ -25,7 +25,7 @@ public class SkinImageBuffer extends ImageBufferDownload
     {
         if (this.player != null)
         {
-            this.player.setLocationOfSkin(this.resourceLocation);
+            this.player.setSkinLocation(this.resourceLocation);
         }
     }
 
