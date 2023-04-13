@@ -17,6 +17,7 @@ run/saves/
 run/crash-reports/
 run/options.txt
 run/optionsof.txt
+run/
 gradle.properties
 
 # Compiled class file
