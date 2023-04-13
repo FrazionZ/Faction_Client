@@ -300,12 +300,12 @@ public class ItemRenderer
         GlStateManager.rotate((float)i * f3 * 30.0F, 0.0F, 0.0F, 1.0F);
     }
 
-    private void transformFirstPerson(EnumHandSide hand, float p_187453_2_)
+    private void transformFirstPerson(EnumHandSide hand, float swingProgress)
     {
         int i = hand == EnumHandSide.RIGHT ? 1 : -1;
-        float f = MathHelper.sin(p_187453_2_ * p_187453_2_ * (float)Math.PI);
+        float f = MathHelper.sin(swingProgress * swingProgress * (float)Math.PI);
         GlStateManager.rotate((float)i * (45.0F + f * -20.0F), 0.0F, 1.0F, 0.0F);
-        float f1 = MathHelper.sin(MathHelper.sqrt(p_187453_2_) * (float)Math.PI);
+        float f1 = MathHelper.sin(MathHelper.sqrt(swingProgress) * (float)Math.PI);
         GlStateManager.rotate((float)i * f1 * -20.0F, 0.0F, 0.0F, 1.0F);
         GlStateManager.rotate(f1 * -80.0F, 1.0F, 0.0F, 0.0F);
         GlStateManager.rotate((float)i * -45.0F, 0.0F, 1.0F, 0.0F);
@@ -383,7 +383,7 @@ public class ItemRenderer
         RenderHelper.disableStandardItemLighting();
     }
 
-    public void renderItemInFirstPerson(AbstractClientPlayer player, float p_187457_2_, float p_187457_3_, EnumHand hand, float swingProgress, ItemStack stack, float p_187457_7_)
+    public void renderItemInFirstPerson(AbstractClientPlayer player, float partialTicks, float p_187457_3_, EnumHand hand, float swingProgress, ItemStack stack, float equipProgress)
     {
         if (!Config.isShaders() || !Shaders.isSkipRenderHand(hand))
         {
@@ -395,18 +395,18 @@ public class ItemRenderer
             {
                 if (flag && !player.isInvisible())
                 {
-                    this.renderArmFirstPerson(p_187457_7_, swingProgress, enumhandside);
+                    this.renderArmFirstPerson(equipProgress, swingProgress, enumhandside);
                 }
             }
             else if (stack.getItem() instanceof ItemMap)
             {
                 if (flag && this.itemStackOffHand.isEmpty())
                 {
-                    this.renderMapFirstPerson(p_187457_3_, p_187457_7_, swingProgress);
+                    this.renderMapFirstPerson(p_187457_3_, equipProgress, swingProgress);
                 }
                 else
                 {
-                    this.renderMapFirstPersonSide(p_187457_7_, enumhandside, swingProgress, stack);
+                    this.renderMapFirstPersonSide(equipProgress, enumhandside, swingProgress, stack);
                 }
             }
             else
@@ -421,14 +421,14 @@ public class ItemRenderer
                     {
                     	case NONE:
 	                    	// PVP_UPDATE
-	                        this.transformSideFirstPerson(enumhandside, p_187457_7_, true, false, 0.0f);
+	                        this.transformSideFirstPerson(enumhandside, equipProgress, true, false, 0.0f);
 	                        break;
 
                         case EAT:
                         case DRINK:
 	                    	// PVP_UPDATE
-	                        this.transformEatFirstPerson(p_187457_2_, enumhandside, stack);
-	                        this.transformSideFirstPerson(enumhandside, p_187457_7_, true, true, swingProgress);
+	                        this.transformEatFirstPerson(partialTicks, enumhandside, stack);
+	                        this.transformSideFirstPerson(enumhandside, equipProgress, true, true, swingProgress);
 	                        break;
 
                         /*case BLOCK:
@@ -439,7 +439,7 @@ public class ItemRenderer
 	                        
 	                    // PVP_UPDATE
 	                    case BLOCK_SWORD:
-	                        this.transformSideFirstPerson(enumhandside, p_187457_7_, false, true, swingProgress);
+	                        this.transformSideFirstPerson(enumhandside, equipProgress, false, true, swingProgress);
 	                        
 	                        GlStateManager.translate((float)j * -0.1985682F, 0.11344387F, 0.15731531F);
 	                        GlStateManager.rotate((float)j * 70.0F, 0.0F, 1.0F, 0.0F);
@@ -452,12 +452,12 @@ public class ItemRenderer
 
                         case BOW:
 	                    	// PVP_UPDATE
-	                        this.transformSideFirstPerson(enumhandside, p_187457_7_, false, true, swingProgress);
+	                        this.transformSideFirstPerson(enumhandside, equipProgress, false, true, swingProgress);
 	                        GlStateManager.translate((float)j * -0.2785682F, 0.18344387F, 0.15731531F);
                             GlStateManager.rotate(-13.935F, 1.0F, 0.0F, 0.0F);
                             GlStateManager.rotate((float)j * 35.3F, 0.0F, 1.0F, 0.0F);
                             GlStateManager.rotate((float)j * -9.785F, 0.0F, 0.0F, 1.0F);
-                            float f5 = (float)stack.getMaxItemUseDuration() - ((float)this.mc.player.getItemInUseCount() - p_187457_2_ + 1.0F);
+                            float f5 = (float)stack.getMaxItemUseDuration() - ((float)this.mc.player.getItemInUseCount() - partialTicks + 1.0F);
                             float f6 = f5 / 20.0F;
                             f6 = (f6 * f6 + f6 * 2.0F) / 3.0F;
 
@@ -487,7 +487,7 @@ public class ItemRenderer
                     float f2 = -0.2F * MathHelper.sin(swingProgress * (float)Math.PI);
                     int i = flag1 ? 1 : -1;
                     GlStateManager.translate((float)i * f, f1, f2);
-                    this.transformSideFirstPerson(enumhandside, p_187457_7_, true, false, 0.0f);
+                    this.transformSideFirstPerson(enumhandside, equipProgress, true, false, 0.0f);
                     this.transformFirstPerson(enumhandside, swingProgress);
                 }
 
