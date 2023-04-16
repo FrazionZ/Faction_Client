@@ -11,7 +11,7 @@ import net.minecraft.client.settings.GameSettings;
 
 public class GuiModToggle extends GuiScreen {
 
-	private static GameSettings.Options[] enumOptions = new GameSettings.Options[] { GameSettings.Options.TOGGLESPRINT};
+	private static GameSettings.Options[] enumOptions = new GameSettings.Options[] {};
 
 	private static HUDManager hudManager = new HUDManager();
 	
@@ -41,7 +41,6 @@ public class GuiModToggle extends GuiScreen {
             if (button.id == 1)
             {
                 this.mc.gameSettings.saveOptions();
-                this.mc.gameSettings.saveModsOptions();
                 hudManager = HUDManager.getInstance();
             	this.mc.displayGuiScreen(new HUDConfigScreen(hudManager));
             }

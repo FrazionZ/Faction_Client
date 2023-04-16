@@ -2,8 +2,6 @@ package fz.frazionz.client.gui;
 
 import fz.frazionz.client.gui.hud.HUDConfigScreen;
 import fz.frazionz.client.gui.hud.HUDManager;
-import fz.frazionz.mods.ModInstances;
-import fz.frazionz.mods.impl.ModKeystrokes;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiOptionButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -21,9 +19,7 @@ public class GuiModsConfig extends GuiScreen implements GuiYesNoCallback
     protected String title;
     private GameSettings settings;
     
-    private ModKeystrokes keystrokes;
-    
-    private static GameSettings.Options[] enumOptions = new GameSettings.Options[] {GameSettings.Options.KEYSTROKES, GameSettings.Options.TOGGLESPRINT};
+    private static GameSettings.Options[] enumOptions = new GameSettings.Options[] {};
     private TooltipManager tooltipManager = new TooltipManager(this, new TooltipProviderOptions());
     
     private static HUDManager hudManager = new HUDManager();
@@ -76,22 +72,7 @@ public class GuiModsConfig extends GuiScreen implements GuiYesNoCallback
             {
             	this.mc.gameSettings.saveOptions();
                 this.settings.setOptionValue(((GuiOptionButton)button).getOption(), keyCode == 0 ? 1 : -1);
-                button.displayString = this.settings.getKeyBinding(GameSettings.Options.byOrdinal(button.id)); 
-                
-                // ADD_MODS //
-                
-                if(GameSettings.Options.byOrdinal(button.id) == GameSettings.Options.KEYSTROKES) {
-                	ModKeystrokes keystrokes = ModInstances.getModKeystrokes();
-                	/*HUDManager.getInstance().unregister(keystrokes);*/
-                	if(keystrokes.isEnabled()) {
-                		keystrokes.setEnabled(false);
-                	}
-                	else {
-                    	keystrokes.setEnabled(true);
-                	}
-                	HUDManager.rerun();
-                }
-                
+                button.displayString = this.settings.getKeyBinding(GameSettings.Options.byOrdinal(button.id));
             }
 
             if (button.id == 200)

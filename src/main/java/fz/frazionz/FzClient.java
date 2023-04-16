@@ -7,8 +7,7 @@ import fz.frazionz.api.data.FactionProfile;
 import fz.frazionz.client.cache.CacheManager;
 import fz.frazionz.event.EventManager;
 import fz.frazionz.client.gui.hud.HUDManager;
-import fz.frazionz.mods.FileManager;
-import fz.frazionz.mods.ModInstances;
+import fz.frazionz.mods.ModManager;
 import fz.frazionz.mods.blockrenderer.BlockRenderer;
 import fz.frazionz.utils.discord.DiscordRP;
 import net.minecraft.client.Minecraft;
@@ -21,11 +20,15 @@ public class FzClient {
 
 	private DiscordRP discordRP = new DiscordRP();
 	private HUDManager hudManager;
+	private ModManager modManager;
 	private FactionProfile factionProfile;
 	private CacheManager cacheManager;
+
+	public static final FzClient getInstance() {
+		return INSTANCE;
+	}
 	
 	public void init() {
-		FileManager.init();
 		if(Minecraft.getMinecraft().getSession().getDiscordRPC())
 			discordRP.start();
 		
@@ -33,28 +36,26 @@ public class FzClient {
 
 		this.factionProfile = HTTPFunctions.getFactionProfile();
 	}
-
-	public static final FzClient getInstance() {
-		return INSTANCE;
-	}
 	
 	public void postMinecraftInit() {
 		this.ttfFontRenderers.put(24, new TTFFontRenderer(new ResourceLocation("font/font.ttf"), 24));
 		this.ttfFontRenderers.put(20, new TTFFontRenderer(new ResourceLocation("font/font.ttf"), 20));
 		this.ttfFontRenderers.put(16, new TTFFontRenderer(new ResourceLocation("font/font.ttf"), 16));
-
 	}
 	
 	
-	public void start() {
+	public void onEnable() {
 		hudManager = HUDManager.getInstance();
-		ModInstances.register(hudManager);
+		modManager = ModManager.getInstance();
+		modManager.onEnable();
+
 		new BlockRenderer();
 		cacheManager = new CacheManager();
 	}
 	
-	public void shutdown() {
+	public void onDisable() {
 		discordRP.shutdown();
+		modManager.onDisable();
 	}
 	
 	public DiscordRP getDiscordRP() {

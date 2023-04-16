@@ -8,7 +8,6 @@ import com.google.common.collect.Sets;
 import fz.frazionz.event.EventManager;
 import fz.frazionz.event.EventTarget;
 import fz.frazionz.event.impl.RenderEvent;
-import fz.frazionz.mods.ModInstances;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiChat;
 
@@ -91,8 +90,6 @@ public class HUDManager {
 		HUDManager.clear();
 		HUDManager hudManager;
 		hudManager = HUDManager.getInstance();
-		ModInstances.register(hudManager);
-		
 	}
 	
 }

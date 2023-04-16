@@ -69,9 +69,9 @@ public class MovementInputFromOptions extends MovementInput
         this.jump = this.gameSettings.keyBindJump.isKeyDown();
         this.sneak = this.gameSettings.keyBindSneak.isKeyDown();
         
-        if(this.mc.gameSettings.togglesprintMod == true) {
+        /*if(this.mc.gameSettings.togglesprintMod == true) {
             this.mc.player.setSprinting(this.mc.gameSettings.togglesprintMod);
-        }
+        }*/
         
         if (this.sneak)
         {
