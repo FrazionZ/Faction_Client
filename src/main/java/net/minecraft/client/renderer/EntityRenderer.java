@@ -567,7 +567,8 @@ public class EntityRenderer implements IResourceManagerReloadListener
                     }
                 }
             }
-            
+
+            // To Optimize
             if (isAxe || isDagger)
             {
             	if (this.pointedEntity != null && flag && vec3d.distanceTo(vec3d3) > 4.0D && isAxe)

@@ -448,7 +448,8 @@ public abstract class EntityPlayer extends EntityLivingBase
         else if (this.isSneaking())
         {
             f = 0.6F;
-            f1 = 1.5F;
+            //f1 = 1.5F;
+            f1 = 1.65F;
         }
         else
         {
@@ -2763,11 +2764,12 @@ public abstract class EntityPlayer extends EntityLivingBase
         {
             f = 0.2F;
         }
-        else if (this.isSneaking())
+        /*else if (this.isSneaking())
         {
             f = 1.32F;
-        }
-        else if (!this.isSneaking() && this.height != 1.5F)
+        }*/
+        //else if (!this.isSneaking() && this.height != 1.5F)
+        else if (!this.isSneaking() && this.height != 1.65F)
         {
             if (this.isElytraFlying() || this.height == 0.6F)
             {
