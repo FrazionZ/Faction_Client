@@ -6,7 +6,7 @@ import fz.frazionz.api.HTTPFunctions;
 import fz.frazionz.api.data.FactionProfile;
 import fz.frazionz.client.cache.CacheManager;
 import fz.frazionz.event.EventManager;
-import fz.frazionz.client.gui.hud.HUDManager;
+import fz.frazionz.mods.mod_hud.HUDManager;
 import fz.frazionz.mods.ModManager;
 import fz.frazionz.mods.blockrenderer.BlockRenderer;
 import fz.frazionz.utils.discord.DiscordRP;

@@ -1,7 +1,7 @@
 package fz.frazionz.client.gui;
 
 import fz.frazionz.client.gui.hud.HUDConfigScreen;
-import fz.frazionz.client.gui.hud.HUDManager;
+import fz.frazionz.mods.mod_hud.HUDManager;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiOptionButton;
 import net.minecraft.client.gui.GuiScreen;

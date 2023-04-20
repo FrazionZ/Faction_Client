@@ -6,6 +6,9 @@ import java.util.HashMap;
 import java.util.Optional;
 import java.util.function.Predicate;
 
+import fz.frazionz.mods.mod_hud.HUDManager;
+import fz.frazionz.mods.mod_hud.IRenderer;
+import fz.frazionz.mods.mod_hud.ScreenPosition;
 import org.lwjgl.input.Keyboard;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;

@@ -1,4 +1,4 @@
-package fz.frazionz.client.gui.hud;
+package fz.frazionz.mods.mod_hud;
 
 import com.google.gson.annotations.Expose;
 

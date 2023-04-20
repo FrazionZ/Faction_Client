@@ -3,7 +3,7 @@ package fz.frazionz.client.gui;
 import java.io.IOException;
 
 import fz.frazionz.client.gui.hud.HUDConfigScreen;
-import fz.frazionz.client.gui.hud.HUDManager;
+import fz.frazionz.mods.mod_hud.HUDManager;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.resources.I18n;

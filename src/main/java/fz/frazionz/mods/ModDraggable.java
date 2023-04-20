@@ -1,7 +1,7 @@
 package fz.frazionz.mods;
 
-import fz.frazionz.client.gui.hud.IRenderer;
-import fz.frazionz.client.gui.hud.ScreenPosition;
+import fz.frazionz.mods.mod_hud.IRenderer;
+import fz.frazionz.mods.mod_hud.ScreenPosition;
 import net.minecraft.client.Minecraft;
 
 public abstract class ModDraggable extends Mod implements IRenderer
@@ -34,5 +34,12 @@ public abstract class ModDraggable extends Mod implements IRenderer
     {
         return (Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT + 3) * lineNum;
     }
-    
+
+    public ScreenPosition getPos() {
+        return pos;
+    }
+
+    public void setPos(ScreenPosition pos) {
+        this.pos = pos;
+    }
 }

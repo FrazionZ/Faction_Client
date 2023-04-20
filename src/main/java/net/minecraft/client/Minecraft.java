@@ -62,7 +62,7 @@ import fz.frazionz.AntiCheatResourcePack;
 import fz.frazionz.FzClient;
 import fz.frazionz.client.gui.GuiKeyBinds;
 import fz.frazionz.client.gui.hud.HUDConfigScreen;
-import fz.frazionz.client.gui.hud.HUDManager;
+import fz.frazionz.mods.mod_hud.HUDManager;
 import fz.frazionz.mods.sneak.SmoothSneak;
 import fz.frazionz.utils.data.FzUserData;
 import net.minecraft.block.Block;
