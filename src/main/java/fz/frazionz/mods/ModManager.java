@@ -58,8 +58,13 @@ public class ModManager {
                 JSONObject modConfig = modsConfig.getJSONObject(mod.getName());
                 mod.setEnabled(modConfig.getBoolean("enabled"));
                 if(mod instanceof ModDraggable) {
-                    ScreenPosition pos = new ScreenPosition(modConfig.getInt("posX"), modConfig.getInt("posY"));
-                    ((ModDraggable) mod).setPos(pos);
+                    if(modConfig.has("posX") && modConfig.has("posY")) {
+                        ScreenPosition pos = new ScreenPosition(modConfig.getInt("posX"), modConfig.getInt("posY"));
+                        ((ModDraggable) mod).setPos(pos);
+                    }
+                    else {
+                        ((ModDraggable) mod).setPos(new ScreenPosition(0, 0));
+                    }
                 }
             } else {
                 modsConfig.put(mod.getName(), mod.isEnabled());
@@ -67,7 +72,7 @@ public class ModManager {
         }
     }
 
-    private void saveModsConfig() {
+    public void saveModsConfig() {
         if(!modsConfigFile.exists()) {
             try {
                 modsConfigFile.createNewFile();
@@ -75,6 +80,20 @@ public class ModManager {
                 e.printStackTrace();
             }
         }
+
+        JSONObject modsConfig = new JSONObject();
+        for (Mod mod : mods) {
+            JSONObject modConfig = new JSONObject();
+            modConfig.put("enabled", mod.isEnabled());
+            if(mod instanceof ModDraggable) {
+                ScreenPosition pos = ((ModDraggable) mod).getPos();
+                modConfig.put("posX", pos.getAbsoluteX());
+                modConfig.put("posY", pos.getAbsoluteY());
+            }
+            modsConfig.put(mod.getName(), modConfig);
+        }
+
+        JsonHelper.saveJSONObject(modsConfigFile, modsConfig);
     }
 
     public boolean registerMod(Mod mod) {

@@ -40,4 +40,14 @@ public class JsonHelper {
 		}
 	}
 
+	public static void saveJSONObject(File file, JSONObject json) {
+		try
+		{
+			Files.write(file.toPath(), json.toString().getBytes());
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 }

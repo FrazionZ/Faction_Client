@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Optional;
 import java.util.function.Predicate;
 
+import fz.frazionz.mods.ModManager;
 import fz.frazionz.mods.mod_hud.HUDManager;
 import fz.frazionz.mods.mod_hud.IRenderer;
 import fz.frazionz.mods.mod_hud.ScreenPosition;
@@ -169,6 +170,8 @@ public class HUDConfigScreen extends GuiScreen {
         for (IRenderer renderer : renderers.keySet()) {
             renderer.save(renderers.get(renderer));
         }
+
+        ModManager.getInstance().saveModsConfig();
     }
 
     @Override
