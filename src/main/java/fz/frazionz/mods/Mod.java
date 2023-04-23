@@ -11,6 +11,7 @@ public class Mod {
 	protected String name;
 	protected boolean isEnabled;
 	protected FontRenderer font;
+	protected static Minecraft mc = Minecraft.getMinecraft();
 	
 	public Mod(String name) {
 		this.name = name;
