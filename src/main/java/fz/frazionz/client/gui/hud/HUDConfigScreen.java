@@ -187,7 +187,7 @@ public class HUDConfigScreen extends GuiScreen {
         this.prevY = y;
         // NEEDED FOR SMOOTH DRAGGING
         dragged = true;
-        
+
         loadMouseOver(x, y);
         super.mouseClicked(x, y, button);
     }

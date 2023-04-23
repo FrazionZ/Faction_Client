@@ -60,22 +60,10 @@ public class ModManager {
 
         for (Mod mod : mods) {
             if (modsConfig.has(mod.getName())) {
-                JSONObject modConfig = modsConfig.getJSONObject(mod.getName());
-                mod.setEnabled(modConfig.getBoolean("enabled"));
-                if(mod instanceof ModDraggable) {
-                    if(modConfig.has("posX") && modConfig.has("posY")) {
-                        ScreenPosition pos = new ScreenPosition(modConfig.getInt("posX"), modConfig.getInt("posY"));
-                        ((ModDraggable) mod).setPos(pos);
-                    }
-                    else {
-                        ((ModDraggable) mod).setPos(new ScreenPosition(0, 0));
-                    }
-                }
-            } else {
-                modsConfig.put(mod.getName(), mod.isEnabled());
-                if(mod instanceof ModDraggable) {
-                    ((ModDraggable) mod).setPos(new ScreenPosition(0, 0));
-                }
+                mod.loadConfig(modsConfig.getJSONObject(mod.getName()));
+            }
+            else {
+                mod.loadConfig(new JSONObject());
             }
         }
     }
@@ -85,14 +73,7 @@ public class ModManager {
 
         JSONObject modsConfig = new JSONObject();
         for (Mod mod : mods) {
-            JSONObject modConfig = new JSONObject();
-            modConfig.put("enabled", mod.isEnabled());
-            if(mod instanceof ModDraggable) {
-                ScreenPosition pos = ((ModDraggable) mod).getPos();
-                modConfig.put("posX", pos.getAbsoluteX());
-                modConfig.put("posY", pos.getAbsoluteY());
-            }
-            modsConfig.put(mod.getName(), modConfig);
+            modsConfig.put(mod.getName(), mod.getJson());
         }
 
         JsonHelper.saveJSONObject(modsConfigFile, modsConfig);
