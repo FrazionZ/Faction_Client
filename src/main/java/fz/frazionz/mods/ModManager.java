@@ -34,14 +34,19 @@ public class ModManager {
         saveModsConfig();
     }
 
-    private void loadModsConfig() {
+    private void createConfigIfNotExists() {
         if(!modsConfigFile.exists()) {
             try {
+                modsConfigFile.getParentFile().mkdirs();
                 modsConfigFile.createNewFile();
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    private void loadModsConfig() {
+        createConfigIfNotExists();
         JSONObject modsConfig = JsonHelper.getJsonObject(modsConfigFile);
         if (modsConfig == null) {
             modsConfig = new JSONObject();
@@ -68,18 +73,15 @@ public class ModManager {
                 }
             } else {
                 modsConfig.put(mod.getName(), mod.isEnabled());
+                if(mod instanceof ModDraggable) {
+                    ((ModDraggable) mod).setPos(new ScreenPosition(0, 0));
+                }
             }
         }
     }
 
     public void saveModsConfig() {
-        if(!modsConfigFile.exists()) {
-            try {
-                modsConfigFile.createNewFile();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+        createConfigIfNotExists();
 
         JSONObject modsConfig = new JSONObject();
         for (Mod mod : mods) {

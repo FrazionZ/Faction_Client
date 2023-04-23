@@ -80,22 +80,13 @@ public class HUDConfigScreen extends GuiScreen {
         for (IRenderer renderer : renderers.keySet()) {
 
             ScreenPosition pos = renderers.get(renderer);
-
             Gui.drawRect(pos.getAbsoluteX(), pos.getAbsoluteY(), pos.getAbsoluteX() + renderer.getWidth(), pos.getAbsoluteY() + renderer.getHeight(), 0x33FFFFFF);
             this.drawHollowRect(pos.getAbsoluteX(), pos.getAbsoluteY(), renderer.getWidth(), renderer.getHeight(), 0x88FFFFFF);
-
 
             renderer.renderDummy(pos);
 
             // START OF SMOOTH DRAGGING
-
-            // Thanks ESS_Si1kn#0481 for pointing out that I forgot to add these back.
-            int absoluteX = pos.getAbsoluteX();
-            int absoluteY = pos.getAbsoluteY();
-
-            this.hovered = mouseX >= absoluteX && mouseX <= absoluteX + renderer.getWidth() && mouseY >= absoluteY && mouseY <= absoluteY + renderer.getHeight();
-
-            if (this.hovered) {
+            if(selectedRenderer.isPresent() && renderer == selectedRenderer.get()) {
                 if (dragged) {
                     pos.setAbsolute(pos.getAbsoluteX() + mouseX - this.prevX, pos.getAbsoluteY() + mouseY - this.prevY);
 
@@ -105,9 +96,7 @@ public class HUDConfigScreen extends GuiScreen {
                     this.prevY = mouseY;
                 }
             }
-
             // END OF SMOOTH DRAGGING
-
         }
 
         this.smX = mouseX;
@@ -138,13 +127,13 @@ public class HUDConfigScreen extends GuiScreen {
     }
 
     @Override
-    protected void mouseClickMove(int x, int y, int button, long time) {
+    protected void mouseClickMove(int mouseX, int mouseY, int button, long time) {
         if (selectedRenderer.isPresent()) {
-            moveSelectedRenderBy(x - prevX, y - prevY);
+            moveSelectedRenderBy(mouseX - prevX, mouseY - prevY);
         }
 
-        this.prevX = x;
-        this.prevY = y;
+        this.prevX = mouseX;
+        this.prevY = mouseY;
     }
 
     private void moveSelectedRenderBy(int offsetX, int offsetY) {
@@ -186,8 +175,8 @@ public class HUDConfigScreen extends GuiScreen {
         int screenWidth = res.getScaledWidth();
         int screenHeight = res.getScaledHeight();
 
-        int absoluteX = Math.max(0, Math.min(pos.getAbsoluteX(), Math.max(screenWidth - renderer.getWidth(), 0)));
-        int absoluteY = Math.max(0, Math.min(pos.getAbsoluteY(), Math.max(screenHeight - renderer.getHeight(), 0)));
+        int absoluteX = Math.max(0, Math.min(pos.getAbsoluteX(), Math.max(screenWidth - renderer.getWidth()-1, 0)));
+        int absoluteY = Math.max(0, Math.min(pos.getAbsoluteY(), Math.max(screenHeight - renderer.getHeight()-1, 0)));
 
         pos.setAbsolute(absoluteX, absoluteY);
     }
@@ -196,20 +185,17 @@ public class HUDConfigScreen extends GuiScreen {
     protected void mouseClicked(int x, int y, int button) throws IOException {
         this.prevX = x;
         this.prevY = y;
-
         // NEEDED FOR SMOOTH DRAGGING
         dragged = true;
-
+        
         loadMouseOver(x, y);
         super.mouseClicked(x, y, button);
     }
 
     @Override
     protected void mouseReleased(int mouseX, int mouseY, int state) {
-
         // NEEDED FOR SMOOTH DRAGGING
         dragged = false;
-
         super.mouseReleased(mouseX, mouseY, state);
     }
 
@@ -230,23 +216,16 @@ public class HUDConfigScreen extends GuiScreen {
         public boolean test(IRenderer renderer) {
 
             ScreenPosition pos = renderers.get(renderer);
-
             int absoluteX = pos.getAbsoluteX();
             int absoluteY = pos.getAbsoluteY();
 
             if (mouseX >= absoluteX && mouseX <= absoluteX + renderer.getWidth()) {
-
                 if (mouseY >= absoluteY && mouseY <= absoluteY + renderer.getHeight()) {
-
                     return true;
-
                 }
-
             }
-
             return false;
         }
-
     }
 
 }
