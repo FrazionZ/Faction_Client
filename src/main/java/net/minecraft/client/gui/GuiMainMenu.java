@@ -210,10 +210,10 @@ public class GuiMainMenu extends GuiScreen
     {
     	int menuPadding = 20;
     	
-    	this.buttonList.add(new GuiMenuButton(1, menuPadding, menuPadding, width, height, "REJOINDRE"));
-    	this.buttonList.add(new GuiMenuButton(2, menuPadding, menuPadding + height + gap, width, height, "SOLO"));
-    	this.buttonList.add(new GuiMenuButton(3, menuPadding, menuPadding + height*2 + gap*2, width, height, "OPTIONS"));
-    	this.buttonList.add(new GuiMenuButton(4, menuPadding, this.height - menuPadding - height, width, height, "QUITTER"));
+    	this.buttonList.add(new GuiMenuButton(1, menuPadding, menuPadding, width, height, "Rejoindre"));
+    	this.buttonList.add(new GuiMenuButton(2, menuPadding, menuPadding + height + gap, width, height, "Solo"));
+    	this.buttonList.add(new GuiMenuButton(3, menuPadding, menuPadding + height*2 + gap*2, width, height, "Options"));
+    	this.buttonList.add(new GuiMenuButton(4, menuPadding, this.height - menuPadding - height, width, height, "Quitter"));
     }
 
     /**

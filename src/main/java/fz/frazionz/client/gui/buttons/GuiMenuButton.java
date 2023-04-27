@@ -2,14 +2,18 @@ package fz.frazionz.client.gui.buttons;
 
 import fz.frazionz.FzClient;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
 
+import java.awt.*;
+
 public class GuiMenuButton extends GuiButton
-{   
-	
-	private int fade;
-	
+{
+
+    private int fade;
+
     public GuiMenuButton(int buttonId, int x, int y, String buttonText)
     {
         super(buttonId, x, y, 180, 28, buttonText);
@@ -40,27 +44,13 @@ public class GuiMenuButton extends GuiButton
     /**
      * Draws this button to the screen.
      */
-    public void drawButton(Minecraft mc, int mouseX, int mouseY, float partialTicks)
-    {
-        if (this.visible)
-        {
-            mc.getTextureManager().bindTexture(INTERFACE_BACKGROUND_2);
-            GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+    public void drawButton(Minecraft mc, int mouseX, int mouseY, float partialTicks) {
+        if(this.visible) {
             this.hovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
-            GlStateManager.enableBlend();
-            GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-            GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-            
-            if(this.hovered) {
-                this.drawModalRectWithCustomSizedTexture(this.x, this.y, 0, 27, this.width/2, this.height/2, 512.0F, 512.0F);
-                this.drawModalRectWithCustomSizedTexture(this.x, this.y + this.height/2, 0, 27+(30-this.height/2), this.width/2, this.height/2, 512.0F, 512.0F);
-                this.drawModalRectWithCustomSizedTexture(this.x + this.width / 2, this.y, 200-this.width/2, 27, this.width/2, this.height/2, 512.0F, 512.0F);
-                this.drawModalRectWithCustomSizedTexture(this.x + this.width / 2, this.y + this.height/2, 200-this.width/2, 27+(30-this.height/2), this.width/2, this.height/2, 512.0F, 512.0F);
-                
-            }
+            Gui.drawRect(this.x, this.y, this.x + this.width, this.y + this.height, this.hovered ? 0xFFFFFFFF : 0x00000000);
+            Gui.drawGradientRectLeftToRight(this.x+1, this.y+1, this.x + this.width-1, this.y + this.height-1, GRADIENT_BUTTON_1, GRADIENT_BUTTON_2);
+            FzClient.getInstance().getTTFFontRenderers().get(20).drawCenteredString(displayString, this.x + this.width / 2, this.y + this.height/2, 0xFF311903);
             this.mouseDragged(mc, mouseX, mouseY);
-
-            FzClient.getInstance().getTTFFontRenderers().get(20).drawCenteredString(displayString, this.x + this.width / 2, this.y + this.height/2, 0xFFFFFFFF);
         }
     }
 }

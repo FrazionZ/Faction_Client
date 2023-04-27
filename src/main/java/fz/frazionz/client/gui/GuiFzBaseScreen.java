@@ -45,12 +45,8 @@ public class GuiFzBaseScreen extends GuiScreen
     public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {    	
     	this.drawDefaultBackground();
-    	
-        this.mc.getTextureManager().bindTexture(INTERFACE_BACKGROUND_1);
-        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-        GlStateManager.enableBlend();
-        this.drawModalRectWithCustomSizedTexture(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize, 512.0F, 512.0F);
-    	this.drawTitle();
+
+        this.drawTitle();
         
         super.drawScreen(mouseX, mouseY, partialTicks);
     }

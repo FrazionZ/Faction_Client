@@ -662,7 +662,7 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
     {
         if (this.mc.world != null)
         {
-            this.drawRect(0, 0, this.width, this.height, 0xAA000000);
+            drawRect(0, 0, this.width, this.height, 0xAA000000);
         }
         else
         {
@@ -678,7 +678,7 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
      */
     public void drawBackground(int tint)
     {
-    	this.drawRect(0, 0, this.width, this.height, Colors.BLACK_3);
+    	drawRect(0, 0, this.width, this.height, Colors.BLACK_3);
     }
 
     /**

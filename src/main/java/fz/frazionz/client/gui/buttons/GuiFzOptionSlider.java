@@ -1,36 +1,39 @@
 package fz.frazionz.client.gui.buttons;
 
-import fz.frazionz.client.gui.utils.RoundedShaderRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiHopper;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.util.math.MathHelper;
 
-public class GuiFzSlider extends GuiHoverButton
+public class GuiFzOptionSlider extends GuiButton
 {
-    protected float sliderValue;
+    private float sliderValue = 1.0F;
     public boolean dragging;
+    private final float min;
+    private final float max;
     protected final GameSettings.Options options;
-    private final float minValue;
-    protected final float maxValue;
 
-    public GuiFzSlider(int buttonId, int x, int y, GameSettings.Options optionIn)
+
+    public GuiFzOptionSlider(int buttonId, int x, int y, GameSettings.Options optionIn)
     {
         this(buttonId, x, y, optionIn, 0.0F, 1.0F);
     }
 
-    public GuiFzSlider(int buttonId, int x, int y, GameSettings.Options optionIn, float minValueIn, float maxValue)
+    public GuiFzOptionSlider(int buttonId, int x, int y, GameSettings.Options optionIn, float min, float max)
     {
         super(buttonId, x, y, 150, 20, "");
-        this.sliderValue = 1.0F;
         this.options = optionIn;
-        this.minValue = minValueIn;
-        this.maxValue = maxValue;
+        this.min = min;
+        this.max = max;
         Minecraft minecraft = Minecraft.getMinecraft();
         this.sliderValue = optionIn.normalizeValue(minecraft.gameSettings.getOptionFloatValue(optionIn));
         this.displayString = I18n.format(this.options.getTranslation()) + ": " + minecraft.gameSettings.getKeyBinding(this.options);
+    }
+
+    private String getDisplayString() {
+        return I18n.format(this.options.getTranslation()) + ": " + Minecraft.getMinecraft().gameSettings.getKeyBinding(this.options);
     }
 
     /**
@@ -41,7 +44,7 @@ public class GuiFzSlider extends GuiHoverButton
     {
         return 1;
     }
-    
+
     /**
      * Fired when the mouse button is dragged. Equivalent of MouseListener.mouseDragged(MouseEvent e).
      */
@@ -56,21 +59,13 @@ public class GuiFzSlider extends GuiHoverButton
                 float f = this.options.denormalizeValue(this.sliderValue);
                 mc.gameSettings.setOptionFloatValue(this.options, f);
                 this.sliderValue = this.options.normalizeValue(f);
-                this.displayString = I18n.format(this.options.getTranslation()) + ": " + mc.gameSettings.getKeyBinding(this.options);
+                this.displayString = getDisplayString();
             }
 
-            //mc.getTextureManager().bindTexture(INTERFACE_BACKGROUND_2);
-            //GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-            
-            if(this.hovered && hoveredValue < 3)
-            	hoveredValue += 1;
-            else if(!this.hovered && hoveredValue > 0)
-            	hoveredValue -= 1;
-            RoundedShaderRenderer.getInstance().drawRoundRect(this.x + (int)(sliderValue * (float)(width-8)) - hoveredValue + 1, this.y - hoveredValue + 1, 8+2*hoveredValue - 2, this.height + 2*hoveredValue - 2, 3.5f, 0xFFFFFF);
-            RoundedShaderRenderer.getInstance().drawRoundRect(this.x + (int)(sliderValue * (float)(width-8)), this.y, 8, this.height, 2, BLACK_1);
-            
-            //this.drawModalRectWithCustomSizedTexture(this.x + (int)(sliderValue * (float)(width-8)), this.y, 200+(this.hovered?8:0), 117, 8, height/2, 512.0F, 512.0F);
-            //this.drawModalRectWithCustomSizedTexture(this.x + (int)(sliderValue * (float)(width-8)), this.y + height/2, 200+(this.hovered?8:0), 117 + (30-height/2), 8, height/2, 512.0F, 512.0F);
+            mc.getTextureManager().bindTexture(FRAZION_BUTTON_TEXTURES);
+            GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+            this.drawTexturedModalRect(this.x + (int)(this.sliderValue * (float)(this.width - 8)), this.y, 0, 66, 4, 20);
+            this.drawTexturedModalRect(this.x + (int)(this.sliderValue * (float)(this.width - 8)) + 4, this.y, 196, 66, 4, 20);
         }
     }
 
@@ -84,8 +79,9 @@ public class GuiFzSlider extends GuiHoverButton
         {
             this.sliderValue = (float)(mouseX - (this.x + 4)) / (float)(this.width - 8);
             this.sliderValue = MathHelper.clamp(this.sliderValue, 0.0F, 1.0F);
+
             mc.gameSettings.setOptionFloatValue(this.options, this.options.denormalizeValue(this.sliderValue));
-            this.displayString = I18n.format(this.options.getTranslation()) + ": " + mc.gameSettings.getKeyBinding(this.options);
+            this.displayString = getDisplayString();
             this.dragging = true;
             return true;
         }

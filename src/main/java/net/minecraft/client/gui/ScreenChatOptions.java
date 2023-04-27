@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import fz.frazionz.client.gui.GuiFzBaseScreen;
 import fz.frazionz.client.gui.buttons.GuiFzOptionButton;
-import fz.frazionz.client.gui.buttons.GuiFzSlider;
+import fz.frazionz.client.gui.buttons.GuiFzOptionSlider;
 import fz.frazionz.client.gui.buttons.GuiHoverButton;
 import net.minecraft.client.gui.chat.NarratorChatListener;
 import net.minecraft.client.resources.I18n;
@@ -36,7 +36,7 @@ public class ScreenChatOptions extends GuiFzBaseScreen
         {
             if (gamesettings$options.isFloat())
             {
-            	this.buttonList.add(new GuiFzSlider(gamesettings$options.getOrdinal(), this.width/2 - 155 + i % 2 * 160, this.height/2 - 82 + 24 * (i >> 1), gamesettings$options));
+            	this.buttonList.add(new GuiFzOptionSlider(gamesettings$options.getOrdinal(), this.width/2 - 155 + i % 2 * 160, this.height/2 - 82 + 24 * (i >> 1), gamesettings$options));
             }
             else
             {

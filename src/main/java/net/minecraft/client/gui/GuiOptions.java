@@ -42,7 +42,7 @@ public class GuiOptions extends GuiFzBaseScreen
         {
             if (gamesettings$options.isFloat())
             {
-                this.buttonList.add(new GuiFzSlider(gamesettings$options.getOrdinal(), this.width / 2 - 155, this.height/2 - 82, gamesettings$options));
+                this.buttonList.add(new GuiFzOptionSlider(gamesettings$options.getOrdinal(), this.width / 2 - 155, this.height/2 - 82, gamesettings$options));
             }
             else
             {
