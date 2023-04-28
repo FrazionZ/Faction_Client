@@ -3,6 +3,7 @@ package net.minecraft.client.gui;
 import java.io.IOException;
 import java.util.Random;
 
+import fz.frazionz.client.gui.buttons.GuiHoverButton;
 import fz.frazionz.client.gui.faction.BlasonCreatorGUI;
 
 import fz.frazionz.client.gui.GuiModsConfig;

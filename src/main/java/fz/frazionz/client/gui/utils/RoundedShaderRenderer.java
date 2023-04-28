@@ -24,7 +24,7 @@ public class RoundedShaderRenderer {
             program = glCreateProgram();
             int fragID, vertexID;
             try {
-                fragID = createShader(mc.getResourceManager().getResource(new ResourceLocation("shader/rounded.frag")).getInputStream(), GL_FRAGMENT_SHADER);
+                fragID = createShader(mc.getResourceManager().getResource(new ResourceLocation("shader/rounded_2.frag")).getInputStream(), GL_FRAGMENT_SHADER);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -93,26 +93,30 @@ public class RoundedShaderRenderer {
         getInstance().load();
 
         ScaledResolution sr = new ScaledResolution(Minecraft.getMinecraft());
-        getInstance().setUniformFloat("loc", x * sr.getScaleFactor(),
-                (Minecraft.getMinecraft().displayHeight - (height * sr.getScaleFactor())) - (y * sr.getScaleFactor()));
         getInstance().setUniformFloat("size", width * sr.getScaleFactor(), height * sr.getScaleFactor());
         getInstance().setUniformFloat("radius", radius * sr.getScaleFactor());
+        //getInstance().setUniformFloat("iResolution", Minecraft.getMinecraft().displayWidth, Minecraft.getMinecraft().displayHeight);
+        getInstance().setUniformFloat("iTime", System.currentTimeMillis()/1000.0f);
         
         int r = (color & 0xFF0000) >> 16;
         int g = (color & 0xFF00) >> 8;
         int b = (color & 0xFF);
         
-        getInstance().setUniformFloat("color", r/255f, g/255f, b/255f, 1.0f);
+        //getInstance().setUniformFloat("color", r/255f, g/255f, b/255f, 1.0f);
 
         glBegin(GL_QUADS);
         glTexCoord2f(0, 0);
         glVertex2f(x, y);
+
         glTexCoord2f(0, 1);
         glVertex2f(x, y + height);
+
         glTexCoord2f(1, 1);
         glVertex2f(x + width, y + height);
+
         glTexCoord2f(1, 0);
         glVertex2f(x + width, y);
+
         glEnd();
         getInstance().unload();
     }
