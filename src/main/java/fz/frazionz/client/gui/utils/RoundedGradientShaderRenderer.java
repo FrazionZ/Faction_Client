@@ -122,6 +122,28 @@ public class RoundedGradientShaderRenderer {
         glTexCoord2f(1, 0);
         glVertex2f(x + width, y);
 
+        /*
+        glBegin(GL_POLYGON);
+
+        glTexCoord2f(0, 0.5f);
+        glVertex2f(x, y + height/2);
+
+        glTexCoord2f(0, 1);
+        glVertex2f(x + width/4, y + height);
+
+        glTexCoord2f(1, 1);
+        glVertex2f(x + width/4*3, y + height);
+
+        glTexCoord2f(1, 0.5f);
+        glVertex2f(x + width, y + height/2);
+
+        glTexCoord2f(1, 0);
+        glVertex2f(x + width/4*3, y);
+
+        glTexCoord2f(0, 0);
+        glVertex2f(x + width/4, y);
+         */
+
         glEnd();
         getInstance().unload();
     }

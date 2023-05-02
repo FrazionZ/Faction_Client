@@ -87,9 +87,8 @@ public class GuiMainMenu extends GuiScreen
     
     private Random rand = new Random();
     
-    private static final ResourceLocation BACKGROUND_TEXTURE  = new ResourceLocation("textures/gui/title/background/fz_background.png");
-    private static final ResourceLocation MINECRAFT_TITLE_TEXTURES = new ResourceLocation("textures/gui/title/background/fz_logo.png");
-    private static final ResourceLocation INTERFACE_BACKGROUND_FZ = new ResourceLocation("textures/gui/frazionz/interface_background.png");
+    private static final ResourceLocation BACKGROUND_TEXTURE  = new ResourceLocation("frazionz", "textures/gui/main_menu/header.png");
+    private static final ResourceLocation FZ_LOGO = new ResourceLocation("frazionz", "textures/gui/logo.png");
     //private static DynamicTexture AVATAR_HEAD;
     
     /** An array of all the paths to the panorama pictures. */
@@ -176,7 +175,7 @@ public class GuiMainMenu extends GuiScreen
      */
     public void initGui()
     {
-    	this.menuWidth = 220;
+    	this.menuWidth = 200;
     	this.menuHeight = this.height;
 
         FzClient.getInstance().getDiscordRP().update("Menu Principal", "www.frazionz.net");
@@ -225,8 +224,6 @@ public class GuiMainMenu extends GuiScreen
         switch(button.id)
         {
  	       case 1:
-               //this.mc.displayGuiScreen(new GuiConnecting(this, mc, "localhost", 25565));
-               //this.mc.displayGuiScreen(new GuiConnecting(this, mc, "185.157.246.85", 25587));
                this.mc.displayGuiScreen(new GuiConnecting(this, mc, "play.frazionz.net", 25565));
                break;
            case 2:
@@ -239,12 +236,6 @@ public class GuiMainMenu extends GuiScreen
  	    	   this.mc.shutdown();
  	    	   break;
         }
-    }
-
-    private void switchToRealms()
-    {
-        RealmsBridge realmsbridge = new RealmsBridge();
-        realmsbridge.switchToRealms(this);
     }
 
     public void confirmClicked(boolean result, int id)
@@ -288,13 +279,18 @@ public class GuiMainMenu extends GuiScreen
         mc.getTextureManager().bindTexture(BACKGROUND_TEXTURE);
     	GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         Gui.drawScaledCustomSizeModalRect(0, 0, 0, 0, 1, 1, this.width, this.height, 1, 1);
-        GL11.glEnable(GL11.GL_BLEND);
         
-        String info = "FrazionZ n'est pas affilié à Mojang";
-        this.drawString(this.fontRenderer, info, this.width - this.fontRenderer.getStringWidth(info) - 1, this.height - 10, -1);
+        //String info = "FrazionZ n'est pas affilié à Mojang";
+        //this.drawString(this.fontRenderer, info, this.width - this.fontRenderer.getStringWidth(info) - 1, this.height - 10, -1);
+        //this.widthCopyright = this.fontRenderer.getStringWidth("Copyright Mojang AB. Do not distribute!");
 
-        this.widthCopyright = this.fontRenderer.getStringWidth("Copyright Mojang AB. Do not distribute!");
-        
+        mc.getTextureManager().bindTexture(FZ_LOGO);
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+        GL11.glEnable(GL11.GL_BLEND);
+        ScaledResolution sr = new ScaledResolution(Minecraft.getMinecraft());
+        float size = 128.0F;
+        Gui.drawModalRectWithCustomSizedTexture(menuWidth + (width-menuWidth)/2-(int)(size/2), height/2-(int)(size/2), 0, 0, (int)size, (int)size, size, size);
+
         // Money 
         
         /*
@@ -333,24 +329,7 @@ public class GuiMainMenu extends GuiScreen
     
     private void drawSideBar()
     {
-    	this.drawRect(0, 0, this.menuWidth, this.menuHeight, this.BLACK_4);
-    	
-        GlStateManager.pushMatrix();
-        
-        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-        GlStateManager.enableBlend();
-        GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-        GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-        
-        this.mc.getTextureManager().bindTexture(INTERFACE_BACKGROUND_2);
-        
-        int midDecorationBarHeight = (this.height - 40)/2;
-        
-        GlStateManager.translate(230.0F, 0.0F, 0.0F);
-		GlStateManager.rotate(90F, 0.0F, 0.0F, 1.0F);
-        drawModalRectWithCustomSizedTexture(20, 0, 0.0F, 0.0F, midDecorationBarHeight, 26, 512.0F, 512.0F);
-        drawModalRectWithCustomSizedTexture(20+midDecorationBarHeight, 0, 394-midDecorationBarHeight, 0.0F, midDecorationBarHeight, 26, 512.0F, 512.0F);
-        GlStateManager.popMatrix();
+    	drawRect(0, 0, this.menuWidth, this.menuHeight, BLACK_4);
     }
 
     /**
