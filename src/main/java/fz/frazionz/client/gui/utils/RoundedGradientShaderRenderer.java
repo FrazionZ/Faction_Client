@@ -26,7 +26,7 @@ public class RoundedGradientShaderRenderer {
             program = glCreateProgram();
             int fragID, vertexID;
             try {
-                fragID = createShader(mc.getResourceManager().getResource(new ResourceLocation("shader/test.frag")).getInputStream(), GL_FRAGMENT_SHADER);
+                fragID = createShader(mc.getResourceManager().getResource(new ResourceLocation("shader/rounded_gradient.frag")).getInputStream(), GL_FRAGMENT_SHADER);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
