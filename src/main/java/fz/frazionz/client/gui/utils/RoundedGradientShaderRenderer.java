@@ -4,27 +4,29 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.resources.ResourceLocation;
-
 import org.lwjgl.opengl.GL11;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL20.*;
 
-public class RoundedShaderRenderer {
+public class RoundedGradientShaderRenderer {
 
     static Minecraft mc = Minecraft.getMinecraft();
 
-    static RoundedShaderRenderer INSTANCE;
+    static RoundedGradientShaderRenderer INSTANCE;
     static int program;
 
-    public static RoundedShaderRenderer getInstance() {
+    public static RoundedGradientShaderRenderer getInstance() {
         if (INSTANCE == null) {
             program = glCreateProgram();
             int fragID, vertexID;
             try {
-                fragID = createShader(mc.getResourceManager().getResource(new ResourceLocation("shader/rounded.frag")).getInputStream(), GL_FRAGMENT_SHADER);
+                fragID = createShader(mc.getResourceManager().getResource(new ResourceLocation("shader/test.frag")).getInputStream(), GL_FRAGMENT_SHADER);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -45,7 +47,7 @@ public class RoundedShaderRenderer {
             if (status == 0) {
                 throw new IllegalStateException("Shader failed to link!");
             }
-            INSTANCE = new RoundedShaderRenderer();
+            INSTANCE = new RoundedGradientShaderRenderer();
         }
         return INSTANCE;
     }
@@ -86,7 +88,7 @@ public class RoundedShaderRenderer {
         return stringBuilder.toString();
     }
 
-    public void drawRoundRect(float x, float y, float width, float height, float radius, int color) {
+    public void drawRoundRect(float x, float y, float width, float height, float radius, int startColor, int endColor) {
         GlStateManager.resetColor();
         GlStateManager.enableBlend();
         GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
@@ -95,11 +97,17 @@ public class RoundedShaderRenderer {
         ScaledResolution sr = new ScaledResolution(Minecraft.getMinecraft());
         getInstance().setUniformFloat("size", width * sr.getScaleFactor(), height * sr.getScaleFactor());
         getInstance().setUniformFloat("radius", radius * sr.getScaleFactor());
+        getInstance().setUniformFloat("position", x * sr.getScaleFactor(), y * sr.getScaleFactor());
 
-        int r = (color & 0xFF0000) >> 16;
-        int g = (color & 0xFF00) >> 8;
-        int b = (color & 0xFF);
-        getInstance().setUniformFloat("color", r/255f, g/255f, b/255f, 1.0f);
+        int r = (startColor & 0xFF0000) >> 16;
+        int g = (startColor & 0xFF00) >> 8;
+        int b = (startColor & 0xFF);
+        getInstance().setUniformFloat("startColor", r/255.0f, g/255.0f, b/255.0f);
+
+        r = (endColor & 0xFF0000) >> 16;
+        g = (endColor & 0xFF00) >> 8;
+        b = (endColor & 0xFF);
+        getInstance().setUniformFloat("endColor", r/255.0f, g/255.0f, b/255.0f);
 
         glBegin(GL_QUADS);
         glTexCoord2f(0, 0);
