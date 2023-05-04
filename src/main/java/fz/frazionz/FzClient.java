@@ -29,6 +29,7 @@ public class FzClient {
 	}
 	
 	public void init() {
+		preInit();
 		if(Minecraft.getMinecraft().getSession().getDiscordRPC())
 			discordRP.start();
 		
@@ -36,8 +37,14 @@ public class FzClient {
 
 		this.factionProfile = HTTPFunctions.getFactionProfile();
 	}
+
+	public void preInit() {
+
+	}
 	
 	public void postMinecraftInit() {
+		this.ttfFontRenderers.put(32, new TTFFontRenderer(new ResourceLocation("font/font.ttf"), 32));
+		this.ttfFontRenderers.put(28, new TTFFontRenderer(new ResourceLocation("font/font.ttf"), 28));
 		this.ttfFontRenderers.put(24, new TTFFontRenderer(new ResourceLocation("font/font.ttf"), 24));
 		this.ttfFontRenderers.put(20, new TTFFontRenderer(new ResourceLocation("font/font.ttf"), 20));
 		this.ttfFontRenderers.put(16, new TTFFontRenderer(new ResourceLocation("font/font.ttf"), 16));

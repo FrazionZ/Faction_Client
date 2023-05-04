@@ -12,6 +12,11 @@ import java.net.URL;
 
 import javax.imageio.ImageIO;
 
+import fz.frazionz.api.HTTPFunctions;
+import fz.frazionz.api.gsonObj.UserSkinsInfo;
+import fz.frazionz.utils.FzSkinUtils;
+import net.minecraft.client.entity.AbstractClientPlayer;
+import net.minecraft.client.resources.DefaultPlayerSkin;
 import org.lwjgl.opengl.GL11;
 
 import fz.frazionz.TTFFontRenderer;
@@ -607,7 +612,7 @@ public class Gui
      * Draws a rectangle with a vertical gradient between the specified colors (ARGB format). Args : x1, y1, x2, y2,
      * topColor, bottomColor
      */
-    protected static void drawGradientRect(int left, int top, int right, int bottom, int startColor, int endColor)
+    public static void drawGradientRect(int left, int top, int right, int bottom, int startColor, int endColor)
     {
         float f = (float)(startColor >> 24 & 255) / 255.0F;
         float f1 = (float)(startColor >> 16 & 255) / 255.0F;
@@ -818,7 +823,7 @@ public class Gui
      * Draws a rectangle with a vertical gradient between the specified colors (ARGB format). Args : x1, y1, x2, y2,
      * topColor, bottomColor
      */
-    protected static void drawGradientRectLeftToRight(int left, int top, int right, int bottom, int startColor, int endColor)
+    public static void drawGradientRectLeftToRight(int left, int top, int right, int bottom, int startColor, int endColor)
     {
         float f = (float)(startColor >> 24 & 255) / 255.0F;
         float f1 = (float)(startColor >> 16 & 255) / 255.0F;
@@ -845,5 +850,28 @@ public class Gui
         GlStateManager.disableBlend();
         GlStateManager.enableAlpha();
         GlStateManager.enableTexture2D();
+    }
+
+    public static void drawGradientRect(int x, int y, int width, int height, int startColor, int endColor, boolean isHorizontal) {
+        GL11.glShadeModel(GL11.GL_SMOOTH);
+        GL11.glDisable(GL11.GL_TEXTURE_2D);
+        GL11.glBegin(GL11.GL_QUADS);
+        GlStateManager.color(startColor);
+        if(isHorizontal) {
+            GL11.glVertex2f(x, y);
+            GL11.glVertex2f(x, y + height);
+            GlStateManager.color(endColor);
+            GL11.glVertex2f(x + width, y + height);
+            GL11.glVertex2f(x + width, y);
+        } else {
+            GL11.glVertex2f(x, y);
+            GL11.glVertex2f(x + width, y);
+            GlStateManager.color(endColor);
+            GL11.glVertex2f(x + width, y + height);
+            GL11.glVertex2f(x, y + height);
+        }
+        GL11.glEnd();
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
+        GL11.glShadeModel(GL11.GL_FLAT);
     }
 }
