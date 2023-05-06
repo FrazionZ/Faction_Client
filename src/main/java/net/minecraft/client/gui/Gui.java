@@ -50,6 +50,9 @@ public class Gui
 
     public static final ResourceLocation STAT_ICONS = new ResourceLocation("textures/gui/container/stats_icons.png");
     public static final ResourceLocation ICONS = new ResourceLocation("textures/gui/icons.png");
+
+    public static final ResourceLocation FZ_LOGO_X256 = new ResourceLocation("frazionz", "textures/gui/logo_x256.png");
+    public static final ResourceLocation FZ_LOGO_X128 = new ResourceLocation("frazionz", "textures/gui/logo_x128.png");
     protected static float zLevel;
 
     /**

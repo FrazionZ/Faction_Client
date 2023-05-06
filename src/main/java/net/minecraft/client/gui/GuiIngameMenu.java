@@ -8,11 +8,17 @@ import fz.frazionz.client.gui.faction.BlasonCreatorGUI;
 
 import fz.frazionz.client.gui.GuiModsConfig;
 import fz.frazionz.client.gui.buttons.GuiMenuButton;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.achievement.GuiStats;
 import net.minecraft.client.gui.advancements.GuiScreenAdvancements;
 import net.minecraft.client.multiplayer.WorldClient;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.resources.ResourceLocation;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL30;
 
 public class GuiIngameMenu extends GuiScreen
 {
@@ -27,14 +33,19 @@ public class GuiIngameMenu extends GuiScreen
      */
     public void initGui()
     {
-    	this.menuWidth = 220;
+    	this.menuWidth = 200;
     	this.menuHeight = this.height;
 
         this.buttonList.clear();
         
         this.addMenuButtons(160, 28, 8);
     }
-    
+
+    @Override
+    public void onGuiClosed() {
+        super.onGuiClosed();
+    }
+
     private void addMenuButtons(int width , int height, int gap)
     {
     	int menuPadding = 20;
@@ -105,28 +116,22 @@ public class GuiIngameMenu extends GuiScreen
     {
         this.drawDefaultBackground();
 
+        mc.getTextureManager().bindTexture(FZ_LOGO_X128);
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+        GL11.glEnable(GL11.GL_BLEND);
+        ScaledResolution sr = new ScaledResolution(Minecraft.getMinecraft());
+
+        int size = 64;
+        Gui.drawModalRectWithCustomSizedTexture(width-size-24, height-size-24, 0, 0, size, size, size, size);
+
+
         drawSideBar();
+
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
-    
+
     private void drawSideBar()
     {
-    	drawRect(0, 0, this.menuWidth, this.menuHeight, BLACK_4);
-    	
-        GlStateManager.pushMatrix();
-        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-        GlStateManager.enableBlend();
-        GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-        GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-        
-        this.mc.getTextureManager().bindTexture(INTERFACE_BACKGROUND_2);
-        
-        int midDecorationBarHeight = (this.height - 40)/2;
-        
-        GlStateManager.translate(230.0F, 0.0F, 0.0F);
-		GlStateManager.rotate(90F, 0.0F, 0.0F, 1.0F);
-        drawModalRectWithCustomSizedTexture(20, 0, 0.0F, 0.0F, midDecorationBarHeight, 26, 512.0F, 512.0F);
-        drawModalRectWithCustomSizedTexture(20 + midDecorationBarHeight, 0, 394 - midDecorationBarHeight, 0.0F, midDecorationBarHeight, 26, 512.0F, 512.0F);
-        GlStateManager.popMatrix();
+        drawRect(0, 0, this.menuWidth, this.menuHeight, BLACK_4);
     }
 }

@@ -5,9 +5,6 @@ import java.io.IOException;
 import java.util.Random;
 
 import fz.frazionz.TTFFontRenderer;
-import fz.frazionz.api.HTTPFunctions;
-import fz.frazionz.api.gsonObj.UserSkinsInfo;
-import fz.frazionz.utils.FzSkinUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -90,8 +87,7 @@ public class GuiMainMenu extends GuiScreen
     private Random rand = new Random();
     
     private static final ResourceLocation BACKGROUND_TEXTURE  = new ResourceLocation("frazionz", "textures/gui/main_menu/header.png");
-    private static final ResourceLocation FZ_LOGO = new ResourceLocation("frazionz", "textures/gui/logo.png");
-    //private static DynamicTexture AVATAR_HEAD;
+
     
     /** An array of all the paths to the panorama pictures. */
     private static final ResourceLocation[] TITLE_PANORAMA_PATHS = new ResourceLocation[] {new ResourceLocation("textures/gui/title/background/panorama_0.png"), new ResourceLocation("textures/gui/title/background/panorama_1.png"), new ResourceLocation("textures/gui/title/background/panorama_2.png"), new ResourceLocation("textures/gui/title/background/panorama_3.png"), new ResourceLocation("textures/gui/title/background/panorama_4.png"), new ResourceLocation("textures/gui/title/background/panorama_5.png")};
@@ -310,7 +306,7 @@ public class GuiMainMenu extends GuiScreen
         //this.drawString(this.fontRenderer, info, this.width - this.fontRenderer.getStringWidth(info) - 1, this.height - 10, -1);
         //this.widthCopyright = this.fontRenderer.getStringWidth("Copyright Mojang AB. Do not distribute!");
 
-        mc.getTextureManager().bindTexture(FZ_LOGO);
+        mc.getTextureManager().bindTexture(FZ_LOGO_X256);
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glEnable(GL11.GL_BLEND);
         ScaledResolution sr = new ScaledResolution(Minecraft.getMinecraft());
