@@ -27,6 +27,7 @@ import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
 
+import fz.frazionz.event.impl.ClientTickEvent;
 import fz.frazionz.event.impl.OpenInventoryEvent;
 import org.apache.commons.io.Charsets;
 import org.apache.commons.io.IOUtils;
@@ -2095,6 +2096,8 @@ public class Minecraft implements IThreadListener, ISnooperInfo
             this.profiler.endStartSection("pendingConnection");
             this.networkManager.processReceivedPackets();
         }
+
+        new ClientTickEvent().call();
 
         this.profiler.endSection();
         this.systemTime = getSystemTime();
