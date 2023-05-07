@@ -1,7 +1,20 @@
-# MCP Source FrazionZ
+# MCP Source FrazionZ  
 
-Ceci sont les sources de FrazionZ. Si tu les as. 
-Alors que tu n'est pas Florent ou Nico, on t'encule.
+## How to Run  
 
-Cordialement,  
-Nicolas.
+Choose Module: `FrazionZ-Gradle.main`
+
+Launch Class: `fz.frazionz.LaunchClient`
+
+Add JVM Options:
+- -Djava.library.path=../libraries/1.12-natives
+
+Add Program Arguments:
+- --username=NiixoZ
+- --version=1.12.2
+- --accessToken=YOUR_ACCESS_TOKEN
+- --uuid=YOUR_UUID 
+- --assetIndex=1.12
+
+
+Modify Working Directory: `PATH\PROJECT_NAME\run`

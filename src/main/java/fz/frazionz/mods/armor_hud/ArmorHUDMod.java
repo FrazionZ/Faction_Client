@@ -1,5 +1,8 @@
 package fz.frazionz.mods.armor_hud;
 
+import fz.frazionz.event.EventManager;
+import fz.frazionz.event.EventTarget;
+import fz.frazionz.event.impl.OpenInventoryEvent;
 import fz.frazionz.mods.mod_hud.ScreenPosition;
 import fz.frazionz.mods.ModDraggable;
 import net.minecraft.client.Minecraft;
