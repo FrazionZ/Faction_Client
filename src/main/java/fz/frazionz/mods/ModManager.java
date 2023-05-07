@@ -1,5 +1,6 @@
 package fz.frazionz.mods;
 
+import fz.frazionz.mods.blur.Blur;
 import fz.frazionz.mods.mod_hud.HUDManager;
 import fz.frazionz.mods.mod_hud.IRenderer;
 import fz.frazionz.mods.armor_hud.ArmorHUDMod;
@@ -57,6 +58,7 @@ public class ModManager {
         registerMod(new KeystrokesMod());
         registerMod(new PotionHUDMod());
         registerMod(new ToggleSprintMod());
+        registerMod(new Blur());
 
         for (Mod mod : mods) {
             if (modsConfig.has(mod.getName())) {

@@ -17,7 +17,9 @@ import java.util.Set;
 
 import fz.frazionz.api.HTTPFunctions;
 import fz.frazionz.api.gsonObj.UserSkinsInfo;
+import fz.frazionz.event.impl.GuiCloseEvent;
 import fz.frazionz.utils.FzSkinUtils;
+import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.resources.ResourceLocation;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;

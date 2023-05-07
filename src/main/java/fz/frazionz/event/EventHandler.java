@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface EventTarget {
+public @interface EventHandler {
 	
 	byte value() default EventPriority.THIRD;
 

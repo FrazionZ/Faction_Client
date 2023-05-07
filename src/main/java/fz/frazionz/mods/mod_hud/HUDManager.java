@@ -7,7 +7,7 @@ import com.google.common.collect.Sets;
 
 import fz.frazionz.client.gui.hud.HUDConfigScreen;
 import fz.frazionz.event.EventManager;
-import fz.frazionz.event.EventTarget;
+import fz.frazionz.event.EventHandler;
 import fz.frazionz.event.impl.RenderEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiChat;
@@ -54,7 +54,7 @@ public class HUDManager {
 		mc.displayGuiScreen(new HUDConfigScreen(this));
 	}
 	
-	@EventTarget
+	@EventHandler
 	public void onRender(RenderEvent e) {
 		if((!this.mc.gameSettings.hideGUI && mc.currentScreen == null) || mc.currentScreen instanceof GuiChat) {
 			
