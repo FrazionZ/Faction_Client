@@ -87,7 +87,6 @@ public class Blur extends Mod {
         if (event.getPhase() == RenderTickEvent.Phase.END && Minecraft.getMinecraft().currentScreen != null && Minecraft.getMinecraft().entityRenderer.isShaderActive()) {
             ShaderGroup sg = Minecraft.getMinecraft().entityRenderer.getShaderGroup();
             try {
-                @SuppressWarnings("unchecked")
                 List<Shader> shaders = sg.getListShaders();
                 for (Shader s : shaders) {
                     ShaderUniform su1 = s.getShaderManager().getShaderUniform("Radius");

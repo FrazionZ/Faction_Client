@@ -23,9 +23,13 @@ public class ArmorHUDMod extends ModDraggable
 
     @Override
     public int getHeight() {
+        int size = 0;
         if(!mc.player.getHeldItemMainhand().isEmpty())
-            return 100;
-        return 80;
+            size += 20;
+        for(ItemStack stack : mc.player.inventory.armorInventory)
+            if(!stack.isEmpty())
+                size += 20;
+        return size;
     }
 
     @Override
@@ -39,9 +43,11 @@ public class ArmorHUDMod extends ModDraggable
         int y = pos.getAbsoluteY();
         for(int i = 3; i >= 0; i--) {
             ItemStack stack = mc.player.inventory.armorInventory.get(i);
-            mc.getRenderItem().renderItemAndEffectIntoGUI(stack, pos.getAbsoluteX()+2, y+2);
-            mc.getRenderItem().renderItemOverlays(mc.fontRenderer, stack, pos.getAbsoluteX()+2, y+2);
-            y += 20;
+            if(!stack.isEmpty()) {
+                mc.getRenderItem().renderItemAndEffectIntoGUI(stack, pos.getAbsoluteX() + 2, y + 2);
+                mc.getRenderItem().renderItemOverlays(mc.fontRenderer, stack, pos.getAbsoluteX() + 2, y + 2);
+                y += 20;
+            }
         }
         if(!mc.player.getHeldItemMainhand().isEmpty()) {
             mc.getRenderItem().renderItemAndEffectIntoGUI(mc.player.getHeldItemMainhand(), pos.getAbsoluteX() + 2, y + 2);
