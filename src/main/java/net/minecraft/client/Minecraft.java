@@ -558,7 +558,6 @@ public class Minecraft implements IThreadListener, ISnooperInfo
         this.creativeSettings = new CreativeSettings(this, this.gameDir);
         this.defaultResourcePacks.add(this.defaultResourcePack);
         this.defaultResourcePacks.add(this.antiCheatResourcePack);
-        this.defaultResourcePacks.add(Blur.dummyPack);
         this.startTimerHackThread();
         if (this.gameSettings.overrideHeight > 0 && this.gameSettings.overrideWidth > 0)
         {

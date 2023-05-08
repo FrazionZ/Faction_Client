@@ -21,6 +21,8 @@ import net.minecraft.client.resources.data.PackMetadataSection;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.text.TextComponentString;
 
+import javax.annotation.Nullable;
+
 public class ShaderResourcePack implements IResourcePack, IResourceManagerReloadListener {
 
     protected boolean validPath(ResourceLocation location) {
@@ -29,11 +31,11 @@ public class ShaderResourcePack implements IResourcePack, IResourceManagerReload
 
     private final Map<ResourceLocation, String> loadedData = new HashMap<>();
 
-    @Override
-    public InputStream getInputStream(ResourceLocation location) throws IOException {
+    public InputStream getInputStream(ResourceLocation location) throws IOException
+    {
         if (validPath(location)) {
             String s = loadedData.computeIfAbsent(location, loc -> {
-                InputStream in = Blur.class.getResourceAsStream("/" + location.getPath());
+                InputStream in = Blur.class.getResourceAsStream("mods/blur/" + location.getPath());
                 StringBuilder data = new StringBuilder();
                 Scanner scan = new Scanner(in);
                 try {
@@ -51,31 +53,31 @@ public class ShaderResourcePack implements IResourcePack, IResourceManagerReload
         throw new FileNotFoundException(location.toString());
     }
 
-    @Override
     public boolean resourceExists(ResourceLocation location) {
-        return validPath(location) && Blur.class.getResource("/" + location.getPath()) != null;
+        if(location.getPath().startsWith("shaders/"))
+            System.out.println(validPath(location));
+        return validPath(location) && Blur.class.getResource("mods/blur/" + location.getPath()) != null;
     }
 
-    @Override
-    public Set<String> getResourceDomains() {
-        return ImmutableSet.of("minecraft");
+    public Set<String> getResourceDomains()
+    {
+        return ImmutableSet.<String>of("minecraft");
     }
 
-    @SuppressWarnings({ "unchecked", "null" })
-    @Override
-    public <T extends IMetadataSection> T getPackMetadata(MetadataSerializer metadataSerializer, String metadataSectionName) throws IOException {
+    @Nullable
+    public <T extends IMetadataSection> T getPackMetadata(MetadataSerializer metadataSerializer, String metadataSectionName) throws IOException
+    {
         if ("pack".equals(metadataSectionName)) {
             return (T) new PackMetadataSection(new TextComponentString("Blur's default shaders"), 3);
         }
         return null;
     }
 
-    @Override
-    public BufferedImage getPackImage() throws IOException {
-        throw new FileNotFoundException("pack.png");
+    public BufferedImage getPackImage() throws IOException
+    {
+        throw new FileNotFoundException();
     }
 
-    @Override
     public String getPackName() {
         return "Blur dummy resource pack";
     }
