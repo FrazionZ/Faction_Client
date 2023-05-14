@@ -42,6 +42,9 @@ public class Gui
 
     public static final int GRADIENT_BUTTON_1 = 0xFFF6A92F;
     public static final int GRADIENT_BUTTON_2 = 0xFFF16B1F;
+
+    public static final int GRADIENT_BUTTON_1_INACTIVE = 0xFFB68840;
+    public static final int GRADIENT_BUTTON_2_INACTIVE = 0xFFBC6534;
 	
     public static final ResourceLocation OPTIONS_BACKGROUND = new ResourceLocation("textures/gui/options_background.png");
     public static final ResourceLocation FZ_OPTIONS_BACKGROUND = new ResourceLocation("textures/gui/title/background/fz_background.png");

@@ -10,7 +10,7 @@ public class GuiHoverButton extends GuiFzButton {
 
     public GuiHoverButton(int buttonId, int x, int y, String displayString)
     {
-        super(buttonId, x, y, 200, 20, displayString);
+        super(buttonId, x, y, 200, 24, displayString);
     }
     public GuiHoverButton(int buttonId, int x, int y, int width, int height, String displayString)
     {
