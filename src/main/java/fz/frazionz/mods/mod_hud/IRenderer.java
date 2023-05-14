@@ -4,6 +4,9 @@ public interface IRenderer extends IRenderConfig {
 
 	int getWidth();
 	int getHeight();
+
+	int getDummyWidth();
+	int getDummyHeight();
 	
 	void render(ScreenPosition pos);
 	

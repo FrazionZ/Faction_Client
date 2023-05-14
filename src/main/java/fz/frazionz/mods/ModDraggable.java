@@ -55,6 +55,16 @@ public abstract class ModDraggable extends Mod implements IRenderer
     }
 
     @Override
+    public int getDummyHeight() {
+        return getHeight();
+    }
+
+    @Override
+    public int getDummyWidth() {
+        return getWidth();
+    }
+
+    @Override
     public JSONObject getJson() {
         JSONObject json = super.getJson();
         json.put("posX", pos.getAbsoluteX());

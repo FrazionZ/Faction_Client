@@ -58,13 +58,19 @@ public class ArmorHUDMod extends ModDraggable
         GL11.glPopMatrix();
     }
 
+    public int getDummyWidth() {
+        return 20;
+    }
+
+    public int getDummyHeight() {
+        return 100;
+    }
+
     @Override
     public void renderDummy(ScreenPosition pos) {
         GL11.glPushMatrix();
 
-        int width = 20;
-        int height = 100;
-        Gui.drawRect(pos.getAbsoluteX(), pos.getAbsoluteY(), pos.getAbsoluteX() + width, pos.getAbsoluteY() + height, new Color(0, 0, 0, 150).getRGB());
+        Gui.drawRect(pos.getAbsoluteX(), pos.getAbsoluteY(), pos.getAbsoluteX() + getDummyWidth(), pos.getAbsoluteY() + getDummyHeight(), new Color(0, 0, 0, 150).getRGB());
 
         RenderHelper.enableGUIStandardItemLighting();
         mc.getRenderItem().renderItemAndEffectIntoGUI(new ItemStack(Items.IRON_HELMET), pos.getAbsoluteX()+2, pos.getAbsoluteY()+2);

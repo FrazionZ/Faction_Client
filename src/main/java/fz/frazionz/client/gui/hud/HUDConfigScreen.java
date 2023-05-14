@@ -175,8 +175,8 @@ public class HUDConfigScreen extends GuiScreen {
         int screenWidth = res.getScaledWidth();
         int screenHeight = res.getScaledHeight();
 
-        int absoluteX = Math.max(0, Math.min(pos.getAbsoluteX(), Math.max(screenWidth - renderer.getWidth()-1, 0)));
-        int absoluteY = Math.max(0, Math.min(pos.getAbsoluteY(), Math.max(screenHeight - renderer.getHeight()-1, 0)));
+        int absoluteX = Math.max(0, Math.min(pos.getAbsoluteX(), Math.max(screenWidth - renderer.getDummyWidth()-1, 0)));
+        int absoluteY = Math.max(0, Math.min(pos.getAbsoluteY(), Math.max(screenHeight - renderer.getDummyHeight()-1, 0)));
 
         pos.setAbsolute(absoluteX, absoluteY);
     }
@@ -219,8 +219,8 @@ public class HUDConfigScreen extends GuiScreen {
             int absoluteX = pos.getAbsoluteX();
             int absoluteY = pos.getAbsoluteY();
 
-            if (mouseX >= absoluteX && mouseX <= absoluteX + renderer.getWidth()) {
-                if (mouseY >= absoluteY && mouseY <= absoluteY + renderer.getHeight()) {
+            if (mouseX >= absoluteX && mouseX <= absoluteX + renderer.getDummyWidth()) {
+                if (mouseY >= absoluteY && mouseY <= absoluteY + renderer.getDummyHeight()) {
                     return true;
                 }
             }
