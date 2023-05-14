@@ -124,13 +124,13 @@ public class GuiWorldSelection extends GuiScreen
      */
     public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
-    	this.drawRect(0, 0, width, height, BLACK_3);
+    	drawRect(0, 0, width, height, BLACK_4);
         
         this.worldVersTooltip = null;
         this.selectionList.drawScreen(mouseX, mouseY, partialTicks);
         
-        this.drawRect(0, 0, this.width, this.height/8, this.BLACK_4);
-	    this.drawRect(0, this.height - this.height/8, this.width, this.height, this.BLACK_4);
+        //this.drawRect(0, 0, this.width, 200, BLACK_4);
+	    //this.drawRect(0, this.height - 200, this.width, this.height, BLACK_4);
 	    
         TTFFontRenderer titleRenderer = FzClient.getInstance().getTTFFontRenderers().get(24);
         int titleSize = titleRenderer.getWidth(this.title);
