@@ -692,7 +692,7 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
      */
     public void drawBackground(int tint)
     {
-    	drawRect(0, 0, this.width, this.height, Colors.BLACK_3);
+    	drawRect(0, 0, this.width, this.height, Colors.BLACK_4);
     }
 
     /**
