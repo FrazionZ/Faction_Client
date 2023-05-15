@@ -1,6 +1,7 @@
 package fz.frazionz.client.gui.buttons;
 
 import fz.frazionz.FzClient;
+import fz.frazionz.client.gui.utils.RoundedGradientShaderRenderer;
 import fz.frazionz.client.gui.utils.RoundedShaderRenderer;
 import net.minecraft.client.Minecraft;
 
@@ -9,11 +10,16 @@ public class GuiHoverButton extends GuiFzButton {
 
     public GuiHoverButton(int buttonId, int x, int y, String displayString)
     {
-        super(buttonId, x, y, 200, 20, displayString);
+        super(buttonId, x, y, 200, 24, displayString);
     }
     public GuiHoverButton(int buttonId, int x, int y, int width, int height, String displayString)
     {
         super(buttonId, x, y, width, height, displayString);
+    }
+
+    @Override
+    protected int textColor() {
+        return 0xFF311903;
     }
 
     @Override
@@ -28,7 +34,7 @@ public class GuiHoverButton extends GuiFzButton {
                 hoveredValue -= 1;
             if(hoveredValue > 0)
                 RoundedShaderRenderer.getInstance().drawRoundRect(this.x - hoveredValue + 1, this.y - hoveredValue + 1, this.width+2*hoveredValue - 2, this.height + 2*hoveredValue - 2, 3.5f, hoverColor());
-            RoundedShaderRenderer.getInstance().drawRoundRect(this.x, this.y, this.width, this.height, 2, buttonColor());
+            RoundedGradientShaderRenderer.getInstance().drawRoundRect(this.x, this.y, this.width, this.height, 2, GRADIENT_BUTTON_1, GRADIENT_BUTTON_2);
             if(drawString())
                 FzClient.getInstance().getTTFFontRenderers().get(16).drawCenteredString(this.displayString, this.x + (this.width/2), this.y + (this.height / 2), textColor());
         }

@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import fz.frazionz.FzClient;
+import fz.frazionz.client.gui.buttons.GuiMenuButton;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiDisconnected;
@@ -132,7 +135,7 @@ public class GuiConnecting extends GuiScreen
     public void initGui()
     {
         this.buttonList.clear();
-        this.buttonList.add(new GuiButton(0, this.width / 2 - 100, this.height / 4 + 120 + 12, I18n.format("gui.cancel")));
+        this.buttonList.add(new GuiMenuButton(0, this.width / 2 - 80, this.height / 4 + 120 + 14, 160, 28, I18n.format("gui.cancel")));
     }
 
     /**
@@ -162,11 +165,11 @@ public class GuiConnecting extends GuiScreen
 
         if (this.networkManager == null)
         {
-            this.drawCenteredString(this.fontRenderer, I18n.format("connect.connecting"), this.width / 2, this.height / 2 - 50, 16777215);
+            FzClient.getInstance().getTTFFontRenderers().get(24).drawCenteredString(I18n.format("connect.connecting"), this.width / 2, this.height / 2 - 50, 16777215);
         }
         else
         {
-            this.drawCenteredString(this.fontRenderer, I18n.format("connect.authorizing"), this.width / 2, this.height / 2 - 50, 16777215);
+            FzClient.getInstance().getTTFFontRenderers().get(24).drawCenteredString(I18n.format("connect.authorizing"), this.width / 2, this.height / 2 - 50, 16777215);
         }
 
         super.drawScreen(mouseX, mouseY, partialTicks);

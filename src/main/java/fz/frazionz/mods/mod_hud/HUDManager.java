@@ -1,14 +1,14 @@
-package fz.frazionz.client.gui.hud;
+package fz.frazionz.mods.mod_hud;
 
 import java.util.Collection;
 import java.util.Set;
 
 import com.google.common.collect.Sets;
 
+import fz.frazionz.client.gui.hud.HUDConfigScreen;
 import fz.frazionz.event.EventManager;
-import fz.frazionz.event.EventTarget;
+import fz.frazionz.event.EventHandler;
 import fz.frazionz.event.impl.RenderEvent;
-import fz.frazionz.mods.ModInstances;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiChat;
 
@@ -54,7 +54,7 @@ public class HUDManager {
 		mc.displayGuiScreen(new HUDConfigScreen(this));
 	}
 	
-	@EventTarget
+	@EventHandler
 	public void onRender(RenderEvent e) {
 		if((!this.mc.gameSettings.hideGUI && mc.currentScreen == null) || mc.currentScreen instanceof GuiChat) {
 			
@@ -91,8 +91,6 @@ public class HUDManager {
 		HUDManager.clear();
 		HUDManager hudManager;
 		hudManager = HUDManager.getInstance();
-		ModInstances.register(hudManager);
-		
 	}
 	
 }

@@ -27,7 +27,7 @@ public class EventManager {
 	}
 	
 	private static boolean isMethodBad(final Method method) {
-		return method.getParameterTypes().length != 1 || !method.isAnnotationPresent(EventTarget.class);
+		return method.getParameterTypes().length != 1 || !method.isAnnotationPresent(EventHandler.class);
 	}
 	
 	private static boolean isMethodBad(final Method method, final Class<? extends Event> clazz) {
@@ -85,7 +85,7 @@ public class EventManager {
 		
 		final Class<?> clazz = method.getParameterTypes()[0];
 		
-		final EventData methodData = new EventData(o, method, method.getAnnotation(EventTarget.class).value());
+		final EventData methodData = new EventData(o, method, method.getAnnotation(EventHandler.class).value());
 		
 		if(!methodData.target.isAccessible()) {
 			methodData.target.setAccessible(true);

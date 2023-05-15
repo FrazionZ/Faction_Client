@@ -292,15 +292,10 @@ public class GameSettings
     public KeyBinding ofKeyBindZoom;
     private File optionsFileOF;
     private boolean needsResourceRefresh = false;
-
-    public boolean frazionz_ui = true;
-    public boolean togglesprintMod = false;
-    public boolean keystrokesMod = false;
     public KeyBinding keyBindFzMacro1 = new KeyBinding("Macro 1", 0, "FrazionZ");
     public KeyBinding keyBindFzMacro2 = new KeyBinding("Macro 2", 0, "FrazionZ");
     public KeyBinding keyBindFzMacro3 = new KeyBinding("Macro 3", 0, "FrazionZ");
     public KeyBinding keyBindFzMacro4 = new KeyBinding("Macro 4", 0, "FrazionZ");
-    private File modsToggleFile;
     public boolean modsKeystrokes = false;
     public KeyBinding CLIENT_GUI_MOD_POS = new KeyBinding("Mod Position", 0, "FrazionZ");
     public KeyBinding saveItemRenderers = new KeyBinding("Item Renderers", 0, "FrazionZ");
@@ -315,7 +310,6 @@ public class GameSettings
         this.language = "en_us";
         this.mc = mcIn;
         this.optionsFile = new File(mcDataDir, "options.txt");
-        this.modsToggleFile = new File(mcDataDir, "mods.txt");
 
         if (mcIn.isJava64bit() && Runtime.getRuntime().maxMemory() >= 1000000000L)
         {
@@ -345,7 +339,6 @@ public class GameSettings
         KeyUtils.fixKeyConflicts(this.keyBindings, new KeyBinding[] {this.ofKeyBindZoom});
         this.renderDistanceChunks = 8;
         this.loadOptions();
-        this.loadModsOptions();
         Config.initGameSettings(this);
     }
 
@@ -691,21 +684,6 @@ public class GameSettings
         {
             this.autoJump = !this.autoJump;
         }
-        
-        if (settingsOption == GameSettings.Options.FRAZIONZ_UI)
-        {
-            this.frazionz_ui = !this.frazionz_ui;
-        }
-        
-        if (settingsOption == GameSettings.Options.KEYSTROKES)
-        {
-            this.keystrokesMod = !this.keystrokesMod;
-        }
-        
-        if (settingsOption == GameSettings.Options.TOGGLESPRINT)
-        {
-            this.togglesprintMod = !this.togglesprintMod;
-        }
 
         if (settingsOption == GameSettings.Options.NARRATOR)
         {
@@ -842,15 +820,6 @@ public class GameSettings
 
             case AUTO_JUMP:
                 return this.autoJump;
-                
-            case FRAZIONZ_UI:
-                return this.frazionz_ui;
-                
-            case TOGGLESPRINT:
-                return this.togglesprintMod;
-                
-            case KEYSTROKES:
-                return this.keystrokesMod;
 
             default:
                 return false;
@@ -1234,21 +1203,6 @@ public class GameSettings
                             else if ("macro_4".equals(s1))
                             {
                             	FzUserData.getInstance().setMacro(3, s2);
-                            }
-                            
-                            if ("frazionzUI".equals(s1))
-                            {
-                                this.frazionz_ui = "true".equals(s2);
-                            }
-                            
-                            if ("toggleSprintMod".equals(s1))
-                            {
-                                this.togglesprintMod = "true".equals(s2);
-                            }
-                            
-                            if ("keystrokesMod".equals(s1))
-                            {
-                                this.keystrokesMod = "true".equals(s2);
                             }
                             
                             if ("mouseSensitivity".equals(s1))
@@ -1761,9 +1715,6 @@ public class GameSettings
             printwriter.println("realmsNotifications:" + this.realmsNotifications);
             printwriter.println("enableWeakAttacks:" + this.enableWeakAttacks);
             printwriter.println("autoJump:" + this.autoJump);
-            printwriter.println("frazionzUI:" + this.frazionz_ui);
-            printwriter.println("keystrokesMod:" + this.keystrokesMod);
-            printwriter.println("toggleSprintMod:" + this.togglesprintMod);
             printwriter.println("narrator:" + this.narrator);
             printwriter.println("tutorialStep:" + this.tutorialStep.getName());
             printwriter.println("macro_1:" + FzUserData.getInstance().getMacro(0));
@@ -3048,68 +2999,6 @@ public class GameSettings
             return null;
         }
     }
-
-    // MODS //
-    
-    public void saveModsOptions()
-    {
-        try
-        {
-            PrintWriter printwriter = new PrintWriter(new OutputStreamWriter(new FileOutputStream(this.modsToggleFile), StandardCharsets.UTF_8));
-            printwriter.println("keyStrokesMod:" + this.modsKeystrokes);
- 
-            printwriter.close();
-        }
-        catch (Exception exception1)
-        {
-            Config.warn("Failed to save options");
-            exception1.printStackTrace();
-        }
-    }
-    
-    
-    
-    public void loadModsOptions()
-    {
-        try
-        {
-            File file1 = this.modsToggleFile;
-
-            if (!file1.exists())
-            {
-                return;
-            }
-
-            BufferedReader bufferedreader = new BufferedReader(new InputStreamReader(new FileInputStream(file1), StandardCharsets.UTF_8));
-            String s = "";
-
-            while ((s = bufferedreader.readLine()) != null)
-            {
-                try
-                {
-                    String[] astring = s.split(":");
-
-                    if (astring[0].equals("keyStrokesMod") && astring.length >= 2)
-                    {
-                        this.modsKeystrokes = Boolean.valueOf(astring[1]).booleanValue();
-                    }
-                }
-                catch (Exception exception1)
-                {
-                    Config.dbg("Skipping bad option: " + s);
-                    exception1.printStackTrace();
-                }
-            }
-
-            KeyBinding.resetKeyBindingArrayAndHash();
-            bufferedreader.close();
-        }
-        catch (Exception exception11)
-        {
-            Config.warn("Failed to load options");
-            exception11.printStackTrace();
-        }
-    }
     
     public void loadOfOptions()
     {
@@ -3765,7 +3654,6 @@ public class GameSettings
         this.updateWaterOpacity();
         this.mc.refreshResources();
         this.saveOptions();
-        this.saveModsOptions();
     }
 
     public void updateVSync()
@@ -3994,9 +3882,6 @@ public class GameSettings
         RENDER_REGIONS("of.options.RENDER_REGIONS", false, false),
         SHOW_GL_ERRORS("of.options.SHOW_GL_ERRORS", false, false),
         SMART_ANIMATIONS("of.options.SMART_ANIMATIONS", false, false),
-    	FRAZIONZ_UI("fz.options.frazionz.UI", false, true),
-    	KEYSTROKES("KeystrokesMod", false, true),
-    	TOGGLESPRINT("ToggleSprint Mod", false, true),
     	;
 
         private final boolean isFloat;

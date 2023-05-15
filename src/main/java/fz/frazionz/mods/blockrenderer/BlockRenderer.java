@@ -178,47 +178,47 @@ public class BlockRenderer {
 		Minecraft mc = Minecraft.getMinecraft();
 		mc.getFramebuffer().unbindFramebuffer();
 		GlStateManager.pushMatrix();
-			ScaledResolution res = new ScaledResolution(Minecraft.getMinecraft());
-			mc.entityRenderer.setupOverlayRendering();
-			// Draw the dirt background and status text...
-			Rendering.drawBackground(res.getScaledWidth(), res.getScaledHeight());
-			Rendering.drawCenteredString(mc.fontRenderer, title, res.getScaledWidth()/2, res.getScaledHeight()/2-24, -1);
-			Rendering.drawRect(res.getScaledWidth()/2-50, res.getScaledHeight()/2-1, res.getScaledWidth()/2+50, res.getScaledHeight()/2+1, 0xFF001100);
-			Rendering.drawRect(res.getScaledWidth()/2-50, res.getScaledHeight()/2-1, (res.getScaledWidth()/2-50)+(int)(progress*100), res.getScaledHeight()/2+1, 0xFF55FF55);
-			GlStateManager.pushMatrix();
-				GlStateManager.scale(0.5f, 0.5f, 1);
-				Rendering.drawCenteredString(mc.fontRenderer, subtitle, res.getScaledWidth(), res.getScaledHeight()-20, -1);
-				// ...and draw the tooltip.
-				if (is != null) {
-					try {
-						List<String> list = is.getTooltip(mc.player, ITooltipFlag.TooltipFlags.NORMAL);
-			
-						// This code is copied from the tooltip renderer, so we can properly center it.
-						for (int i = 0; i < list.size(); ++i) {
-							if (i == 0) {
-								list.set(i, is.getRarity().color + list.get(i));
-							} else {
-								list.set(i, TextFormatting.GRAY + list.get(i));
-							}
-						}
-			
-						FontRenderer font =  mc.fontRenderer;
-						
-						int width = 0;
-			
-						for (String s : list) {
-							int j = font.getStringWidth(s);
-			
-							if (j > width) {
-								width = j;
-							}
-						}
-						// End copied code.
-						GlStateManager.translate((res.getScaledWidth()-width/2)-12, res.getScaledHeight()+30, 0);
-						//Rendering.drawHoveringText(list, 0, 0, font);
-					} catch (Throwable t) {}
+		ScaledResolution res = new ScaledResolution(Minecraft.getMinecraft());
+		mc.entityRenderer.setupOverlayRendering();
+		// Draw the dirt background and status text...
+		Rendering.drawBackground(res.getScaledWidth(), res.getScaledHeight());
+		Rendering.drawCenteredString(mc.fontRenderer, title, res.getScaledWidth()/2, res.getScaledHeight()/2-24, -1);
+		Rendering.drawRect(res.getScaledWidth()/2-50, res.getScaledHeight()/2-1, res.getScaledWidth()/2+50, res.getScaledHeight()/2+1, 0xFF001100);
+		Rendering.drawRect(res.getScaledWidth()/2-50, res.getScaledHeight()/2-1, (res.getScaledWidth()/2-50)+(int)(progress*100), res.getScaledHeight()/2+1, 0xFF55FF55);
+		GlStateManager.pushMatrix();
+
+		GlStateManager.scale(0.5f, 0.5f, 1);
+		Rendering.drawCenteredString(mc.fontRenderer, subtitle, res.getScaledWidth(), res.getScaledHeight()-20, -1);
+		// ...and draw the tooltip.
+		if (is != null) {
+			try {
+				List<String> list = is.getTooltip(mc.player, ITooltipFlag.TooltipFlags.NORMAL);
+
+				// This code is copied from the tooltip renderer, so we can properly center it.
+				for (int i = 0; i < list.size(); ++i) {
+					if (i == 0) {
+						list.set(i, is.getRarity().color + list.get(i));
+					} else {
+						list.set(i, TextFormatting.GRAY + list.get(i));
+					}
 				}
-			GlStateManager.popMatrix();
+			
+				FontRenderer font =  mc.fontRenderer;
+						
+				int width = 0;
+			
+				for (String s : list) {
+					int j = font.getStringWidth(s);
+			
+					if (j > width) {
+						width = j;
+					}
+				}
+				// End copied code.
+				GlStateManager.translate((res.getScaledWidth()-width/2)-12, res.getScaledHeight()+30, 0);
+				//Rendering.drawHoveringText(list, 0, 0, font);
+			} catch (Throwable t) {}
+		}
 		GlStateManager.popMatrix();
 		mc.updateDisplay();
 		/*

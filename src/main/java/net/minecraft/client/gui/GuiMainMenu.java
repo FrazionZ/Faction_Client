@@ -4,6 +4,7 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.util.Random;
 
+import fz.frazionz.TTFFontRenderer;
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -22,7 +23,6 @@ import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.resources.IResource;
 import net.minecraft.client.settings.GameSettings;
-import net.minecraft.realms.RealmsBridge;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.StringUtils;
 import net.minecraft.util.text.TextFormatting;
@@ -86,10 +86,8 @@ public class GuiMainMenu extends GuiScreen
     
     private Random rand = new Random();
     
-    private static final ResourceLocation BACKGROUND_TEXTURE  = new ResourceLocation("textures/gui/title/background/fz_background.png");
-    private static final ResourceLocation MINECRAFT_TITLE_TEXTURES = new ResourceLocation("textures/gui/title/background/fz_logo.png");
-    private static final ResourceLocation INTERFACE_BACKGROUND_FZ = new ResourceLocation("textures/gui/frazionz/interface_background.png");
-    //private static DynamicTexture AVATAR_HEAD;
+    private static final ResourceLocation BACKGROUND_TEXTURE  = new ResourceLocation("frazionz", "textures/gui/main_menu/header.png");
+
     
     /** An array of all the paths to the panorama pictures. */
     private static final ResourceLocation[] TITLE_PANORAMA_PATHS = new ResourceLocation[] {new ResourceLocation("textures/gui/title/background/panorama_0.png"), new ResourceLocation("textures/gui/title/background/panorama_1.png"), new ResourceLocation("textures/gui/title/background/panorama_2.png"), new ResourceLocation("textures/gui/title/background/panorama_3.png"), new ResourceLocation("textures/gui/title/background/panorama_4.png"), new ResourceLocation("textures/gui/title/background/panorama_5.png")};
@@ -113,6 +111,18 @@ public class GuiMainMenu extends GuiScreen
     
     private int menuWidth;
     private int menuHeight;
+    private int rightContentWidth;
+    private int rightContentHeight;
+    private int rightContentPadding;
+
+    private String displayString;
+    private int displayWidth;
+    private int displayHeight;
+
+    private String displayName;
+    private int displayNameWidth;
+    private int displayNameHeight;
+    private TTFFontRenderer fontDisplayName;
     
     public GuiMainMenu()
     {
@@ -175,8 +185,20 @@ public class GuiMainMenu extends GuiScreen
      */
     public void initGui()
     {
-    	this.menuWidth = 220;
+    	this.menuWidth = 200;
     	this.menuHeight = this.height;
+        rightContentWidth = this.width - this.menuWidth;
+        rightContentHeight = this.height;
+        rightContentPadding = 12;
+
+        fontDisplayName = FzClient.getInstance().getTTFFontRenderers().get(28);
+        displayString = "Bienvenue à toi ";
+        displayWidth = fontDisplayName.getWidth(displayString);
+        displayHeight = fontDisplayName.getHeight(displayString);
+
+        displayName = mc.getSession().getUsername();
+        displayNameWidth = fontDisplayName.getWidth(displayName);
+        displayNameHeight = fontDisplayName.getHeight(displayName);
 
         FzClient.getInstance().getDiscordRP().update("Menu Principal", "www.frazionz.net");
         this.viewportTexture = new DynamicTexture(256, 256);
@@ -210,10 +232,10 @@ public class GuiMainMenu extends GuiScreen
     {
     	int menuPadding = 20;
     	
-    	this.buttonList.add(new GuiMenuButton(1, menuPadding, menuPadding, width, height, "REJOINDRE"));
-    	this.buttonList.add(new GuiMenuButton(2, menuPadding, menuPadding + height + gap, width, height, "SOLO"));
-    	this.buttonList.add(new GuiMenuButton(3, menuPadding, menuPadding + height*2 + gap*2, width, height, "OPTIONS"));
-    	this.buttonList.add(new GuiMenuButton(4, menuPadding, this.height - menuPadding - height, width, height, "QUITTER"));
+    	this.buttonList.add(new GuiMenuButton(1, menuPadding, menuPadding, width, height, "Rejoindre"));
+    	this.buttonList.add(new GuiMenuButton(2, menuPadding, menuPadding + height + gap, width, height, "Solo"));
+    	this.buttonList.add(new GuiMenuButton(3, menuPadding, menuPadding + height*2 + gap*2, width, height, "Options"));
+    	this.buttonList.add(new GuiMenuButton(4, menuPadding, this.height - menuPadding - height, width, height, "Quitter"));
     }
 
     /**
@@ -224,8 +246,6 @@ public class GuiMainMenu extends GuiScreen
         switch(button.id)
         {
  	       case 1:
-               //this.mc.displayGuiScreen(new GuiConnecting(this, mc, "localhost", 25565));
-               //this.mc.displayGuiScreen(new GuiConnecting(this, mc, "185.157.246.85", 25587));
                this.mc.displayGuiScreen(new GuiConnecting(this, mc, "play.frazionz.net", 25565));
                break;
            case 2:
@@ -238,12 +258,6 @@ public class GuiMainMenu extends GuiScreen
  	    	   this.mc.shutdown();
  	    	   break;
         }
-    }
-
-    private void switchToRealms()
-    {
-        RealmsBridge realmsbridge = new RealmsBridge();
-        realmsbridge.switchToRealms(this);
     }
 
     public void confirmClicked(boolean result, int id)
@@ -287,15 +301,29 @@ public class GuiMainMenu extends GuiScreen
         mc.getTextureManager().bindTexture(BACKGROUND_TEXTURE);
     	GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         Gui.drawScaledCustomSizeModalRect(0, 0, 0, 0, 1, 1, this.width, this.height, 1, 1);
-        GL11.glEnable(GL11.GL_BLEND);
         
-        String info = "FrazionZ n'est pas affilié à Mojang";
-        this.drawString(this.fontRenderer, info, this.width - this.fontRenderer.getStringWidth(info) - 1, this.height - 10, -1);
+        //String info = "FrazionZ n'est pas affilié à Mojang";
+        //this.drawString(this.fontRenderer, info, this.width - this.fontRenderer.getStringWidth(info) - 1, this.height - 10, -1);
+        //this.widthCopyright = this.fontRenderer.getStringWidth("Copyright Mojang AB. Do not distribute!");
 
-        this.widthCopyright = this.fontRenderer.getStringWidth("Copyright Mojang AB. Do not distribute!");
-        
-        // Money 
-        
+        mc.getTextureManager().bindTexture(FZ_LOGO_X256);
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+        GL11.glEnable(GL11.GL_BLEND);
+        ScaledResolution sr = new ScaledResolution(Minecraft.getMinecraft());
+
+        float size = 128f;
+        Gui.drawModalRectWithCustomSizedTexture(menuWidth + (width-menuWidth)/2-64, height/2-64, 0, 0, (int)size, (int)size, size, size);
+
+        int headSize = 16;
+        int heightText = Math.max(displayNameHeight, displayHeight);
+        int left = menuWidth + (width-menuWidth)/2 - (displayWidth + displayNameWidth)/2 - headSize/2 - 8;
+        drawPlayerHead(left, height-rightContentPadding-heightText+2-24, headSize, headSize);
+        left += headSize + 8;
+        fontDisplayName.drawString(displayString, left, height-rightContentPadding-heightText-24, 0xFFFFFFFF);
+        left += displayWidth;
+        fontDisplayName.drawString(displayName, left, height-rightContentPadding-heightText-24, GRADIENT_BUTTON_1);
+        // Money
+
         /*
          * Locale usa = new Locale("en", "US");
         Currency dollars = Currency.getInstance(usa);
@@ -332,24 +360,7 @@ public class GuiMainMenu extends GuiScreen
     
     private void drawSideBar()
     {
-    	this.drawRect(0, 0, this.menuWidth, this.menuHeight, this.BLACK_4);
-    	
-        GlStateManager.pushMatrix();
-        
-        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-        GlStateManager.enableBlend();
-        GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-        GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-        
-        this.mc.getTextureManager().bindTexture(INTERFACE_BACKGROUND_2);
-        
-        int midDecorationBarHeight = (this.height - 40)/2;
-        
-        GlStateManager.translate(230.0F, 0.0F, 0.0F);
-		GlStateManager.rotate(90F, 0.0F, 0.0F, 1.0F);
-        drawModalRectWithCustomSizedTexture(20, 0, 0.0F, 0.0F, midDecorationBarHeight, 26, 512.0F, 512.0F);
-        drawModalRectWithCustomSizedTexture(20+midDecorationBarHeight, 0, 394-midDecorationBarHeight, 0.0F, midDecorationBarHeight, 26, 512.0F, 512.0F);
-        GlStateManager.popMatrix();
+    	drawRect(0, 0, this.menuWidth, this.menuHeight, BLACK_4);
     }
 
     /**

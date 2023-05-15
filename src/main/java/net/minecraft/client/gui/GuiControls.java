@@ -5,7 +5,7 @@ import java.io.IOException;
 import fz.frazionz.client.gui.GuiFzBaseScreen;
 import fz.frazionz.client.gui.GuiKeyBinds;
 import fz.frazionz.client.gui.buttons.GuiFzOptionButton;
-import fz.frazionz.client.gui.buttons.GuiFzSlider;
+import fz.frazionz.client.gui.buttons.GuiFzOptionSlider;
 import fz.frazionz.client.gui.buttons.GuiHoverButton;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.settings.GameSettings;
@@ -42,7 +42,7 @@ public class GuiControls extends GuiFzBaseScreen
 
                 if (gamesettings$options.isFloat())
                 {
-                	this.buttonList.add(new GuiFzSlider(gamesettings$options.getOrdinal(), j, k, gamesettings$options));
+                	this.buttonList.add(new GuiFzOptionSlider(gamesettings$options.getOrdinal(), j, k, gamesettings$options));
                 }
                 else
                 {

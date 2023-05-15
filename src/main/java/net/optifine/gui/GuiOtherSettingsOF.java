@@ -2,7 +2,7 @@ package net.optifine.gui;
 
 import fz.frazionz.client.gui.GuiFzBaseScreen;
 import fz.frazionz.client.gui.buttons.GuiFzOptionButton;
-import fz.frazionz.client.gui.buttons.GuiFzSlider;
+import fz.frazionz.client.gui.buttons.GuiFzOptionSlider;
 import fz.frazionz.client.gui.buttons.GuiHoverButton;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -45,7 +45,7 @@ public class GuiOtherSettingsOF extends GuiFzBaseScreen implements GuiYesNoCallb
 	        }
 	        else
 	        {
-	            this.buttonList.add(new GuiFzSlider(gamesettings$options.getOrdinal(), j, k, gamesettings$options));
+	            this.buttonList.add(new GuiFzOptionSlider(gamesettings$options.getOrdinal(), j, k, gamesettings$options));
 	        }
 	    }
 	

@@ -1,8 +1,10 @@
 package fz.frazionz.utils;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.nio.file.Files;
 
 import org.apache.commons.io.IOUtils;
 import org.json.JSONObject;
@@ -22,6 +24,29 @@ public class JsonHelper {
 		catch (Exception e) {
 			e.printStackTrace();
 			return null;
+		}
+	}
+
+	public static JSONObject getJsonObject(File file) {
+		try
+		{
+			InputStream is = Files.newInputStream(file.toPath());
+	        String jsonTxt = IOUtils.toString(is, "UTF-8");
+			return new JSONObject(jsonTxt);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	public static void saveJSONObject(File file, JSONObject json) {
+		try
+		{
+			Files.write(file.toPath(), json.toString().getBytes());
+		}
+		catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 

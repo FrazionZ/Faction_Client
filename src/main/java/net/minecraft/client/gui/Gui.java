@@ -12,6 +12,11 @@ import java.net.URL;
 
 import javax.imageio.ImageIO;
 
+import fz.frazionz.api.HTTPFunctions;
+import fz.frazionz.api.gsonObj.UserSkinsInfo;
+import fz.frazionz.utils.FzSkinUtils;
+import net.minecraft.client.entity.AbstractClientPlayer;
+import net.minecraft.client.resources.DefaultPlayerSkin;
 import org.lwjgl.opengl.GL11;
 
 import fz.frazionz.TTFFontRenderer;
@@ -34,6 +39,12 @@ public class Gui
 	public static final int COLOR_1 = 0xFFF1B53F;
 	public static final int COLOR_2 = 0xFFE48515;
 	public static final int COLOR_3 = 0xFFDF5D14;
+
+    public static final int GRADIENT_BUTTON_1 = 0xFFF6A92F;
+    public static final int GRADIENT_BUTTON_2 = 0xFFF16B1F;
+
+    public static final int GRADIENT_BUTTON_1_INACTIVE = 0xFFB68840;
+    public static final int GRADIENT_BUTTON_2_INACTIVE = 0xFFBC6534;
 	
     public static final ResourceLocation OPTIONS_BACKGROUND = new ResourceLocation("textures/gui/options_background.png");
     public static final ResourceLocation FZ_OPTIONS_BACKGROUND = new ResourceLocation("textures/gui/title/background/fz_background.png");
@@ -42,6 +53,9 @@ public class Gui
 
     public static final ResourceLocation STAT_ICONS = new ResourceLocation("textures/gui/container/stats_icons.png");
     public static final ResourceLocation ICONS = new ResourceLocation("textures/gui/icons.png");
+
+    public static final ResourceLocation FZ_LOGO_X256 = new ResourceLocation("frazionz", "textures/gui/logo_x256.png");
+    public static final ResourceLocation FZ_LOGO_X128 = new ResourceLocation("frazionz", "textures/gui/logo_x128.png");
     protected static float zLevel;
 
     /**
@@ -599,49 +613,12 @@ public class Gui
         GlStateManager.enableAlpha();
         GlStateManager.enableTexture2D();
     }
-    
-    public static void drawRekt(int left, int top, int right, int bottom, int color)
-    {
-        if (left < right)
-        {
-            int i = left;
-            left = right;
-            right = i;
-        }
-
-        if (top < bottom)
-        {
-            int j = top;
-            top = bottom;
-            bottom = j;
-        }
-
-        float f3 = (float)(color >> 24 & 255) / 255.0F;
-        float f = (float)(color >> 16 & 255) / 255.0F;
-        float f1 = (float)(color >> 8 & 255) / 255.0F;
-        float f2 = (float)(color & 255) / 255.0F;
-        Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder bufferbuilder = tessellator.getBuffer();
-        GlStateManager.enableBlend();
-        GlStateManager.disableTexture2D();
-        GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-        GlStateManager.color(f, f1, f2, f3);
-        bufferbuilder.begin(7, DefaultVertexFormats.POSITION);
-        bufferbuilder.pos((double)left + 5, (double)bottom, 0.0D).endVertex();
-        bufferbuilder.pos((double)right + 5, (double)bottom, 0.0D).endVertex();  
-        bufferbuilder.pos((double)right - 5, (double)top, 0.0D).endVertex();
-        bufferbuilder.pos((double)left - 5, (double)top, 0.0D).endVertex();
-
-        tessellator.draw();
-        GlStateManager.enableTexture2D();
-        GlStateManager.disableBlend();
-    }
 
     /**
      * Draws a rectangle with a vertical gradient between the specified colors (ARGB format). Args : x1, y1, x2, y2,
      * topColor, bottomColor
      */
-    protected static void drawGradientRect(int left, int top, int right, int bottom, int startColor, int endColor)
+    public static void drawGradientRect(int left, int top, int right, int bottom, int startColor, int endColor)
     {
         float f = (float)(startColor >> 24 & 255) / 255.0F;
         float f1 = (float)(startColor >> 16 & 255) / 255.0F;
@@ -845,5 +822,62 @@ public class Gui
         ByteArrayInputStream inByte = new ByteArrayInputStream(byteArray);
         BufferedImage read = ImageIO.read(inByte);
         return read;
+    }
+
+
+    /**
+     * Draws a rectangle with a vertical gradient between the specified colors (ARGB format). Args : x1, y1, x2, y2,
+     * topColor, bottomColor
+     */
+    public static void drawGradientRectLeftToRight(int left, int top, int right, int bottom, int startColor, int endColor)
+    {
+        float f = (float)(startColor >> 24 & 255) / 255.0F;
+        float f1 = (float)(startColor >> 16 & 255) / 255.0F;
+        float f2 = (float)(startColor >> 8 & 255) / 255.0F;
+        float f3 = (float)(startColor & 255) / 255.0F;
+        float f4 = (float)(endColor >> 24 & 255) / 255.0F;
+        float f5 = (float)(endColor >> 16 & 255) / 255.0F;
+        float f6 = (float)(endColor >> 8 & 255) / 255.0F;
+        float f7 = (float)(endColor & 255) / 255.0F;
+        GlStateManager.disableTexture2D();
+        GlStateManager.enableBlend();
+        GlStateManager.disableAlpha();
+        GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+        GlStateManager.shadeModel(7425);
+        Tessellator tessellator = Tessellator.getInstance();
+        BufferBuilder bufferbuilder = tessellator.getBuffer();
+        bufferbuilder.begin(7, DefaultVertexFormats.POSITION_COLOR);
+        bufferbuilder.pos((double)right, (double)top, zLevel).color(f5, f6, f7, f4).endVertex();
+        bufferbuilder.pos((double)left, (double)top, zLevel).color(f1, f2, f3, f).endVertex();
+        bufferbuilder.pos((double)left, (double)bottom, zLevel).color(f1, f2, f3, f).endVertex();
+        bufferbuilder.pos((double)right, (double)bottom, zLevel).color(f5, f6, f7, f4).endVertex();
+        tessellator.draw();
+        GlStateManager.shadeModel(7424);
+        GlStateManager.disableBlend();
+        GlStateManager.enableAlpha();
+        GlStateManager.enableTexture2D();
+    }
+
+    public static void drawGradientRect(int x, int y, int width, int height, int startColor, int endColor, boolean isHorizontal) {
+        GL11.glShadeModel(GL11.GL_SMOOTH);
+        GL11.glDisable(GL11.GL_TEXTURE_2D);
+        GL11.glBegin(GL11.GL_QUADS);
+        GlStateManager.color(startColor);
+        if(isHorizontal) {
+            GL11.glVertex2f(x, y);
+            GL11.glVertex2f(x, y + height);
+            GlStateManager.color(endColor);
+            GL11.glVertex2f(x + width, y + height);
+            GL11.glVertex2f(x + width, y);
+        } else {
+            GL11.glVertex2f(x, y);
+            GL11.glVertex2f(x + width, y);
+            GlStateManager.color(endColor);
+            GL11.glVertex2f(x + width, y + height);
+            GL11.glVertex2f(x, y + height);
+        }
+        GL11.glEnd();
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
+        GL11.glShadeModel(GL11.GL_FLAT);
     }
 }

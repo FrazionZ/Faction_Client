@@ -1,6 +1,9 @@
 package net.minecraft.client.gui;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 import fz.frazionz.client.gui.GuiFzBaseScreen;
 import fz.frazionz.client.gui.GuiMacro;
@@ -42,7 +45,7 @@ public class GuiOptions extends GuiFzBaseScreen
         {
             if (gamesettings$options.isFloat())
             {
-                this.buttonList.add(new GuiFzSlider(gamesettings$options.getOrdinal(), this.width / 2 - 155, this.height/2 - 82, gamesettings$options));
+                this.buttonList.add(new GuiFzOptionSlider(gamesettings$options.getOrdinal(), this.width / 2 - 155, this.height/2 - 82, gamesettings$options));
             }
             else
             {
@@ -50,6 +53,12 @@ public class GuiOptions extends GuiFzBaseScreen
                 this.buttonList.add(guioptionbutton);
             }
         }
+
+        int buttonGap = 4;
+        int buttonWidth = 150;
+        int buttonHeight = 24;
+        int menuStartWidth = this.width / 2 - 152;
+        int menuStartHeight = this.height / 2 - 82;
         
         if (this.mc.world != null)
         {
@@ -70,17 +79,34 @@ public class GuiOptions extends GuiFzBaseScreen
             {
                 this.difficultyButton.enabled = false;
             }
-        }	
+        }
     	
-        this.buttonList.add(new GuiHoverButton(110, this.width / 2 - 155, this.height / 2 - 58, 150, 20, I18n.format("options.skinCustomisation")));
-        this.buttonList.add(new GuiHoverButton(106, this.width / 2 + 5, this.height / 2 - 58, 150, 20, I18n.format("options.sounds")));
-        this.buttonList.add(new GuiHoverButton(101, this.width / 2 - 155, this.height / 2 - 34, 150, 20, I18n.format("options.video")));
-        this.buttonList.add(new GuiHoverButton(100, this.width / 2 + 5, this.height / 2 - 34, 150, 20, I18n.format("options.controls")));
-        this.buttonList.add(new GuiHoverButton(102, this.width / 2 - 155, this.height / 2 - 10, 150, 20, I18n.format("options.language")));
-        this.buttonList.add(new GuiHoverButton(103, this.width / 2 + 5, this.height / 2 - 10, 150, 20, I18n.format("options.chat.title")));
-        this.buttonList.add(new GuiHoverButton(105, this.width / 2 - 155, this.height / 2 + 14, 150, 20, I18n.format("options.resourcepack")));
-        this.buttonList.add(new GuiHoverButton(104, this.width / 2 + 5, this.height / 2 + 14, 150, 20, I18n.format("options.snooper.view")));
-        this.buttonList.add(new GuiHoverButton(203, this.width / 2 - 100, this.height / 2 + 38, "Macro"));
+        this.buttonList.add(new GuiHoverButton(110, this.width / 2 - 155, this.height / 2 - 58, 150, 24, I18n.format("options.skinCustomisation")));
+        this.buttonList.add(new GuiHoverButton(106, this.width / 2 + 5, this.height / 2 - 58, 150, 24, I18n.format("options.sounds")));
+        this.buttonList.add(new GuiHoverButton(101, this.width / 2 - 155, this.height / 2 - 34, 150, 24, I18n.format("options.video")));
+        this.buttonList.add(new GuiHoverButton(100, this.width / 2 + 5, this.height / 2 - 34, 150, 24, I18n.format("options.controls")));
+        this.buttonList.add(new GuiHoverButton(102, this.width / 2 - 155, this.height / 2 - 10, 150, 24, I18n.format("options.language")));
+        this.buttonList.add(new GuiHoverButton(103, this.width / 2 + 5, this.height / 2 - 10, 150, 24, I18n.format("options.chat.title")));
+        this.buttonList.add(new GuiHoverButton(105, this.width / 2 - 155, this.height / 2 + 14, 150, 24, I18n.format("options.resourcepack")));
+        this.buttonList.add(new GuiHoverButton(104, this.width / 2 + 5, this.height / 2 + 14, 150, 24, I18n.format("options.snooper.view")));
+        this.buttonList.add(new GuiHoverButton(203, this.width / 2 - 100, this.height / 2 + 38, 150, 24, "Macro"));
+
+        int k = 0;
+        for(GuiButton button : buttonList) {
+            if(k == 0) {
+                button.x = menuStartWidth;
+                button.y = menuStartHeight;
+                k = 1;
+            }
+            else {
+                button.x = menuStartWidth + buttonWidth + buttonGap;
+                button.y = menuStartHeight;
+                k = 0;
+
+                menuStartHeight += buttonHeight + buttonGap;
+            }
+        }
+
         this.buttonList.add(new GuiHoverButton(200, this.width / 2 - 100, this.height / 2 + 86, I18n.format("gui.done")));
     
     }

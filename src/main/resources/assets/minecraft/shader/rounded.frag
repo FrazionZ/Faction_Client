@@ -2,12 +2,12 @@
 
 // https://www.shadertoy.com/view/WtdSDs
 
-uniform vec2 loc, size;
+uniform vec2 size;
 uniform vec4 color;
 uniform float radius;
 
-float rounding(vec2 soup, vec2 chicken, float ramen_i_guess) {
-    return length(max(abs(soup) - chicken, 0.0)) - ramen_i_guess;
+float rounding(vec2 centerPos, vec2 size, float radius) {
+    return length(max(abs(centerPos) - size, 0.0)) - radius;
 }
 
 

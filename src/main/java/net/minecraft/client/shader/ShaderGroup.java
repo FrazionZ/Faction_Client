@@ -416,4 +416,8 @@ public class ShaderGroup
             return p_148017_1_.equals("minecraft:main") ? this.mainFramebuffer : (Framebuffer)this.mapFramebuffers.get(p_148017_1_);
         }
     }
+
+    public List<Shader> getListShaders() {
+        return listShaders;
+    }
 }

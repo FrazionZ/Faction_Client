@@ -1,9 +1,12 @@
-package fz.frazionz.client.gui.hud;
+package fz.frazionz.mods.mod_hud;
 
 public interface IRenderer extends IRenderConfig {
 
 	int getWidth();
 	int getHeight();
+
+	int getDummyWidth();
+	int getDummyHeight();
 	
 	void render(ScreenPosition pos);
 	

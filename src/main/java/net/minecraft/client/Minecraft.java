@@ -4,19 +4,15 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.NetworkInterface;
 import java.net.Proxy;
 import java.net.SocketAddress;
-import java.net.SocketException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.IntBuffer;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -31,6 +27,10 @@ import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
 
+import fz.frazionz.event.impl.GuiCloseEvent;
+import fz.frazionz.event.impl.RenderTickEvent;
+import fz.frazionz.event.impl.GuiOpenEvent;
+import fz.frazionz.mods.blur.Blur;
 import org.apache.commons.io.Charsets;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.Validate;
@@ -66,9 +66,7 @@ import fz.frazionz.AntiCheatResourcePack;
 import fz.frazionz.FzClient;
 import fz.frazionz.client.gui.GuiKeyBinds;
 import fz.frazionz.client.gui.hud.HUDConfigScreen;
-import fz.frazionz.client.gui.hud.HUDManager;
-import fz.frazionz.mods.ModInstances;
-import fz.frazionz.mods.impl.ModKeystrokes;
+import fz.frazionz.mods.mod_hud.HUDManager;
 import fz.frazionz.mods.sneak.SmoothSneak;
 import fz.frazionz.utils.data.FzUserData;
 import net.minecraft.block.Block;
@@ -430,13 +428,10 @@ public class Minecraft implements IThreadListener, ISnooperInfo
 
     /** Profiler currently displayed in the debug screen pie chart */
     private String debugProfilerName = "root";
-
-    private ModKeystrokes modKeytrokes;
     public FontUtils font;
     private FzUserData fzUserData;
     public static final ResourceLocation FONT_LOCATION = new ResourceLocation("font/font.ttf");
     private final AntiCheatResourcePack antiCheatResourcePack;
-    private final List<IResourcePack> ResourcePacksAntiCheat = Lists.<IResourcePack>newArrayList();
 
     private static HUDManager hudManager = new HUDManager();
     public SmoothSneak smoothSneak;
@@ -557,12 +552,12 @@ public class Minecraft implements IThreadListener, ISnooperInfo
      */
     private void init() throws LWJGLException, IOException
     {
-    	FzClient.getInstance().init();
+        FzClient.getInstance().init();
         this.fzUserData = new FzUserData();
         this.gameSettings = new GameSettings(this, this.gameDir);
         this.creativeSettings = new CreativeSettings(this, this.gameDir);
         this.defaultResourcePacks.add(this.defaultResourcePack);
-        this.ResourcePacksAntiCheat.add(this.antiCheatResourcePack);
+        this.defaultResourcePacks.add(this.antiCheatResourcePack);
         this.startTimerHackThread();
         if (this.gameSettings.overrideHeight > 0 && this.gameSettings.overrideWidth > 0)
         {
@@ -648,6 +643,8 @@ public class Minecraft implements IThreadListener, ISnooperInfo
         this.checkGLError("Post startup");
         this.ingameGUI = new GuiIngame(this);
 
+        FzClient.getInstance().postMinecraftInit();
+
         if (this.serverName != null)
         {
             this.displayGuiScreen(new GuiConnecting(new GuiMainMenu(), this, this.serverName, this.serverPort));
@@ -679,68 +676,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo
 
         this.renderGlobal.makeEntityOutlineShader();
         
-        FzClient.getInstance().start();
-        
-        if(this.gameSettings.keystrokesMod == true) {
-        	ModKeystrokes keystrokes = ModInstances.getModKeystrokes();
-        	keystrokes.setEnabled(true);
-        	HUDManager.rerun();
-        }
-        else {
-        	ModKeystrokes keystrokes = ModInstances.getModKeystrokes();
-        	keystrokes.setEnabled(false);
-        	HUDManager.rerun();
-        }
-        
-		try {
-			for(String string : getMacAddressList()) {
-				System.out.println("Your mac Adress:" + " " + string);
-			}
-		} catch (SocketException e) {
-			LOGGER.warn("Could not determine localhost MAC address");
-			e.printStackTrace();
-		}
-        /*InetAddress localHost = null;
-        NetworkInterface ni = null;
-        byte[] hardwareAddress = new byte[0];
-        try {
-            localHost = InetAddress.getLocalHost();
-            ni = NetworkInterface.getByInetAddress(localHost);
-            hardwareAddress = ni.getHardwareAddress();
-            String[] hexadecimal = new String[hardwareAddress.length];
-            for (int i = 0; i < hardwareAddress.length; i++) {
-                hexadecimal[i] = String.format("%02X", hardwareAddress[i]);
-            }
-            String macAddress = String.join("-", hexadecimal);
-            System.out.println(macAddress);
-        } catch (UnknownHostException | SocketException e) {
-            e.printStackTrace();
-        }*/
-		
-		FzClient.getInstance().postMinecraftInit();
-    }
-    
-    public ArrayList<String> getMacAddressList() throws SocketException
-    {
-    	ArrayList<String> macAdressList = new ArrayList<String>();
-    	
-    	Enumeration<NetworkInterface> networks = NetworkInterface.getNetworkInterfaces();
-        NetworkInterface inter;
-        while (networks.hasMoreElements()) {
-            inter = networks.nextElement();
-            byte[] mac = inter.getHardwareAddress();
-            if (mac != null) {
-            	String[] hexadecimalFormat = new String[mac.length];
-                for (int i = 0; i < mac.length; i++) {
-                	hexadecimalFormat[i] = String.format("%02X%s", mac[i], (i < mac.length - 1) ? "-" : "");
-                }
-		        String a = String.join("",hexadecimalFormat);
-		        if(!macAdressList.contains(a))
-		        	macAdressList.add(a);
-            }
-        }
-        
-        return macAdressList;
+        FzClient.getInstance().onEnable();
     }
 
     /**
@@ -987,9 +923,8 @@ public class Minecraft implements IThreadListener, ISnooperInfo
         {
             list.add(this.resourcePackRepository.getServerResourcePack());
         }
-        //list.addAll(this.defaultResourcePacks); // AJOUTER ICI ANTI XRAY //
-        list.addAll(this.ResourcePacksAntiCheat);
-
+        list.addAll(this.defaultResourcePacks); // AJOUTER ICI ANTI XRAY //
+        //list.addAll(this.ResourcePacksAntiCheat);
 
         try
         {
@@ -1000,13 +935,12 @@ public class Minecraft implements IThreadListener, ISnooperInfo
             LOGGER.info("Caught error stitching, removing all assigned resourcepacks", (Throwable)runtimeexception);
             list.clear();
             list.addAll(this.defaultResourcePacks);
-            list.addAll(this.ResourcePacksAntiCheat);
+            //list.addAll(this.ResourcePacksAntiCheat);
             this.resourcePackRepository.setRepositories(Collections.emptyList());
             this.resourceManager.reloadResources(list);
             this.gameSettings.resourcePacks.clear();
             this.gameSettings.incompatibleResourcePacks.clear();
             this.gameSettings.saveOptions();
-            this.gameSettings.saveModsOptions();
         }
 
         this.languageManager.parseLanguageMetadata(list);
@@ -1184,6 +1118,9 @@ public class Minecraft implements IThreadListener, ISnooperInfo
      */
     public void displayGuiScreen(@Nullable GuiScreen guiScreenIn)
     {
+        if(guiScreenIn instanceof GuiContainer)
+            new GuiOpenEvent(guiScreenIn).call();
+
         if (this.currentScreen != null)
         {
             this.currentScreen.onGuiClosed();
@@ -1203,6 +1140,9 @@ public class Minecraft implements IThreadListener, ISnooperInfo
             this.gameSettings.showDebugInfo = false;
             this.ingameGUI.getChatGUI().clearChatMessages(true);
         }
+
+        if((this.currentScreen != guiScreenIn || guiScreenIn == null) && this.currentScreen instanceof GuiContainer)
+            new GuiCloseEvent(this.currentScreen).call();
 
         this.currentScreen = guiScreenIn;
 
@@ -1258,8 +1198,8 @@ public class Minecraft implements IThreadListener, ISnooperInfo
     {
         try
         {
-        	FzClient.getInstance().shutdown();
-        	
+            FzClient.getInstance().onDisable();
+
             LOGGER.info("Stopping!");
 
             try
@@ -2002,10 +1942,8 @@ public class Minecraft implements IThreadListener, ISnooperInfo
             this.leftClickCounter = 10000;
         }
 
-        // MARCHE MEME SI YA RIEN WTF //
-        // INVENTORY MOVE AROUND //
 
-        if (this.currentScreen != null/* && !(this.currentScreen instanceof GuiInventory)*/)
+        if (this.currentScreen != null)
         {
             try
             {
@@ -2060,6 +1998,8 @@ public class Minecraft implements IThreadListener, ISnooperInfo
             this.profiler.endStartSection("keyboard");
             this.runTickKeyboard();
         }
+
+        new RenderTickEvent(RenderTickEvent.Phase.START, this.timer.renderPartialTicks).call();
 
         if (this.world != null)
         {
@@ -2159,6 +2099,8 @@ public class Minecraft implements IThreadListener, ISnooperInfo
             this.profiler.endStartSection("pendingConnection");
             this.networkManager.processReceivedPackets();
         }
+
+        new RenderTickEvent(RenderTickEvent.Phase.END, this.timer.renderPartialTicks).call();
 
         this.profiler.endSection();
         this.systemTime = getSystemTime();
@@ -2325,7 +2267,6 @@ public class Minecraft implements IThreadListener, ISnooperInfo
             this.gameSettings.advancedItemTooltips = !this.gameSettings.advancedItemTooltips;
             this.debugFeedbackTranslated(this.gameSettings.advancedItemTooltips ? "debug.advanced_tooltips.on" : "debug.advanced_tooltips.off");
             this.gameSettings.saveOptions();
-            this.gameSettings.saveModsOptions();
             return true;
         }
         else if (auxKey == 49)
@@ -2349,7 +2290,6 @@ public class Minecraft implements IThreadListener, ISnooperInfo
         {
             this.gameSettings.pauseOnLostFocus = !this.gameSettings.pauseOnLostFocus;
             this.gameSettings.saveOptions();
-            this.gameSettings.saveModsOptions();
             this.debugFeedbackTranslated(this.gameSettings.pauseOnLostFocus ? "debug.pause_focus.on" : "debug.pause_focus.off");
             return true;
         }
@@ -2389,17 +2329,17 @@ public class Minecraft implements IThreadListener, ISnooperInfo
             {
                 if (this.gameSettings.keyBindsHotbar[i].isPressed())
                 {
-                	if(this.currentScreen == null) {
-                		return false;
-                	}
-                	/*else if(this.currentScreen instanceof GuiInventory) {
+                    if(this.currentScreen == null) {
+                        return false;
+                    }
+                    /*else if(this.currentScreen instanceof GuiInventory) {
                 		this.handleMouseClick(GuiContainer.hoveredSlot, GuiContainer.hoveredSlot.slotNumber, i, ClickType.SWAP);
                         return true;	
                 	}*/
-                	else {
-                		this.handleMouseClick(GuiContainer.hoveredSlot, GuiContainer.hoveredSlot.slotNumber, i, ClickType.SWAP);
+                    else {
+                        this.handleMouseClick(GuiContainer.hoveredSlot, GuiContainer.hoveredSlot.slotNumber, i, ClickType.SWAP);
                         return true;
-                	}
+                    }
                 }
             }
         }
@@ -2455,10 +2395,9 @@ public class Minecraft implements IThreadListener, ISnooperInfo
             }
             else if (/*(this.currentScreen instanceof GuiInventory) &&*/ this.gameSettings.keyBindsHotbar[i].isPressed())
             {
-	        	if (this.player.inventory.getItemStack().isEmpty() && GuiContainer.hoveredSlot != null)
-	            {
-	            	this.handleMouseClick(GuiContainer.hoveredSlot, GuiContainer.hoveredSlot.slotNumber, i, ClickType.SWAP);
-	            }
+                if (this.player.inventory.getItemStack().isEmpty() && GuiContainer.hoveredSlot != null) {
+                    this.handleMouseClick(GuiContainer.hoveredSlot, GuiContainer.hoveredSlot.slotNumber, i, ClickType.SWAP);
+                }
             }
             /*else if(this.currentScreen instanceof GuiInventory) {
 
@@ -2480,8 +2419,8 @@ public class Minecraft implements IThreadListener, ISnooperInfo
         
         while(this.gameSettings.CLIENT_GUI_MOD_POS.isPressed())
         {
-        	hudManager = HUDManager.getInstance();
-        	this.displayGuiScreen(new HUDConfigScreen(hudManager));
+            hudManager = HUDManager.getInstance();
+            this.displayGuiScreen(new HUDConfigScreen(hudManager));
         }
 
         while (this.gameSettings.keyBindFzMacro1.isPressed())
@@ -2507,39 +2446,35 @@ public class Minecraft implements IThreadListener, ISnooperInfo
 
         while (this.gameSettings.keyBindInventory.isPressed())
         {
-        	if(this.currentScreen == null) {
-	            if (this.playerController.isRidingHorse())
-	            {
-	                this.player.sendHorseInventory();
-	            }
-	            else if(this.player.isCreative()) {
-	                
-	                /*if(this.upInventory == 1.0D) {
+            if(this.currentScreen == null) {
+                if (this.playerController.isRidingHorse()) {
+                    this.player.sendHorseInventory();
+                } else if(this.player.isCreative()) {
+
+                    /*if(this.upInventory == 1.0D) {
 	                	 this.displayGuiScreen(new GuiContainerCreativeUp(this.player));
 	                }
 	                
 	                else {*/
-		                this.displayGuiScreen(new GuiContainerCreative(this.player));
-	               // }
-	                
-	            }
-	            else
-	            {
-	                this.tutorial.openInventory();
-	                this.displayGuiScreen(new GuiInventory(this.player));
-	            }
-        	}
-        	/*else if(this.currentScreen instanceof GuiInventory) {	
+                    this.displayGuiScreen(new GuiContainerCreative(this.player));
+                    // }
+
+                } else {
+                    this.tutorial.openInventory();
+                    this.displayGuiScreen(new GuiInventory(this.player));
+                }
+            }
+            /*else if(this.currentScreen instanceof GuiInventory) {
         		this.player.closeScreen();
         	}*/
         }
 
         while (this.gameSettings.keyBindAdvancements.isPressed())
         {
-        	if(this.currentScreen == null) {
-        		this.displayGuiScreen(new GuiScreenAdvancements(this.player.connection.getAdvancementManager()));
-	        }
-        	/*else if(this.currentScreen instanceof GuiInventory) {
+            if(this.currentScreen == null) {
+                this.displayGuiScreen(new GuiScreenAdvancements(this.player.connection.getAdvancementManager()));
+            }
+            /*else if(this.currentScreen instanceof GuiInventory) {
         		
         	}*/
         }
@@ -2548,7 +2483,7 @@ public class Minecraft implements IThreadListener, ISnooperInfo
         {
             if (!this.player.isSpectator())
             {
-            	if(this.currentScreen == null) {
+                if(this.currentScreen == null) {
                     this.getConnection().sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.SWAP_HELD_ITEMS, BlockPos.ORIGIN, EnumFacing.DOWN));      
                 }
                 /*else if(this.currentScreen instanceof GuiInventory) {       		
@@ -2560,10 +2495,10 @@ public class Minecraft implements IThreadListener, ISnooperInfo
         {
             if (!this.player.isSpectator())
             {
-            	if(this.currentScreen == null) {
-            		this.player.dropItem(GuiScreen.isCtrlKeyDown());
-            	}
-            	/*else if(this.currentScreen instanceof GuiInventory) {
+                if(this.currentScreen == null) {
+                    this.player.dropItem(GuiScreen.isCtrlKeyDown());
+                }
+                /*else if(this.currentScreen instanceof GuiInventory) {
             		
             	}*/
             }
@@ -2586,9 +2521,9 @@ public class Minecraft implements IThreadListener, ISnooperInfo
 
         while (this.gameSettings.keyBindCommand.isPressed())
         {
-        	if(this.currentScreen == null) {
-        		this.displayGuiScreen(new GuiChat("/"));
-        	}
+            if(this.currentScreen == null) {
+                this.displayGuiScreen(new GuiChat("/"));
+            }
             /*else if(this.currentScreen instanceof GuiInventory) {
             }*/
         }
@@ -2625,22 +2560,19 @@ public class Minecraft implements IThreadListener, ISnooperInfo
         }
         else
         {
-        	if(this.currentScreen == null) {
-	            while (this.gameSettings.keyBindAttack.isPressed())
-	            {
-	                this.clickMouse();
-	            }
-	
-	            while (this.gameSettings.keyBindUseItem.isPressed())
-	            {
-	                this.rightClickMouse();
-	            }
-	
-	            while (this.gameSettings.keyBindPickBlock.isPressed())
-	            {
-	                this.middleClickMouse();
-	            }
-        	}
+            if(this.currentScreen == null) {
+                while (this.gameSettings.keyBindAttack.isPressed()) {
+                    this.clickMouse();
+                }
+
+                while (this.gameSettings.keyBindUseItem.isPressed()) {
+                    this.rightClickMouse();
+                }
+
+                while (this.gameSettings.keyBindPickBlock.isPressed()) {
+                    this.middleClickMouse();
+                }
+            }
         }
 
         if (this.gameSettings.keyBindUseItem.isKeyDown() && this.rightClickDelayTimer == 0 && !this.player.isHandActive() && this.currentScreen == null)
@@ -3846,5 +3778,9 @@ public class Minecraft implements IThreadListener, ISnooperInfo
     public Tutorial getTutorial()
     {
         return this.tutorial;
+    }
+
+    public List<IResourcePack> getDefaultResourcePacks() {
+        return defaultResourcePacks;
     }
 }

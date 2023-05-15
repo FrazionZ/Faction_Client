@@ -15,6 +15,12 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
+import fz.frazionz.api.HTTPFunctions;
+import fz.frazionz.api.gsonObj.UserSkinsInfo;
+import fz.frazionz.event.impl.GuiCloseEvent;
+import fz.frazionz.utils.FzSkinUtils;
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.resources.ResourceLocation;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -83,6 +89,14 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
     private boolean focused;
     
     Color background;
+
+    private static ResourceLocation playerSkinLocation;
+
+    static {
+        Minecraft mc = Minecraft.getMinecraft();
+        UserSkinsInfo playerSkinsInfo = HTTPFunctions.getPlayerSkinInfo(mc.getSession().getProfile().getId());
+        playerSkinLocation = FzSkinUtils.loadSkin(mc.getSession().getProfile(), playerSkinsInfo);
+    }
 
     /**
      * Draws the screen and all the components in it.
@@ -662,7 +676,7 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
     {
         if (this.mc.world != null)
         {
-            this.drawRect(0, 0, this.width, this.height, 0xAA000000);
+            drawRect(0, 0, this.width, this.height, 0xAA000000);
         }
         else
         {
@@ -678,7 +692,7 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
      */
     public void drawBackground(int tint)
     {
-    	this.drawRect(0, 0, this.width, this.height, Colors.BLACK_3);
+    	drawRect(0, 0, this.width, this.height, Colors.BLACK_4);
     }
 
     /**
@@ -775,5 +789,20 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
     public void onResize(Minecraft mcIn, int w, int h)
     {
         this.setWorldAndResolution(mcIn, w, h);
+    }
+
+    public void drawPlayerHead(int x, int y, int width, int height) {
+        Minecraft mc = Minecraft.getMinecraft();
+
+        mc.getTextureManager().bindTexture(playerSkinLocation);
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+        GlStateManager.enableBlend();
+        GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+        GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+
+        drawScaledCustomSizeModalRect(x, y, 8, 8, 8, 8, width, height, 64, 64);
+        drawScaledCustomSizeModalRect(x, y, 40, 8, 8, 8, width, height, 64, 64);
+
+        GlStateManager.disableBlend();
     }
 }

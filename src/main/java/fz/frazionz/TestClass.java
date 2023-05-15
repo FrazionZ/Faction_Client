@@ -1,12 +1,12 @@
 package fz.frazionz;
 
-import fz.frazionz.event.EventTarget;
-import fz.frazionz.event.impl.ClientTickEvent;
+import fz.frazionz.event.EventHandler;
+import fz.frazionz.event.impl.RenderTickEvent;
 
 public class TestClass {
 
-	@EventTarget
-	public void onTick(ClientTickEvent e) {
+	@EventHandler
+	public void onTick(RenderTickEvent e) {
 		
 		System.out.println("Client tick event is being allow !");
 		
