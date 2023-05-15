@@ -63,7 +63,7 @@ public class GuiOptions extends GuiFzBaseScreen
         if (this.mc.world != null)
         {
             EnumDifficulty enumdifficulty = this.mc.world.getDifficulty();
-            this.difficultyButton = new GuiFzChoiceButton(108, this.width / 2 + 5, this.height / 2 - 82, 150, 20, I18n.format("options.difficulty") + ":", I18n.format(enumdifficulty.getTranslationKey()));
+            this.difficultyButton = new GuiFzChoiceButton(108, this.width / 2 + 5, this.height / 2 - 82, 150, 24, I18n.format("options.difficulty") + ":", I18n.format(enumdifficulty.getTranslationKey()));
             this.buttonList.add(this.difficultyButton);
 
             if (this.mc.isSingleplayer() && !this.mc.world.getWorldInfo().isHardcoreModeEnabled())
