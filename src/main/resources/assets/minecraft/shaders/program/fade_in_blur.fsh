@@ -16,18 +16,21 @@ void main() {
     float totalStrength = 0.0;
     float totalAlpha = 0.0;
     float totalSamples = 0.0;
-    float progRadius = floor(Radius * Progress);
-    for(float r = -progRadius; r <= progRadius; r += 1.0) {
-        vec4 sample = texture2D(DiffuseSampler, texCoord + oneTexel * r * BlurDir);
+    int progRadius = int(floor(Radius * Progress));
+    float radiusFactor = float(progRadius * 2 + 1);
 
-		// Accumulate average alpha
-        totalAlpha = totalAlpha + sample.a;
-        totalSamples = totalSamples + 1.0;
+    for (int r = -progRadius; r <= progRadius; r += 2) {
+        vec4 smple = texture2D(DiffuseSampler, texCoord + oneTexel * float(r) * BlurDir);
 
-		// Accumulate smoothed blur
-        float strength = 1.0 - abs(r / progRadius);
-        totalStrength = totalStrength + strength;
-        blurred = blurred + sample;
+        // Accumulate average alpha
+        totalAlpha += smple.a;
+        totalSamples += 1.0;
+
+        // Accumulate smoothed blur
+        float strength = 1.0 - abs(float(r) / float(progRadius));
+        totalStrength += strength;
+        blurred += smple;
     }
-    gl_FragColor = vec4(blurred.rgb / (progRadius * 2.0 + 1.0), totalAlpha);
+
+    gl_FragColor = vec4(blurred.rgb / radiusFactor, totalAlpha / totalSamples);
 }
