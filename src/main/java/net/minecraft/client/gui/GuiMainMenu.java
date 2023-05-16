@@ -8,6 +8,8 @@ import fz.frazionz.TTFFontRenderer;
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.lwjgl.nanovg.NVGColor;
+import org.lwjgl.nanovg.NVGPaint;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GLContext;
 
@@ -26,6 +28,9 @@ import net.minecraft.client.settings.GameSettings;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.StringUtils;
 import net.minecraft.util.text.TextFormatting;
+
+import static org.lwjgl.nanovg.NanoVG.*;
+import static org.lwjgl.nanovg.NanoVGGL2.*;
 
 public class GuiMainMenu extends GuiScreen
 {
@@ -354,7 +359,33 @@ public class GuiMainMenu extends GuiScreen
         }*/
         
         drawSideBar();
-        
+
+        try {
+            long vg = nvgCreate(0);
+            float x = 100;
+            float y = 100;
+            float w = 100;
+            float h = 100;
+            float r = 10;
+            float spread = 10;
+
+            NVGPaint shadowPaint = NVGPaint.calloc();
+            NVGColor colorA = NVGColor.calloc().r(0).g(0).b(0).a(1f);
+            NVGColor colorB = NVGColor.calloc().r(0).g(0).b(0).a(0);
+
+            nvgBoxGradient(vg, x - spread, y - spread, w + spread * 2, h + spread * 2, r + spread, spread * 2, colorA, colorB, shadowPaint);
+            nvgBeginPath(vg);
+            nvgRoundedRect(vg, x - spread - spread * 2 * 2, y - spread - spread * 2 * 2, w + 2 * spread + 2 * spread * 2 * 2, h + 2 * spread + 2 * spread * 2 * 2, r + spread * 3);
+            nvgPathWinding(vg, NVG_HOLE);
+            nvgRoundedRect(vg, x, y, w, h, r);
+            nvgFillPaint(vg, shadowPaint);
+            nvgFill(vg);
+            nvgClosePath(vg);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+
 		super.drawScreen(mouseX, mouseY, partialTicks);
     }
     

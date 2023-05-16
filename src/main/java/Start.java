@@ -6,7 +6,7 @@ public class Start
 {
     public static void main(String[] args)
     {
-        Main.main(concat(new String[] {"--version", "mcp", "--accessToken", "x34IEQo6vaR8TCSgC0iN", "--assetsDir", "assets", "--assetIndex", "1.12", "--userProperties", "{}"}, args));
+        Main.main(concat(new String[] {"--tweakClass", "me.djtheredstoner.lwjgl.Tweaker", "--version", "mcp", "--accessToken", "x34IEQo6vaR8TCSgC0iN", "--assetsDir", "assets", "--assetIndex", "1.12", "--userProperties", "{}"}, args));
     }
 
     public static <T> T[] concat(T[] first, T[] second)
