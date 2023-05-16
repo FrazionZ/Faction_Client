@@ -9,6 +9,7 @@ public class LaunchClient {
     static List<String> arguments = new ArrayList<>();
 
     public static void main(String[] args) {
+        System.setProperty("org.lwjgl.util.Debug", "true");
         arguments.addAll(Arrays.asList(args));
         arguments.add("--tweakClass");
         arguments.add("me.djtheredstoner.lwjgl.Tweaker");
