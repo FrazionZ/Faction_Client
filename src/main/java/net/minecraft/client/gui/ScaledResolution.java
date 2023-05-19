@@ -1,7 +1,13 @@
 package net.minecraft.client.gui;
 
+import fz.frazionz.client.gui.impl.ExcludeScaledResolution;
+import fz.frazionz.client.gui.options.GuiOptionsMenu;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.math.MathHelper;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class ScaledResolution
 {
@@ -23,6 +29,8 @@ public class ScaledResolution
         {
             i = 1000;
         }
+        if(isCurrentScreenExcluded())
+            i = 1;
 
         while (this.scaleFactor < i && this.scaledWidth / (this.scaleFactor + 1) >= 320 && this.scaledHeight / (this.scaleFactor + 1) >= 240)
         {
@@ -38,6 +46,12 @@ public class ScaledResolution
         this.scaledHeightD = (double)this.scaledHeight / (double)this.scaleFactor;
         this.scaledWidth = MathHelper.ceil(this.scaledWidthD);
         this.scaledHeight = MathHelper.ceil(this.scaledHeightD);
+    }
+
+    private static boolean isCurrentScreenExcluded() {
+        if(Minecraft.getMinecraft().currentScreen != null && Minecraft.getMinecraft().currentScreen instanceof ExcludeScaledResolution)
+            return true;
+        return false;
     }
 
     public int getScaledWidth()

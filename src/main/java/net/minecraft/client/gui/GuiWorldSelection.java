@@ -5,6 +5,7 @@ import java.io.IOException;
 import javax.annotation.Nullable;
 
 import fz.frazionz.client.gui.buttons.GuiHoverButton;
+import fz.frazionz.client.gui.impl.ExcludeScaledResolution;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -16,7 +17,7 @@ import fz.frazionz.TTFFontRenderer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.resources.ResourceLocation;
 
-public class GuiWorldSelection extends GuiScreen
+public class GuiWorldSelection extends GuiScreen implements ExcludeScaledResolution
 {
     private static final Logger LOGGER = LogManager.getLogger();
 

@@ -33,10 +33,10 @@ public class TTFFontRenderer {
         } catch (IOException | FontFormatException e) {
             e.printStackTrace();
         }
-        ScaledResolution res = new ScaledResolution(Minecraft.getMinecraft());
-        this.scaleFactor = res.getScaleFactor();
+        /*ScaledResolution res = new ScaledResolution(Minecraft.getMinecraft());
+        this.scaleFactor = res.getScaleFactor();*/
         this.size = size;
-        this.unicodeFont = new UnicodeFont(this.font.deriveFont((float) size * scaleFactor / 2F));
+        this.unicodeFont = new UnicodeFont(this.font.deriveFont((float) size));
         try {
             this.unicodeFont.addAsciiGlyphs();
             this.unicodeFont.getEffects().add(new ColorEffect(Color.white));
@@ -51,10 +51,10 @@ public class TTFFontRenderer {
     }
 
     public void drawString(String text, float x, float y, int color) {
-        ScaledResolution res = new ScaledResolution(Minecraft.getMinecraft());
+        /*ScaledResolution res = new ScaledResolution(Minecraft.getMinecraft());
         if (res.getScaleFactor() != scaleFactor) {
             this.scaleFactor = res.getScaleFactor();
-            this.unicodeFont = new UnicodeFont(this.font.deriveFont((float) size * scaleFactor / 2F));
+            this.unicodeFont = new UnicodeFont(this.font.deriveFont((float) size));
 
             try {
                 this.unicodeFont.addAsciiGlyphs();
@@ -63,12 +63,10 @@ public class TTFFontRenderer {
             } catch (SlickException e) {
                 e.printStackTrace();
             }
-        }
-        x *= scaleFactor;
-        y *= scaleFactor;
+        }*/
         org.newdawn.slick.Color c = new org.newdawn.slick.Color(color);
         GlStateManager.pushMatrix();
-        GlStateManager.scale(1D / scaleFactor, 1D / scaleFactor, 1D);
+        GlStateManager.scale(1D, 1D, 1D);
         GlStateManager.color(c.getRed() / 255F, c.getGreen() / 255F, c.getBlue() / 255F, c.getAlpha() / 255F);
 
         GlStateManager.disableLighting();
@@ -89,11 +87,11 @@ public class TTFFontRenderer {
     }
 
     public int getWidth(String text) {
-        return unicodeFont.getWidth(text) / scaleFactor;
+        return unicodeFont.getWidth(text);
     }
 
     public int getHeight() {
-        return unicodeFont.getLineHeight() / scaleFactor;
+        return unicodeFont.getLineHeight();
     }
 
     public int getHeight(String text) {

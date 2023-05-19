@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.util.Random;
 
 import fz.frazionz.TTFFontRenderer;
+import fz.frazionz.client.gui.impl.ExcludeScaledResolution;
+import fz.frazionz.client.gui.options.GuiOptionsMenu;
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -27,7 +29,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.StringUtils;
 import net.minecraft.util.text.TextFormatting;
 
-public class GuiMainMenu extends GuiScreen
+public class GuiMainMenu extends GuiScreen implements ExcludeScaledResolution
 {
     private static final Logger LOGGER = LogManager.getLogger();
     private static final Random RANDOM = new Random();
@@ -185,13 +187,13 @@ public class GuiMainMenu extends GuiScreen
      */
     public void initGui()
     {
-    	this.menuWidth = 200;
+    	this.menuWidth = 400;
     	this.menuHeight = this.height;
         rightContentWidth = this.width - this.menuWidth;
         rightContentHeight = this.height;
-        rightContentPadding = 12;
+        rightContentPadding = 24;
 
-        fontDisplayName = FzClient.getInstance().getTTFFontRenderers().get(28);
+        fontDisplayName = FzClient.getInstance().getTTFFontRenderers().get(32);
         displayString = "Bienvenue à toi ";
         displayWidth = fontDisplayName.getWidth(displayString);
         displayHeight = fontDisplayName.getHeight(displayString);
@@ -206,7 +208,7 @@ public class GuiMainMenu extends GuiScreen
         this.widthCopyright = this.fontRenderer.getStringWidth("Copyright Mojang AB. Do not distribute!");
         this.widthCopyrightRest = this.width - this.widthCopyright - 2;
         
-        this.addMenuButtons(160, 28, 8);
+        this.addMenuButtons(292, 55, 16);
     	
         /*try {
             AVATAR_HEAD = new DynamicTexture(this.getDynamicTextureFromUrl(new File(FzUtils.getLauncherDir(), "avatars/"+this.mc.getSession().getPlayerID()+".png")));
@@ -230,7 +232,7 @@ public class GuiMainMenu extends GuiScreen
 
     private void addMenuButtons(int width , int height, int gap)
     {
-    	int menuPadding = 20;
+    	int menuPadding = 48;
     	
     	this.buttonList.add(new GuiMenuButton(1, menuPadding, menuPadding, width, height, "Rejoindre"));
     	this.buttonList.add(new GuiMenuButton(2, menuPadding, menuPadding + height + gap, width, height, "Solo"));
@@ -252,7 +254,7 @@ public class GuiMainMenu extends GuiScreen
                this.mc.displayGuiScreen(new GuiWorldSelection(this));
                break;
  	       case 3: 
- 	    	   this.mc.displayGuiScreen(new GuiOptions(this, this.mc.gameSettings));
+ 	    	   this.mc.displayGuiScreen(new GuiOptionsMenu(this, this.mc.gameSettings));
  	           break;
  	       case 4:
  	    	   this.mc.shutdown();
@@ -304,24 +306,24 @@ public class GuiMainMenu extends GuiScreen
         
         //String info = "FrazionZ n'est pas affilié à Mojang";
         //this.drawString(this.fontRenderer, info, this.width - this.fontRenderer.getStringWidth(info) - 1, this.height - 10, -1);
-        //this.widthCopyright = this.fontRenderer.getStringWidth("Copyright Mojang AB. Do not distribute!");
+        String copy = "Copyright Mojang AB. Do not distribute!";
+        this.widthCopyright = this.fontRenderer.getStringWidth(copy);
+        this.drawString(this.fontRenderer, copy, this.width - this.fontRenderer.getStringWidth(copy) - 1, this.height - 10, -1);
 
         mc.getTextureManager().bindTexture(FZ_LOGO_X256);
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glEnable(GL11.GL_BLEND);
-        ScaledResolution sr = new ScaledResolution(Minecraft.getMinecraft());
+        float size = 256f;
+        Gui.drawModalRectWithCustomSizedTexture(menuWidth + (width-menuWidth)/2-128, height/2-128, 0, 0, (int)size, (int)size, size, size);
 
-        float size = 128f;
-        Gui.drawModalRectWithCustomSizedTexture(menuWidth + (width-menuWidth)/2-64, height/2-64, 0, 0, (int)size, (int)size, size, size);
-
-        int headSize = 16;
+        int headSize = 32;
         int heightText = Math.max(displayNameHeight, displayHeight);
         int left = menuWidth + (width-menuWidth)/2 - (displayWidth + displayNameWidth)/2 - headSize/2 - 8;
-        drawPlayerHead(left, height-rightContentPadding-heightText+2-24, headSize, headSize);
+        drawPlayerHead(left, height-rightContentPadding-heightText+2-48, headSize, headSize);
         left += headSize + 8;
-        fontDisplayName.drawString(displayString, left, height-rightContentPadding-heightText-24, 0xFFFFFFFF);
+        fontDisplayName.drawString(displayString, left, height-rightContentPadding-heightText-48-4, 0xFFFFFFFF);
         left += displayWidth;
-        fontDisplayName.drawString(displayName, left, height-rightContentPadding-heightText-24, GRADIENT_BUTTON_1);
+        fontDisplayName.drawString(displayName, left, height-rightContentPadding-heightText-48-4, GRADIENT_BUTTON_1);
         // Money
 
         /*

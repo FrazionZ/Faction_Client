@@ -7,6 +7,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import fz.frazionz.FzClient;
 import fz.frazionz.client.gui.buttons.GuiMenuButton;
+import fz.frazionz.client.gui.impl.ExcludeScaledResolution;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiDisconnected;
@@ -22,7 +23,7 @@ import net.minecraft.util.text.TextComponentTranslation;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class GuiConnecting extends GuiScreen
+public class GuiConnecting extends GuiScreen implements ExcludeScaledResolution
 {
     private static final AtomicInteger CONNECTION_ID = new AtomicInteger(0);
     private static final Logger LOGGER = LogManager.getLogger();
@@ -135,7 +136,7 @@ public class GuiConnecting extends GuiScreen
     public void initGui()
     {
         this.buttonList.clear();
-        this.buttonList.add(new GuiMenuButton(0, this.width / 2 - 80, this.height / 4 + 120 + 14, 160, 28, I18n.format("gui.cancel")));
+        this.buttonList.add(new GuiMenuButton(0, this.width / 2 - 146, this.height / 2 + 16, 292, 55, I18n.format("gui.cancel")));
     }
 
     /**

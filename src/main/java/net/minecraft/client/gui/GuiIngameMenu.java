@@ -8,6 +8,7 @@ import fz.frazionz.client.gui.faction.BlasonCreatorGUI;
 
 import fz.frazionz.client.gui.GuiModsConfig;
 import fz.frazionz.client.gui.buttons.GuiMenuButton;
+import fz.frazionz.client.gui.impl.ExcludeScaledResolution;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.achievement.GuiStats;
 import net.minecraft.client.gui.advancements.GuiScreenAdvancements;
@@ -20,7 +21,7 @@ import net.minecraft.resources.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
 
-public class GuiIngameMenu extends GuiScreen
+public class GuiIngameMenu extends GuiScreen implements ExcludeScaledResolution
 {
     private int menuWidth;
     private int menuHeight;
@@ -33,12 +34,12 @@ public class GuiIngameMenu extends GuiScreen
      */
     public void initGui()
     {
-    	this.menuWidth = 200;
+    	this.menuWidth = 400;
     	this.menuHeight = this.height;
 
         this.buttonList.clear();
         
-        this.addMenuButtons(160, 28, 8);
+        this.addMenuButtons(292, 55, 16);
     }
 
     @Override
@@ -48,7 +49,7 @@ public class GuiIngameMenu extends GuiScreen
 
     private void addMenuButtons(int width , int height, int gap)
     {
-    	int menuPadding = 20;
+    	int menuPadding = 48;
     	
         this.buttonList.add(new GuiMenuButton(0, menuPadding, menuPadding, width, height, "Retour"));
     	this.buttonList.add(new GuiMenuButton(1, menuPadding, menuPadding + height + gap, width, height, "Options"));
@@ -119,7 +120,6 @@ public class GuiIngameMenu extends GuiScreen
         mc.getTextureManager().bindTexture(FZ_LOGO_X128);
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glEnable(GL11.GL_BLEND);
-        ScaledResolution sr = new ScaledResolution(Minecraft.getMinecraft());
 
         int size = 64;
         Gui.drawModalRectWithCustomSizedTexture(width-size-24, height-size-24, 0, 0, size, size, size, size);
