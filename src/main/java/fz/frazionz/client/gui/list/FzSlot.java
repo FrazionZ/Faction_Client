@@ -18,4 +18,6 @@ public interface FzSlot {
 
     void drawSlot(int mouseX, int mouseY, float partialTicks);
 
+    void onClick(int mouseX, int mouseY, int mouseButton);
+
 }

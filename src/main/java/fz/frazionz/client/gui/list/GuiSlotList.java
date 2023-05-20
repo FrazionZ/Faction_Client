@@ -278,7 +278,7 @@ public class GuiSlotList
     public void handleMouseInput()
     {
         if (Mouse.isButtonDown(0)) {
-            bindAmountScrolled();
+
         }
         else {
             int i2 = Mouse.getEventDWheel();
@@ -299,6 +299,20 @@ public class GuiSlotList
                     this.scroller.registerTick();
                 }
             }
+        }
+
+        if(isMouseYWithinSlotBounds(this.mouseY)) {
+
+            if (Mouse.getEventButton() == 0 && Mouse.getEventButtonState() && this.mouseY >= this.y && this.mouseY <= this.y_bottom)
+            {
+                for(FzSlot slot : slots) {
+                    if(mouseY >= slot.getSlotY() && mouseY <= slot.getSlotY() + slot.getSlotHeight()) {
+                        slot.onClick(this.mouseX, this.mouseY, Mouse.getEventButton());
+                        break;
+                    }
+                }
+            }
+
         }
 
         /*if (this.isMouseYWithinSlotBounds(this.mouseY)) {

@@ -57,4 +57,9 @@ public class FzCategory implements FzSlot {
     public void drawSlot(int mouseX, int mouseY, float partialTicks) {
 
     }
+
+    @Override
+    public void onClick(int mouseX, int mouseY, int mouseButton) {
+
+    }
 }
