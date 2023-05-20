@@ -29,11 +29,6 @@ public class GuiSlotList
     protected FzSlot[] slots;
     protected int contentHeight;
 
-    /** The buttonID of the button used to scroll up */
-    private int scrollUpButtonID;
-
-    /** The buttonID of the button used to scroll down */
-    private int scrollDownButtonID;
     protected int mouseX;
     protected int mouseY;
 
@@ -50,6 +45,9 @@ public class GuiSlotList
 
     protected double scrollVelocity;
     protected RunSixtyTimesEverySec scroller;
+
+    protected int firstIndexToDraw;
+    protected int lastIndexToDraw;
     
     public GuiSlotList(Minecraft mcIn, FzSlot[] slots, int x, int y, int width, int height, int slotsGap)
     {
@@ -106,9 +104,12 @@ public class GuiSlotList
         int y = this.y;
         for (FzSlot slot : slots) {
             slot.setSlotX(x);
-            slot.setSlotY(y);
+            slot.setSlotY(y - (int)(amountScrolled));
             y += slot.getSlotHeight() + slotsGap;
         }
+
+        firstIndexToDraw = 0;
+        lastIndexToDraw = slots.length - 1;
     }
 
     public GuiSlotList(Minecraft mc, FzSlot[] slots, int x, int y, int width, int height)
@@ -144,6 +145,7 @@ public class GuiSlotList
                     }
                 }
             }
+            updateSlotsPosition();
         });
     }
     
@@ -200,15 +202,6 @@ public class GuiSlotList
     }
 
     /**
-     * Registers the IDs that can be used for the scrollbar's up/down buttons.
-     */
-    public void registerScrollButtons(int scrollUpButtonIDIn, int scrollDownButtonIDIn)
-    {
-        this.scrollUpButtonID = scrollUpButtonIDIn;
-        this.scrollDownButtonID = scrollDownButtonIDIn;
-    }
-
-    /**
      * Stop the thing from scrolling out of bounds
      */
     protected void bindAmountScrolled()
@@ -218,7 +211,7 @@ public class GuiSlotList
 
     public int getMaxScroll()
     {
-        return Math.max(0, this.getContentHeight() - (this.y_bottom - this.y - 4));
+        return Math.max(0, this.getContentHeight() - height);
     }
 
     /**
@@ -261,7 +254,6 @@ public class GuiSlotList
     }
 
     protected void drawScrollBar() {
-
         if(contentHeight > height) {
             int scrollBarX = x_right + 24;
             int scrollBarWidth = 14;
@@ -269,7 +261,9 @@ public class GuiSlotList
             int scrollThumbHeight = (int) (height * ((float)height / (float)contentHeight));
 
             RoundedShaderRenderer.getInstance().drawRoundRect(scrollBarX, y, scrollBarWidth, height, 7, Gui.BLACK_2);
-            RoundedShaderRenderer.getInstance().drawRoundRect(scrollBarX, y + (int)amountScrolled, scrollBarWidth, scrollThumbHeight, 7, Gui.COLOR_2);
+
+            int yPos = (int) ((height - scrollThumbHeight) * (amountScrolled / getMaxScroll()));
+            RoundedShaderRenderer.getInstance().drawRoundRect(scrollBarX, y + yPos , scrollBarWidth, scrollThumbHeight, 7, Gui.COLOR_2);
         }
     }
 
@@ -280,15 +274,16 @@ public class GuiSlotList
         this.drawBackground();
         this.drawScrollBar();
 
-        for(FzSlot slot : this.slots) {
-            slot.drawSlot(mouseXIn, mouseYIn, partialTicks);
+        for(int i = 0; i < this.slots.length; ++i) {
+            if(i >= firstIndexToDraw && i <= lastIndexToDraw
+                slots[i].drawSlot(mouseXIn, mouseYIn, partialTicks);
         }
     }
 
     public void handleMouseInput()
     {
         if (Mouse.isButtonDown(0)) {
-            this.bindAmountScrolled();
+            bindAmountScrolled();
         }
         else {
             int i2 = Mouse.getEventDWheel();
@@ -311,7 +306,7 @@ public class GuiSlotList
             }
         }
 
-        if (this.isMouseYWithinSlotBounds(this.mouseY)) {
+        /*if (this.isMouseYWithinSlotBounds(this.mouseY)) {
             if (Mouse.getEventButton() == 0 && Mouse.getEventButtonState() && this.mouseY >= this.y && this.mouseY <= this.y_bottom) {
 
             }
@@ -334,7 +329,7 @@ public class GuiSlotList
 
                 //this.amountScrolled += (float)(i2 * this.slotHeight / 2);
             }
-        }
+        }*/
     }
 
     /**

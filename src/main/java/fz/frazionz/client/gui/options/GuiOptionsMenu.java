@@ -82,6 +82,16 @@ public class GuiOptionsMenu extends GuiScreen implements ExcludeScaledResolution
         buttonList.add(new GuiMenuButton(0, center - buttonWidth/2, height - padding - buttonHeight, buttonWidth, buttonHeight, I18n.format("gui.done")));
     }
 
+    /**
+     * Handles mouse input.
+     */
+    public void handleMouseInput() throws IOException
+    {
+        super.handleMouseInput();
+        this.list.handleMouseInput();
+    }
+
+
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         drawRect(0, 0, this.width, this.height, BLACK_4);
