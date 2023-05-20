@@ -1,15 +1,19 @@
 package fz.frazionz.client.gui.options;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import fz.frazionz.client.gui.buttons.GuiMenuButton;
 import fz.frazionz.client.gui.impl.ExcludeScaledResolution;
+import fz.frazionz.client.gui.list.FzSlot;
+import fz.frazionz.client.gui.list.GuiSlotList;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.gui.*;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.client.resources.Language;
 import net.minecraft.client.settings.GameSettings;
 
 import java.io.IOException;
+import java.util.Map;
 
 public class GuiOptionsMenu extends GuiScreen implements ExcludeScaledResolution {
 
@@ -20,13 +24,14 @@ public class GuiOptionsMenu extends GuiScreen implements ExcludeScaledResolution
     private int activeMenu;
     private int padding = 24;
 
+    private GuiSlotList list;
+
     public GuiOptionsMenu(GuiScreen lastScreen, GameSettings gameSettings) {
-        this.settings = gameSettings;
-        this.lastScreen = lastScreen;
-        this.activeMenu = 0;
+        this(lastScreen, gameSettings, 0);
     }
 
     public GuiOptionsMenu(GuiScreen lastScreen, GameSettings gameSettings, int activeMenu) {
+        super();
         this.settings = gameSettings;
         this.lastScreen = lastScreen;
         this.activeMenu = activeMenu;
@@ -35,6 +40,8 @@ public class GuiOptionsMenu extends GuiScreen implements ExcludeScaledResolution
     @Override
     public void initGui() {
         addMenuButton();
+        FzSlot[] slots = new FzSlot[0];
+        this.list = new GuiSlotList(mc, slots, width/2-350-16, 143, 700, 714, 24);
     }
 
     @Override
@@ -78,6 +85,7 @@ public class GuiOptionsMenu extends GuiScreen implements ExcludeScaledResolution
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         drawRect(0, 0, this.width, this.height, BLACK_4);
+        list.drawScreen(mouseX, mouseY, partialTicks);
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
 }
