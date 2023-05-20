@@ -1,44 +1,44 @@
-options.graphicsCustomisation=Graphics Customisation
+options.graphicsCustomisation=Customisation Graphiques
 
-item.yellite_apple.name=Yellite Apple
-item.bauxite_apple.name=Bauxite Apple
-item.onyx_apple.name=Onyx Apple
-item.frazion_apple.name=Frazion Apple
+item.yellite_apple.name=Pomme en Yellite
+item.bauxite_apple.name=Pomme en Bauxite
+item.onyx_apple.name=Pomme en Onyx
+item.frazion_apple.name=Pomme en Frazion
 
-item.yellite.name=§eYellite
-item.yellite_sword.name=§eYellite Sword
-item.yellite_axe.name=§eYellite Axe
-item.yellite_pickaxe.name=§eYellite Pickaxe
-item.yellite_shovel.name=§eYellite Shovel
-item.yellite_hoe.name=§eYellite Hoe
-item.yellite_helmet.name=§eYellite Helmet
-item.yellite_chestplate.name=§eYellite Chestplate
-item.yellite_leggings.name=§eYellite Leggings
-item.yellite_boots.name=§eYellite Boots
-
-
-item.bauxite.name=§6Bauxite
-item.bauxite_sword.name=§6Bauxite Sword
-item.bauxite_axe.name=§6Bauxite Axe
-item.bauxite_pickaxe.name=§6Bauxite Pickaxe
-item.bauxite_shovel.name=§6Bauxite Shovel
-item.bauxite_hoe.name=§6Bauxite Hoe
-item.bauxite_helmet.name=§6Bauxite Helmet
-item.bauxite_chestplate.name=§6Bauxite Chestplate
-item.bauxite_leggings.name=§6Bauxite Leggings
-item.bauxite_boots.name=§6Bauxite Boots
+item.yellite.name=Yellite
+item.yellite_sword.name=Épée en Yellite
+item.yellite_axe.name=Hache en Yellite
+item.yellite_pickaxe.name=Pioche en Yellite
+item.yellite_shovel.name=Pelle en Yellite
+item.yellite_hoe.name=Houe en Yellite
+item.yellite_helmet.name=Casque en Yellite
+item.yellite_chestplate.name=Plastron en Yellite
+item.yellite_leggings.name=Jambière en Yellite
+item.yellite_boots.name=Bottes en Yellite
 
 
-item.onyx.name=§8Onyx
-item.onyx_sword.name=§8Onyx Sword
-item.onyx_axe.name=§8Onyx Axe
-item.onyx_pickaxe.name=§8Onyx Pickaxe
-item.onyx_shovel.name=§8Onyx Shovel
-item.onyx_hoe.name=§8Onyx Hoe
-item.onyx_helmet.name=§8Onyx Helmet
-item.onyx_chestplate.name=§8Onyx Chestplate
-item.onyx_leggings.name=§8Onyx Leggings
-item.onyx_boots.name=§8Onyx Boots
+item.bauxite.name=Bauxite
+item.bauxite_sword.name=Épée en Bauxite
+item.bauxite_axe.name=Hache en Bauxite
+item.bauxite_pickaxe.name=Pioche en Bauxite
+item.bauxite_shovel.name=Pelle en Bauxite
+item.bauxite_hoe.name=Houe en Bauxite
+item.bauxite_helmet.name=Casque en Bauxite
+item.bauxite_chestplate.name=Plastron en Bauxite
+item.bauxite_leggings.name=Jambière en Bauxite
+item.bauxite_boots.name=Bottes en Bauxite
+
+
+item.onyx.name=Onyx
+item.onyx_sword.name=Épée en Onyx
+item.onyx_axe.name=Hache en Onyx
+item.onyx_pickaxe.name=Pioche en Onyx
+item.onyx_shovel.name=Pelle en Onyx
+item.onyx_hoe.name=Houe en Onyx
+item.onyx_helmet.name=Casque en Onyx
+item.onyx_chestplate.name=Plastron en Onyx
+item.onyx_leggings.name=Jambière en Onyx
+item.onyx_boots.name=Bottes en Onyx
 
 
 item.frazion_powder.name=§dFrazion Powder
