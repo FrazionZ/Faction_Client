@@ -45,9 +45,6 @@ public class GuiSlotList
 
     protected double scrollVelocity;
     protected RunSixtyTimesEverySec scroller;
-
-    protected int firstIndexToDraw;
-    protected int lastIndexToDraw;
     
     public GuiSlotList(Minecraft mcIn, FzSlot[] slots, int x, int y, int width, int height, int slotsGap)
     {
@@ -101,15 +98,13 @@ public class GuiSlotList
     }
 
     private void updateSlotsPosition() {
+
         int y = this.y;
         for (FzSlot slot : slots) {
             slot.setSlotX(x);
             slot.setSlotY(y - (int)(amountScrolled));
             y += slot.getSlotHeight() + slotsGap;
         }
-
-        firstIndexToDraw = 0;
-        lastIndexToDraw = slots.length - 1;
     }
 
     public GuiSlotList(Minecraft mc, FzSlot[] slots, int x, int y, int width, int height)
@@ -274,9 +269,9 @@ public class GuiSlotList
         this.drawBackground();
         this.drawScrollBar();
 
-        for(int i = 0; i < this.slots.length; ++i) {
-            if(i >= firstIndexToDraw && i <= lastIndexToDraw
-                slots[i].drawSlot(mouseXIn, mouseYIn, partialTicks);
+        for(FzSlot slot : slots) {
+            if(slot.getSlotY() + slot.getSlotHeight() >= y && slot.getSlotY() <= y + height)
+                slot.drawSlot(mouseXIn, mouseYIn, partialTicks);
         }
     }
 
