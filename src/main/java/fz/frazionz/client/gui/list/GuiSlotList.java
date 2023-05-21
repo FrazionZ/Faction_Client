@@ -49,7 +49,7 @@ public class GuiSlotList
     public GuiSlotList(Minecraft mcIn, FzSlot[] slots, int x, int y, int width, int height, int slotsGap)
     {
         this.mc = mcIn;
-        this.slots = slots;
+        this.slots = slots == null ? new FzSlot[0] : slots;
         this.x = x;
         this.y = y;
         this.x_right = x + width;
@@ -58,9 +58,16 @@ public class GuiSlotList
         this.height = height;
         this.slotsGap = slotsGap;
         this.setScroller();
+        //this.fakeFill();
 
+        contentHeight = calcContentHeight();
+        updateSlotsPosition();
+        updateSlotsWidth();
+    }
 
-        this.slots = new FzSlot[]{
+    private void fakeFill() {
+        if(this.slots == null || this.slots.length == 0)
+            this.slots = new FzSlot[]{
                 new FzSlotExample(1),
                 new FzSlotExample(2),
                 new FzSlotExample2(3),
@@ -76,15 +83,18 @@ public class GuiSlotList
                 new FzSlotExample2(13),
                 new FzSlotExample(14),
                 new FzSlotExample(15)
-        };
+            };
+    }
 
+    public void setSlots(FzSlot[] slots) {
+        this.slots = slots;
         contentHeight = calcContentHeight();
         updateSlotsPosition();
         updateSlotsWidth();
     }
 
-    public void setSlots(FzSlot[] slots) {
-        this.slots = slots;
+    public FzSlot[] getSlots() {
+        return slots;
     }
 
     private int calcContentHeight() {
@@ -274,10 +284,11 @@ public class GuiSlotList
         this.drawBackground();
         this.drawScrollBar();
 
-        for(FzSlot slot : slots) {
-            if(slot.getSlotY() + slot.getSlotHeight() >= y && slot.getSlotY() <= y + height)
-                slot.drawSlot(mouseXIn, mouseYIn, partialTicks);
-        }
+        if(slots != null)
+            for(FzSlot slot : slots) {
+                if(slot.getSlotY() + slot.getSlotHeight() >= y && slot.getSlotY() <= y + height)
+                    slot.drawSlot(mouseXIn, mouseYIn, partialTicks);
+            }
     }
 
     public void handleMouseInput()
@@ -287,7 +298,7 @@ public class GuiSlotList
         }
         else {
             int i2 = Mouse.getEventDWheel();
-            if (i2 != 0) {
+            if (contentHeight > height && i2 != 0) {
                 if (i2 > 0) {
                     i2 = 1;
                 }
@@ -352,5 +363,10 @@ public class GuiSlotList
     public int getWidth()
     {
         return width;
+    }
+
+    public void setAmountScrolled(float amountScrolled) {
+        this.amountScrolled = amountScrolled;
+        updateSlotsPosition();
     }
 }

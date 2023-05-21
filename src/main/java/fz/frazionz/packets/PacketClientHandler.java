@@ -18,7 +18,10 @@ public class PacketClientHandler {
                 mc.displayGuiScreen(new GuiMarketCategory(mc.currentScreen, mc, packetIn.getBufferData().readString(80000)));
                 break;
             case MARKET_ITEM_LIST:
-                mc.displayGuiScreen(new GuiMarketItemList(mc.currentScreen, mc, packetIn.getBufferData().readString(80000)));
+                if(mc.currentScreen instanceof GuiMarketCategory) {
+                    ((GuiMarketCategory) mc.currentScreen).setItems(packetIn.getBufferData().readString(80000));
+                }
+                //mc.displayGuiScreen(new GuiMarketItemList(mc.currentScreen, mc, packetIn.getBufferData().readString(80000)));
                 break;
             case MARKET_ITEM:
                 //mc.displayGuiScreen(new GuiMarketItem(mc.currentScreen, mc, packetIn.getBufferData().readString(80000)));

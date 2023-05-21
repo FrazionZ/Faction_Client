@@ -74,7 +74,7 @@ public class GuiIngameMenu extends GuiScreen implements ExcludeScaledResolution
             break;
             
         case 1:
-        	this.mc.displayGuiScreen(new GuiOptionsMenu(this, this.mc.gameSettings));
+        	this.mc.displayGuiScreen(new GuiOptions(this, this.mc.gameSettings));
             break;
             
         case 2:
