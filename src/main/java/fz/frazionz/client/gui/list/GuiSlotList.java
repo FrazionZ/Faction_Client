@@ -59,6 +59,7 @@ public class GuiSlotList
         this.slotsGap = slotsGap;
         this.setScroller();
 
+
         this.slots = new FzSlot[]{
                 new FzSlotExample(1),
                 new FzSlotExample(2),
@@ -80,6 +81,10 @@ public class GuiSlotList
         contentHeight = calcContentHeight();
         updateSlotsPosition();
         updateSlotsWidth();
+    }
+
+    public void setSlots(FzSlot[] slots) {
+        this.slots = slots;
     }
 
     private int calcContentHeight() {
@@ -306,7 +311,7 @@ public class GuiSlotList
             if (Mouse.getEventButton() == 0 && Mouse.getEventButtonState() && this.mouseY >= this.y && this.mouseY <= this.y_bottom)
             {
                 for(FzSlot slot : slots) {
-                    if(mouseY >= slot.getSlotY() && mouseY <= slot.getSlotY() + slot.getSlotHeight()) {
+                    if(mouseY >= slot.getSlotY() && mouseY < slot.getSlotY() + slot.getSlotHeight()) {
                         slot.onClick(this.mouseX, this.mouseY, Mouse.getEventButton());
                         break;
                     }

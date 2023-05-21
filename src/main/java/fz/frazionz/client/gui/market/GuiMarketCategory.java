@@ -4,18 +4,25 @@ import java.io.IOException;
 
 import fz.frazionz.FzClient;
 import fz.frazionz.TTFFontRenderer;
+import fz.frazionz.client.gui.impl.ExcludeScaledResolution;
 import fz.frazionz.client.gui.list.*;
+import fz.frazionz.client.gui.utils.RoundedShaderRenderer;
 import fz.frazionz.enums.EnumGui;
 import fz.frazionz.client.gui.GuiFrazionZInterface;
 import fz.frazionz.packets.client.CPacketGuiOpener;
 import fz.frazionz.utils.FzUtils;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.PositionedSoundRecord;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.RenderItem;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 
-public class GuiMarketCategory extends GuiFrazionZInterface {
+public class GuiMarketCategory extends GuiFrazionZInterface implements ExcludeScaledResolution {
 		
 	private GuiSlotList shopTypeList;
     private MarketType[] types;
@@ -37,7 +44,7 @@ public class GuiMarketCategory extends GuiFrazionZInterface {
         for(MarketType type : types) {
             slots[i++] = new Slot(type.getId(), type.getTypeName(), type.getItemStack());
         }
-        this.shopTypeList = new GuiSlotList(this.mc, slots, this.guiLeft, this.guiTop, 400, 300, 24);
+        this.shopTypeList = new GuiSlotList(this.mc, slots, this.guiLeft, this.guiTop, 400, 300, 16);
 	}
 	
     /**
@@ -102,6 +109,11 @@ public class GuiMarketCategory extends GuiFrazionZInterface {
     private class Slot implements FzSlot {
 
         int id;
+        int posX;
+        int posY;
+        int width;
+        int height;
+
         private String name;
         private ItemStack stack;
 
@@ -109,50 +121,71 @@ public class GuiMarketCategory extends GuiFrazionZInterface {
             this.id = id;
             this.name = name;
             this.stack = stack;
+            this.width = 400;
+            this.height = 72;
         }
 
         @Override
         public int getSlotHeight() {
-            return 0;
+            return height;
         }
 
         @Override
         public int getSlotWidth() {
-            return 0;
+            return width;
         }
 
         @Override
         public int getSlotX() {
-            return 0;
+            return posX;
         }
 
         @Override
         public int getSlotY() {
-            return 0;
+            return posY;
         }
 
         @Override
         public void setSlotX(int x) {
-
+            posX = x;
         }
 
         @Override
         public void setSlotY(int y) {
-
+            posY = y;
         }
 
         @Override
         public void setSlotWidth(int width) {
-
+            this.width = width;
         }
 
         @Override
         public void drawSlot(int mouseX, int mouseY, float partialTicks) {
+            RoundedShaderRenderer.getInstance().drawRoundRect(posX, posY, width, height, 5, Gui.BLACK_2);
+            RenderItem renderItem = Minecraft.getMinecraft().getRenderItem();
+
+
+            GlStateManager.pushMatrix();
+
+            GlStateManager.translate(posX, posY, 0);
+            GlStateManager.scale(2F, 2F, 1);
+            GlStateManager.translate(-posX, -posY, 0);
+
+            RenderHelper.enableGUIStandardItemLighting();
+            renderItem.zLevel = 100F;
+            renderItem.renderItemIntoGUI(this.stack, this.posX + 8, this.posY + (height/4)-8);
+            GlStateManager.enableRescaleNormal();
+
+            RenderHelper.disableStandardItemLighting();
+            GlStateManager.popMatrix();
+            FzClient.getInstance().getTTFFontRenderers().get(24).drawCenteredStringVertically(this.name, this.posX + 56, this.posY + (this.height / 2), 0xFFFFFFFF);
 
         }
 
         @Override
         public void onClick(int mouseX, int mouseY, int mouseButton) {
+            mc.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1.0F));
             mc.player.connection.sendPacket(new CPacketGuiOpener(EnumGui.MARKET_ITEM_LIST, id));
         }
     }
