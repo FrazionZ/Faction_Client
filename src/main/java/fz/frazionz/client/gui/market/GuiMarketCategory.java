@@ -4,21 +4,20 @@ import java.io.IOException;
 
 import fz.frazionz.FzClient;
 import fz.frazionz.TTFFontRenderer;
+import fz.frazionz.client.gui.list.*;
 import fz.frazionz.enums.EnumGui;
 import fz.frazionz.client.gui.GuiFrazionZInterface;
-import fz.frazionz.client.gui.list.DoubleListEntry;
-import fz.frazionz.client.gui.list.DoubleListItemEntry;
-import fz.frazionz.client.gui.list.GuiDoubleList;
 import fz.frazionz.packets.client.CPacketGuiOpener;
 import fz.frazionz.utils.FzUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.item.ItemStack;
 
 public class GuiMarketCategory extends GuiFrazionZInterface {
 		
-	private GuiDoubleList shopTypeList;
+	private GuiSlotList shopTypeList;
     private MarketType[] types;
 	
 	public GuiMarketCategory(GuiScreen lastScreen, Minecraft mc, String json)
@@ -32,13 +31,13 @@ public class GuiMarketCategory extends GuiFrazionZInterface {
 	public void initGui()
 	{
 		super.initGui();
-        this.shopTypeList = new GuiList(this, this.mc, this.guiLeft, this.guiLeft + this.xSize, this.guiTop + 45, this.guiTop + this.ySize - 38, 36);
-        DoubleListItemEntry[] entries = new DoubleListItemEntry[types.length];
+
+        Slot[] slots = new Slot[types.length];
         int i = 0;
         for(MarketType type : types) {
-            entries[i++] = new DoubleListItemEntry(type.getId(), type.getTypeName(), type.getItemStack());
+            slots[i++] = new Slot(type.getId(), type.getTypeName(), type.getItemStack());
         }
-        this.shopTypeList.setListEntry(entries);
+        this.shopTypeList = new GuiSlotList(this.mc, slots, this.guiLeft, this.guiTop, 400, 300, 24);
 	}
 	
     /**
@@ -100,16 +99,61 @@ public class GuiMarketCategory extends GuiFrazionZInterface {
         titleRenderer.drawCenteredString(this.title, this.guiLeft + this.xSize/2, this.guiTop + 3, 0xFFFFFFFF);
 	}
 
-    private class GuiList extends GuiDoubleList {
+    private class Slot implements FzSlot {
 
-        public GuiList(GuiScreen lastScreen, Minecraft mcIn, int left, int right, int top, int bottom, int slotHeight) {
-            super(lastScreen, mcIn, left, right, top, bottom, slotHeight);
+        int id;
+        private String name;
+        private ItemStack stack;
+
+        public Slot(int id, String name, ItemStack stack) {
+            this.id = id;
+            this.name = name;
+            this.stack = stack;
         }
 
         @Override
-        protected void elementClicked(int slotIndex, boolean isDoubleClick, int mouseX, int mouseY)
-        {
-            this.mc.player.connection.sendPacket(new CPacketGuiOpener(EnumGui.MARKET_ITEM_LIST, ((DoubleListEntry)this.listEntries[slotIndex]).getId()));
+        public int getSlotHeight() {
+            return 0;
+        }
+
+        @Override
+        public int getSlotWidth() {
+            return 0;
+        }
+
+        @Override
+        public int getSlotX() {
+            return 0;
+        }
+
+        @Override
+        public int getSlotY() {
+            return 0;
+        }
+
+        @Override
+        public void setSlotX(int x) {
+
+        }
+
+        @Override
+        public void setSlotY(int y) {
+
+        }
+
+        @Override
+        public void setSlotWidth(int width) {
+
+        }
+
+        @Override
+        public void drawSlot(int mouseX, int mouseY, float partialTicks) {
+
+        }
+
+        @Override
+        public void onClick(int mouseX, int mouseY, int mouseButton) {
+            mc.player.connection.sendPacket(new CPacketGuiOpener(EnumGui.MARKET_ITEM_LIST, id));
         }
     }
 }

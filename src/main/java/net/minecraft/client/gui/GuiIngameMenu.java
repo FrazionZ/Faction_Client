@@ -9,6 +9,7 @@ import fz.frazionz.client.gui.faction.BlasonCreatorGUI;
 import fz.frazionz.client.gui.GuiModsConfig;
 import fz.frazionz.client.gui.buttons.GuiMenuButton;
 import fz.frazionz.client.gui.impl.ExcludeScaledResolution;
+import fz.frazionz.client.gui.options.GuiOptionsMenu;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.achievement.GuiStats;
 import net.minecraft.client.gui.advancements.GuiScreenAdvancements;
@@ -73,7 +74,7 @@ public class GuiIngameMenu extends GuiScreen implements ExcludeScaledResolution
             break;
             
         case 1:
-        	this.mc.displayGuiScreen(new GuiOptions(this, this.mc.gameSettings));
+        	this.mc.displayGuiScreen(new GuiOptionsMenu(this, this.mc.gameSettings));
             break;
             
         case 2:
