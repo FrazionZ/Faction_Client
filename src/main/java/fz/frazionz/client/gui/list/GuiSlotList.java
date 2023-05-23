@@ -93,6 +93,15 @@ public class GuiSlotList
         updateSlotsWidth();
     }
 
+    public void updateScreen() {
+        contentHeight = calcContentHeight();
+        this.updateSlotsWidth();
+        if(this.amountScrolled > this.getMaxScroll()) {
+            this.amountScrolled = this.getMaxScroll();
+        }
+        this.updateSlotsPosition();
+    }
+
     public FzSlot[] getSlots() {
         return slots;
     }
@@ -119,6 +128,7 @@ public class GuiSlotList
             slot.setSlotX(x);
             slot.setSlotY(y - (int)(amountScrolled));
             y += slot.getSlotHeight() + slotsGap;
+            slot.updateSlotPosition();
         }
     }
 
@@ -319,7 +329,7 @@ public class GuiSlotList
 
         if(isMouseYWithinSlotBounds(this.mouseY)) {
 
-            if (Mouse.getEventButton() == 0 && Mouse.getEventButtonState() && this.mouseY >= this.y && this.mouseY <= this.y_bottom)
+            if ((Mouse.getEventButton() == 0 || Mouse.getEventButton() == 1) && Mouse.getEventButtonState() && this.mouseY >= this.y && this.mouseY <= this.y_bottom)
             {
                 for(FzSlot slot : slots) {
                     if(mouseY >= slot.getSlotY() && mouseY < slot.getSlotY() + slot.getSlotHeight()) {

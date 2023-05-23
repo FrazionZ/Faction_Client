@@ -148,6 +148,44 @@ public class RoundedGradientShaderRenderer {
         getInstance().unload();
     }
 
+    public void drawRoundTrapeze(float x, float y, float width, float height, float radius, int bend, int startColor, int endColor) {
+        GlStateManager.resetColor();
+        GlStateManager.enableBlend();
+        GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        getInstance().load();
+
+        ScaledResolution sr = new ScaledResolution(Minecraft.getMinecraft());
+        getInstance().setUniformFloat("size", width * sr.getScaleFactor(), height * sr.getScaleFactor());
+        getInstance().setUniformFloat("radius", radius * sr.getScaleFactor());
+        getInstance().setUniformFloat("position", x * sr.getScaleFactor(), y * sr.getScaleFactor());
+
+        int r = (startColor & 0xFF0000) >> 16;
+        int g = (startColor & 0xFF00) >> 8;
+        int b = (startColor & 0xFF);
+        getInstance().setUniformFloat("startColor", r/255.0f, g/255.0f, b/255.0f);
+
+        r = (endColor & 0xFF0000) >> 16;
+        g = (endColor & 0xFF00) >> 8;
+        b = (endColor & 0xFF);
+        getInstance().setUniformFloat("endColor", r/255.0f, g/255.0f, b/255.0f);
+
+        glBegin(GL_QUADS);
+        glTexCoord2f(0, 0);
+        glVertex2f(x, y);
+
+        glTexCoord2f(0, 1);
+        glVertex2f(x + bend, y + height);
+
+        glTexCoord2f(1, 1);
+        glVertex2f(x + width - bend, y + height);
+
+        glTexCoord2f(1, 0);
+        glVertex2f(x + width, y);
+
+        glEnd();
+        getInstance().unload();
+    }
+
 
     public void setUniformFloat(String name, float... arguments) {
         int loc = glGetUniformLocation(program, name);

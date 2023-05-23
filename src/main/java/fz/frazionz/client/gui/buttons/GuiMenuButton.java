@@ -17,6 +17,10 @@ public class GuiMenuButton extends GuiHoverButton
     private int fade;
     private boolean active = true;
 
+    private int color1 = Gui.GRADIENT_BUTTON_1;
+    private int color2 = Gui.GRADIENT_BUTTON_2;
+    private int textColor = 0xFF311903;
+
     public GuiMenuButton(int buttonId, int x, int y, String buttonText)
     {
         super(buttonId, x, y, 180, 28, buttonText);
@@ -25,6 +29,21 @@ public class GuiMenuButton extends GuiHoverButton
     public GuiMenuButton(int buttonId, int x, int y, int width, int height, String buttonText)
     {
         super(buttonId, x, y, width, height, buttonText);
+    }
+
+    public GuiMenuButton(int buttonId, int x, int y, int width, int height, String buttonText, int color1, int color2)
+    {
+        super(buttonId, x, y, width, height, buttonText);
+        this.color1 = color1;
+        this.color2 = color2;
+    }
+
+    public GuiMenuButton(int buttonId, int x, int y, int width, int height, String buttonText, int textColor, int color1, int color2)
+    {
+        super(buttonId, x, y, width, height, buttonText);
+        this.textColor = textColor;
+        this.color1 = color1;
+        this.color2 = color2;
     }
     
     @Override
@@ -56,7 +75,7 @@ public class GuiMenuButton extends GuiHoverButton
 
     @Override
     protected int textColor() {
-        return 0xFF311903;
+        return textColor;
     }
 
     @Override
@@ -72,7 +91,7 @@ public class GuiMenuButton extends GuiHoverButton
             if(hoveredValue > 0)
                 RoundedShaderRenderer.getInstance().drawRoundRect(this.x - hoveredValue + 1, this.y - hoveredValue + 1, this.width+2*hoveredValue - 2, this.height + 2*hoveredValue - 2, 3.5f, hoverColor());
             if(active)
-                RoundedGradientShaderRenderer.getInstance().drawRoundRect(this.x, this.y, this.width, this.height, 2, GRADIENT_BUTTON_1, GRADIENT_BUTTON_2);
+                RoundedGradientShaderRenderer.getInstance().drawRoundRect(this.x, this.y, this.width, this.height, 2, color1, color2);
             else
                 RoundedGradientShaderRenderer.getInstance().drawRoundRect(this.x, this.y, this.width, this.height, 2, GRADIENT_BUTTON_1_INACTIVE, GRADIENT_BUTTON_2_INACTIVE);
 

@@ -54,6 +54,11 @@ public class FzSlotExample2 implements FzSlot {
     }
 
     @Override
+    public void setSlotHeight(int height) {
+
+    }
+
+    @Override
     public void drawSlot(int mouseX, int mouseY, float partialTicks) {
         if(hovered(mouseX, mouseY))
             Gui.drawRect(x-2, y-2, x + getSlotWidth()+2, y + getSlotHeight()+2, 0xFFFFFFFF);
@@ -68,5 +73,10 @@ public class FzSlotExample2 implements FzSlot {
             color = 0xFF0000FF;
         else
             color = 0xFFFF0000;
+    }
+
+    @Override
+    public void updateSlotPosition() {
+
     }
 }

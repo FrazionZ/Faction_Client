@@ -102,6 +102,10 @@ public class TTFFontRenderer {
         drawString(text, x - getWidth(text) / 2, y - getHeight() / 2, color);
     }
 
+    public void drawCenteredStringHorizontally(String text, int x, int y, int color) {
+        drawString(text, x - getWidth(text) / 2, y, color);
+    }
+
     public void drawCenteredStringWithShadow(String text, int x, int y, int color) {
         drawStringWithShadow(text, x - getWidth(text) / 2, y - getHeight() / 2, color);
     }

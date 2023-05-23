@@ -794,6 +794,7 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
     public void drawPlayerHead(int x, int y, int width, int height) {
         Minecraft mc = Minecraft.getMinecraft();
 
+        GlStateManager.pushMatrix();
         mc.getTextureManager().bindTexture(playerSkinLocation);
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         GlStateManager.enableBlend();
@@ -804,5 +805,7 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
         drawScaledCustomSizeModalRect(x, y, 40, 8, 8, 8, width, height, 64, 64);
 
         GlStateManager.disableBlend();
+        GlStateManager.popMatrix();
+
     }
 }
