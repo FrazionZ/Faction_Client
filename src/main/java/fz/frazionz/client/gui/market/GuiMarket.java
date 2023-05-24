@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fz.frazionz.FzClient;
-import fz.frazionz.TTFFontRenderer;
-import fz.frazionz.client.gui.GuiButtonImage;
 import fz.frazionz.client.gui.GuiFzBaseScreen;
 import fz.frazionz.client.gui.buttons.GuiMenuButton;
 import fz.frazionz.client.gui.impl.ExcludeScaledResolution;
@@ -14,7 +12,6 @@ import fz.frazionz.client.gui.list.*;
 import fz.frazionz.client.gui.utils.RoundedGradientShaderRenderer;
 import fz.frazionz.client.gui.utils.RoundedShaderRenderer;
 import fz.frazionz.enums.EnumGui;
-import fz.frazionz.client.gui.GuiFrazionZInterface;
 import fz.frazionz.packets.client.CPacketGuiOpener;
 import fz.frazionz.packets.client.CPacketShopTrade;
 import fz.frazionz.utils.FzUtils;
@@ -27,12 +24,10 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.RenderItem;
-import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
-import org.lwjgl.opengl.GL11;
 
-public class GuiMarketCategory extends GuiFzBaseScreen implements ExcludeScaledResolution {
+public class GuiMarket extends GuiFzBaseScreen implements ExcludeScaledResolution {
 		
 	private GuiSlotList listType;
     private GuiSlotList listItems;
@@ -40,7 +35,7 @@ public class GuiMarketCategory extends GuiFzBaseScreen implements ExcludeScaledR
     private MarketItem[] items;
     private MarketItem selected;
 	
-	public GuiMarketCategory(GuiScreen lastScreen, Minecraft mc, String json)
+	public GuiMarket(GuiScreen lastScreen, Minecraft mc, String json)
     {
 		super(lastScreen);
         this.types = MarketType.deserializeList(json);

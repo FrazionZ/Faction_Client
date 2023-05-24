@@ -5,7 +5,6 @@ import com.google.gson.JsonParser;
 import fz.frazionz.FzClient;
 import fz.frazionz.client.gui.buttons.GuiHoverButton;
 import fz.frazionz.client.gui.list.GuiListFrazionZInterface;
-import fz.frazionz.client.gui.market.GuiMarketItem;
 import fz.frazionz.client.gui.utils.RoundedShaderRenderer;
 import fz.frazionz.utils.Colors;
 import net.minecraft.client.Minecraft;
