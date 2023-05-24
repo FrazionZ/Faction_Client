@@ -1,63 +1,57 @@
-package fz.frazionz.client.gui.list;
+package fz.frazionz.client.gui.list.slot;
 
-import fz.frazionz.client.gui.list.slot.FzSlot;
+public class SimpleSlotList implements FzSlot {
 
-public class FzCategory implements FzSlot {
+    private int x;
+    private int y;
+    private int width;
+    private int height;
 
-    private final String name;
-    private final FzSlot[] slots;
-
-    public FzCategory(String name, FzSlot... slots) {
-        this.name = name;
-        this.slots = slots;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public FzSlot[] getSlots() {
-        return slots;
+    public SimpleSlotList(int x, int y, int width, int height) {
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
     }
 
     @Override
     public int getSlotHeight() {
-        return 0;
+        return height;
     }
 
     @Override
     public int getSlotWidth() {
-        return 0;
+        return width;
     }
 
     @Override
     public int getSlotX() {
-        return 0;
+        return x;
     }
 
     @Override
     public int getSlotY() {
-        return 0;
+        return y;
     }
 
     @Override
     public void setSlotX(int x) {
-
+        this.x = x;
     }
 
     @Override
     public void setSlotY(int y) {
-
+        this.y = y;
     }
 
     @Override
     public void setSlotWidth(int width) {
-
+        this.width = width;
     }
 
     @Override
     public void setSlotHeight(int height) {
-
+        this.height = height;
     }
 
     @Override

@@ -1,6 +1,5 @@
 package fz.frazionz.client.gui.list;
 
-import fz.frazionz.client.gui.list.DoubleListEntry;
 import fz.frazionz.utils.Colors;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiListExtended;

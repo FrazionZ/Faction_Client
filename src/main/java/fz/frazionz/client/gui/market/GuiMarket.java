@@ -9,6 +9,7 @@ import fz.frazionz.client.gui.GuiFzBaseScreen;
 import fz.frazionz.client.gui.buttons.GuiMenuButton;
 import fz.frazionz.client.gui.impl.ExcludeScaledResolution;
 import fz.frazionz.client.gui.list.*;
+import fz.frazionz.client.gui.list.slot.FzSlot;
 import fz.frazionz.client.gui.utils.RoundedGradientShaderRenderer;
 import fz.frazionz.client.gui.utils.RoundedShaderRenderer;
 import fz.frazionz.enums.EnumGui;

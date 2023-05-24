@@ -1,4 +1,4 @@
-package fz.frazionz.client.gui.list;
+package fz.frazionz.client.gui.list.slot;
 
 public interface FzSlot {
 

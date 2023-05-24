@@ -1,19 +1,14 @@
 package fz.frazionz.client.gui.options;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import fz.frazionz.client.gui.buttons.GuiMenuButton;
 import fz.frazionz.client.gui.impl.ExcludeScaledResolution;
-import fz.frazionz.client.gui.list.FzSlot;
+import fz.frazionz.client.gui.list.slot.FzSlot;
 import fz.frazionz.client.gui.list.GuiSlotList;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.client.resources.Language;
 import net.minecraft.client.settings.GameSettings;
 
 import java.io.IOException;
-import java.util.Map;
 
 public class GuiOptionsMenu extends GuiScreen implements ExcludeScaledResolution {
 

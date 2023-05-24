@@ -1,6 +1,7 @@
 package fz.frazionz.client.gui.list;
 
 import fz.frazionz.FzClient;
+import fz.frazionz.client.gui.list.slot.FzSlot;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.Gui;

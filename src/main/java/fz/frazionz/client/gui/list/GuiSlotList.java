@@ -1,18 +1,13 @@
 package fz.frazionz.client.gui.list;
 
+import fz.frazionz.client.gui.list.slot.FzSlot;
 import fz.frazionz.client.gui.utils.RoundedShaderRenderer;
 import fz.frazionz.forgemods.smoothscrollingeverywhere.RunSixtyTimesEverySec;
-import fz.frazionz.utils.Colors;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.math.MathHelper;
 import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.GL11;
 
 public class GuiSlotList
 {
