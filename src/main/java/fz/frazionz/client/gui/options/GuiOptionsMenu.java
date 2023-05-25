@@ -36,7 +36,7 @@ public class GuiOptionsMenu extends GuiScreen implements ExcludeScaledResolution
     public void initGui() {
         addMenuButton();
         FzSlot[] slots = new FzSlot[0];
-        this.list = new GuiSlotList(mc, slots, width/2-350-16, 143, 700, 714, 24);
+        this.list = new GuiSlotList(mc, slots, width/2-350-16, 143, 760, 714, 24);
     }
 
     @Override
