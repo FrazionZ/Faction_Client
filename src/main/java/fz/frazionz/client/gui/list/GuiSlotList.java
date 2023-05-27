@@ -60,27 +60,6 @@ public class GuiSlotList
         updateSlotsWidth();
     }
 
-    private void fakeFill() {
-        if(this.slots == null || this.slots.length == 0)
-            this.slots = new FzSlot[]{
-                new FzSlotExample(1),
-                new FzSlotExample(2),
-                new FzSlotExample2(3),
-                new FzSlotExample2(4),
-                new FzSlotExample(5),
-                new FzSlotExample(6),
-                new FzSlotExample2(7),
-                new FzSlotExample2(8),
-                new FzSlotExample(9),
-                new FzSlotExample(10),
-                new FzSlotExample(11),
-                new FzSlotExample2(12),
-                new FzSlotExample2(13),
-                new FzSlotExample(14),
-                new FzSlotExample(15)
-            };
-    }
-
     public void setSlots(FzSlot[] slots) {
         this.slots = slots;
         contentHeight = calcContentHeight();
@@ -298,68 +277,51 @@ public class GuiSlotList
 
     public void handleMouseInput()
     {
-        if (Mouse.isButtonDown(0)) {
+        if(Mouse.getEventButtonState()) {
+            if (isMouseYWithinSlotBounds(this.mouseY)) {
 
-        }
-        else {
-            int i2 = Mouse.getEventDWheel();
-            if (contentHeight > height && i2 != 0) {
-                if (i2 > 0) {
-                    i2 = 1;
-                }
-                else if (i2 < 0) {
-                    i2 = -1;
-                }
-                if (this.amountScrolled <= this.getMaxScroll() && i2 < 0.0) {
-                    this.scrollVelocity += 16.0;
-                }
-                if (this.amountScrolled >= 0.0 && i2 > 0.0) {
-                    this.scrollVelocity -= 16.0;
-                }
-                if (!this.scroller.isRegistered()) {
-                    this.scroller.registerTick();
-                }
-            }
-        }
-
-        if(isMouseYWithinSlotBounds(this.mouseY)) {
-
-            if ((Mouse.getEventButton() == 0 || Mouse.getEventButton() == 1) && Mouse.getEventButtonState() && this.mouseY >= this.y && this.mouseY <= this.y_bottom)
-            {
-                for(FzSlot slot : slots) {
-                    if(mouseY >= slot.getSlotY() && mouseY < slot.getSlotY() + slot.getSlotHeight()) {
-                        slot.onClick(this.mouseX, this.mouseY, Mouse.getEventButton());
-                        break;
+                if ((Mouse.getEventButton() == 0 || Mouse.getEventButton() == 1) && Mouse.getEventButtonState() && this.mouseY >= this.y && this.mouseY <= this.y_bottom) {
+                    for (FzSlot slot : slots) {
+                        if (mouseY >= slot.getSlotY() && mouseY < slot.getSlotY() + slot.getSlotHeight()) {
+                            slot.mousePressed(this.mouseX, this.mouseY, Mouse.getEventButton());
+                            break;
+                        }
                     }
                 }
-            }
 
+            }
         }
-
-        /*if (this.isMouseYWithinSlotBounds(this.mouseY)) {
-            if (Mouse.getEventButton() == 0 && Mouse.getEventButtonState() && this.mouseY >= this.y && this.mouseY <= this.y_bottom) {
-
+        else {
+            if (Mouse.getEventButton() == 0) {
+                this.mouseReleased(this.mouseX, this.mouseY, 0);
             }
-
-
-            if (Mouse.isButtonDown(0)) {
-
-            } else {
-
+            else {
+                    int i2 = Mouse.getEventDWheel();
+                    if (contentHeight > height && i2 != 0) {
+                        if (i2 > 0) {
+                            i2 = 1;
+                        } else if (i2 < 0) {
+                            i2 = -1;
+                        }
+                        if (this.amountScrolled <= this.getMaxScroll() && i2 < 0.0) {
+                            this.scrollVelocity += 16.0;
+                        }
+                        if (this.amountScrolled >= 0.0 && i2 > 0.0) {
+                            this.scrollVelocity -= 16.0;
+                        }
+                        if (!this.scroller.isRegistered()) {
+                            this.scroller.registerTick();
+                        }
+                    }
             }
+        }
+    }
 
-            int i2 = Mouse.getEventDWheel();
-
-            if (i2 != 0) {
-                if (i2 > 0) {
-                    i2 = -1;
-                } else if (i2 < 0) {
-                    i2 = 1;
-                }
-
-                //this.amountScrolled += (float)(i2 * this.slotHeight / 2);
-            }
-        }*/
+    protected void mouseReleased(int mouseXIn, int mouseYIn, int state)
+    {
+        for(FzSlot slot : slots) {
+            slot.mouseReleased(mouseXIn, mouseYIn, state);
+        }
     }
 
     /**

@@ -44,7 +44,7 @@ public class ButtonsSlotList extends SimpleSlotList {
     protected void actionPerformed(GuiButton button, int mouseButton) throws IOException {}
 
     @Override
-    public void onClick(int mouseX, int mouseY, int mouseButton) {
+    public void mousePressed(int mouseX, int mouseY, int mouseButton) {
         for (GuiButton button : buttonList) {
             if (button.mousePressed(mc, mouseX, mouseY)) {
                 try {

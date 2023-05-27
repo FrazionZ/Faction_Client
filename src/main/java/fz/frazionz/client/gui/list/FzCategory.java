@@ -66,12 +66,22 @@ public class FzCategory implements FzSlot {
     }
 
     @Override
-    public void onClick(int mouseX, int mouseY, int mouseButton) {
+    public void mousePressed(int mouseX, int mouseY, int mouseButton) {
+
+    }
+
+    @Override
+    public void mouseReleased(int mouseX, int mouseY, int mouseButton) {
 
     }
 
     @Override
     public void updateSlotPosition() {
 
+    }
+
+    @Override
+    public boolean hovered(int mouseX, int mouseY) {
+        return FzSlot.super.hovered(mouseX, mouseY);
     }
 }

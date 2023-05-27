@@ -1,11 +1,14 @@
 package fz.frazionz.client.gui.list.slot;
 
+import net.minecraft.client.Minecraft;
+
 public class SimpleSlotList implements FzSlot {
 
-    private int x;
-    private int y;
-    private int width;
-    private int height;
+    protected int x;
+    protected int y;
+    protected int width;
+    protected int height;
+    protected static Minecraft mc = Minecraft.getMinecraft();
 
     public SimpleSlotList(int x, int y, int width, int height) {
         this.x = x;
@@ -60,7 +63,12 @@ public class SimpleSlotList implements FzSlot {
     }
 
     @Override
-    public void onClick(int mouseX, int mouseY, int mouseButton) {
+    public void mousePressed(int mouseX, int mouseY, int mouseButton) {
+
+    }
+
+    @Override
+    public void mouseReleased(int mouseX, int mouseY, int mouseButton) {
 
     }
 

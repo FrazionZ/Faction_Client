@@ -377,7 +377,7 @@ public class GuiMarket extends GuiFzBaseScreen implements ExcludeScaledResolutio
         }
 
         @Override
-        public void onClick(int mouseX, int mouseY, int mouseButton) {
+        public void mousePressed(int mouseX, int mouseY, int mouseButton) {
             if(type) {
                 for(FzSlot slot : listType.getSlots()) {
                     ((Slot)(slot)).setActive(false);
@@ -424,6 +424,11 @@ public class GuiMarket extends GuiFzBaseScreen implements ExcludeScaledResolutio
                     }
                 }
             }
+        }
+
+        @Override
+        public void mouseReleased(int mouseX, int mouseY, int mouseButton) {
+
         }
     }
 }
