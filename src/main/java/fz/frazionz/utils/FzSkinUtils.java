@@ -17,6 +17,7 @@ import net.minecraft.client.renderer.ImageBufferDownload;
 import net.minecraft.client.renderer.ThreadDownloadImageData;
 import net.minecraft.client.renderer.texture.ITextureObject;
 import net.minecraft.client.renderer.texture.TextureManager;
+import net.minecraft.client.resources.DefaultPlayerSkin;
 import net.minecraft.resources.ResourceLocation;
 import net.optifine.texture.TextureType;
 import org.lwjgl.Sys;
@@ -61,7 +62,7 @@ public class FzSkinUtils
 
     public static ResourceLocation loadSkin(GameProfile profile, UserSkinsInfo userSkinsInfo) {
         if(userSkinsInfo == null || !userSkinsInfo.isSkinExist() || !userSkinsInfo.hasSkin()) {
-            return null;
+            return DefaultPlayerSkin.getDefaultSkinLegacy();
         }
         String id = profile.getId().toString();
         return loadTexture(

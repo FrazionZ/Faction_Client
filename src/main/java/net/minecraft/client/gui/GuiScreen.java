@@ -795,6 +795,7 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
         Minecraft mc = Minecraft.getMinecraft();
 
         GlStateManager.pushMatrix();
+        System.out.println("PlayerSkinLocation: " + playerSkinLocation);
         mc.getTextureManager().bindTexture(playerSkinLocation);
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         GlStateManager.enableBlend();
