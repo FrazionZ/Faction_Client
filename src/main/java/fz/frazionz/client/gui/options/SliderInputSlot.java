@@ -66,8 +66,8 @@ public class SliderInputSlot extends SimpleSlotList {
 
         RoundedShaderRenderer.getInstance().drawRoundRect(this.x, this.y+height-24, this.width, 16, 8.0f, Gui.BLACK_2);
 
-            RoundedGradientShaderRenderer.getInstance().drawRoundRect(this.x, this.y+height-24, (this.sliderValue * (float)(this.width)), 16, 8.0f, Gui.GRADIENT_BUTTON_1, Gui.GRADIENT_BUTTON_2);
-            RoundedGradientShaderRenderer.getInstance().drawRoundRect(this.x + (int)(this.sliderValue * (float)(this.width) - 14), this.y+height-30, 28, 28, 14.0f, Gui.GRADIENT_BUTTON_1, Gui.GRADIENT_BUTTON_2);
+            RoundedGradientShaderRenderer.getInstance().drawRoundRect(this.x, this.y+height-24, (this.sliderValue * (float)(this.width-28) + 14), 16, 8.0f, Gui.GRADIENT_BUTTON_1, Gui.GRADIENT_BUTTON_2);
+            RoundedGradientShaderRenderer.getInstance().drawRoundRect(this.x + (int)(this.sliderValue * (float)(this.width - 28)), this.y+height-30, 28, 28, 14.0f, Gui.GRADIENT_BUTTON_1, Gui.GRADIENT_BUTTON_2);
     }
 
     protected void onDrag() {
