@@ -80,8 +80,8 @@ public class HUDConfigScreen extends GuiScreen {
         for (IRenderer renderer : renderers.keySet()) {
 
             ScreenPosition pos = renderers.get(renderer);
-            Gui.drawRect(pos.getAbsoluteX(), pos.getAbsoluteY(), pos.getAbsoluteX() + renderer.getWidth(), pos.getAbsoluteY() + renderer.getHeight(), 0x33FFFFFF);
-            this.drawHollowRect(pos.getAbsoluteX(), pos.getAbsoluteY(), renderer.getWidth(), renderer.getHeight(), 0x88FFFFFF);
+            Gui.drawRect(pos.getAbsoluteX(), pos.getAbsoluteY(), pos.getAbsoluteX() + renderer.getDummyWidth(), pos.getAbsoluteY() + renderer.getDummyHeight(), 0x33FFFFFF);
+            this.drawHollowRect(pos.getAbsoluteX(), pos.getAbsoluteY(), renderer.getWidth(), renderer.getDummyHeight(), 0x88FFFFFF);
 
             renderer.renderDummy(pos);
 
