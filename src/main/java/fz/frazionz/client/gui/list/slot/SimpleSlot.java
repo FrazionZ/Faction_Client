@@ -2,7 +2,7 @@ package fz.frazionz.client.gui.list.slot;
 
 import net.minecraft.client.Minecraft;
 
-public class SimpleSlotList implements FzSlot {
+public class SimpleSlot implements FzSlot {
 
     protected int x;
     protected int y;
@@ -10,7 +10,7 @@ public class SimpleSlotList implements FzSlot {
     protected int height;
     protected static Minecraft mc = Minecraft.getMinecraft();
 
-    public SimpleSlotList(int x, int y, int width, int height) {
+    public SimpleSlot(int x, int y, int width, int height) {
         this.x = x;
         this.y = y;
         this.width = width;

@@ -1,9 +1,7 @@
-package fz.frazionz.client.gui.options;
+package fz.frazionz.client.gui.list.slot;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiScreenOptionsSounds;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.client.settings.GameSettings;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.MathHelper;
 

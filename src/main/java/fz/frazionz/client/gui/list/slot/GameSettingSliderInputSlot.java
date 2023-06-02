@@ -1,25 +1,20 @@
-package fz.frazionz.client.gui.options;
+package fz.frazionz.client.gui.list.slot;
 
-import fz.frazionz.FzClient;
-import fz.frazionz.client.gui.list.slot.SimpleSlotList;
-import fz.frazionz.client.gui.utils.RoundedGradientShaderRenderer;
-import fz.frazionz.client.gui.utils.RoundedShaderRenderer;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Gui;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.util.math.MathHelper;
 
-public class GamesettingSliderInputSlot extends SliderInputSlot {
+public class GameSettingSliderInputSlot extends SliderInputSlot {
 
     protected final GameSettings.Options options;
 
 
-    public GamesettingSliderInputSlot(int x, int y, int width, GameSettings.Options optionIn) {
+    public GameSettingSliderInputSlot(int x, int y, int width, GameSettings.Options optionIn) {
         this(x, y, width, optionIn, 0.0F, 1.0F);
     }
 
-    public GamesettingSliderInputSlot(int x, int y, int width, GameSettings.Options optionIn, float min, float max) {
+    public GameSettingSliderInputSlot(int x, int y, int width, GameSettings.Options optionIn, float min, float max) {
         super(I18n.format(optionIn.getTranslation()), x, y, width);
         this.options = optionIn;
         Minecraft minecraft = Minecraft.getMinecraft();

@@ -7,7 +7,6 @@ import fz.frazionz.client.gui.list.GuiSlotList;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.settings.GameSettings;
-import net.minecraft.util.SoundCategory;
 
 import java.io.IOException;
 
@@ -101,21 +100,14 @@ public class GuiOptionsMenu extends GuiScreen implements ExcludeScaledResolution
         FzSlot[] slots = new FzSlot[0];
         switch(menu) {
             case 0:
-                slots = new FzSlot[] {
-                        new GamesettingSliderInputSlot(0, 0, 200, GameSettings.Options.FOV)
-                };
+                slots = MenuSettings.getGeneral();
                 break;
             case 1:
                 slots = new FzSlot[] {
                 };
                 break;
             case 2:
-                slots = new FzSlot[SoundCategory.values().length];
-                int i = 0;
-                for (SoundCategory soundcategory : SoundCategory.values())
-                {
-                    slots[i++] = new SoundSliderInputSlot(0, 0, 700, soundcategory);
-                }
+                slots = MenuSettings.getMusics();
                 break;
             case 3:
                 slots = new FzSlot[] {

@@ -1,15 +1,13 @@
-package fz.frazionz.client.gui.options;
+package fz.frazionz.client.gui.list.slot;
 
 import fz.frazionz.FzClient;
-import fz.frazionz.client.gui.list.slot.SimpleSlotList;
 import fz.frazionz.client.gui.utils.RoundedGradientShaderRenderer;
 import fz.frazionz.client.gui.utils.RoundedShaderRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.util.math.MathHelper;
 
-public class SliderInputSlot extends SimpleSlotList {
+public class SliderInputSlot extends SimpleSlot {
 
     protected float sliderValue = 1.0F;
     protected boolean dragging;

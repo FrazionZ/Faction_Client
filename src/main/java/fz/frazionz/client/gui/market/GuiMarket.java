@@ -36,7 +36,7 @@ public class GuiMarket extends GuiFzBaseScreen implements ExcludeScaledResolutio
     private MarketItem[] items;
     private MarketItem selected;
 	
-	public GuiMarket(GuiScreen lastScreen, Minecraft mc, String json)
+	public GuiMarket(GuiScreen lastScreen, String json)
     {
 		super(lastScreen);
         this.types = MarketType.deserializeList(json);

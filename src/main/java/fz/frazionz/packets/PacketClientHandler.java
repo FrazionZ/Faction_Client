@@ -14,7 +14,7 @@ public class PacketClientHandler {
     public static void handleCustomPayload(SPacketCustomPayload packetIn) {
         switch(EnumGui.fromKey(packetIn.getChannelName())) {
             case MARKET_LIST:
-                mc.displayGuiScreen(new GuiMarket(mc.currentScreen, mc, packetIn.getBufferData().readString(80000)));
+                mc.displayGuiScreen(new GuiMarket(mc.currentScreen, packetIn.getBufferData().readString(80000)));
                 break;
             case MARKET_ITEM_LIST:
                 if(mc.currentScreen instanceof GuiMarket) {

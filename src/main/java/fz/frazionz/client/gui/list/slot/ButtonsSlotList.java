@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ButtonsSlotList extends SimpleSlotList {
+public class ButtonsSlotList extends SimpleSlot {
 
     private final Minecraft mc = Minecraft.getMinecraft();
     private List<GuiButton> buttonList;

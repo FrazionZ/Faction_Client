@@ -3980,6 +3980,677 @@ public class GameSettings
             return value;
         }
     }
+
+    private void setOptionValueOF2(GameSettings.Options option, int value)
+    {
+        if (option == GameSettings.Options.FOG_FANCY)
+        {
+            switch (this.ofFogType)
+            {
+                case 1:
+                    this.ofFogType = 2;
+
+                    if (!Config.isFancyFogAvailable())
+                    {
+                        this.ofFogType = 3;
+                    }
+
+                    break;
+
+                case 2:
+                    this.ofFogType = 3;
+                    break;
+
+                case 3:
+                    this.ofFogType = 1;
+                    break;
+
+                default:
+                    this.ofFogType = 1;
+            }
+        }
+
+        if (option == GameSettings.Options.FOG_START)
+        {
+            this.ofFogStart += 0.2F;
+
+            if (this.ofFogStart > 0.81F)
+            {
+                this.ofFogStart = 0.2F;
+            }
+        }
+
+        if (option == GameSettings.Options.SMOOTH_FPS)
+        {
+            this.ofSmoothFps = !this.ofSmoothFps;
+        }
+
+        if (option == GameSettings.Options.SMOOTH_WORLD)
+        {
+            this.ofSmoothWorld = !this.ofSmoothWorld;
+            Config.updateThreadPriorities();
+        }
+
+        if (option == GameSettings.Options.CLOUDS)
+        {
+            this.ofClouds = value;
+
+            if (this.ofClouds > 3)
+            {
+                this.ofClouds = 0;
+            }
+
+            this.updateRenderClouds();
+            this.mc.renderGlobal.resetClouds();
+        }
+
+        if (option == GameSettings.Options.TREES)
+        {
+            this.ofTrees = nextValue(this.ofTrees, OF_TREES_VALUES);
+            this.mc.renderGlobal.loadRenderers();
+        }
+
+        if (option == GameSettings.Options.DROPPED_ITEMS)
+        {
+            this.ofDroppedItems = value;
+        }
+
+        if (option == GameSettings.Options.RAIN)
+        {
+            this.ofRain = value;
+        }
+
+        if (option == GameSettings.Options.ANIMATED_WATER)
+        {
+            this.ofAnimatedWater = value;
+        }
+
+        if (option == GameSettings.Options.ANIMATED_LAVA)
+        {
+            this.ofAnimatedLava = value;
+        }
+
+        if (option == GameSettings.Options.ANIMATED_FIRE)
+        {
+            this.ofAnimatedFire = !this.ofAnimatedFire;
+        }
+
+        if (option == GameSettings.Options.ANIMATED_PORTAL)
+        {
+            this.ofAnimatedPortal = !this.ofAnimatedPortal;
+        }
+
+        if (option == GameSettings.Options.ANIMATED_REDSTONE)
+        {
+            this.ofAnimatedRedstone = !this.ofAnimatedRedstone;
+        }
+
+        if (option == GameSettings.Options.ANIMATED_EXPLOSION)
+        {
+            this.ofAnimatedExplosion = !this.ofAnimatedExplosion;
+        }
+
+        if (option == GameSettings.Options.ANIMATED_FLAME)
+        {
+            this.ofAnimatedFlame = !this.ofAnimatedFlame;
+        }
+
+        if (option == GameSettings.Options.ANIMATED_SMOKE)
+        {
+            this.ofAnimatedSmoke = !this.ofAnimatedSmoke;
+        }
+
+        if (option == GameSettings.Options.VOID_PARTICLES)
+        {
+            this.ofVoidParticles = !this.ofVoidParticles;
+        }
+
+        if (option == GameSettings.Options.WATER_PARTICLES)
+        {
+            this.ofWaterParticles = !this.ofWaterParticles;
+        }
+
+        if (option == GameSettings.Options.PORTAL_PARTICLES)
+        {
+            this.ofPortalParticles = !this.ofPortalParticles;
+        }
+
+        if (option == GameSettings.Options.POTION_PARTICLES)
+        {
+            this.ofPotionParticles = !this.ofPotionParticles;
+        }
+
+        if (option == GameSettings.Options.FIREWORK_PARTICLES)
+        {
+            this.ofFireworkParticles = !this.ofFireworkParticles;
+        }
+
+        if (option == GameSettings.Options.DRIPPING_WATER_LAVA)
+        {
+            this.ofDrippingWaterLava = !this.ofDrippingWaterLava;
+        }
+
+        if (option == GameSettings.Options.ANIMATED_TERRAIN)
+        {
+            this.ofAnimatedTerrain = !this.ofAnimatedTerrain;
+        }
+
+        if (option == GameSettings.Options.ANIMATED_TEXTURES)
+        {
+            this.ofAnimatedTextures = !this.ofAnimatedTextures;
+        }
+
+        if (option == GameSettings.Options.RAIN_SPLASH)
+        {
+            this.ofRainSplash = !this.ofRainSplash;
+        }
+
+        if (option == GameSettings.Options.LAGOMETER)
+        {
+            this.ofLagometer = !this.ofLagometer;
+        }
+
+        if (option == GameSettings.Options.SHOW_FPS)
+        {
+            this.ofShowFps = !this.ofShowFps;
+        }
+
+        if (option == GameSettings.Options.AUTOSAVE_TICKS)
+        {
+            int i = 900;
+            this.ofAutoSaveTicks = Math.max(this.ofAutoSaveTicks / i * i, i);
+            this.ofAutoSaveTicks *= 2;
+
+            if (this.ofAutoSaveTicks > 32 * i)
+            {
+                this.ofAutoSaveTicks = i;
+            }
+        }
+
+        if (option == GameSettings.Options.BETTER_GRASS)
+        {
+            this.ofBetterGrass = value;
+
+            this.mc.renderGlobal.loadRenderers();
+        }
+
+        if (option == GameSettings.Options.CONNECTED_TEXTURES)
+        {
+            this.ofConnectedTextures = value;
+
+            if (this.ofConnectedTextures == 2)
+            {
+                this.mc.renderGlobal.loadRenderers();
+            }
+            else
+            {
+                this.mc.refreshResources();
+            }
+        }
+
+        if (option == GameSettings.Options.WEATHER)
+        {
+            this.ofWeather = !this.ofWeather;
+        }
+
+        if (option == GameSettings.Options.SKY)
+        {
+            this.ofSky = !this.ofSky;
+        }
+
+        if (option == GameSettings.Options.STARS)
+        {
+            this.ofStars = !this.ofStars;
+        }
+
+        if (option == GameSettings.Options.SUN_MOON)
+        {
+            this.ofSunMoon = !this.ofSunMoon;
+        }
+
+        if (option == GameSettings.Options.VIGNETTE)
+        {
+            this.ofVignette = value;
+
+            if (this.ofVignette > 2)
+            {
+                this.ofVignette = 0;
+            }
+        }
+
+        if (option == GameSettings.Options.CHUNK_UPDATES)
+        {
+            this.ofChunkUpdates = value;
+
+            if (this.ofChunkUpdates > 5)
+            {
+                this.ofChunkUpdates = 1;
+            }
+        }
+
+        if (option == GameSettings.Options.CHUNK_UPDATES_DYNAMIC)
+        {
+            this.ofChunkUpdatesDynamic = !this.ofChunkUpdatesDynamic;
+        }
+
+        if (option == GameSettings.Options.TIME)
+        {
+            this.ofTime = value;
+
+            if (this.ofTime > 2)
+            {
+                this.ofTime = 0;
+            }
+        }
+
+        if (option == GameSettings.Options.CLEAR_WATER)
+        {
+            this.ofClearWater = !this.ofClearWater;
+            this.updateWaterOpacity();
+        }
+
+        if (option == GameSettings.Options.PROFILER)
+        {
+            this.ofProfiler = !this.ofProfiler;
+        }
+
+        if (option == GameSettings.Options.BETTER_SNOW)
+        {
+            this.ofBetterSnow = !this.ofBetterSnow;
+            this.mc.renderGlobal.loadRenderers();
+        }
+
+        if (option == GameSettings.Options.SWAMP_COLORS)
+        {
+            this.ofSwampColors = !this.ofSwampColors;
+            CustomColors.updateUseDefaultGrassFoliageColors();
+            this.mc.renderGlobal.loadRenderers();
+        }
+
+        if (option == GameSettings.Options.RANDOM_ENTITIES)
+        {
+            this.ofRandomEntities = !this.ofRandomEntities;
+            RandomEntities.update();
+        }
+
+        if (option == GameSettings.Options.SMOOTH_BIOMES)
+        {
+            this.ofSmoothBiomes = !this.ofSmoothBiomes;
+            CustomColors.updateUseDefaultGrassFoliageColors();
+            this.mc.renderGlobal.loadRenderers();
+        }
+
+        if (option == GameSettings.Options.CUSTOM_FONTS)
+        {
+            this.ofCustomFonts = !this.ofCustomFonts;
+            this.mc.fontRenderer.onResourceManagerReload(Config.getResourceManager());
+            this.mc.standardGalacticFontRenderer.onResourceManagerReload(Config.getResourceManager());
+        }
+
+        if (option == GameSettings.Options.CUSTOM_COLORS)
+        {
+            this.ofCustomColors = !this.ofCustomColors;
+            CustomColors.update();
+            this.mc.renderGlobal.loadRenderers();
+        }
+
+        if (option == GameSettings.Options.CUSTOM_ITEMS)
+        {
+            this.ofCustomItems = !this.ofCustomItems;
+            this.mc.refreshResources();
+        }
+
+        if (option == GameSettings.Options.CUSTOM_SKY)
+        {
+            this.ofCustomSky = !this.ofCustomSky;
+            CustomSky.update();
+        }
+
+        if (option == GameSettings.Options.SHOW_CAPES)
+        {
+            this.ofShowCapes = !this.ofShowCapes;
+        }
+
+        if (option == GameSettings.Options.NATURAL_TEXTURES)
+        {
+            this.ofNaturalTextures = !this.ofNaturalTextures;
+            NaturalTextures.update();
+            this.mc.renderGlobal.loadRenderers();
+        }
+
+        if (option == GameSettings.Options.EMISSIVE_TEXTURES)
+        {
+            this.ofEmissiveTextures = !this.ofEmissiveTextures;
+            this.mc.refreshResources();
+        }
+
+        if (option == GameSettings.Options.FAST_MATH)
+        {
+            this.ofFastMath = !this.ofFastMath;
+            MathHelper.fastMath = this.ofFastMath;
+        }
+
+        if (option == GameSettings.Options.FAST_RENDER)
+        {
+            if (!this.ofFastRender && Config.isShaders())
+            {
+                Config.showGuiMessage(Lang.get("of.message.fr.shaders1"), Lang.get("of.message.fr.shaders2"));
+                return;
+            }
+
+            this.ofFastRender = !this.ofFastRender;
+
+            if (this.ofFastRender)
+            {
+                this.mc.entityRenderer.stopUseShader();
+            }
+
+            Config.updateFramebufferSize();
+        }
+
+        if (option == GameSettings.Options.TRANSLUCENT_BLOCKS)
+        {
+            this.ofTranslucentBlocks = value;
+
+            if(this.ofTranslucentBlocks > 2)
+            {
+            	this.ofTranslucentBlocks = 0;
+            }
+
+            this.mc.renderGlobal.loadRenderers();
+        }
+
+        if (option == GameSettings.Options.LAZY_CHUNK_LOADING)
+        {
+            this.ofLazyChunkLoading = !this.ofLazyChunkLoading;
+        }
+
+        if (option == GameSettings.Options.RENDER_REGIONS)
+        {
+            this.ofRenderRegions = !this.ofRenderRegions;
+            this.mc.renderGlobal.loadRenderers();
+        }
+
+        if (option == GameSettings.Options.SMART_ANIMATIONS)
+        {
+            this.ofSmartAnimations = !this.ofSmartAnimations;
+            this.mc.renderGlobal.loadRenderers();
+        }
+
+        if (option == GameSettings.Options.DYNAMIC_FOV)
+        {
+            this.ofDynamicFov = !this.ofDynamicFov;
+        }
+
+        if (option == GameSettings.Options.ALTERNATE_BLOCKS)
+        {
+            this.ofAlternateBlocks = !this.ofAlternateBlocks;
+            this.mc.refreshResources();
+        }
+
+        if (option == GameSettings.Options.DYNAMIC_LIGHTS)
+        {
+            this.ofDynamicLights = value;
+            DynamicLights.removeLights(this.mc.renderGlobal);
+        }
+
+        if (option == GameSettings.Options.SCREENSHOT_SIZE)
+        {
+            this.ofScreenshotSize = value;
+
+            if (this.ofScreenshotSize > 4)
+            {
+                this.ofScreenshotSize = 1;
+            }
+
+            if (!OpenGlHelper.isFramebufferEnabled())
+            {
+                this.ofScreenshotSize = 1;
+            }
+        }
+
+        if (option == GameSettings.Options.CUSTOM_ENTITY_MODELS)
+        {
+            this.ofCustomEntityModels = !this.ofCustomEntityModels;
+            this.mc.refreshResources();
+        }
+
+        if (option == GameSettings.Options.CUSTOM_GUIS)
+        {
+            this.ofCustomGuis = !this.ofCustomGuis;
+            CustomGuis.update();
+        }
+
+        if (option == GameSettings.Options.SHOW_GL_ERRORS)
+        {
+            this.ofShowGlErrors = !this.ofShowGlErrors;
+        }
+
+        if (option == GameSettings.Options.HELD_ITEM_TOOLTIPS)
+        {
+            this.heldItemTooltips = !this.heldItemTooltips;
+        }
+
+        if (option == GameSettings.Options.ADVANCED_TOOLTIPS)
+        {
+            this.advancedItemTooltips = !this.advancedItemTooltips;
+        }
+    }
+
+    public void invertBooleanOptionValue(GameSettings.Options settingsOption)
+    {
+        if (settingsOption == GameSettings.Options.INVERT_MOUSE)
+        {
+            this.invertMouse = !this.invertMouse;
+        }
+
+        if (settingsOption == GameSettings.Options.VIEW_BOBBING)
+        {
+            this.viewBobbing = !this.viewBobbing;
+        }
+
+        if (settingsOption == GameSettings.Options.FORCE_UNICODE_FONT)
+        {
+            this.forceUnicodeFont = !this.forceUnicodeFont;
+            this.mc.fontRenderer.setUnicodeFlag(this.mc.getLanguageManager().isCurrentLocaleUnicode() || this.forceUnicodeFont);
+        }
+
+        if (settingsOption == GameSettings.Options.FBO_ENABLE)
+        {
+            this.fboEnable = !this.fboEnable;
+        }
+
+        if (settingsOption == GameSettings.Options.ANAGLYPH)
+        {
+            if (!this.anaglyph && Config.isShaders())
+            {
+                Config.showGuiMessage(Lang.get("of.message.an.shaders1"), Lang.get("of.message.an.shaders2"));
+                return;
+            }
+
+            this.anaglyph = !this.anaglyph;
+            this.mc.refreshResources();
+
+            if (Reflector.FMLClientHandler_refreshResources.exists())
+            {
+                Object object = Reflector.call(Reflector.FMLClientHandler_instance);
+                IResourceType iresourcetype = (IResourceType)Reflector.VanillaResourceType_TEXTURES.getValue();
+                Reflector.call(object, Reflector.FMLClientHandler_refreshResources, iresourcetype);
+            }
+        }
+
+        if (settingsOption == GameSettings.Options.CHAT_COLOR)
+        {
+            this.chatColours = !this.chatColours;
+        }
+
+        if (settingsOption == GameSettings.Options.CHAT_LINKS)
+        {
+            this.chatLinks = !this.chatLinks;
+        }
+
+        if (settingsOption == GameSettings.Options.CHAT_LINKS_PROMPT)
+        {
+            this.chatLinksPrompt = !this.chatLinksPrompt;
+        }
+
+        if (settingsOption == GameSettings.Options.SNOOPER_ENABLED)
+        {
+            this.snooperEnabled = !this.snooperEnabled;
+        }
+
+        if (settingsOption == GameSettings.Options.TOUCHSCREEN)
+        {
+            this.touchscreen = !this.touchscreen;
+        }
+
+        if (settingsOption == GameSettings.Options.USE_FULLSCREEN)
+        {
+            this.fullScreen = !this.fullScreen;
+
+            if (this.mc.isFullScreen() != this.fullScreen)
+            {
+                this.mc.toggleFullscreen();
+            }
+        }
+
+        if (settingsOption == GameSettings.Options.ENABLE_VSYNC)
+        {
+            this.enableVsync = !this.enableVsync;
+            Display.setVSyncEnabled(this.enableVsync);
+        }
+
+        if (settingsOption == GameSettings.Options.USE_VBO)
+        {
+            this.useVbo = !this.useVbo;
+            this.mc.renderGlobal.loadRenderers();
+        }
+
+        if (settingsOption == GameSettings.Options.REDUCED_DEBUG_INFO)
+        {
+            this.reducedDebugInfo = !this.reducedDebugInfo;
+        }
+
+        if (settingsOption == GameSettings.Options.ENTITY_SHADOWS)
+        {
+            this.entityShadows = !this.entityShadows;
+        }
+
+        if (settingsOption == GameSettings.Options.SHOW_SUBTITLES)
+        {
+            this.showSubtitles = !this.showSubtitles;
+        }
+
+        if (settingsOption == GameSettings.Options.REALMS_NOTIFICATIONS)
+        {
+            this.realmsNotifications = !this.realmsNotifications;
+        }
+
+        if (settingsOption == GameSettings.Options.AUTO_JUMP)
+        {
+            this.autoJump = !this.autoJump;
+        }
+
+        this.saveOptions();
+    }
+
+    /**
+     * For non-float options. Toggles the option on/off, or cycles through the list i.e. render distances.
+     */
+    public void setChoiceOptionValue(GameSettings.Options settingsOption, int value)
+    {
+        this.setOptionValueOF(settingsOption, value);
+
+        if (settingsOption == GameSettings.Options.RENDER_DISTANCE)
+        {
+            this.setOptionFloatValue(settingsOption, MathHelper.clamp((float)(value), settingsOption.getValueMin(), settingsOption.getValueMax()));
+        }
+
+        if (settingsOption == GameSettings.Options.MAIN_HAND)
+        {
+            this.mainHand = this.mainHand.opposite();
+        }
+
+        if (settingsOption == GameSettings.Options.GUI_SCALE)
+        {
+            this.guiScale = value;
+
+            if (GuiScreen.isShiftKeyDown())
+            {
+                this.guiScale = 0;
+            }
+
+            DisplayMode displaymode = Config.getLargestDisplayMode();
+            int i = displaymode.getWidth() / 320;
+            int j = displaymode.getHeight() / 240;
+            int k = Math.min(i, j);
+
+            if (this.guiScale < 0)
+            {
+                this.guiScale = k - 1;
+            }
+
+            if (this.mc.isUnicode() && this.guiScale % 2 != 0)
+            {
+                this.guiScale = value;
+            }
+
+            if (this.guiScale < 0 || this.guiScale >= k)
+            {
+                this.guiScale = 0;
+            }
+        }
+
+        if (settingsOption == GameSettings.Options.PARTICLES)
+        {
+            this.particleSetting = (value) % 3;
+        }
+
+        if (settingsOption == GameSettings.Options.RENDER_CLOUDS)
+        {
+            this.clouds = (value) % 3;
+        }
+
+        if (settingsOption == GameSettings.Options.GRAPHICS)
+        {
+            this.fancyGraphics = !this.fancyGraphics;
+            this.updateRenderClouds();
+            this.mc.renderGlobal.loadRenderers();
+        }
+
+        if (settingsOption == GameSettings.Options.AMBIENT_OCCLUSION)
+        {
+            this.ambientOcclusion = (value) % 3;
+            this.mc.renderGlobal.loadRenderers();
+        }
+
+        if (settingsOption == GameSettings.Options.CHAT_VISIBILITY)
+        {
+            this.chatVisibility = EntityPlayer.EnumChatVisibility.getEnumChatVisibility((value) % 3);
+        }
+
+        if (settingsOption == GameSettings.Options.ATTACK_INDICATOR)
+        {
+            this.attackIndicator = (value) % 3;
+        }
+
+        if (settingsOption == GameSettings.Options.NARRATOR)
+        {
+            if (NarratorChatListener.INSTANCE.isActive())
+            {
+                this.narrator = (value) % NARRATOR_MODES.length;
+            }
+            else
+            {
+                this.narrator = 0;
+            }
+
+            NarratorChatListener.INSTANCE.announceMode(this.narrator);
+        }
+
+        this.saveOptions();
+    }
+
     
     public File getOptionsFile() {
 		return optionsFile;
