@@ -428,7 +428,6 @@ public class GuiMarket extends GuiFzBaseScreen implements ExcludeScaledResolutio
 
         @Override
         public void mouseReleased(int mouseX, int mouseY, int mouseButton) {
-
         }
     }
 }

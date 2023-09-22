@@ -4,21 +4,22 @@ import fz.frazionz.client.gui.buttons.GuiMenuButton;
 import fz.frazionz.client.gui.impl.ExcludeScaledResolution;
 import fz.frazionz.client.gui.list.slot.FzSlot;
 import fz.frazionz.client.gui.list.GuiSlotList;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.settings.GameSettings;
+import net.minecraft.client.settings.KeyBinding;
 
 import java.io.IOException;
 
 public class GuiOptionsMenu extends GuiScreen implements ExcludeScaledResolution {
-
-    private static final GameSettings.Options[] SCREEN_OPTIONS = new GameSettings.Options[] {GameSettings.Options.FOV};
 
     private final GameSettings settings;
     private final GuiScreen lastScreen;
     private int padding = 24;
 
     private GuiSlotList list;
+    public KeyBinding controlButtonId;
 
     public GuiOptionsMenu(GuiScreen lastScreen, GameSettings gameSettings) {
         super();
@@ -88,6 +89,31 @@ public class GuiOptionsMenu extends GuiScreen implements ExcludeScaledResolution
         this.list.handleMouseInput();
     }
 
+    protected void keyTyped(char typedChar, int keyCode) throws IOException
+    {
+        if (this.controlButtonId != null)
+        {
+            if (keyCode == 1)
+            {
+                mc.gameSettings.setOptionKeyBinding(this.controlButtonId, 0);
+            }
+            else if (keyCode != 0)
+            {
+                mc.gameSettings.setOptionKeyBinding(this.controlButtonId, keyCode);
+            }
+            else if (typedChar > 0)
+            {
+                mc.gameSettings.setOptionKeyBinding(this.controlButtonId, typedChar + 256);
+            }
+
+            this.controlButtonId = null;
+            KeyBinding.resetKeyBindingArrayAndHash();
+        }
+        else
+        {
+            super.keyTyped(typedChar, keyCode);
+        }
+    }
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
@@ -101,24 +127,28 @@ public class GuiOptionsMenu extends GuiScreen implements ExcludeScaledResolution
         switch(menu) {
             case 0:
                 slots = MenuSettings.getGeneral();
+                list.setSlotsGap(24);
                 break;
             case 1:
                 slots = new FzSlot[] {
                 };
+                list.setSlotsGap(24);
                 break;
             case 2:
                 slots = MenuSettings.getMusics();
+                list.setSlotsGap(24);
                 break;
             case 3:
-                slots = new FzSlot[] {
-                };
+                slots = MenuSettings.getControls();
+                list.setSlotsGap(12);
                 break;
             case 4:
                 slots = new FzSlot[] {
                 };
+                list.setSlotsGap(24);
                 break;
         }
         list.setSlots(slots);
+        list.updateScreen();
     }
-
 }

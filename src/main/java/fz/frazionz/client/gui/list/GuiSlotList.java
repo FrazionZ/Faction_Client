@@ -53,7 +53,6 @@ public class GuiSlotList
         this.height = height;
         this.slotsGap = slotsGap;
         this.setScroller();
-        //this.fakeFill();
 
         contentHeight = calcContentHeight();
         updateSlotsPosition();
@@ -335,5 +334,9 @@ public class GuiSlotList
     public void setAmountScrolled(float amountScrolled) {
         this.amountScrolled = amountScrolled;
         updateSlotsPosition();
+    }
+
+    public void setSlotsGap(int slotsGap) {
+        this.slotsGap = slotsGap;
     }
 }

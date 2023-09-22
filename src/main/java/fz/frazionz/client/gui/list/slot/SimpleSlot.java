@@ -64,12 +64,10 @@ public class SimpleSlot implements FzSlot {
 
     @Override
     public void mousePressed(int mouseX, int mouseY, int mouseButton) {
-
     }
 
     @Override
     public void mouseReleased(int mouseX, int mouseY, int mouseButton) {
-
     }
 
     @Override

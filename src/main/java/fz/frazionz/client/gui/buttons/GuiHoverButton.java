@@ -27,14 +27,19 @@ public class GuiHoverButton extends GuiFzButton {
     {
         if (this.visible)
         {
-        	this.hovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
-            if(this.hovered && hoveredValue < 3)
-                hoveredValue += 1;
-            else if(!this.hovered && hoveredValue > 0)
-                hoveredValue -= 1;
-            if(hoveredValue > 0)
-                RoundedShaderRenderer.getInstance().drawRoundRect(this.x - hoveredValue + 1, this.y - hoveredValue + 1, this.width+2*hoveredValue - 2, this.height + 2*hoveredValue - 2, 3.5f, hoverColor());
-            RoundedGradientShaderRenderer.getInstance().drawRoundRect(this.x, this.y, this.width, this.height, 2, GRADIENT_BUTTON_1, GRADIENT_BUTTON_2);
+            if(enabled) {
+                this.hovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
+                if (this.hovered && hoveredValue < 3)
+                    hoveredValue += 1;
+                else if (!this.hovered && hoveredValue > 0)
+                    hoveredValue -= 1;
+                if (hoveredValue > 0)
+                    RoundedShaderRenderer.getInstance().drawRoundRect(this.x - hoveredValue + 1, this.y - hoveredValue + 1, this.width + 2 * hoveredValue - 2, this.height + 2 * hoveredValue - 2, 3.5f, hoverColor());
+                RoundedGradientShaderRenderer.getInstance().drawRoundRect(this.x, this.y, this.width, this.height, 2, GRADIENT_BUTTON_1, GRADIENT_BUTTON_2);
+            }
+            else {
+                RoundedGradientShaderRenderer.getInstance().drawRoundRect(this.x, this.y, this.width, this.height, 2, GRADIENT_BUTTON_1_INACTIVE, GRADIENT_BUTTON_2_INACTIVE);
+            }
             if(drawString())
                 FzClient.getInstance().getTTFFontRenderers().get(16).drawCenteredString(this.displayString, this.x + (this.width/2), this.y + (this.height / 2), textColor());
         }

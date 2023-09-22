@@ -62,10 +62,10 @@ public class SliderInputSlot extends SimpleSlot {
                 this.stringValue = getStringValue();
             }
 
-        RoundedShaderRenderer.getInstance().drawRoundRect(this.x, this.y+height-24, this.width, 16, 8.0f, Gui.BLACK_2);
+        RoundedShaderRenderer.getInstance().drawRoundRect(this.x, this.y+height-24, this.width, 16, 7.5f, Gui.BLACK_2);
 
-            RoundedGradientShaderRenderer.getInstance().drawRoundRect(this.x, this.y+height-24, (this.sliderValue * (float)(this.width-28) + 14), 16, 8.0f, Gui.GRADIENT_BUTTON_1, Gui.GRADIENT_BUTTON_2);
-            RoundedGradientShaderRenderer.getInstance().drawRoundRect(this.x + (int)(this.sliderValue * (float)(this.width - 28)), this.y+height-30, 28, 28, 14.0f, Gui.GRADIENT_BUTTON_1, Gui.GRADIENT_BUTTON_2);
+            RoundedGradientShaderRenderer.getInstance().drawRoundRect(this.x, this.y+height-24, (this.sliderValue * (float)(this.width-28) + 14), 16, 7.5f, Gui.GRADIENT_BUTTON_1, Gui.GRADIENT_BUTTON_2);
+            RoundedGradientShaderRenderer.getInstance().drawRoundRect(this.x + (int)(this.sliderValue * (float)(this.width - 28)), this.y+height-30, 28, 28, 13.0f, Gui.GRADIENT_BUTTON_1, Gui.GRADIENT_BUTTON_2);
     }
 
     protected void onDrag() {
@@ -89,11 +89,11 @@ public class SliderInputSlot extends SimpleSlot {
 
     @Override
     public void drawSlot(int mouseX, int mouseY, float partialTicks) {
-        RoundedShaderRenderer.getInstance().drawRoundRect(this.x, this.y+height-24, this.width, 16, 8.0f, Gui.BLACK_2);
+        RoundedShaderRenderer.getInstance().drawRoundRect(this.x, this.y+height-24, this.width, 16, 7.5f, Gui.BLACK_2);
 
         this.mouseDragged(mc, mouseX, mouseY);
         FzClient.getInstance().getTTFFontRenderers().get(18).drawCenteredStringVertically(this.label, this.x, this.y+15, 0xFFFFFFFF);
-        RoundedShaderRenderer.getInstance().drawRoundRect(this.x + this.width-100, this.y, 100, 30, 4.0f, Gui.BLACK_2);
+        RoundedShaderRenderer.getInstance().drawRoundRect(this.x + this.width-100, this.y, 100, 30, 3.5f, Gui.BLACK_2);
         FzClient.getInstance().getTTFFontRenderers().get(16).drawCenteredString(this.stringValue, this.x + this.width-50, this.y+15, 0xFFFFFFFF);
     }
 }

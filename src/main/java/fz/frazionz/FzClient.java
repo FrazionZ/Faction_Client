@@ -50,6 +50,7 @@ public class FzClient {
 		this.ttfFontRenderers.put(20, new TTFFontRenderer(new ResourceLocation("font/font.ttf"), 20));
 		this.ttfFontRenderers.put(18, new TTFFontRenderer(new ResourceLocation("font/font.ttf"), 18));
 		this.ttfFontRenderers.put(16, new TTFFontRenderer(new ResourceLocation("font/font.ttf"), 16));
+		this.ttfFontRenderers.put(14, new TTFFontRenderer(new ResourceLocation("font/font.ttf"), 14));
 	}
 	
 	
